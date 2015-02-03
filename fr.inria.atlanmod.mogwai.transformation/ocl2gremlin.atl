@@ -1,0 +1,1038 @@
+-- @path OCL=/fr.inria.atlanmod.ocl2query.transfo/OCL.ecore
+-- @path Gremlin=/fr.inria.atlanmod.ocl2query.gremlin/model/gremlin.ecore
+
+-- OCL to Gremlin ATL Module
+
+-- Transforms an OCL input model into its representation through the
+-- Gremlin metamodel (see fr.inria.atlanmod.ocl2query.gremlin).
+-- OCL models are reversed compare to the natural writing :
+--		a->collect(b)->select(e | e.oclIsTypeOf(X))
+--	produces a model like
+--		select(collect(access(a)))
+-- While Gremlin syntax and model are both organized in the natural writing 
+-- order. The main objective of this transformation is to reverse OCL expression
+-- chains to match them in prefixed order.
+-- The typical matching is done in 2 parts :
+--	- Find the highest object in the considered tree hierarchy
+--  - Match this object to a pipe and associate next pipe to the container of the object
+
+-- Author AtlanMod - Inria
+
+module ocl2gremlin;
+
+create OUT: Gremlin from IN: OCL;
+
+-- Get the name of a call expression
+-- Supported expression are OperationCall and Iterator
+helper context OCL!CallExp def : getOpName() : String = 
+	if self.oclIsTypeOf(OCL!OperationCallExp) then
+		self.referredOperation.name
+	else
+		if self.oclIsTypeOf(OCL!IteratorExp) then
+			self.name
+		else
+			OclUndefined
+		endif
+	endif
+	;
+
+-- Returns all the expressions in the OCLExpression tree that
+-- are allInstances() operations
+helper context OCL!OCLExpression def : getTypeExps() : OrderedSet(OCL!TypeExp) =
+	OCL!TypeExp.allInstances()->iterate(each; res : OrderedSet(OCL!TypeExp) = OrderedSet{} | 
+		if(res->collect(e | e.referredType.name)->includes(each.referredType.name)) then
+			res
+		else
+			res.append(each)
+		endif)
+	;
+	
+helper context OclAny def : getComposite() : OclAny =
+	let composite : OclAny = self.refImmediateComposite() in
+	if composite.oclIsTypeOf(OCL!ExpressionInOCL) then
+		-- ExpressionInOCL is the root element of the query (the "specification" reference
+		-- of the constraint). Returns OclUndefined to flag the end of the traversal
+		OclUndefined
+	else
+		-- Collect flattening
+		if composite.oclIsTypeOf(OCL!IteratorExp) then
+			if composite.getOpName() = 'collect' then
+				if composite.hasInBody(self) then
+					-- If self is the last element in the collect expression returns
+					-- the collect operation to handle unions
+					composite
+				else
+					-- If self is not in the collect expression returns the content
+					-- of the expression (it flatten collect and delegate its translation
+					-- at the end of its inner expression)
+					composite.body.getFirstInstruction()
+				endif
+			else 
+				if composite.getOpName() = 'select' then
+					if composite.hasInBody(self) then
+						OclUndefined
+					else
+						composite
+					endif
+				else
+					if composite.getOpName() = 'reject' then
+						if composite.hasInBody(self) then
+							OclUndefined
+						else
+							-- If the next operation is not a collect returns it
+							composite
+						endif
+					else
+						if composite.getOpName() = 'exists' then
+							if composite.hasInBody(self) then
+								OclUndefined
+							else
+								composite
+							endif
+						else
+							if composite.getOpName() = 'forAll' then
+								if composite.hasInBody(self) then
+									OclUndefined
+								else
+									composite
+								endif
+							else
+								composite
+							endif
+						endif
+					endif
+				endif
+			endif
+		else
+			if composite.oclIsTypeOf(OCL!OperationCallExp) then
+				if composite.isComparison() then
+					-- If the container is a comparison there is two solutions:
+					-- (i)  It contains self, and has been handled before
+					-- (ii) It doesn't, and it is an error (it should have been handeled before)
+					OclUndefined
+				else
+					if composite.getOpName() = 'oclIsTypeOf' then
+						if composite.hasInBody(self) then
+							OclUndefined
+						else
+							composite
+						endif
+					else
+					-- The container is a function call, simply handle it
+					composite
+					endif
+				endif
+			else
+				-- If the next element is not an iterator or an operation returns it
+				composite
+			endif
+		endif
+	endif
+	;
+
+helper context OCL!IteratorExp def : hasInBody(o : OclAny) : Boolean = 
+	self.recursiveHasInBody(o,self.body.getFirstInstruction())
+	;
+
+helper context OCL!OperationCallExp def : hasInBody(o : OclAny): Boolean =
+	self.recursiveHasInBody(o,self.argument.first().getFirstInstruction())
+	;
+
+helper context OCL!IteratorExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLExpression) : Boolean =
+	if e = self then
+		false
+	else
+		if e = o then
+			true
+		else
+			self.recursiveHasInBody(o, e.refImmediateComposite())
+		endif
+	endif
+	;
+
+helper context OCL!OperationCallExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLExpression) : Boolean =
+	if e = self then
+		false
+	else
+		if e = o then
+			true
+		else
+			self.recursiveHasInBody(o, e.refImmediateComposite())
+		endif
+	endif
+	;
+	
+helper context OCL!OCLExpression def : isInCollect() : Boolean = 
+	if self.refImmediateComposite().oclIsTypeOf(OCL!IteratorExp) then
+		self.refImmediateComposite().name = 'collect'
+	else
+		self.refImmediateComposite().isInCollect()
+	endif
+	;
+
+helper context OCL!OCLExpression def : getFirstInstruction() : OCL!OCLExpression =
+	if self.oclIsTypeOf(OCL!OperationCallExp) then
+		if self.isComparison() then
+			self
+		else
+			self.source.getFirstInstruction()
+		endif
+	else
+		if self.oclIsTypeOf(OCL!IteratorExp) then
+			self.source.getFirstInstruction()
+		else
+			if self.oclIsTypeOf(OCL!VariableExp) or
+				self.oclIsKindOf(OCL!LiteralExp) or
+				self.oclIsTypeOf(OCL!TypeExp) or
+				self.oclIsKindOf(OCL!BooleanLiteralExp) then
+				self
+			else
+				self.source.getFirstInstruction()
+			endif
+		endif
+	endif
+	;
+
+helper context OCL!OCLExpression def : getFirstInstructionUnion() : OCL!OCLExpression =
+	if self.oclIsTypeOf(OCL!OperationCallExp) or self.oclIsTypeOf(OCL!IteratorExp) then
+		if self.getOpName() = 'union' then
+			self
+		else
+			self.source.getFirstInstructionUnion()
+		endif
+	else
+		if self.oclIsTypeOf(OCL!VariableExp) or
+			self.oclIsKindOf(OCL!LiteralExp) or
+			self.oclIsTypeOf(OCL!TypeExp) or
+			self.oclIsKindOf(OCL!BooleanLiteralExp) then
+			self
+		else
+			self.source.getFirstInstructionUnion()
+		endif
+	endif
+	;
+
+helper context OCL!OCLExpression def : getFirstInstructionInUnions() : OrderedSet(OCL!OCLExpression) =
+	if OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union').size() = 0 then
+--		self.getFirstInstruction() removed to avoid cast error if there is no union
+		OrderedSet{}
+	else
+		thisModule.reverse(OCL!OperationCallExp.allInstances())->select(each | each.getOpName() = 'union')->collect(e | OrderedSet{}.append(e.argument.first().getFirstInstructionUnion().refImmediateComposite()).append(e)).flatten()
+	endif
+	;
+
+helper def : reverse(seq : Sequence(OclAny)): Sequence(OclAny) = seq->iterate(e; res : Sequence(OclAny) = Sequence{} | res.prepend(e));
+
+helper context OCL!IteratorExp def : isLastInUnion() : Boolean =
+	if self.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+		if self.refImmediateComposite().getOpName() = 'union' then
+			true
+		else
+			false
+		endif
+	else
+		false
+	endif
+	;
+
+helper context OCL!IteratorExp def : isInUnionLeftPart() : Boolean =
+	if self.isLastInUnion() then
+		self.refImmediateComposite().source = self
+	else
+		false
+	endif
+	;
+
+-- Returns the first element in an OCL operation chain. Allow the transformation of
+-- the chain in Gremlin order.
+-- TODO : Check if all the termination conditions have been met.
+helper context OCL!OCLExpression def : getFirstOperation() : OCL!OCLExpression = 
+	if self.oclIsTypeOf(OCL!OperationCallExp) then
+		if self.getOpName() = 'size' then
+			self.source.getFirstOperation()
+		else if self.getOpName() = 'oclAsType' then
+			self.source.getFirstOperation()
+		else if self.getOpName() = 'oclIsUndefined' then
+			self.source.getFirstOperation()
+		else
+			self
+		endif
+		endif
+		endif
+	else
+		if self.oclIsTypeOf(OCL!VariableExp) or
+			self.oclIsKindOf(OCL!LiteralExp) or
+			self.oclIsKindOf(OCL!BooleanLiteralExp) then
+			self
+		else
+			self.source.getFirstOperation()
+		endif
+	endif
+	;
+
+helper context OCL!PropertyCallExp def : isLastInComparison() : Boolean =
+	if self.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+		self.refImmediateComposite().isComparison()
+	else
+		false
+	endif
+	;
+
+helper context OCL!OperationCallExp def : isComparison() : Boolean =
+	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())
+	;
+	
+-- Creates the Gremlin container (GremlinScript) from
+-- the OCL container (Constraint)
+-- Meta elements are computed first to generate appropriate variables (for type checking
+-- and indices access).
+-- The first instruction (i.e the last one in the OCL model) is then retrieved and added to the
+-- instruction list.
+rule constraint2script {
+	from
+		cc : OCL!Constraint
+	to
+		gg : Gremlin!GremlinScript (
+			instructions <- cc.specification.bodyExpression.getTypeExps()
+				->collect(e | thisModule.typeExp2meta(e)).union(
+					cc.specification.bodyExpression.getTypeExps()
+				->collect(e | thisModule.typeExp2metaNodes(e))).append(
+					if OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union').first() <> OclUndefined then
+						thisModule.union2meta(OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union').first().debug())
+					else
+						OclUndefined
+					endif).
+				append(
+					cc.specification.bodyExpression.getFirstInstruction()
+				).
+				union(
+					cc.specification.bodyExpression.getFirstInstructionInUnions()
+				)--.
+			--	union(
+			--		OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union')	
+			--	)
+		)
+}
+
+-- Creates variables associated to allInstances calls to avoid multiple index
+-- accesses in the same pipe.
+-- @see allInstances2pipes for generated pipes.
+lazy rule typeExp2meta {
+	from
+		typeExp : OCL!TypeExp
+	to
+		metaVar : Gremlin!VariableDeclaration (
+			name <- 'meta'+typeExp.referredType.name,
+			value <- metaStartPipe
+		),
+		metaStartPipe : Gremlin!StartPipe (
+			nextElement <- idxCall	
+		),
+		idxCall : Gremlin!IndexCall (
+			indexName <- 'metaclasses',
+			indexProperty  <- 'name',
+			indexQuery <- typeExp.referredType.name
+		)
+}
+
+-- Creates variables associated to oclIsTypeOf calls to avoid multiple index
+-- accesses in the same pipe.
+-- @see oclIsTypeOf2pipes for generated pipes.
+lazy rule typeExp2metaNodes {
+	from
+		typeExp : OCL!TypeExp
+	to
+		metaVar : Gremlin!VariableDeclaration(
+			name <- 'meta'+typeExp.referredType.name+'Node',
+			value <- metaVarAccess
+		),
+		metaVarAccess : Gremlin!VariableAccess(
+			name <- 'meta'+typeExp.referredType.name,
+			nextElement <- nextIt
+		),
+		nextIt : Gremlin!NextCall ()
+		
+}
+
+lazy rule union2meta {
+	from
+		oclUnion : OCL!OperationCallExp
+	to
+		metaUnionVar : Gremlin!VariableDeclaration (
+			name <- 'unionContent',
+			value <- vectorType
+		),
+		vectorType : Gremlin!VectorType (
+				
+		)
+}
+
+rule union2pipes {
+	from
+		oclUnion : OCL!OperationCallExp (oclUnion.getOpName() = 'union')
+	to
+		gg : Gremlin!VariableAccess(
+			name <- 'unionContent',
+			nextElement <- idPipe
+		),
+		idPipe : Gremlin!IdentityPipe(
+			nextElement <- if oclUnion.refImmediateComposite().getOpName() = 'union' then
+							OclUndefined
+							else
+								oclUnion.refImmediateComposite()
+							endif
+		)
+}
+
+-- Transforms 'allInstances' expressions into kyanosInstanceOf edge pipe
+-- and vertex pipe.
+--lazy rule allInstances2pipes {
+rule allInstances2pipes {
+	from
+		allInstances : OCL!OperationCallExp (allInstances.getOpName() = 'allInstances')
+	to
+		ine : Gremlin!InEPipe (
+			relationshipName <- 'kyanosInstanceOf',
+			nextElement <- outv
+		),
+		outv : Gremlin!OutVPipe (
+			nextElement <- allInstances.getComposite()
+		)
+}
+
+rule typeExp2pipes {
+	from
+		typeExp : OCL!TypeExp (
+			if typeExp.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				not(typeExp.refImmediateComposite().getOpName() = 'oclAsType')
+			else
+				true
+			endif
+		)
+	to
+		vap : Gremlin!VariableAccess(
+			name <- 'meta'+	typeExp.referredType.name+'Node',
+			nextElement <- typeExp.getComposite()
+		)
+}
+
+-- Transforms 'collect' expressions into edge and vertex pipe.
+rule collect2pipes {
+	from 
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and not collect.isLastInUnion())
+	to
+		id : Gremlin!IdentityPipe(
+			nextElement <- collect.getComposite()
+		)
+}
+
+rule collectLastInUnionRightPart2pipes {
+	from 
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInUnion() and not collect.isInUnionLeftPart())
+	to
+		fill : Gremlin!FillPipe(
+			instruction <- unionContentVariableAccess
+		),
+		unionContentVariableAccess : Gremlin!VariableAccess (
+			name <- 'unionContent'
+		)
+}
+
+rule collectLastInUnionLeftPart2pipes {
+	from 
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInUnion() and collect.isInUnionLeftPart())
+	to
+		fill : Gremlin!FillPipe(
+			instruction <- affect
+		),
+		affect : Gremlin!AffectationExpression(
+			left <- unionContentVariableAccess,
+			right <- vectorType
+		),
+		unionContentVariableAccess : Gremlin!VariableAccess(
+			name <- 'unionContent'	
+		),
+		vectorType : Gremlin!VectorType()
+}
+
+rule oclIsUndefined2pipes {
+	from
+		select : OCL!OperationCallExp (select.getOpName() = 'oclIsUndefined')
+	to
+		toList : Gremlin!ToListCall(
+			nextElement <- isEmpty	
+		),
+		isEmpty : Gremlin!IsEmptyCall(
+			
+		)
+}
+
+rule select2pipes {
+	from
+		select : OCL!IteratorExp (select.getOpName() = 'select' and not select.isLastInUnion())
+	to
+		pp : Gremlin!FilterPipe (
+			closure <- cl,
+			nextElement <- select.getComposite()
+		),
+		cl : Gremlin!Closure(
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
+		)
+}
+
+lazy rule varIterator2def {
+	from
+		var :  OCL!Variable
+	to
+		vd : Gremlin!VariableDeclaration(
+			name <- var.name,
+			value <- fi
+		),
+		fi : Gremlin!ClosureIt()
+}
+
+rule selectLastInUnionRightPart2pipes {
+	from
+		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInUnion() and not select.isInUnionLeftPart())
+	to
+		pp : Gremlin!FilterPipe (
+			closure <- cl,
+			nextElement <- fill
+		),
+		cl : Gremlin!Closure(
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
+		),
+		fill : Gremlin!FillPipe(
+			instruction <- unionContentVariableAccess
+		),
+		unionContentVariableAccess : Gremlin!VariableAccess (
+			name <- 'unionContent'
+		)
+}
+
+rule selectLastInUnionLeftPart2pipes {
+	from
+		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInUnion() and select.isInUnionLeftPart())
+	to
+		pp : Gremlin!FilterPipe (
+			closure <- cl,
+			nextElement <- fill
+		),
+		cl : Gremlin!Closure(
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
+		),
+		fill : Gremlin!FillPipe(
+			instruction <- affect
+		),
+		affect : Gremlin!AffectationExpression(
+			left <- unionContentVariableAccess,
+			right <- vectorType
+		),
+		unionContentVariableAccess : Gremlin!VariableAccess(
+			name <- 'unionContent'	
+		),
+		vectorType : Gremlin!VectorType()
+}
+
+rule reject2pipes {
+	from
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and not reject.isLastInUnion())
+	to
+		pp : Gremlin!FilterPipe (
+			closure <-  clos,
+			nextElement <- reject.getComposite()
+		),
+		clos : Gremlin!Closure (
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(reject.iterator.first())).append(notExp)
+		),
+		notExp : Gremlin!NotExpression (
+			exp <- reject.body.getFirstInstruction()
+		)
+}
+
+rule rejectLastInUnionRightPart2pipes {
+	from
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInUnion() and not reject.isInUnionLeftPart())
+	to
+		pp : Gremlin!FilterPipe (
+			closure <- clos,
+			nextElement <- fill
+		),
+		clos : Gremlin!Closure (
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(reject.iterator.first())).append(notExp)
+		),
+		notExp : Gremlin!NotExpression (
+			exp <- reject.body.getFirstInstruction()
+		),
+		fill : Gremlin!FillPipe(
+			instruction <- unionContentVariableAccess
+		),
+		unionContentVariableAccess : Gremlin!VariableAccess(
+			name <- 'unionContent'	
+		)
+}
+
+rule rejectLastInUnionLeftPart2pipes {
+	from
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInUnion() and reject.isInUnionLeftPart())
+	to
+		pp : Gremlin!FilterPipe (
+			closure <- clos,
+			nextElement <- fill
+		),
+		clos : Gremlin!Closure(
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(reject.iterator.first())).append(notExp)
+		),
+		notExp : Gremlin!NotExpression (
+			exp <- reject.body
+		),
+		fill : Gremlin!FillPipe(
+			instruction <- affect
+		),
+		affect : Gremlin!AffectationExpression(
+			left <- unionContentVariableAccess,
+			right <- vectorType
+		),
+		unionContentVariableAccess : Gremlin!VariableAccess(
+			name <- 'unionContent'	
+		),
+		vectorType : Gremlin!VectorType()
+}
+
+rule exists2pipes {
+	from
+		exists : OCL!IteratorExp (exists.getOpName() = 'exists')
+	to
+		pp : Gremlin!FilterPipe (
+			closure <-  clos,
+			nextElement <- hasNext
+		),
+		clos : Gremlin!Closure (
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(exists.iterator.first())).append(exists.body.getFirstInstruction())
+		),
+		hasNext : Gremlin!HasNextCall(
+			
+		)
+}
+
+rule forAll2pipes {
+	from
+		forAll : OCL!IteratorExp (forAll.getOpName() = 'forAll')
+	to
+		pp : Gremlin!FilterPipe(
+			closure <- clos,
+			nextElement <- toList
+		),
+		clos : Gremlin!Closure(
+			instructions <- OrderedSet{}.append(thisModule.varIterator2def(forAll.iterator.first())).append(notExp)
+		),
+		notExp : Gremlin!NotExpression(
+			exp <- forAll.body.getFirstInstruction()	
+		),
+		toList : Gremlin!ToListCall(
+			nextElement <- isEmptyCall	
+		),
+		isEmptyCall : Gremlin!IsEmptyCall(
+			
+		)
+}
+
+-- Create a TransformPipe from an oclIsTypeOf() OperationCallExp
+-- Pipe closure is also created with the node comparison corresponding to
+-- type conformance
+-- Using a closure to compare ease the transformation by avoiding preprocessing
+-- to generate equality comparisons
+rule oclIsTypeOf2pipes {
+	from
+		oclIsTypeOf : OCL!OperationCallExp (
+			oclIsTypeOf.getOpName() = 'oclIsTypeOf'	
+		)
+	to
+		tran : Gremlin!TransformPipe(
+			closure <- cl,
+			nextElement <- clNext
+		),
+		clNext : Gremlin!NextCall(
+			nextElement <- oclIsTypeOf.getComposite()			
+		),
+		cl : Gremlin!Closure(
+			instructions <- eq	
+		),
+		eq : Gremlin!EqualityExpression(
+			left <- it,
+			right <- oclIsTypeOf.argument.first()
+		),
+		it : Gremlin!ClosureIt(
+			nextElement <- outE	
+		),
+		outE : Gremlin!OutEPipe(
+			relationshipName <- 'kyanosInstanceOf',
+			nextElement <- inV
+		),
+		inV : Gremlin!InVPipe(
+			nextElement <- next	
+		),
+		next : Gremlin!NextCall()
+}
+
+rule oclAsType2pipes {
+	from
+		oclAsType : OCL!OperationCallExp (
+			oclAsType.getOpName() = 'oclAsType'	
+		)
+	to
+		ip : Gremlin!IdentityPipe(
+			nextElement <- oclAsType.getComposite()
+		)
+}
+
+rule size2pipes {
+	from
+		size : OCL!OperationCallExp (
+			size.getOpName() = 'size'
+		)
+	to
+		cc : Gremlin!CountCall (	
+		)
+}
+
+rule isEmpty2pipes {
+	from
+		isEmpty : OCL!OperationCallExp (
+			isEmpty.getOpName() = 'isEmpty'	
+		)
+	to
+		toList : Gremlin!ToListCall(
+			nextElement <- isEmptyCall
+		),
+		isEmptyCall : Gremlin!IsEmptyCall(
+			nextElement <- isEmpty.getComposite()
+		)
+}
+
+-- Transforms '=' expression into Gremlin EqualityExpression.
+-- First left and right operations are computed to get the correct sub-pipe start.
+-- @see equality2pipes for equality generation with empty references checking.
+rule equality2pipes2 {
+	from
+		eq : OCL!OperationCallExp(eq.getOpName() = '=')
+	to
+		eqExp : Gremlin!EqualityExpression(
+			left <- eq.source.getFirstOperation(),
+			right <- eq.argument.first().getFirstOperation()
+		)
+}
+
+rule not2pipes {
+	from
+		notExp : OCL!OperationCallExp(
+			notExp.getOpName() = 'not'	
+		)
+	to
+		gremlinNot : Gremlin!NotExpression(
+			exp <- notExp.source.getFirstInstruction()
+		)
+}
+
+-- Transforms 'or' expression into Gremlin OrExpression.
+-- First left and right operations are computed to get the correct sub-pipe start.
+rule or2pipes {
+	from
+		orExp : OCL!OperationCallExp(
+			orExp.getOpName() = 'or'
+			)
+	to
+		gremlinOr : Gremlin!OrExpression(
+			left <- orExp.source.getFirstOperation(),
+			right <- orExp.argument.first().getFirstOperation()
+		)
+}
+
+-- Transforms 'and' expression into Gremlin AndExpression.
+-- First left and right operations are computed to get the correct sub-pipe start.
+rule and2pipes {
+	from
+		andExp : OCL!OperationCallExp (
+			andExp.getOpName() = 'and'	
+		)
+	to
+		gremlinAnd : Gremlin!AndExpression(
+			left <- andExp.source.getFirstInstruction(),
+			right <- andExp.argument.first().getFirstInstruction()
+		)
+}
+
+-- Transforms '>' expression into Gremlin GreaterExpression.
+-- First left and right operations are computed to get the correct sub-pipe start.
+rule greater2pipes {
+	from
+		greaterExp : OCL!OperationCallExp (
+			greaterExp.getOpName() = '>'	
+		)
+	to
+		gremlinGreater : Gremlin!GreaterExpression (
+			left <- greaterExp.source.getFirstOperation(),
+			right <- greaterExp.argument.first().getFirstOperation()
+		)
+}
+
+-- Transforms '>=' expression into Gremlin GreaterOrEqualExpression.
+-- First left and right operations are computed to get the correct sub-pipe start.
+rule greaterOrEqual2pipes {
+	from
+		greaterOrEqualExp : OCL!OperationCallExp (
+			greaterOrEqualExp.getOpName() = '>='	
+		)
+	to
+		gremlinGreaterOrEqual : Gremlin!GreaterOrEqualExpression (
+			left <- greaterOrEqualExp.source.getFirstOperation(),
+			right <- greaterOrEqualExp.argument.first().getFirstOperation()
+		)
+}
+
+-- Transforms '<' expression into Gremlin LessExpression.
+-- First left and right operations are computed to get the correct sub-pipe start.
+rule less2pipes {
+	from
+		lessExp : OCL!OperationCallExp (
+			lessExp.getOpName() = '<'	
+		)
+	to
+		gremlinLess : Gremlin!LessExpression (
+			left <- lessExp.source.getFirstOperation(),
+			right <- lessExp.argument.first().getFirstOperation()
+		)
+}
+
+-- Transforms '<=' expression into Gremlin LessOrEqualExpression.
+-- First left and right operations are computed to get the correct sub-pipe start.
+rule lessOrEqual2pipes {
+	from
+		lessOrEqualExp : OCL!OperationCallExp (
+			lessOrEqualExp.getOpName() = '<='
+		)
+	to
+		gremlinLessOrEqual : Gremlin!LessOrEqualExpression (
+			left <- lessOrEqualExp.source.getFirstOperation(),
+			right <- lessOrEqualExp.argument.first().getFirstOperation()
+		)
+}
+
+rule different2pipes {
+	from
+		differentExp : OCL!OperationCallExp (
+			differentExp.getOpName() = '<>'
+		)
+	to
+		gremlinDifferent : Gremlin!DifferenceExpression (
+			left <- differentExp.source.getFirstOperation(),
+			right <- differentExp.argument.first().getFirstOperation()
+		)
+}
+
+-- Transfroms a variable access expression into Gremlin filter iterator pipe.
+-- TODO : handle non-iterator variables
+rule varExp2pipes {
+	from
+		varExp : OCL!VariableExp(
+			not(varExp.isInCollect())	
+		)
+	to
+		va : Gremlin!VariableAccess(
+			name <- varExp.referredVariable.name,
+			nextElement <- varExp.getComposite()
+		)
+}
+
+rule varExpInCollect2pipes {
+	from
+		varExp : OCL!VariableExp (
+			varExp.isInCollect()	
+		)
+	to
+		id : Gremlin!IdentityPipe(
+			nextElement <- varExp.getComposite()	
+		)
+}
+
+rule propertyRefCallExp2pipes {
+	from
+		prop : OCL!PropertyCallExp(
+			prop.referredProperty.oclIsKindOf(OCL!EReference) and
+			not(prop.isLastInComparison())
+		)
+	to
+		outE : Gremlin!OutEPipe(
+			relationshipName <- prop.referredProperty.name,
+			nextElement <- inV
+		),
+		inV : Gremlin!InVPipe(
+			nextElement <- prop.getComposite()
+		)
+}
+
+rule propertyRefLastInComparison2pipes {
+	from
+		prop : OCL!PropertyCallExp(
+			prop.referredProperty.oclIsKindOf(OCL!EReference) and
+			(prop.isLastInComparison())
+		)
+	to
+		outE : Gremlin!OutEPipe(
+			relationshipName <- prop.referredProperty.name,
+			nextElement <- inV
+		),
+		inV : Gremlin!InVPipe(
+			nextElement <- nCall
+		),
+		nCall : Gremlin!NextCall(
+			nextElement <- prop.getComposite()	
+		)
+}
+
+rule propertyAttCallExp2pipes {
+	from
+		prop : OCL!PropertyCallExp(
+			prop.referredProperty.oclIsKindOf(OCL!EAttribute)-- and
+	--		not(prop.isLastInComparison())
+		)
+	to
+		pp : Gremlin!PropertyPipe(
+			name <- prop.referredProperty.name,
+			nextElement <- prop.getComposite()
+		)
+}
+
+rule propertyAttBooleanLastInComparison2pipes {
+	from
+		prop : OCL!PropertyCallExp(
+			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and
+			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
+			prop.referredProperty.eType.name = 'EBoolean'and
+			prop.isLastInComparison()
+		)
+	to
+		pp : Gremlin!PropertyPipe(
+			name <- prop.referredProperty.name,
+			nextElement <- transform
+		),
+		transform : Gremlin!TransformPipe(
+			closure <- clos,
+			nextElement <- nextCall
+		),
+		clos : Gremlin!Closure(
+			instructions <- eq
+		),
+		eq : Gremlin!EqualityExpression(
+			left <- closureIt,
+			right <- bool
+		),
+		closureIt : Gremlin!ClosureIt(
+			
+		),
+		bool : Gremlin!StringLiteral(
+			value <- 'true'
+		),
+		nextCall : Gremlin!NextCall(
+			nextElement <- prop.getComposite()	
+		)
+}
+
+-- Match OCL StringLiteral expressions to Gremlin StringLiteral
+rule oclString2gremlinString {
+	from
+		oclStringLit : OCL!StringLiteralExp
+	to
+		gremlinStringLit : Gremlin!StringLiteral(
+			value <- oclStringLit.stringSymbol	
+		)
+}
+
+rule oclPositiveInteger2gremlinInteger {
+	from
+		oclIntLit : OCL!IntegerLiteralExp (
+			if oclIntLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				not(oclIntLit.refImmediateComposite().getOpName() = '-')
+			else
+				true
+			endif
+		)
+	to
+		gremlinIntLit : Gremlin!IntegerLiteral(
+			value <-  oclIntLit.integerSymbol
+		)
+}
+
+rule oclNegativeInteger2gremlinInteger {
+	from
+		oclIntLit : OCL!IntegerLiteralExp (
+			if oclIntLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				oclIntLit.refImmediateComposite().getOpName() = '-'
+			else
+				false
+			endif	
+		)
+	to
+		gremlinIntLit : Gremlin!IntegerLiteral(
+			value <- 0-oclIntLit.integerSymbol	
+		)
+}
+
+rule oclPositiveReal2gremlinDouble {
+	from
+		oclRealLit : OCL!RealLiteralExp (
+			if oclRealLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				not(oclRealLit.refImmediateComposite().getOpName() = '-')
+			else
+				true
+			endif
+		)
+	to
+		gremlinDoubleLit : Gremlin!DoubleLiteral(
+			value <- oclRealLit.realSymbol
+		)
+}
+
+rule oclNegativeReal2gremlinDouble {
+	from
+		oclRealLit : OCL!RealLiteralExp (
+			if oclRealLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				oclRealLit.refImmediateComposite().getOpName() = '-'
+			else
+				false
+			endif	
+		)
+	to
+		gremlinDoubleLit : Gremlin!DoubleLiteral(
+			value <- 0-oclRealLit.realSymbol
+		)
+}
+
+rule oclBoolean2gremlinBoolean {
+	from
+		oclBoolean : OCL!BooleanLiteralExp
+	to
+		gremlinBoolLit : Gremlin!BooleanLiteral(
+			value <- oclBoolean.booleanSymbol	
+		)
+}
+
+-- asSequence OperationCallExp are ignored, they cannot correspond to a Gremlin concept
+-- TOFIX handle sequence in a helper
+rule oclAsSequence2pipe {
+	from
+		asSequence : OCL!OperationCallExp(asSequence.getOpName() = 'asSequence')
+	to
+		ip : Gremlin!IdentityPipe(
+			nextElement <- asSequence.getComposite()
+		)
+}
+
+rule oclFirst2pipes {
+	from
+		oclFirst : OCL!OperationCallExp(oclFirst.getOpName() = 'first')
+	to
+		fc : Gremlin!FirstCall(
+			nextElement <- oclFirst.getComposite()
+		)
+}

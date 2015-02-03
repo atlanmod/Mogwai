@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.inria.atlanmod.mogwai.gremlin/src" modelPluginID="fr.inria.atlanmod.mogwai.gremlin"
+    modelName="Gremlin" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>gremlin.ecore</foreignModel>
+  <genPackages prefix="Gremlin" basePackage="fr.inria.atlanmod.mogwai" disposableProviderFactory="true"
+      ecorePackage="gremlin.ecore#/">
+    <genClasses ecoreClass="gremlin.ecore#//GremlinScript">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//GremlinScript/instructions"/>
+      <genOperations ecoreOperation="gremlin.ecore#//GremlinScript/toString"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="gremlin.ecore#//Instruction"/>
+    <genClasses ecoreClass="gremlin.ecore#//VariableDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//VariableDeclaration/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//VariableDeclaration/value"/>
+      <genOperations ecoreOperation="gremlin.ecore#//VariableDeclaration/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//VectorType">
+      <genOperations ecoreOperation="gremlin.ecore#//VectorType/toString"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="gremlin.ecore#//ChainElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//ChainElement/nextElement"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//Closure">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//Closure/instructions"/>
+      <genOperations ecoreOperation="gremlin.ecore#//Closure/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//ClosureIt">
+      <genOperations ecoreOperation="gremlin.ecore#//ClosureIt/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//VariableAccess">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//VariableAccess/name"/>
+      <genOperations ecoreOperation="gremlin.ecore#//VariableAccess/toString"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="gremlin.ecore#//Pipe"/>
+    <genClasses ecoreClass="gremlin.ecore#//IdentityPipe">
+      <genOperations ecoreOperation="gremlin.ecore#//IdentityPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//FillPipe">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//FillPipe/instruction"/>
+      <genOperations ecoreOperation="gremlin.ecore#//FillPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//StartPipe">
+      <genOperations ecoreOperation="gremlin.ecore#//StartPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//VerticesPipe">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//VerticesPipe/vertexId"/>
+      <genOperations ecoreOperation="gremlin.ecore#//VerticesPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//EdgesPipe">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//EdgesPipe/relationshipName"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//PropertyPipe">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//PropertyPipe/name"/>
+      <genOperations ecoreOperation="gremlin.ecore#//PropertyPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//OutEPipe">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//OutEPipe/relationshipName"/>
+      <genOperations ecoreOperation="gremlin.ecore#//OutEPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//InEPipe">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//InEPipe/relationshipName"/>
+      <genOperations ecoreOperation="gremlin.ecore#//InEPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//InVPipe">
+      <genOperations ecoreOperation="gremlin.ecore#//InVPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//OutVPipe">
+      <genOperations ecoreOperation="gremlin.ecore#//OutVPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//FilterPipe">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//FilterPipe/closure"/>
+      <genOperations ecoreOperation="gremlin.ecore#//FilterPipe/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//TransformPipe">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//TransformPipe/closure"/>
+      <genOperations ecoreOperation="gremlin.ecore#//TransformPipe/toString"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="gremlin.ecore#//MethodCall"/>
+    <genClasses ecoreClass="gremlin.ecore#//NextCall">
+      <genOperations ecoreOperation="gremlin.ecore#//NextCall/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//HasNextCall">
+      <genOperations ecoreOperation="gremlin.ecore#//HasNextCall/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//IndexCall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//IndexCall/indexName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//IndexCall/indexProperty"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//IndexCall/indexQuery"/>
+      <genOperations ecoreOperation="gremlin.ecore#//IndexCall/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//CountCall">
+      <genOperations ecoreOperation="gremlin.ecore#//CountCall/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//FirstCall">
+      <genOperations ecoreOperation="gremlin.ecore#//FirstCall/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//ToListCall">
+      <genOperations ecoreOperation="gremlin.ecore#//ToListCall/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//IsEmptyCall">
+      <genOperations ecoreOperation="gremlin.ecore#//IsEmptyCall/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//Expression"/>
+    <genClasses ecoreClass="gremlin.ecore#//UnaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//UnaryExpression/exp"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//NotExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//NotExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//BinaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//BinaryExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//BinaryExpression/right"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//EqualityExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//EqualityExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//DifferenceExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//DifferenceExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//OrExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//OrExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//AndExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//AndExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//GreaterExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//GreaterExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//GreaterOrEqualExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//GreaterOrEqualExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//LessExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//LessExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//LessOrEqualExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//LessOrEqualExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//AffectationExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//AffectationExpression/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//StringLiteral/value"/>
+      <genOperations ecoreOperation="gremlin.ecore#//StringLiteral/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//IntegerLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//IntegerLiteral/value"/>
+      <genOperations ecoreOperation="gremlin.ecore#//IntegerLiteral/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//DoubleLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//DoubleLiteral/value"/>
+      <genOperations ecoreOperation="gremlin.ecore#//DoubleLiteral/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//BooleanLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//BooleanLiteral/value"/>
+      <genOperations ecoreOperation="gremlin.ecore#//BooleanLiteral/toString"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
