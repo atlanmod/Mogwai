@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.tests
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: fr.inria.atlanmod.mogwai;bundle-version="1.0.0",
+ org.eclipse.gmt.modisco.java.kyanos;bundle-version="1.0.0",
+ org.junit
