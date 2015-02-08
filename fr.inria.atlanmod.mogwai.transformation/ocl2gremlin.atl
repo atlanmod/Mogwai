@@ -599,6 +599,31 @@ rule rejectLastInUnionLeftPart2pipes {
 		vectorType : Gremlin!VectorType()
 }
 
+rule excludes2pipes {
+	from
+		excludes : OCL!OperationCallExp (excludes.getOpName() = 'excludes')
+	to
+		pp : Gremlin!FilterPipe (
+			closure <- clos,
+			nextElement <- toListCall
+		),
+		clos : Gremlin!Closure(
+			instructions <- closEq	
+		),
+		closEq : Gremlin!EqualityExpression(
+			left <- closIt,
+			right <- excludes.argument.first()
+		),
+		closIt : Gremlin!ClosureIt(),
+		toListCall : Gremlin!ToListCall(
+			nextElement <- isEmptyCall	
+		),
+		isEmptyCall : Gremlin!IsEmptyCall (
+			nextElement <- excludes.getComposite()	
+		)
+		
+}
+
 rule exists2pipes {
 	from
 		exists : OCL!IteratorExp (exists.getOpName() = 'exists')

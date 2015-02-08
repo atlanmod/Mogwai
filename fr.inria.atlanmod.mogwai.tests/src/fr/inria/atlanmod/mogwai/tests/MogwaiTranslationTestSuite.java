@@ -18,6 +18,7 @@ import fr.inria.atlanmod.mogwai.tests.translation.AttributeSelectWithoutIterator
 import fr.inria.atlanmod.mogwai.tests.translation.DifferentTest;
 import fr.inria.atlanmod.mogwai.tests.translation.EmptyStringLiteralTest;
 import fr.inria.atlanmod.mogwai.tests.translation.EqualityTest;
+import fr.inria.atlanmod.mogwai.tests.translation.ExcludesStringLiteralTest;
 import fr.inria.atlanmod.mogwai.tests.translation.ExplicitAttributeCollectWithIteratorTest;
 import fr.inria.atlanmod.mogwai.tests.translation.ExplicitAttributeCollectWithoutIteratorTest;
 import fr.inria.atlanmod.mogwai.tests.translation.ExplicitReferenceCollectWithIteratorTest;
@@ -100,7 +101,8 @@ import fr.inria.atlanmod.mogwai.tests.translation.TypeAccessTest;
 	AttributeForallWithIteratorTest.class,
 	AttributeForallWithoutIteratorTest.class,
 	ReferenceForallWithIteratorTest.class,
-	ReferenceForallWithoutIteratorTest.class
+	ReferenceForallWithoutIteratorTest.class,
+	ExcludesStringLiteralTest.class
 })
 public class MogwaiTranslationTestSuite {
 
