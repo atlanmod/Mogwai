@@ -3,7 +3,7 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.StartStep;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -13,20 +13,20 @@ import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Out VPipe</b></em>'.
+ * An implementation of the model object '<em><b>Start Step</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class OutVPipeImpl extends PipeImpl implements OutVPipe {
+public class StartStepImpl extends StepImpl implements StartStep {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected OutVPipeImpl() {
+	protected StartStepImpl() {
 		super();
 	}
 
@@ -37,7 +37,7 @@ public class OutVPipeImpl extends PipeImpl implements OutVPipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.OUT_VPIPE;
+		return GremlinPackage.Literals.START_STEP;
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class OutVPipeImpl extends PipeImpl implements OutVPipe {
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		res.append("outV");
+		res.append("g");
 		if(getNextElement() != null) {
 			res.append(".").append(getNextElement().toString());
 		}
@@ -62,10 +62,10 @@ public class OutVPipeImpl extends PipeImpl implements OutVPipe {
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case GremlinPackage.OUT_VPIPE___TO_STRING:
+			case GremlinPackage.START_STEP___TO_STRING:
 				return toString();
 		}
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //OutVPipeImpl
+} //StartStepImpl

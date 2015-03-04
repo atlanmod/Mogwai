@@ -6,17 +6,16 @@ import fr.inria.atlanmod.mogwai.gremlin.AffectationExpression;
 import fr.inria.atlanmod.mogwai.gremlin.AndExpression;
 import fr.inria.atlanmod.mogwai.gremlin.BinaryExpression;
 import fr.inria.atlanmod.mogwai.gremlin.BooleanLiteral;
-import fr.inria.atlanmod.mogwai.gremlin.ChainElement;
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
 import fr.inria.atlanmod.mogwai.gremlin.CountCall;
 import fr.inria.atlanmod.mogwai.gremlin.DifferenceExpression;
 import fr.inria.atlanmod.mogwai.gremlin.DoubleLiteral;
-import fr.inria.atlanmod.mogwai.gremlin.EdgesPipe;
+import fr.inria.atlanmod.mogwai.gremlin.EdgesStep;
 import fr.inria.atlanmod.mogwai.gremlin.EqualityExpression;
 import fr.inria.atlanmod.mogwai.gremlin.Expression;
-import fr.inria.atlanmod.mogwai.gremlin.FillPipe;
-import fr.inria.atlanmod.mogwai.gremlin.FilterPipe;
+import fr.inria.atlanmod.mogwai.gremlin.FillStep;
+import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
 import fr.inria.atlanmod.mogwai.gremlin.FirstCall;
 import fr.inria.atlanmod.mogwai.gremlin.GreaterExpression;
 import fr.inria.atlanmod.mogwai.gremlin.GreaterOrEqualExpression;
@@ -24,9 +23,9 @@ import fr.inria.atlanmod.mogwai.gremlin.GremlinFactory;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.gremlin.HasNextCall;
-import fr.inria.atlanmod.mogwai.gremlin.IdentityPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.IdentityStep;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.InVStep;
 import fr.inria.atlanmod.mogwai.gremlin.IndexCall;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
 import fr.inria.atlanmod.mogwai.gremlin.IntegerLiteral;
@@ -37,19 +36,20 @@ import fr.inria.atlanmod.mogwai.gremlin.MethodCall;
 import fr.inria.atlanmod.mogwai.gremlin.NextCall;
 import fr.inria.atlanmod.mogwai.gremlin.NotExpression;
 import fr.inria.atlanmod.mogwai.gremlin.OrExpression;
-import fr.inria.atlanmod.mogwai.gremlin.OutEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
-import fr.inria.atlanmod.mogwai.gremlin.Pipe;
-import fr.inria.atlanmod.mogwai.gremlin.PropertyPipe;
-import fr.inria.atlanmod.mogwai.gremlin.StartPipe;
+import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
+import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
+import fr.inria.atlanmod.mogwai.gremlin.StartStep;
+import fr.inria.atlanmod.mogwai.gremlin.Step;
 import fr.inria.atlanmod.mogwai.gremlin.StringLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.ToListCall;
-import fr.inria.atlanmod.mogwai.gremlin.TransformPipe;
+import fr.inria.atlanmod.mogwai.gremlin.TransformStep;
+import fr.inria.atlanmod.mogwai.gremlin.TraversalElement;
 import fr.inria.atlanmod.mogwai.gremlin.UnaryExpression;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.VectorType;
-import fr.inria.atlanmod.mogwai.gremlin.VerticesPipe;
+import fr.inria.atlanmod.mogwai.gremlin.VerticesStep;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -99,7 +99,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass chainElementEClass = null;
+	private EClass traversalElementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -127,91 +127,91 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass pipeEClass = null;
+	private EClass stepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass identityPipeEClass = null;
+	private EClass identityStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass fillPipeEClass = null;
+	private EClass fillStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass startPipeEClass = null;
+	private EClass startStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass verticesPipeEClass = null;
+	private EClass verticesStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass edgesPipeEClass = null;
+	private EClass edgesStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass propertyPipeEClass = null;
+	private EClass propertyStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass outEPipeEClass = null;
+	private EClass outEStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass inEPipeEClass = null;
+	private EClass inEStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass inVPipeEClass = null;
+	private EClass inVStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass outVPipeEClass = null;
+	private EClass outVStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass filterPipeEClass = null;
+	private EClass filterStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass transformPipeEClass = null;
+	private EClass transformStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -544,8 +544,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getChainElement() {
-		return chainElementEClass;
+	public EClass getTraversalElement() {
+		return traversalElementEClass;
 	}
 
 	/**
@@ -553,8 +553,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getChainElement_NextElement() {
-		return (EReference)chainElementEClass.getEStructuralFeatures().get(0);
+	public EReference getTraversalElement_NextElement() {
+		return (EReference)traversalElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -634,8 +634,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPipe() {
-		return pipeEClass;
+	public EClass getStep() {
+		return stepEClass;
 	}
 
 	/**
@@ -643,8 +643,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getIdentityPipe() {
-		return identityPipeEClass;
+	public EClass getIdentityStep() {
+		return identityStepEClass;
 	}
 
 	/**
@@ -652,8 +652,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getIdentityPipe__ToString() {
-		return identityPipeEClass.getEOperations().get(0);
+	public EOperation getIdentityStep__ToString() {
+		return identityStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -661,8 +661,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getFillPipe() {
-		return fillPipeEClass;
+	public EClass getFillStep() {
+		return fillStepEClass;
 	}
 
 	/**
@@ -670,8 +670,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getFillPipe_Instruction() {
-		return (EReference)fillPipeEClass.getEStructuralFeatures().get(0);
+	public EReference getFillStep_Instruction() {
+		return (EReference)fillStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -679,8 +679,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getFillPipe__ToString() {
-		return fillPipeEClass.getEOperations().get(0);
+	public EOperation getFillStep__ToString() {
+		return fillStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -688,8 +688,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getStartPipe() {
-		return startPipeEClass;
+	public EClass getStartStep() {
+		return startStepEClass;
 	}
 
 	/**
@@ -697,8 +697,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getStartPipe__ToString() {
-		return startPipeEClass.getEOperations().get(0);
+	public EOperation getStartStep__ToString() {
+		return startStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -706,8 +706,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getVerticesPipe() {
-		return verticesPipeEClass;
+	public EClass getVerticesStep() {
+		return verticesStepEClass;
 	}
 
 	/**
@@ -715,8 +715,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getVerticesPipe_VertexId() {
-		return (EAttribute)verticesPipeEClass.getEStructuralFeatures().get(0);
+	public EAttribute getVerticesStep_VertexId() {
+		return (EAttribute)verticesStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -724,8 +724,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getVerticesPipe__ToString() {
-		return verticesPipeEClass.getEOperations().get(0);
+	public EOperation getVerticesStep__ToString() {
+		return verticesStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -733,8 +733,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getEdgesPipe() {
-		return edgesPipeEClass;
+	public EClass getEdgesStep() {
+		return edgesStepEClass;
 	}
 
 	/**
@@ -742,8 +742,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getEdgesPipe_RelationshipName() {
-		return (EAttribute)edgesPipeEClass.getEStructuralFeatures().get(0);
+	public EAttribute getEdgesStep_RelationshipName() {
+		return (EAttribute)edgesStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -751,8 +751,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPropertyPipe() {
-		return propertyPipeEClass;
+	public EClass getPropertyStep() {
+		return propertyStepEClass;
 	}
 
 	/**
@@ -760,8 +760,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPropertyPipe_Name() {
-		return (EAttribute)propertyPipeEClass.getEStructuralFeatures().get(0);
+	public EAttribute getPropertyStep_Name() {
+		return (EAttribute)propertyStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -769,8 +769,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getPropertyPipe__ToString() {
-		return propertyPipeEClass.getEOperations().get(0);
+	public EOperation getPropertyStep__ToString() {
+		return propertyStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -778,8 +778,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getOutEPipe() {
-		return outEPipeEClass;
+	public EClass getOutEStep() {
+		return outEStepEClass;
 	}
 
 	/**
@@ -787,8 +787,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getOutEPipe_RelationshipName() {
-		return (EAttribute)outEPipeEClass.getEStructuralFeatures().get(0);
+	public EAttribute getOutEStep_RelationshipName() {
+		return (EAttribute)outEStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -796,8 +796,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getOutEPipe__ToString() {
-		return outEPipeEClass.getEOperations().get(0);
+	public EOperation getOutEStep__ToString() {
+		return outEStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -805,8 +805,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInEPipe() {
-		return inEPipeEClass;
+	public EClass getInEStep() {
+		return inEStepEClass;
 	}
 
 	/**
@@ -814,8 +814,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getInEPipe_RelationshipName() {
-		return (EAttribute)inEPipeEClass.getEStructuralFeatures().get(0);
+	public EAttribute getInEStep_RelationshipName() {
+		return (EAttribute)inEStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -823,8 +823,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getInEPipe__ToString() {
-		return inEPipeEClass.getEOperations().get(0);
+	public EOperation getInEStep__ToString() {
+		return inEStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -832,8 +832,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInVPipe() {
-		return inVPipeEClass;
+	public EClass getInVStep() {
+		return inVStepEClass;
 	}
 
 	/**
@@ -841,8 +841,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getInVPipe__ToString() {
-		return inVPipeEClass.getEOperations().get(0);
+	public EOperation getInVStep__ToString() {
+		return inVStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -850,8 +850,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getOutVPipe() {
-		return outVPipeEClass;
+	public EClass getOutVStep() {
+		return outVStepEClass;
 	}
 
 	/**
@@ -859,8 +859,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getOutVPipe__ToString() {
-		return outVPipeEClass.getEOperations().get(0);
+	public EOperation getOutVStep__ToString() {
+		return outVStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -868,8 +868,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getFilterPipe() {
-		return filterPipeEClass;
+	public EClass getFilterStep() {
+		return filterStepEClass;
 	}
 
 	/**
@@ -877,8 +877,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getFilterPipe_Closure() {
-		return (EReference)filterPipeEClass.getEStructuralFeatures().get(0);
+	public EReference getFilterStep_Closure() {
+		return (EReference)filterStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -886,8 +886,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getFilterPipe__ToString() {
-		return filterPipeEClass.getEOperations().get(0);
+	public EOperation getFilterStep__ToString() {
+		return filterStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -895,8 +895,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getTransformPipe() {
-		return transformPipeEClass;
+	public EClass getTransformStep() {
+		return transformStepEClass;
 	}
 
 	/**
@@ -904,8 +904,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTransformPipe_Closure() {
-		return (EReference)transformPipeEClass.getEStructuralFeatures().get(0);
+	public EReference getTransformStep_Closure() {
+		return (EReference)transformStepEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -913,8 +913,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getTransformPipe__ToString() {
-		return transformPipeEClass.getEOperations().get(0);
+	public EOperation getTransformStep__ToString() {
+		return transformStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -1463,8 +1463,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		vectorTypeEClass = createEClass(VECTOR_TYPE);
 		createEOperation(vectorTypeEClass, VECTOR_TYPE___TO_STRING);
 
-		chainElementEClass = createEClass(CHAIN_ELEMENT);
-		createEReference(chainElementEClass, CHAIN_ELEMENT__NEXT_ELEMENT);
+		traversalElementEClass = createEClass(TRAVERSAL_ELEMENT);
+		createEReference(traversalElementEClass, TRAVERSAL_ELEMENT__NEXT_ELEMENT);
 
 		closureEClass = createEClass(CLOSURE);
 		createEReference(closureEClass, CLOSURE__INSTRUCTIONS);
@@ -1477,50 +1477,50 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		createEAttribute(variableAccessEClass, VARIABLE_ACCESS__NAME);
 		createEOperation(variableAccessEClass, VARIABLE_ACCESS___TO_STRING);
 
-		pipeEClass = createEClass(PIPE);
+		stepEClass = createEClass(STEP);
 
-		identityPipeEClass = createEClass(IDENTITY_PIPE);
-		createEOperation(identityPipeEClass, IDENTITY_PIPE___TO_STRING);
+		identityStepEClass = createEClass(IDENTITY_STEP);
+		createEOperation(identityStepEClass, IDENTITY_STEP___TO_STRING);
 
-		fillPipeEClass = createEClass(FILL_PIPE);
-		createEReference(fillPipeEClass, FILL_PIPE__INSTRUCTION);
-		createEOperation(fillPipeEClass, FILL_PIPE___TO_STRING);
+		fillStepEClass = createEClass(FILL_STEP);
+		createEReference(fillStepEClass, FILL_STEP__INSTRUCTION);
+		createEOperation(fillStepEClass, FILL_STEP___TO_STRING);
 
-		startPipeEClass = createEClass(START_PIPE);
-		createEOperation(startPipeEClass, START_PIPE___TO_STRING);
+		startStepEClass = createEClass(START_STEP);
+		createEOperation(startStepEClass, START_STEP___TO_STRING);
 
-		verticesPipeEClass = createEClass(VERTICES_PIPE);
-		createEAttribute(verticesPipeEClass, VERTICES_PIPE__VERTEX_ID);
-		createEOperation(verticesPipeEClass, VERTICES_PIPE___TO_STRING);
+		verticesStepEClass = createEClass(VERTICES_STEP);
+		createEAttribute(verticesStepEClass, VERTICES_STEP__VERTEX_ID);
+		createEOperation(verticesStepEClass, VERTICES_STEP___TO_STRING);
 
-		edgesPipeEClass = createEClass(EDGES_PIPE);
-		createEAttribute(edgesPipeEClass, EDGES_PIPE__RELATIONSHIP_NAME);
+		edgesStepEClass = createEClass(EDGES_STEP);
+		createEAttribute(edgesStepEClass, EDGES_STEP__RELATIONSHIP_NAME);
 
-		propertyPipeEClass = createEClass(PROPERTY_PIPE);
-		createEAttribute(propertyPipeEClass, PROPERTY_PIPE__NAME);
-		createEOperation(propertyPipeEClass, PROPERTY_PIPE___TO_STRING);
+		propertyStepEClass = createEClass(PROPERTY_STEP);
+		createEAttribute(propertyStepEClass, PROPERTY_STEP__NAME);
+		createEOperation(propertyStepEClass, PROPERTY_STEP___TO_STRING);
 
-		outEPipeEClass = createEClass(OUT_EPIPE);
-		createEAttribute(outEPipeEClass, OUT_EPIPE__RELATIONSHIP_NAME);
-		createEOperation(outEPipeEClass, OUT_EPIPE___TO_STRING);
+		outEStepEClass = createEClass(OUT_ESTEP);
+		createEAttribute(outEStepEClass, OUT_ESTEP__RELATIONSHIP_NAME);
+		createEOperation(outEStepEClass, OUT_ESTEP___TO_STRING);
 
-		inEPipeEClass = createEClass(IN_EPIPE);
-		createEAttribute(inEPipeEClass, IN_EPIPE__RELATIONSHIP_NAME);
-		createEOperation(inEPipeEClass, IN_EPIPE___TO_STRING);
+		inEStepEClass = createEClass(IN_ESTEP);
+		createEAttribute(inEStepEClass, IN_ESTEP__RELATIONSHIP_NAME);
+		createEOperation(inEStepEClass, IN_ESTEP___TO_STRING);
 
-		inVPipeEClass = createEClass(IN_VPIPE);
-		createEOperation(inVPipeEClass, IN_VPIPE___TO_STRING);
+		inVStepEClass = createEClass(IN_VSTEP);
+		createEOperation(inVStepEClass, IN_VSTEP___TO_STRING);
 
-		outVPipeEClass = createEClass(OUT_VPIPE);
-		createEOperation(outVPipeEClass, OUT_VPIPE___TO_STRING);
+		outVStepEClass = createEClass(OUT_VSTEP);
+		createEOperation(outVStepEClass, OUT_VSTEP___TO_STRING);
 
-		filterPipeEClass = createEClass(FILTER_PIPE);
-		createEReference(filterPipeEClass, FILTER_PIPE__CLOSURE);
-		createEOperation(filterPipeEClass, FILTER_PIPE___TO_STRING);
+		filterStepEClass = createEClass(FILTER_STEP);
+		createEReference(filterStepEClass, FILTER_STEP__CLOSURE);
+		createEOperation(filterStepEClass, FILTER_STEP___TO_STRING);
 
-		transformPipeEClass = createEClass(TRANSFORM_PIPE);
-		createEReference(transformPipeEClass, TRANSFORM_PIPE__CLOSURE);
-		createEOperation(transformPipeEClass, TRANSFORM_PIPE___TO_STRING);
+		transformStepEClass = createEClass(TRANSFORM_STEP);
+		createEReference(transformStepEClass, TRANSFORM_STEP__CLOSURE);
+		createEOperation(transformStepEClass, TRANSFORM_STEP___TO_STRING);
 
 		methodCallEClass = createEClass(METHOD_CALL);
 
@@ -1634,24 +1634,24 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		// Add supertypes to classes
 		variableDeclarationEClass.getESuperTypes().add(this.getInstruction());
 		vectorTypeEClass.getESuperTypes().add(this.getInstruction());
-		chainElementEClass.getESuperTypes().add(this.getInstruction());
+		traversalElementEClass.getESuperTypes().add(this.getInstruction());
 		closureEClass.getESuperTypes().add(this.getInstruction());
-		closureItEClass.getESuperTypes().add(this.getChainElement());
-		variableAccessEClass.getESuperTypes().add(this.getChainElement());
-		pipeEClass.getESuperTypes().add(this.getChainElement());
-		identityPipeEClass.getESuperTypes().add(this.getPipe());
-		fillPipeEClass.getESuperTypes().add(this.getPipe());
-		startPipeEClass.getESuperTypes().add(this.getPipe());
-		verticesPipeEClass.getESuperTypes().add(this.getPipe());
-		edgesPipeEClass.getESuperTypes().add(this.getPipe());
-		propertyPipeEClass.getESuperTypes().add(this.getPipe());
-		outEPipeEClass.getESuperTypes().add(this.getPipe());
-		inEPipeEClass.getESuperTypes().add(this.getPipe());
-		inVPipeEClass.getESuperTypes().add(this.getPipe());
-		outVPipeEClass.getESuperTypes().add(this.getPipe());
-		filterPipeEClass.getESuperTypes().add(this.getPipe());
-		transformPipeEClass.getESuperTypes().add(this.getPipe());
-		methodCallEClass.getESuperTypes().add(this.getChainElement());
+		closureItEClass.getESuperTypes().add(this.getTraversalElement());
+		variableAccessEClass.getESuperTypes().add(this.getTraversalElement());
+		stepEClass.getESuperTypes().add(this.getTraversalElement());
+		identityStepEClass.getESuperTypes().add(this.getStep());
+		fillStepEClass.getESuperTypes().add(this.getStep());
+		startStepEClass.getESuperTypes().add(this.getStep());
+		verticesStepEClass.getESuperTypes().add(this.getStep());
+		edgesStepEClass.getESuperTypes().add(this.getStep());
+		propertyStepEClass.getESuperTypes().add(this.getStep());
+		outEStepEClass.getESuperTypes().add(this.getStep());
+		inEStepEClass.getESuperTypes().add(this.getStep());
+		inVStepEClass.getESuperTypes().add(this.getStep());
+		outVStepEClass.getESuperTypes().add(this.getStep());
+		filterStepEClass.getESuperTypes().add(this.getStep());
+		transformStepEClass.getESuperTypes().add(this.getStep());
+		methodCallEClass.getESuperTypes().add(this.getTraversalElement());
 		nextCallEClass.getESuperTypes().add(this.getMethodCall());
 		hasNextCallEClass.getESuperTypes().add(this.getMethodCall());
 		indexCallEClass.getESuperTypes().add(this.getMethodCall());
@@ -1695,8 +1695,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEOperation(getVectorType__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(chainElementEClass, ChainElement.class, "ChainElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getChainElement_NextElement(), this.getChainElement(), null, "nextElement", null, 0, 1, ChainElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(traversalElementEClass, TraversalElement.class, "TraversalElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTraversalElement_NextElement(), this.getTraversalElement(), null, "nextElement", null, 0, 1, TraversalElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(closureEClass, Closure.class, "Closure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClosure_Instructions(), this.getInstruction(), null, "instructions", null, 0, -1, Closure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1712,61 +1712,61 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEOperation(getVariableAccess__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(pipeEClass, Pipe.class, "Pipe", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(stepEClass, Step.class, "Step", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(identityPipeEClass, IdentityPipe.class, "IdentityPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(identityStepEClass, IdentityStep.class, "IdentityStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getIdentityPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getIdentityStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(fillPipeEClass, FillPipe.class, "FillPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFillPipe_Instruction(), this.getInstruction(), null, "instruction", null, 1, 1, FillPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(fillStepEClass, FillStep.class, "FillStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getFillStep_Instruction(), this.getInstruction(), null, "instruction", null, 1, 1, FillStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getFillPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getFillStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(startPipeEClass, StartPipe.class, "StartPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(startStepEClass, StartStep.class, "StartStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getStartPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getStartStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(verticesPipeEClass, VerticesPipe.class, "VerticesPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getVerticesPipe_VertexId(), ecorePackage.getEString(), "vertexId", null, 0, 1, VerticesPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(verticesStepEClass, VerticesStep.class, "VerticesStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getVerticesStep_VertexId(), ecorePackage.getEString(), "vertexId", null, 0, 1, VerticesStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getVerticesPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getVerticesStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(edgesPipeEClass, EdgesPipe.class, "EdgesPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEdgesPipe_RelationshipName(), ecorePackage.getEString(), "relationshipName", null, 0, 1, EdgesPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(edgesStepEClass, EdgesStep.class, "EdgesStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEdgesStep_RelationshipName(), ecorePackage.getEString(), "relationshipName", null, 0, 1, EdgesStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(propertyPipeEClass, PropertyPipe.class, "PropertyPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPropertyPipe_Name(), ecorePackage.getEString(), "name", null, 1, 1, PropertyPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(propertyStepEClass, PropertyStep.class, "PropertyStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPropertyStep_Name(), ecorePackage.getEString(), "name", null, 1, 1, PropertyStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getPropertyPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getPropertyStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(outEPipeEClass, OutEPipe.class, "OutEPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getOutEPipe_RelationshipName(), ecorePackage.getEString(), "relationshipName", null, 0, 1, OutEPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(outEStepEClass, OutEStep.class, "OutEStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getOutEStep_RelationshipName(), ecorePackage.getEString(), "relationshipName", null, 0, 1, OutEStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getOutEPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getOutEStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(inEPipeEClass, InEPipe.class, "InEPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getInEPipe_RelationshipName(), ecorePackage.getEString(), "relationshipName", null, 0, 1, InEPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(inEStepEClass, InEStep.class, "InEStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getInEStep_RelationshipName(), ecorePackage.getEString(), "relationshipName", null, 0, 1, InEStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getInEPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getInEStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(inVPipeEClass, InVPipe.class, "InVPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(inVStepEClass, InVStep.class, "InVStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getInVPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getInVStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(outVPipeEClass, OutVPipe.class, "OutVPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(outVStepEClass, OutVStep.class, "OutVStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getOutVPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getOutVStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(filterPipeEClass, FilterPipe.class, "FilterPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFilterPipe_Closure(), this.getClosure(), null, "closure", null, 1, 1, FilterPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(filterStepEClass, FilterStep.class, "FilterStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getFilterStep_Closure(), this.getClosure(), null, "closure", null, 1, 1, FilterStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getFilterPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getFilterStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(transformPipeEClass, TransformPipe.class, "TransformPipe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getTransformPipe_Closure(), this.getClosure(), null, "closure", null, 1, 1, TransformPipe.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(transformStepEClass, TransformStep.class, "TransformStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTransformStep_Closure(), this.getClosure(), null, "closure", null, 1, 1, TransformStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEOperation(getTransformPipe__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getTransformStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(methodCallEClass, MethodCall.class, "MethodCall", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

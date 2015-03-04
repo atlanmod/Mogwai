@@ -3,26 +3,26 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.Pipe;
+import fr.inria.atlanmod.mogwai.gremlin.Step;
 
 import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Pipe</b></em>'.
+ * An implementation of the model object '<em><b>Step</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public abstract class PipeImpl extends ChainElementImpl implements Pipe {
+public abstract class StepImpl extends TraversalElementImpl implements Step {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PipeImpl() {
+	protected StepImpl() {
 		super();
 	}
 
@@ -33,7 +33,7 @@ public abstract class PipeImpl extends ChainElementImpl implements Pipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.PIPE;
+		return GremlinPackage.Literals.STEP;
 	}
 
-} //PipeImpl
+} //StepImpl

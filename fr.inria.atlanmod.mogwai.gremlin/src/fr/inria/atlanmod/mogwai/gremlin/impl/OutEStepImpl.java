@@ -2,10 +2,14 @@
  */
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
-import fr.inria.atlanmod.mogwai.gremlin.EdgesPipe;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
+
+import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
@@ -13,18 +17,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Edges Pipe</b></em>'.
+ * An implementation of the model object '<em><b>Out EStep</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.EdgesPipeImpl#getRelationshipName <em>Relationship Name</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutEStepImpl#getRelationshipName <em>Relationship Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
+public class OutEStepImpl extends StepImpl implements OutEStep {
 	/**
 	 * The default value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -50,7 +54,7 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EdgesPipeImpl() {
+	protected OutEStepImpl() {
 		super();
 	}
 
@@ -61,7 +65,7 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.EDGES_PIPE;
+		return GremlinPackage.Literals.OUT_ESTEP;
 	}
 
 	/**
@@ -82,7 +86,24 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 		String oldRelationshipName = relationshipName;
 		relationshipName = newRelationshipName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.EDGES_PIPE__RELATIONSHIP_NAME, oldRelationshipName, relationshipName));
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME, oldRelationshipName, relationshipName));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String toString() {
+		StringBuffer res = new StringBuffer();
+		res.append("outE");
+		if(getRelationshipName() != null) {
+			res.append("(\"").append(getRelationshipName()).append("\")");
+		}
+		if(getNextElement() != null) {
+			res.append(".").append(getNextElement().toString());
+		}
+		return res.toString();
 	}
 
 	/**
@@ -93,7 +114,7 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case GremlinPackage.EDGES_PIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
 				return getRelationshipName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -107,7 +128,7 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case GremlinPackage.EDGES_PIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
 				setRelationshipName((String)newValue);
 				return;
 		}
@@ -122,7 +143,7 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.EDGES_PIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
 				setRelationshipName(RELATIONSHIP_NAME_EDEFAULT);
 				return;
 		}
@@ -137,7 +158,7 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.EDGES_PIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
 				return RELATIONSHIP_NAME_EDEFAULT == null ? relationshipName != null : !RELATIONSHIP_NAME_EDEFAULT.equals(relationshipName);
 		}
 		return super.eIsSet(featureID);
@@ -149,14 +170,12 @@ public class EdgesPipeImpl extends PipeImpl implements EdgesPipe {
 	 * @generated
 	 */
 	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (relationshipName: ");
-		result.append(relationshipName);
-		result.append(')');
-		return result.toString();
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case GremlinPackage.OUT_ESTEP___TO_STRING:
+				return toString();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
-} //EdgesPipeImpl
+} //OutEStepImpl

@@ -5,15 +5,15 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Out VPipe</b></em>'.
+ * A representation of the model object '<em><b>Out VStep</b></em>'.
  * <!-- end-user-doc -->
  *
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getOutVPipe()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getOutVStep()
  * @model
  * @generated
  */
-public interface OutVPipe extends Pipe {
+public interface OutVStep extends Step {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -22,4 +22,4 @@ public interface OutVPipe extends Pipe {
 	 */
 	String toString();
 
-} // OutVPipe
+} // OutVStep

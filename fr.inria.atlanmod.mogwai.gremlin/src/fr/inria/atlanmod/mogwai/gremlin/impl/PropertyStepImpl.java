@@ -3,7 +3,7 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.VerticesPipe;
+import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -17,44 +17,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Vertices Pipe</b></em>'.
+ * An implementation of the model object '<em><b>Property Step</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VerticesPipeImpl#getVertexId <em>Vertex Id</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.PropertyStepImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
+public class PropertyStepImpl extends StepImpl implements PropertyStep {
 	/**
-	 * The default value of the '{@link #getVertexId() <em>Vertex Id</em>}' attribute.
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getVertexId()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String VERTEX_ID_EDEFAULT = null;
+	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getVertexId() <em>Vertex Id</em>}' attribute.
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getVertexId()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected String vertexId = VERTEX_ID_EDEFAULT;
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VerticesPipeImpl() {
+	protected PropertyStepImpl() {
 		super();
 	}
 
@@ -65,7 +65,7 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.VERTICES_PIPE;
+		return GremlinPackage.Literals.PROPERTY_STEP;
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getVertexId() {
-		return vertexId;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -82,11 +82,11 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setVertexId(String newVertexId) {
-		String oldVertexId = vertexId;
-		vertexId = newVertexId;
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.VERTICES_PIPE__VERTEX_ID, oldVertexId, vertexId));
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.PROPERTY_STEP__NAME, oldName, name));
 	}
 
 	/**
@@ -96,12 +96,7 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		if(getVertexId() == null) {
-			res.append("V");
-		}
-		else {
-			res.append("v(").append(getVertexId()).append(")");
-		}
+		res.append(getName());
 		if(getNextElement() != null) {
 			res.append(".").append(getNextElement().toString());
 		}
@@ -116,8 +111,8 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case GremlinPackage.VERTICES_PIPE__VERTEX_ID:
-				return getVertexId();
+			case GremlinPackage.PROPERTY_STEP__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -130,8 +125,8 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case GremlinPackage.VERTICES_PIPE__VERTEX_ID:
-				setVertexId((String)newValue);
+			case GremlinPackage.PROPERTY_STEP__NAME:
+				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -145,8 +140,8 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.VERTICES_PIPE__VERTEX_ID:
-				setVertexId(VERTEX_ID_EDEFAULT);
+			case GremlinPackage.PROPERTY_STEP__NAME:
+				setName(NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -160,8 +155,8 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.VERTICES_PIPE__VERTEX_ID:
-				return VERTEX_ID_EDEFAULT == null ? vertexId != null : !VERTEX_ID_EDEFAULT.equals(vertexId);
+			case GremlinPackage.PROPERTY_STEP__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -174,10 +169,10 @@ public class VerticesPipeImpl extends PipeImpl implements VerticesPipe {
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case GremlinPackage.VERTICES_PIPE___TO_STRING:
+			case GremlinPackage.PROPERTY_STEP___TO_STRING:
 				return toString();
 		}
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //VerticesPipeImpl
+} //PropertyStepImpl

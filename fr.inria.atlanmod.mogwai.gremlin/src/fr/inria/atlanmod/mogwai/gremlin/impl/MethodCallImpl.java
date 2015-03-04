@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class MethodCallImpl extends ChainElementImpl implements MethodCall {
+public abstract class MethodCallImpl extends TraversalElementImpl implements MethodCall {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

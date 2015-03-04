@@ -5,15 +5,15 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Start Pipe</b></em>'.
+ * A representation of the model object '<em><b>Start Step</b></em>'.
  * <!-- end-user-doc -->
  *
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getStartPipe()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getStartStep()
  * @model
  * @generated
  */
-public interface StartPipe extends Pipe {
+public interface StartStep extends Step {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -22,4 +22,4 @@ public interface StartPipe extends Pipe {
 	 */
 	String toString();
 
-} // StartPipe
+} // StartStep

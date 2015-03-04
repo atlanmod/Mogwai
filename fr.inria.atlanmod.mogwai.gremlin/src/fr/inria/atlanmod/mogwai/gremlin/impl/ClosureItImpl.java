@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ClosureItImpl extends ChainElementImpl implements ClosureIt {
+public class ClosureItImpl extends TraversalElementImpl implements ClosureIt {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -5,15 +5,15 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Identity Pipe</b></em>'.
+ * A representation of the model object '<em><b>Identity Step</b></em>'.
  * <!-- end-user-doc -->
  *
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getIdentityPipe()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getIdentityStep()
  * @model
  * @generated
  */
-public interface IdentityPipe extends Pipe {
+public interface IdentityStep extends Step {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -22,4 +22,4 @@ public interface IdentityPipe extends Pipe {
 	 */
 	String toString();
 
-} // IdentityPipe
+} // IdentityStep

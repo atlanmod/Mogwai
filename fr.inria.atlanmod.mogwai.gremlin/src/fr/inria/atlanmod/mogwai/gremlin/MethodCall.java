@@ -13,5 +13,5 @@ package fr.inria.atlanmod.mogwai.gremlin;
  * @model abstract="true"
  * @generated
  */
-public interface MethodCall extends ChainElement {
+public interface MethodCall extends TraversalElement {
 } // MethodCall

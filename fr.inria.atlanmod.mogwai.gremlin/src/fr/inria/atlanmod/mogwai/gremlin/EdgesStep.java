@@ -5,21 +5,21 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Edges Pipe</b></em>'.
+ * A representation of the model object '<em><b>Edges Step</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.EdgesPipe#getRelationshipName <em>Relationship Name</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.EdgesStep#getRelationshipName <em>Relationship Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getEdgesPipe()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getEdgesStep()
  * @model
  * @generated
  */
-public interface EdgesPipe extends Pipe {
+public interface EdgesStep extends Step {
 	/**
 	 * Returns the value of the '<em><b>Relationship Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -30,14 +30,14 @@ public interface EdgesPipe extends Pipe {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Relationship Name</em>' attribute.
 	 * @see #setRelationshipName(String)
-	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getEdgesPipe_RelationshipName()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getEdgesStep_RelationshipName()
 	 * @model
 	 * @generated
 	 */
 	String getRelationshipName();
 
 	/**
-	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesPipe#getRelationshipName <em>Relationship Name</em>}' attribute.
+	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesStep#getRelationshipName <em>Relationship Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Relationship Name</em>' attribute.
@@ -46,4 +46,4 @@ public interface EdgesPipe extends Pipe {
 	 */
 	void setRelationshipName(String value);
 
-} // EdgesPipe
+} // EdgesStep

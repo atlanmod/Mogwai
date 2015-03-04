@@ -28,8 +28,8 @@
       </eAnnotations>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ChainElement" abstract="true" eSuperTypes="#//Instruction">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="nextElement" eType="#//ChainElement"
+  <eClassifiers xsi:type="ecore:EClass" name="TraversalElement" abstract="true" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nextElement" eType="#//TraversalElement"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Closure" eSuperTypes="#//Instruction">
@@ -41,14 +41,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="instructions" upperBound="-1"
         eType="#//Instruction" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClosureIt" eSuperTypes="#//ChainElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ClosureIt" eSuperTypes="#//TraversalElement">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;it&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableAccess" eSuperTypes="#//ChainElement">
+  <eClassifiers xsi:type="ecore:EClass" name="VariableAccess" eSuperTypes="#//TraversalElement">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(getName());&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -56,15 +56,15 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Pipe" abstract="true" eSuperTypes="#//ChainElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="IdentityPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="Step" abstract="true" eSuperTypes="#//TraversalElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdentityStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;_()&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FillPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="FillStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;fill(&quot;).append(getInstruction().toString()).append(&quot;)&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -73,14 +73,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="instruction" lowerBound="1"
         eType="#//Instruction" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StartPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="StartStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;g&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VerticesPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="VerticesStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getVertexId() == null) {&#xA;&#x9;res.append(&quot;V&quot;);&#xA;}&#xA;else {&#xA;&#x9;res.append(&quot;v(&quot;).append(getVertexId()).append(&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -88,10 +88,10 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="vertexId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EdgesPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="EdgesStep" eSuperTypes="#//Step">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relationshipName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PropertyPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(getName());&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -99,7 +99,7 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OutEPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="OutEStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;outE&quot;);&#xA;if(getRelationshipName() != null) {&#xA;&#x9;res.append(&quot;(\&quot;&quot;).append(getRelationshipName()).append(&quot;\&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -107,7 +107,7 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relationshipName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="InEPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="InEStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;inE&quot;);&#xA;if(getRelationshipName() != null) {&#xA;&#x9;res.append(&quot;(\&quot;&quot;+getRelationshipName()+&quot;\&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -115,21 +115,21 @@
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relationshipName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="InVPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="InVStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;inV&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OutVPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="OutVStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;outV&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FilterPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="FilterStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;filter&quot;);&#xA;res.append(getClosure().toString());&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -138,7 +138,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="closure" lowerBound="1"
         eType="#//Closure" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TransformPipe" eSuperTypes="#//Pipe">
+  <eClassifiers xsi:type="ecore:EClass" name="TransformStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;transform&quot;);&#xA;res.append(getClosure().toString());&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
@@ -147,7 +147,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="closure" lowerBound="1"
         eType="#//Closure" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MethodCall" abstract="true" eSuperTypes="#//ChainElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MethodCall" abstract="true" eSuperTypes="#//TraversalElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="NextCall" eSuperTypes="#//MethodCall">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

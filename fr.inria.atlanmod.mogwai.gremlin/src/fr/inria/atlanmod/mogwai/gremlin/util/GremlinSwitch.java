@@ -92,10 +92,10 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.CHAIN_ELEMENT: {
-				ChainElement chainElement = (ChainElement)theEObject;
-				T result = caseChainElement(chainElement);
-				if (result == null) result = caseInstruction(chainElement);
+			case GremlinPackage.TRAVERSAL_ELEMENT: {
+				TraversalElement traversalElement = (TraversalElement)theEObject;
+				T result = caseTraversalElement(traversalElement);
+				if (result == null) result = caseInstruction(traversalElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -109,7 +109,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 			case GremlinPackage.CLOSURE_IT: {
 				ClosureIt closureIt = (ClosureIt)theEObject;
 				T result = caseClosureIt(closureIt);
-				if (result == null) result = caseChainElement(closureIt);
+				if (result == null) result = caseTraversalElement(closureIt);
 				if (result == null) result = caseInstruction(closureIt);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -117,131 +117,131 @@ public class GremlinSwitch<T> extends Switch<T> {
 			case GremlinPackage.VARIABLE_ACCESS: {
 				VariableAccess variableAccess = (VariableAccess)theEObject;
 				T result = caseVariableAccess(variableAccess);
-				if (result == null) result = caseChainElement(variableAccess);
+				if (result == null) result = caseTraversalElement(variableAccess);
 				if (result == null) result = caseInstruction(variableAccess);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.PIPE: {
-				Pipe pipe = (Pipe)theEObject;
-				T result = casePipe(pipe);
-				if (result == null) result = caseChainElement(pipe);
-				if (result == null) result = caseInstruction(pipe);
+			case GremlinPackage.STEP: {
+				Step step = (Step)theEObject;
+				T result = caseStep(step);
+				if (result == null) result = caseTraversalElement(step);
+				if (result == null) result = caseInstruction(step);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.IDENTITY_PIPE: {
-				IdentityPipe identityPipe = (IdentityPipe)theEObject;
-				T result = caseIdentityPipe(identityPipe);
-				if (result == null) result = casePipe(identityPipe);
-				if (result == null) result = caseChainElement(identityPipe);
-				if (result == null) result = caseInstruction(identityPipe);
+			case GremlinPackage.IDENTITY_STEP: {
+				IdentityStep identityStep = (IdentityStep)theEObject;
+				T result = caseIdentityStep(identityStep);
+				if (result == null) result = caseStep(identityStep);
+				if (result == null) result = caseTraversalElement(identityStep);
+				if (result == null) result = caseInstruction(identityStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.FILL_PIPE: {
-				FillPipe fillPipe = (FillPipe)theEObject;
-				T result = caseFillPipe(fillPipe);
-				if (result == null) result = casePipe(fillPipe);
-				if (result == null) result = caseChainElement(fillPipe);
-				if (result == null) result = caseInstruction(fillPipe);
+			case GremlinPackage.FILL_STEP: {
+				FillStep fillStep = (FillStep)theEObject;
+				T result = caseFillStep(fillStep);
+				if (result == null) result = caseStep(fillStep);
+				if (result == null) result = caseTraversalElement(fillStep);
+				if (result == null) result = caseInstruction(fillStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.START_PIPE: {
-				StartPipe startPipe = (StartPipe)theEObject;
-				T result = caseStartPipe(startPipe);
-				if (result == null) result = casePipe(startPipe);
-				if (result == null) result = caseChainElement(startPipe);
-				if (result == null) result = caseInstruction(startPipe);
+			case GremlinPackage.START_STEP: {
+				StartStep startStep = (StartStep)theEObject;
+				T result = caseStartStep(startStep);
+				if (result == null) result = caseStep(startStep);
+				if (result == null) result = caseTraversalElement(startStep);
+				if (result == null) result = caseInstruction(startStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.VERTICES_PIPE: {
-				VerticesPipe verticesPipe = (VerticesPipe)theEObject;
-				T result = caseVerticesPipe(verticesPipe);
-				if (result == null) result = casePipe(verticesPipe);
-				if (result == null) result = caseChainElement(verticesPipe);
-				if (result == null) result = caseInstruction(verticesPipe);
+			case GremlinPackage.VERTICES_STEP: {
+				VerticesStep verticesStep = (VerticesStep)theEObject;
+				T result = caseVerticesStep(verticesStep);
+				if (result == null) result = caseStep(verticesStep);
+				if (result == null) result = caseTraversalElement(verticesStep);
+				if (result == null) result = caseInstruction(verticesStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.EDGES_PIPE: {
-				EdgesPipe edgesPipe = (EdgesPipe)theEObject;
-				T result = caseEdgesPipe(edgesPipe);
-				if (result == null) result = casePipe(edgesPipe);
-				if (result == null) result = caseChainElement(edgesPipe);
-				if (result == null) result = caseInstruction(edgesPipe);
+			case GremlinPackage.EDGES_STEP: {
+				EdgesStep edgesStep = (EdgesStep)theEObject;
+				T result = caseEdgesStep(edgesStep);
+				if (result == null) result = caseStep(edgesStep);
+				if (result == null) result = caseTraversalElement(edgesStep);
+				if (result == null) result = caseInstruction(edgesStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.PROPERTY_PIPE: {
-				PropertyPipe propertyPipe = (PropertyPipe)theEObject;
-				T result = casePropertyPipe(propertyPipe);
-				if (result == null) result = casePipe(propertyPipe);
-				if (result == null) result = caseChainElement(propertyPipe);
-				if (result == null) result = caseInstruction(propertyPipe);
+			case GremlinPackage.PROPERTY_STEP: {
+				PropertyStep propertyStep = (PropertyStep)theEObject;
+				T result = casePropertyStep(propertyStep);
+				if (result == null) result = caseStep(propertyStep);
+				if (result == null) result = caseTraversalElement(propertyStep);
+				if (result == null) result = caseInstruction(propertyStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.OUT_EPIPE: {
-				OutEPipe outEPipe = (OutEPipe)theEObject;
-				T result = caseOutEPipe(outEPipe);
-				if (result == null) result = casePipe(outEPipe);
-				if (result == null) result = caseChainElement(outEPipe);
-				if (result == null) result = caseInstruction(outEPipe);
+			case GremlinPackage.OUT_ESTEP: {
+				OutEStep outEStep = (OutEStep)theEObject;
+				T result = caseOutEStep(outEStep);
+				if (result == null) result = caseStep(outEStep);
+				if (result == null) result = caseTraversalElement(outEStep);
+				if (result == null) result = caseInstruction(outEStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.IN_EPIPE: {
-				InEPipe inEPipe = (InEPipe)theEObject;
-				T result = caseInEPipe(inEPipe);
-				if (result == null) result = casePipe(inEPipe);
-				if (result == null) result = caseChainElement(inEPipe);
-				if (result == null) result = caseInstruction(inEPipe);
+			case GremlinPackage.IN_ESTEP: {
+				InEStep inEStep = (InEStep)theEObject;
+				T result = caseInEStep(inEStep);
+				if (result == null) result = caseStep(inEStep);
+				if (result == null) result = caseTraversalElement(inEStep);
+				if (result == null) result = caseInstruction(inEStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.IN_VPIPE: {
-				InVPipe inVPipe = (InVPipe)theEObject;
-				T result = caseInVPipe(inVPipe);
-				if (result == null) result = casePipe(inVPipe);
-				if (result == null) result = caseChainElement(inVPipe);
-				if (result == null) result = caseInstruction(inVPipe);
+			case GremlinPackage.IN_VSTEP: {
+				InVStep inVStep = (InVStep)theEObject;
+				T result = caseInVStep(inVStep);
+				if (result == null) result = caseStep(inVStep);
+				if (result == null) result = caseTraversalElement(inVStep);
+				if (result == null) result = caseInstruction(inVStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.OUT_VPIPE: {
-				OutVPipe outVPipe = (OutVPipe)theEObject;
-				T result = caseOutVPipe(outVPipe);
-				if (result == null) result = casePipe(outVPipe);
-				if (result == null) result = caseChainElement(outVPipe);
-				if (result == null) result = caseInstruction(outVPipe);
+			case GremlinPackage.OUT_VSTEP: {
+				OutVStep outVStep = (OutVStep)theEObject;
+				T result = caseOutVStep(outVStep);
+				if (result == null) result = caseStep(outVStep);
+				if (result == null) result = caseTraversalElement(outVStep);
+				if (result == null) result = caseInstruction(outVStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.FILTER_PIPE: {
-				FilterPipe filterPipe = (FilterPipe)theEObject;
-				T result = caseFilterPipe(filterPipe);
-				if (result == null) result = casePipe(filterPipe);
-				if (result == null) result = caseChainElement(filterPipe);
-				if (result == null) result = caseInstruction(filterPipe);
+			case GremlinPackage.FILTER_STEP: {
+				FilterStep filterStep = (FilterStep)theEObject;
+				T result = caseFilterStep(filterStep);
+				if (result == null) result = caseStep(filterStep);
+				if (result == null) result = caseTraversalElement(filterStep);
+				if (result == null) result = caseInstruction(filterStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.TRANSFORM_PIPE: {
-				TransformPipe transformPipe = (TransformPipe)theEObject;
-				T result = caseTransformPipe(transformPipe);
-				if (result == null) result = casePipe(transformPipe);
-				if (result == null) result = caseChainElement(transformPipe);
-				if (result == null) result = caseInstruction(transformPipe);
+			case GremlinPackage.TRANSFORM_STEP: {
+				TransformStep transformStep = (TransformStep)theEObject;
+				T result = caseTransformStep(transformStep);
+				if (result == null) result = caseStep(transformStep);
+				if (result == null) result = caseTraversalElement(transformStep);
+				if (result == null) result = caseInstruction(transformStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case GremlinPackage.METHOD_CALL: {
 				MethodCall methodCall = (MethodCall)theEObject;
 				T result = caseMethodCall(methodCall);
-				if (result == null) result = caseChainElement(methodCall);
+				if (result == null) result = caseTraversalElement(methodCall);
 				if (result == null) result = caseInstruction(methodCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -250,7 +250,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 				NextCall nextCall = (NextCall)theEObject;
 				T result = caseNextCall(nextCall);
 				if (result == null) result = caseMethodCall(nextCall);
-				if (result == null) result = caseChainElement(nextCall);
+				if (result == null) result = caseTraversalElement(nextCall);
 				if (result == null) result = caseInstruction(nextCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -259,7 +259,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 				HasNextCall hasNextCall = (HasNextCall)theEObject;
 				T result = caseHasNextCall(hasNextCall);
 				if (result == null) result = caseMethodCall(hasNextCall);
-				if (result == null) result = caseChainElement(hasNextCall);
+				if (result == null) result = caseTraversalElement(hasNextCall);
 				if (result == null) result = caseInstruction(hasNextCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -268,7 +268,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 				IndexCall indexCall = (IndexCall)theEObject;
 				T result = caseIndexCall(indexCall);
 				if (result == null) result = caseMethodCall(indexCall);
-				if (result == null) result = caseChainElement(indexCall);
+				if (result == null) result = caseTraversalElement(indexCall);
 				if (result == null) result = caseInstruction(indexCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -277,7 +277,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 				CountCall countCall = (CountCall)theEObject;
 				T result = caseCountCall(countCall);
 				if (result == null) result = caseMethodCall(countCall);
-				if (result == null) result = caseChainElement(countCall);
+				if (result == null) result = caseTraversalElement(countCall);
 				if (result == null) result = caseInstruction(countCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -286,7 +286,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 				FirstCall firstCall = (FirstCall)theEObject;
 				T result = caseFirstCall(firstCall);
 				if (result == null) result = caseMethodCall(firstCall);
-				if (result == null) result = caseChainElement(firstCall);
+				if (result == null) result = caseTraversalElement(firstCall);
 				if (result == null) result = caseInstruction(firstCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -295,7 +295,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 				ToListCall toListCall = (ToListCall)theEObject;
 				T result = caseToListCall(toListCall);
 				if (result == null) result = caseMethodCall(toListCall);
-				if (result == null) result = caseChainElement(toListCall);
+				if (result == null) result = caseTraversalElement(toListCall);
 				if (result == null) result = caseInstruction(toListCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -304,7 +304,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 				IsEmptyCall isEmptyCall = (IsEmptyCall)theEObject;
 				T result = caseIsEmptyCall(isEmptyCall);
 				if (result == null) result = caseMethodCall(isEmptyCall);
-				if (result == null) result = caseChainElement(isEmptyCall);
+				if (result == null) result = caseTraversalElement(isEmptyCall);
 				if (result == null) result = caseInstruction(isEmptyCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -519,17 +519,17 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Chain Element</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Traversal Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Chain Element</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Traversal Element</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseChainElement(ChainElement object) {
+	public T caseTraversalElement(TraversalElement object) {
 		return null;
 	}
 
@@ -579,197 +579,197 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePipe(Pipe object) {
+	public T caseStep(Step object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Identity Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Identity Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Identity Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Identity Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseIdentityPipe(IdentityPipe object) {
+	public T caseIdentityStep(IdentityStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Fill Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Fill Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Fill Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Fill Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseFillPipe(FillPipe object) {
+	public T caseFillStep(FillStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Start Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Start Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Start Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Start Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseStartPipe(StartPipe object) {
+	public T caseStartStep(StartStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Vertices Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Vertices Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Vertices Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Vertices Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseVerticesPipe(VerticesPipe object) {
+	public T caseVerticesStep(VerticesStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Edges Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Edges Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Edges Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Edges Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEdgesPipe(EdgesPipe object) {
+	public T caseEdgesStep(EdgesStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Property Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Property Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Property Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Property Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePropertyPipe(PropertyPipe object) {
+	public T casePropertyStep(PropertyStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Out EPipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Out EStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Out EPipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Out EStep</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseOutEPipe(OutEPipe object) {
+	public T caseOutEStep(OutEStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>In EPipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>In EStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>In EPipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>In EStep</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInEPipe(InEPipe object) {
+	public T caseInEStep(InEStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>In VPipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>In VStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>In VPipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>In VStep</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInVPipe(InVPipe object) {
+	public T caseInVStep(InVStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Out VPipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Out VStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Out VPipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Out VStep</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseOutVPipe(OutVPipe object) {
+	public T caseOutVStep(OutVStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Filter Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Filter Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Filter Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Filter Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseFilterPipe(FilterPipe object) {
+	public T caseFilterStep(FilterStep object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Transform Pipe</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Transform Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Transform Pipe</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Transform Step</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseTransformPipe(TransformPipe object) {
+	public T caseTransformStep(TransformStep object) {
 		return null;
 	}
 

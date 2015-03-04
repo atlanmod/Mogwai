@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class VariableAccessImpl extends ChainElementImpl implements VariableAccess {
+public class VariableAccessImpl extends TraversalElementImpl implements VariableAccess {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->

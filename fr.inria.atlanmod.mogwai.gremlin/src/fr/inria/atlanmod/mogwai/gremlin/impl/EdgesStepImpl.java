@@ -2,14 +2,10 @@
  */
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
+import fr.inria.atlanmod.mogwai.gremlin.EdgesStep;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.OutEPipe;
-
-import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
@@ -17,18 +13,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Out EPipe</b></em>'.
+ * An implementation of the model object '<em><b>Edges Step</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutEPipeImpl#getRelationshipName <em>Relationship Name</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.EdgesStepImpl#getRelationshipName <em>Relationship Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class OutEPipeImpl extends PipeImpl implements OutEPipe {
+public class EdgesStepImpl extends StepImpl implements EdgesStep {
 	/**
 	 * The default value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -54,7 +50,7 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected OutEPipeImpl() {
+	protected EdgesStepImpl() {
 		super();
 	}
 
@@ -65,7 +61,7 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.OUT_EPIPE;
+		return GremlinPackage.Literals.EDGES_STEP;
 	}
 
 	/**
@@ -86,24 +82,7 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 		String oldRelationshipName = relationshipName;
 		relationshipName = newRelationshipName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.OUT_EPIPE__RELATIONSHIP_NAME, oldRelationshipName, relationshipName));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("outE");
-		if(getRelationshipName() != null) {
-			res.append("(\"").append(getRelationshipName()).append("\")");
-		}
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.EDGES_STEP__RELATIONSHIP_NAME, oldRelationshipName, relationshipName));
 	}
 
 	/**
@@ -114,7 +93,7 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case GremlinPackage.OUT_EPIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.EDGES_STEP__RELATIONSHIP_NAME:
 				return getRelationshipName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -128,7 +107,7 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case GremlinPackage.OUT_EPIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.EDGES_STEP__RELATIONSHIP_NAME:
 				setRelationshipName((String)newValue);
 				return;
 		}
@@ -143,7 +122,7 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.OUT_EPIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.EDGES_STEP__RELATIONSHIP_NAME:
 				setRelationshipName(RELATIONSHIP_NAME_EDEFAULT);
 				return;
 		}
@@ -158,7 +137,7 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.OUT_EPIPE__RELATIONSHIP_NAME:
+			case GremlinPackage.EDGES_STEP__RELATIONSHIP_NAME:
 				return RELATIONSHIP_NAME_EDEFAULT == null ? relationshipName != null : !RELATIONSHIP_NAME_EDEFAULT.equals(relationshipName);
 		}
 		return super.eIsSet(featureID);
@@ -170,12 +149,14 @@ public class OutEPipeImpl extends PipeImpl implements OutEPipe {
 	 * @generated
 	 */
 	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.OUT_EPIPE___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (relationshipName: ");
+		result.append(relationshipName);
+		result.append(')');
+		return result.toString();
 	}
 
-} //OutEPipeImpl
+} //EdgesStepImpl

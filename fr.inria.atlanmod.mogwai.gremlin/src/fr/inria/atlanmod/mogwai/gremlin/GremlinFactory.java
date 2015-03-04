@@ -76,112 +76,112 @@ public interface GremlinFactory extends EFactory {
 	VariableAccess createVariableAccess();
 
 	/**
-	 * Returns a new object of class '<em>Identity Pipe</em>'.
+	 * Returns a new object of class '<em>Identity Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Identity Pipe</em>'.
+	 * @return a new object of class '<em>Identity Step</em>'.
 	 * @generated
 	 */
-	IdentityPipe createIdentityPipe();
+	IdentityStep createIdentityStep();
 
 	/**
-	 * Returns a new object of class '<em>Fill Pipe</em>'.
+	 * Returns a new object of class '<em>Fill Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Fill Pipe</em>'.
+	 * @return a new object of class '<em>Fill Step</em>'.
 	 * @generated
 	 */
-	FillPipe createFillPipe();
+	FillStep createFillStep();
 
 	/**
-	 * Returns a new object of class '<em>Start Pipe</em>'.
+	 * Returns a new object of class '<em>Start Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Start Pipe</em>'.
+	 * @return a new object of class '<em>Start Step</em>'.
 	 * @generated
 	 */
-	StartPipe createStartPipe();
+	StartStep createStartStep();
 
 	/**
-	 * Returns a new object of class '<em>Vertices Pipe</em>'.
+	 * Returns a new object of class '<em>Vertices Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Vertices Pipe</em>'.
+	 * @return a new object of class '<em>Vertices Step</em>'.
 	 * @generated
 	 */
-	VerticesPipe createVerticesPipe();
+	VerticesStep createVerticesStep();
 
 	/**
-	 * Returns a new object of class '<em>Edges Pipe</em>'.
+	 * Returns a new object of class '<em>Edges Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Edges Pipe</em>'.
+	 * @return a new object of class '<em>Edges Step</em>'.
 	 * @generated
 	 */
-	EdgesPipe createEdgesPipe();
+	EdgesStep createEdgesStep();
 
 	/**
-	 * Returns a new object of class '<em>Property Pipe</em>'.
+	 * Returns a new object of class '<em>Property Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Property Pipe</em>'.
+	 * @return a new object of class '<em>Property Step</em>'.
 	 * @generated
 	 */
-	PropertyPipe createPropertyPipe();
+	PropertyStep createPropertyStep();
 
 	/**
-	 * Returns a new object of class '<em>Out EPipe</em>'.
+	 * Returns a new object of class '<em>Out EStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Out EPipe</em>'.
+	 * @return a new object of class '<em>Out EStep</em>'.
 	 * @generated
 	 */
-	OutEPipe createOutEPipe();
+	OutEStep createOutEStep();
 
 	/**
-	 * Returns a new object of class '<em>In EPipe</em>'.
+	 * Returns a new object of class '<em>In EStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>In EPipe</em>'.
+	 * @return a new object of class '<em>In EStep</em>'.
 	 * @generated
 	 */
-	InEPipe createInEPipe();
+	InEStep createInEStep();
 
 	/**
-	 * Returns a new object of class '<em>In VPipe</em>'.
+	 * Returns a new object of class '<em>In VStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>In VPipe</em>'.
+	 * @return a new object of class '<em>In VStep</em>'.
 	 * @generated
 	 */
-	InVPipe createInVPipe();
+	InVStep createInVStep();
 
 	/**
-	 * Returns a new object of class '<em>Out VPipe</em>'.
+	 * Returns a new object of class '<em>Out VStep</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Out VPipe</em>'.
+	 * @return a new object of class '<em>Out VStep</em>'.
 	 * @generated
 	 */
-	OutVPipe createOutVPipe();
+	OutVStep createOutVStep();
 
 	/**
-	 * Returns a new object of class '<em>Filter Pipe</em>'.
+	 * Returns a new object of class '<em>Filter Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Filter Pipe</em>'.
+	 * @return a new object of class '<em>Filter Step</em>'.
 	 * @generated
 	 */
-	FilterPipe createFilterPipe();
+	FilterStep createFilterStep();
 
 	/**
-	 * Returns a new object of class '<em>Transform Pipe</em>'.
+	 * Returns a new object of class '<em>Transform Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Transform Pipe</em>'.
+	 * @return a new object of class '<em>Transform Step</em>'.
 	 * @generated
 	 */
-	TransformPipe createTransformPipe();
+	TransformStep createTransformStep();
 
 	/**
 	 * Returns a new object of class '<em>Next Call</em>'.

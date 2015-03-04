@@ -13,7 +13,7 @@ package fr.inria.atlanmod.mogwai.gremlin;
  * @model
  * @generated
  */
-public interface ClosureIt extends ChainElement {
+public interface ClosureIt extends TraversalElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

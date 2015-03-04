@@ -3,8 +3,8 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
-import fr.inria.atlanmod.mogwai.gremlin.FilterPipe;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+import fr.inria.atlanmod.mogwai.gremlin.TransformStep;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -20,18 +20,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Filter Pipe</b></em>'.
+ * An implementation of the model object '<em><b>Transform Step</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.FilterPipeImpl#getClosure <em>Closure</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.TransformStepImpl#getClosure <em>Closure</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class FilterPipeImpl extends PipeImpl implements FilterPipe {
+public class TransformStepImpl extends StepImpl implements TransformStep {
 	/**
 	 * The cached value of the '{@link #getClosure() <em>Closure</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -47,7 +47,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected FilterPipeImpl() {
+	protected TransformStepImpl() {
 		super();
 	}
 
@@ -58,7 +58,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.FILTER_PIPE;
+		return GremlinPackage.Literals.TRANSFORM_STEP;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 		Closure oldClosure = closure;
 		closure = newClosure;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.FILTER_PIPE__CLOSURE, oldClosure, newClosure);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.TRANSFORM_STEP__CLOSURE, oldClosure, newClosure);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -94,14 +94,14 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 		if (newClosure != closure) {
 			NotificationChain msgs = null;
 			if (closure != null)
-				msgs = ((InternalEObject)closure).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.FILTER_PIPE__CLOSURE, null, msgs);
+				msgs = ((InternalEObject)closure).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.TRANSFORM_STEP__CLOSURE, null, msgs);
 			if (newClosure != null)
-				msgs = ((InternalEObject)newClosure).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.FILTER_PIPE__CLOSURE, null, msgs);
+				msgs = ((InternalEObject)newClosure).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.TRANSFORM_STEP__CLOSURE, null, msgs);
 			msgs = basicSetClosure(newClosure, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.FILTER_PIPE__CLOSURE, newClosure, newClosure));
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.TRANSFORM_STEP__CLOSURE, newClosure, newClosure));
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		res.append("filter");
+		res.append("transform");
 		res.append(getClosure().toString());
 		if(getNextElement() != null) {
 			res.append(".").append(getNextElement().toString());
@@ -127,7 +127,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case GremlinPackage.FILTER_PIPE__CLOSURE:
+			case GremlinPackage.TRANSFORM_STEP__CLOSURE:
 				return basicSetClosure(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -141,7 +141,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case GremlinPackage.FILTER_PIPE__CLOSURE:
+			case GremlinPackage.TRANSFORM_STEP__CLOSURE:
 				return getClosure();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -155,7 +155,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case GremlinPackage.FILTER_PIPE__CLOSURE:
+			case GremlinPackage.TRANSFORM_STEP__CLOSURE:
 				setClosure((Closure)newValue);
 				return;
 		}
@@ -170,7 +170,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.FILTER_PIPE__CLOSURE:
+			case GremlinPackage.TRANSFORM_STEP__CLOSURE:
 				setClosure((Closure)null);
 				return;
 		}
@@ -185,7 +185,7 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.FILTER_PIPE__CLOSURE:
+			case GremlinPackage.TRANSFORM_STEP__CLOSURE:
 				return closure != null;
 		}
 		return super.eIsSet(featureID);
@@ -199,10 +199,10 @@ public class FilterPipeImpl extends PipeImpl implements FilterPipe {
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case GremlinPackage.FILTER_PIPE___TO_STRING:
+			case GremlinPackage.TRANSFORM_STEP___TO_STRING:
 				return toString();
 		}
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //FilterPipeImpl
+} //TransformStepImpl

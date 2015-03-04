@@ -14,7 +14,7 @@
 -- chains to match them in prefixed order.
 -- The typical matching is done in 2 parts :
 --	- Find the highest object in the considered tree hierarchy
---  - Match this object to a pipe and associate next pipe to the container of the object
+--  - Match this object to a step and associate next step to the container of the object
 
 -- Author AtlanMod - Inria
 
@@ -315,17 +315,17 @@ rule constraint2script {
 }
 
 -- Creates variables associated to allInstances calls to avoid multiple index
--- accesses in the same pipe.
--- @see allInstances2pipes for generated pipes.
+-- accesses in the same step.
+-- @see allInstances2steps for generated steps.
 lazy rule typeExp2meta {
 	from
 		typeExp : OCL!TypeExp
 	to
 		metaVar : Gremlin!VariableDeclaration (
 			name <- 'meta'+typeExp.referredType.name,
-			value <- metaStartPipe
+			value <- metaStartStep
 		),
-		metaStartPipe : Gremlin!StartPipe (
+		metaStartStep : Gremlin!StartStep (
 			nextElement <- idxCall	
 		),
 		idxCall : Gremlin!IndexCall (
@@ -336,8 +336,8 @@ lazy rule typeExp2meta {
 }
 
 -- Creates variables associated to oclIsTypeOf calls to avoid multiple index
--- accesses in the same pipe.
--- @see oclIsTypeOf2pipes for generated pipes.
+-- accesses in the same step.
+-- @see oclIsTypeOf2steps for generated steps.
 lazy rule typeExp2metaNodes {
 	from
 		typeExp : OCL!TypeExp
@@ -367,15 +367,15 @@ lazy rule union2meta {
 		)
 }
 
-rule union2pipes {
+rule union2steps {
 	from
 		oclUnion : OCL!OperationCallExp (oclUnion.getOpName() = 'union')
 	to
 		gg : Gremlin!VariableAccess(
 			name <- 'unionContent',
-			nextElement <- idPipe
+			nextElement <- idStep
 		),
-		idPipe : Gremlin!IdentityPipe(
+		idStep : Gremlin!IdentityStep(
 			nextElement <- if oclUnion.refImmediateComposite().getOpName() = 'union' then
 							OclUndefined
 							else
@@ -384,23 +384,23 @@ rule union2pipes {
 		)
 }
 
--- Transforms 'allInstances' expressions into kyanosInstanceOf edge pipe
--- and vertex pipe.
---lazy rule allInstances2pipes {
-rule allInstances2pipes {
+-- Transforms 'allInstances' expressions into kyanosInstanceOf edge step
+-- and vertex step.
+--lazy rule allInstances2steps {
+rule allInstances2steps {
 	from
 		allInstances : OCL!OperationCallExp (allInstances.getOpName() = 'allInstances')
 	to
-		ine : Gremlin!InEPipe (
+		ine : Gremlin!InEStep (
 			relationshipName <- 'kyanosInstanceOf',
 			nextElement <- outv
 		),
-		outv : Gremlin!OutVPipe (
+		outv : Gremlin!OutVStep (
 			nextElement <- allInstances.getComposite()
 		)
 }
 
-rule typeExp2pipes {
+rule typeExp2steps {
 	from
 		typeExp : OCL!TypeExp (
 			if typeExp.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
@@ -416,21 +416,21 @@ rule typeExp2pipes {
 		)
 }
 
--- Transforms 'collect' expressions into edge and vertex pipe.
-rule collect2pipes {
+-- Transforms 'collect' expressions into edge and vertex step.
+rule collect2steps {
 	from 
 		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and not collect.isLastInUnion())
 	to
-		id : Gremlin!IdentityPipe(
+		id : Gremlin!IdentityStep(
 			nextElement <- collect.getComposite()
 		)
 }
 
-rule collectLastInUnionRightPart2pipes {
+rule collectLastInUnionRightPart2steps {
 	from 
 		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInUnion() and not collect.isInUnionLeftPart())
 	to
-		fill : Gremlin!FillPipe(
+		fill : Gremlin!FillStep(
 			instruction <- unionContentVariableAccess
 		),
 		unionContentVariableAccess : Gremlin!VariableAccess (
@@ -438,11 +438,11 @@ rule collectLastInUnionRightPart2pipes {
 		)
 }
 
-rule collectLastInUnionLeftPart2pipes {
+rule collectLastInUnionLeftPart2steps {
 	from 
 		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInUnion() and collect.isInUnionLeftPart())
 	to
-		fill : Gremlin!FillPipe(
+		fill : Gremlin!FillStep(
 			instruction <- affect
 		),
 		affect : Gremlin!AffectationExpression(
@@ -455,7 +455,7 @@ rule collectLastInUnionLeftPart2pipes {
 		vectorType : Gremlin!VectorType()
 }
 
-rule oclIsUndefined2pipes {
+rule oclIsUndefined2steps {
 	from
 		select : OCL!OperationCallExp (select.getOpName() = 'oclIsUndefined')
 	to
@@ -467,11 +467,11 @@ rule oclIsUndefined2pipes {
 		)
 }
 
-rule select2pipes {
+rule select2steps {
 	from
 		select : OCL!IteratorExp (select.getOpName() = 'select' and not select.isLastInUnion())
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <- cl,
 			nextElement <- select.getComposite()
 		),
@@ -491,18 +491,18 @@ lazy rule varIterator2def {
 		fi : Gremlin!ClosureIt()
 }
 
-rule selectLastInUnionRightPart2pipes {
+rule selectLastInUnionRightPart2steps {
 	from
 		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInUnion() and not select.isInUnionLeftPart())
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <- cl,
 			nextElement <- fill
 		),
 		cl : Gremlin!Closure(
 			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
 		),
-		fill : Gremlin!FillPipe(
+		fill : Gremlin!FillStep(
 			instruction <- unionContentVariableAccess
 		),
 		unionContentVariableAccess : Gremlin!VariableAccess (
@@ -510,18 +510,18 @@ rule selectLastInUnionRightPart2pipes {
 		)
 }
 
-rule selectLastInUnionLeftPart2pipes {
+rule selectLastInUnionLeftPart2steps {
 	from
 		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInUnion() and select.isInUnionLeftPart())
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <- cl,
 			nextElement <- fill
 		),
 		cl : Gremlin!Closure(
 			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
 		),
-		fill : Gremlin!FillPipe(
+		fill : Gremlin!FillStep(
 			instruction <- affect
 		),
 		affect : Gremlin!AffectationExpression(
@@ -534,11 +534,11 @@ rule selectLastInUnionLeftPart2pipes {
 		vectorType : Gremlin!VectorType()
 }
 
-rule reject2pipes {
+rule reject2steps {
 	from
 		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and not reject.isLastInUnion())
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <-  clos,
 			nextElement <- reject.getComposite()
 		),
@@ -550,11 +550,11 @@ rule reject2pipes {
 		)
 }
 
-rule rejectLastInUnionRightPart2pipes {
+rule rejectLastInUnionRightPart2steps {
 	from
 		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInUnion() and not reject.isInUnionLeftPart())
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <- clos,
 			nextElement <- fill
 		),
@@ -564,7 +564,7 @@ rule rejectLastInUnionRightPart2pipes {
 		notExp : Gremlin!NotExpression (
 			exp <- reject.body.getFirstInstruction()
 		),
-		fill : Gremlin!FillPipe(
+		fill : Gremlin!FillStep(
 			instruction <- unionContentVariableAccess
 		),
 		unionContentVariableAccess : Gremlin!VariableAccess(
@@ -572,11 +572,11 @@ rule rejectLastInUnionRightPart2pipes {
 		)
 }
 
-rule rejectLastInUnionLeftPart2pipes {
+rule rejectLastInUnionLeftPart2steps {
 	from
 		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInUnion() and reject.isInUnionLeftPart())
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <- clos,
 			nextElement <- fill
 		),
@@ -586,7 +586,7 @@ rule rejectLastInUnionLeftPart2pipes {
 		notExp : Gremlin!NotExpression (
 			exp <- reject.body
 		),
-		fill : Gremlin!FillPipe(
+		fill : Gremlin!FillStep(
 			instruction <- affect
 		),
 		affect : Gremlin!AffectationExpression(
@@ -599,11 +599,11 @@ rule rejectLastInUnionLeftPart2pipes {
 		vectorType : Gremlin!VectorType()
 }
 
-rule excludes2pipes {
+rule excludes2steps {
 	from
 		excludes : OCL!OperationCallExp (excludes.getOpName() = 'excludes')
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <- clos,
 			nextElement <- toListCall
 		),
@@ -620,15 +620,14 @@ rule excludes2pipes {
 		),
 		isEmptyCall : Gremlin!IsEmptyCall (
 			nextElement <- excludes.getComposite()	
-		)
-		
+		)	
 }
 
-rule exists2pipes {
+rule exists2steps {
 	from
 		exists : OCL!IteratorExp (exists.getOpName() = 'exists')
 	to
-		pp : Gremlin!FilterPipe (
+		pp : Gremlin!FilterStep (
 			closure <-  clos,
 			nextElement <- hasNext
 		),
@@ -640,11 +639,11 @@ rule exists2pipes {
 		)
 }
 
-rule forAll2pipes {
+rule forAll2steps {
 	from
 		forAll : OCL!IteratorExp (forAll.getOpName() = 'forAll')
 	to
-		pp : Gremlin!FilterPipe(
+		pp : Gremlin!FilterStep(
 			closure <- clos,
 			nextElement <- toList
 		),
@@ -662,18 +661,18 @@ rule forAll2pipes {
 		)
 }
 
--- Create a TransformPipe from an oclIsTypeOf() OperationCallExp
--- Pipe closure is also created with the node comparison corresponding to
+-- Create a TransformStep from an oclIsTypeOf() OperationCallExp
+-- Step closure is also created with the node comparison corresponding to
 -- type conformance
 -- Using a closure to compare ease the transformation by avoiding preprocessing
 -- to generate equality comparisons
-rule oclIsTypeOf2pipes {
+rule oclIsTypeOf2steps {
 	from
 		oclIsTypeOf : OCL!OperationCallExp (
 			oclIsTypeOf.getOpName() = 'oclIsTypeOf'	
 		)
 	to
-		tran : Gremlin!TransformPipe(
+		tran : Gremlin!TransformStep(
 			closure <- cl,
 			nextElement <- clNext
 		),
@@ -690,28 +689,28 @@ rule oclIsTypeOf2pipes {
 		it : Gremlin!ClosureIt(
 			nextElement <- outE	
 		),
-		outE : Gremlin!OutEPipe(
+		outE : Gremlin!OutEStep(
 			relationshipName <- 'kyanosInstanceOf',
 			nextElement <- inV
 		),
-		inV : Gremlin!InVPipe(
+		inV : Gremlin!InVStep(
 			nextElement <- next	
 		),
 		next : Gremlin!NextCall()
 }
 
-rule oclAsType2pipes {
+rule oclAsType2steps {
 	from
 		oclAsType : OCL!OperationCallExp (
 			oclAsType.getOpName() = 'oclAsType'	
 		)
 	to
-		ip : Gremlin!IdentityPipe(
+		ip : Gremlin!IdentityStep(
 			nextElement <- oclAsType.getComposite()
 		)
 }
 
-rule size2pipes {
+rule size2steps {
 	from
 		size : OCL!OperationCallExp (
 			size.getOpName() = 'size'
@@ -721,7 +720,7 @@ rule size2pipes {
 		)
 }
 
-rule isEmpty2pipes {
+rule isEmpty2steps {
 	from
 		isEmpty : OCL!OperationCallExp (
 			isEmpty.getOpName() = 'isEmpty'	
@@ -736,9 +735,9 @@ rule isEmpty2pipes {
 }
 
 -- Transforms '=' expression into Gremlin EqualityExpression.
--- First left and right operations are computed to get the correct sub-pipe start.
--- @see equality2pipes for equality generation with empty references checking.
-rule equality2pipes2 {
+-- First left and right operations are computed to get the correct sub-Step start.
+-- @see equality2steps for equality generation with empty references checking.
+rule equality2steps2 {
 	from
 		eq : OCL!OperationCallExp(eq.getOpName() = '=')
 	to
@@ -748,7 +747,7 @@ rule equality2pipes2 {
 		)
 }
 
-rule not2pipes {
+rule not2steps {
 	from
 		notExp : OCL!OperationCallExp(
 			notExp.getOpName() = 'not'	
@@ -760,8 +759,8 @@ rule not2pipes {
 }
 
 -- Transforms 'or' expression into Gremlin OrExpression.
--- First left and right operations are computed to get the correct sub-pipe start.
-rule or2pipes {
+-- First left and right operations are computed to get the correct sub-Step start.
+rule or2steps {
 	from
 		orExp : OCL!OperationCallExp(
 			orExp.getOpName() = 'or'
@@ -774,8 +773,8 @@ rule or2pipes {
 }
 
 -- Transforms 'and' expression into Gremlin AndExpression.
--- First left and right operations are computed to get the correct sub-pipe start.
-rule and2pipes {
+-- First left and right operations are computed to get the correct sub-Step start.
+rule and2steps {
 	from
 		andExp : OCL!OperationCallExp (
 			andExp.getOpName() = 'and'	
@@ -788,8 +787,8 @@ rule and2pipes {
 }
 
 -- Transforms '>' expression into Gremlin GreaterExpression.
--- First left and right operations are computed to get the correct sub-pipe start.
-rule greater2pipes {
+-- First left and right operations are computed to get the correct sub-Step start.
+rule greater2steps {
 	from
 		greaterExp : OCL!OperationCallExp (
 			greaterExp.getOpName() = '>'	
@@ -802,8 +801,8 @@ rule greater2pipes {
 }
 
 -- Transforms '>=' expression into Gremlin GreaterOrEqualExpression.
--- First left and right operations are computed to get the correct sub-pipe start.
-rule greaterOrEqual2pipes {
+-- First left and right operations are computed to get the correct sub-Step start.
+rule greaterOrEqual2steps {
 	from
 		greaterOrEqualExp : OCL!OperationCallExp (
 			greaterOrEqualExp.getOpName() = '>='	
@@ -816,8 +815,8 @@ rule greaterOrEqual2pipes {
 }
 
 -- Transforms '<' expression into Gremlin LessExpression.
--- First left and right operations are computed to get the correct sub-pipe start.
-rule less2pipes {
+-- First left and right operations are computed to get the correct sub-Step start.
+rule less2steps {
 	from
 		lessExp : OCL!OperationCallExp (
 			lessExp.getOpName() = '<'	
@@ -830,8 +829,8 @@ rule less2pipes {
 }
 
 -- Transforms '<=' expression into Gremlin LessOrEqualExpression.
--- First left and right operations are computed to get the correct sub-pipe start.
-rule lessOrEqual2pipes {
+-- First left and right operations are computed to get the correct sub-Step start.
+rule lessOrEqual2steps {
 	from
 		lessOrEqualExp : OCL!OperationCallExp (
 			lessOrEqualExp.getOpName() = '<='
@@ -843,7 +842,7 @@ rule lessOrEqual2pipes {
 		)
 }
 
-rule different2pipes {
+rule different2steps {
 	from
 		differentExp : OCL!OperationCallExp (
 			differentExp.getOpName() = '<>'
@@ -855,9 +854,9 @@ rule different2pipes {
 		)
 }
 
--- Transfroms a variable access expression into Gremlin filter iterator pipe.
+-- Transfroms a variable access expression into Gremlin filter iterator Step.
 -- TODO : handle non-iterator variables
-rule varExp2pipes {
+rule varExp2steps {
 	from
 		varExp : OCL!VariableExp(
 			not(varExp.isInCollect())	
@@ -869,45 +868,45 @@ rule varExp2pipes {
 		)
 }
 
-rule varExpInCollect2pipes {
+rule varExpInCollect2steps {
 	from
 		varExp : OCL!VariableExp (
 			varExp.isInCollect()	
 		)
 	to
-		id : Gremlin!IdentityPipe(
+		id : Gremlin!IdentityStep(
 			nextElement <- varExp.getComposite()	
 		)
 }
 
-rule propertyRefCallExp2pipes {
+rule propertyRefCallExp2steps {
 	from
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsKindOf(OCL!EReference) and
 			not(prop.isLastInComparison())
 		)
 	to
-		outE : Gremlin!OutEPipe(
+		outE : Gremlin!OutEStep(
 			relationshipName <- prop.referredProperty.name,
 			nextElement <- inV
 		),
-		inV : Gremlin!InVPipe(
+		inV : Gremlin!InVStep(
 			nextElement <- prop.getComposite()
 		)
 }
 
-rule propertyRefLastInComparison2pipes {
+rule propertyRefLastInComparison2steps {
 	from
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsKindOf(OCL!EReference) and
 			(prop.isLastInComparison())
 		)
 	to
-		outE : Gremlin!OutEPipe(
+		outE : Gremlin!OutEStep(
 			relationshipName <- prop.referredProperty.name,
 			nextElement <- inV
 		),
-		inV : Gremlin!InVPipe(
+		inV : Gremlin!InVStep(
 			nextElement <- nCall
 		),
 		nCall : Gremlin!NextCall(
@@ -915,20 +914,20 @@ rule propertyRefLastInComparison2pipes {
 		)
 }
 
-rule propertyAttCallExp2pipes {
+rule propertyAttCallExp2steps {
 	from
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsKindOf(OCL!EAttribute)-- and
 	--		not(prop.isLastInComparison())
 		)
 	to
-		pp : Gremlin!PropertyPipe(
+		pp : Gremlin!PropertyStep(
 			name <- prop.referredProperty.name,
 			nextElement <- prop.getComposite()
 		)
 }
 
-rule propertyAttBooleanLastInComparison2pipes {
+rule propertyAttBooleanLastInComparison2steps {
 	from
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and
@@ -937,11 +936,11 @@ rule propertyAttBooleanLastInComparison2pipes {
 			prop.isLastInComparison()
 		)
 	to
-		pp : Gremlin!PropertyPipe(
+		pp : Gremlin!PropertyStep(
 			name <- prop.referredProperty.name,
 			nextElement <- transform
 		),
-		transform : Gremlin!TransformPipe(
+		transform : Gremlin!TransformStep(
 			closure <- clos,
 			nextElement <- nextCall
 		),
@@ -1044,16 +1043,16 @@ rule oclBoolean2gremlinBoolean {
 
 -- asSequence OperationCallExp are ignored, they cannot correspond to a Gremlin concept
 -- TOFIX handle sequence in a helper
-rule oclAsSequence2pipe {
+rule oclAsSequence2steps {
 	from
 		asSequence : OCL!OperationCallExp(asSequence.getOpName() = 'asSequence')
 	to
-		ip : Gremlin!IdentityPipe(
+		ip : Gremlin!IdentityStep(
 			nextElement <- asSequence.getComposite()
 		)
 }
 
-rule oclFirst2pipes {
+rule oclFirst2steps {
 	from
 		oclFirst : OCL!OperationCallExp(oclFirst.getOpName() = 'first')
 	to

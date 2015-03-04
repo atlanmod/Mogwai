@@ -5,21 +5,21 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Fill Pipe</b></em>'.
+ * A representation of the model object '<em><b>Fill Step</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.FillPipe#getInstruction <em>Instruction</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.FillStep#getInstruction <em>Instruction</em>}</li>
  * </ul>
  * </p>
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getFillPipe()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getFillStep()
  * @model
  * @generated
  */
-public interface FillPipe extends Pipe {
+public interface FillStep extends Step {
 	/**
 	 * Returns the value of the '<em><b>Instruction</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -30,14 +30,14 @@ public interface FillPipe extends Pipe {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Instruction</em>' containment reference.
 	 * @see #setInstruction(Instruction)
-	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getFillPipe_Instruction()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getFillStep_Instruction()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	Instruction getInstruction();
 
 	/**
-	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.FillPipe#getInstruction <em>Instruction</em>}' containment reference.
+	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.FillStep#getInstruction <em>Instruction</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Instruction</em>' containment reference.
@@ -54,4 +54,4 @@ public interface FillPipe extends Pipe {
 	 */
 	String toString();
 
-} // FillPipe
+} // FillStep

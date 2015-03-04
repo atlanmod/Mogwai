@@ -3,7 +3,7 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.PropertyPipe;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -17,44 +17,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Property Pipe</b></em>'.
+ * An implementation of the model object '<em><b>In EStep</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.PropertyPipeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.InEStepImpl#getRelationshipName <em>Relationship Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
+public class InEStepImpl extends StepImpl implements InEStep {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getRelationshipName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final String RELATIONSHIP_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getRelationshipName()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected String relationshipName = RELATIONSHIP_NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PropertyPipeImpl() {
+	protected InEStepImpl() {
 		super();
 	}
 
@@ -65,7 +65,7 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.PROPERTY_PIPE;
+		return GremlinPackage.Literals.IN_ESTEP;
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public String getRelationshipName() {
+		return relationshipName;
 	}
 
 	/**
@@ -82,11 +82,11 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setRelationshipName(String newRelationshipName) {
+		String oldRelationshipName = relationshipName;
+		relationshipName = newRelationshipName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.PROPERTY_PIPE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.IN_ESTEP__RELATIONSHIP_NAME, oldRelationshipName, relationshipName));
 	}
 
 	/**
@@ -96,7 +96,10 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		res.append(getName());
+		res.append("inE");
+		if(getRelationshipName() != null) {
+			res.append("(\""+getRelationshipName()+"\")");
+		}
 		if(getNextElement() != null) {
 			res.append(".").append(getNextElement().toString());
 		}
@@ -111,8 +114,8 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case GremlinPackage.PROPERTY_PIPE__NAME:
-				return getName();
+			case GremlinPackage.IN_ESTEP__RELATIONSHIP_NAME:
+				return getRelationshipName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -125,8 +128,8 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case GremlinPackage.PROPERTY_PIPE__NAME:
-				setName((String)newValue);
+			case GremlinPackage.IN_ESTEP__RELATIONSHIP_NAME:
+				setRelationshipName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -140,8 +143,8 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.PROPERTY_PIPE__NAME:
-				setName(NAME_EDEFAULT);
+			case GremlinPackage.IN_ESTEP__RELATIONSHIP_NAME:
+				setRelationshipName(RELATIONSHIP_NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -155,8 +158,8 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.PROPERTY_PIPE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case GremlinPackage.IN_ESTEP__RELATIONSHIP_NAME:
+				return RELATIONSHIP_NAME_EDEFAULT == null ? relationshipName != null : !RELATIONSHIP_NAME_EDEFAULT.equals(relationshipName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -169,10 +172,10 @@ public class PropertyPipeImpl extends PipeImpl implements PropertyPipe {
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case GremlinPackage.PROPERTY_PIPE___TO_STRING:
+			case GremlinPackage.IN_ESTEP___TO_STRING:
 				return toString();
 		}
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //PropertyPipeImpl
+} //InEStepImpl

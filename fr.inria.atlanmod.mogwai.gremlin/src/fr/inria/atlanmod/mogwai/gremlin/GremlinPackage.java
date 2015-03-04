@@ -224,14 +224,14 @@ public interface GremlinPackage extends EPackage {
 	int VECTOR_TYPE_OPERATION_COUNT = INSTRUCTION_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ChainElementImpl <em>Chain Element</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TraversalElementImpl <em>Traversal Element</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ChainElementImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getChainElement()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TraversalElementImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTraversalElement()
 	 * @generated
 	 */
-	int CHAIN_ELEMENT = 4;
+	int TRAVERSAL_ELEMENT = 4;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -240,25 +240,25 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CHAIN_ELEMENT__NEXT_ELEMENT = INSTRUCTION_FEATURE_COUNT + 0;
+	int TRAVERSAL_ELEMENT__NEXT_ELEMENT = INSTRUCTION_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Chain Element</em>' class.
+	 * The number of structural features of the '<em>Traversal Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CHAIN_ELEMENT_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 1;
+	int TRAVERSAL_ELEMENT_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Chain Element</em>' class.
+	 * The number of operations of the '<em>Traversal Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CHAIN_ELEMENT_OPERATION_COUNT = INSTRUCTION_OPERATION_COUNT + 0;
+	int TRAVERSAL_ELEMENT_OPERATION_COUNT = INSTRUCTION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ClosureImpl <em>Closure</em>}' class.
@@ -323,7 +323,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CLOSURE_IT__NEXT_ELEMENT = CHAIN_ELEMENT__NEXT_ELEMENT;
+	int CLOSURE_IT__NEXT_ELEMENT = TRAVERSAL_ELEMENT__NEXT_ELEMENT;
 
 	/**
 	 * The number of structural features of the '<em>Closure It</em>' class.
@@ -332,7 +332,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CLOSURE_IT_FEATURE_COUNT = CHAIN_ELEMENT_FEATURE_COUNT + 0;
+	int CLOSURE_IT_FEATURE_COUNT = TRAVERSAL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -341,7 +341,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CLOSURE_IT___TO_STRING = CHAIN_ELEMENT_OPERATION_COUNT + 0;
+	int CLOSURE_IT___TO_STRING = TRAVERSAL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Closure It</em>' class.
@@ -350,7 +350,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CLOSURE_IT_OPERATION_COUNT = CHAIN_ELEMENT_OPERATION_COUNT + 1;
+	int CLOSURE_IT_OPERATION_COUNT = TRAVERSAL_ELEMENT_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableAccessImpl <em>Variable Access</em>}' class.
@@ -369,7 +369,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_ACCESS__NEXT_ELEMENT = CHAIN_ELEMENT__NEXT_ELEMENT;
+	int VARIABLE_ACCESS__NEXT_ELEMENT = TRAVERSAL_ELEMENT__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -378,7 +378,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_ACCESS__NAME = CHAIN_ELEMENT_FEATURE_COUNT + 0;
+	int VARIABLE_ACCESS__NAME = TRAVERSAL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Variable Access</em>' class.
@@ -387,7 +387,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_ACCESS_FEATURE_COUNT = CHAIN_ELEMENT_FEATURE_COUNT + 1;
+	int VARIABLE_ACCESS_FEATURE_COUNT = TRAVERSAL_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -396,7 +396,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_ACCESS___TO_STRING = CHAIN_ELEMENT_OPERATION_COUNT + 0;
+	int VARIABLE_ACCESS___TO_STRING = TRAVERSAL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Variable Access</em>' class.
@@ -405,54 +405,17 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_ACCESS_OPERATION_COUNT = CHAIN_ELEMENT_OPERATION_COUNT + 1;
+	int VARIABLE_ACCESS_OPERATION_COUNT = TRAVERSAL_ELEMENT_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.PipeImpl <em>Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StepImpl <em>Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.PipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.StepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStep()
 	 * @generated
 	 */
-	int PIPE = 8;
-
-	/**
-	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PIPE__NEXT_ELEMENT = CHAIN_ELEMENT__NEXT_ELEMENT;
-
-	/**
-	 * The number of structural features of the '<em>Pipe</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PIPE_FEATURE_COUNT = CHAIN_ELEMENT_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Pipe</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PIPE_OPERATION_COUNT = CHAIN_ELEMENT_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.IdentityPipeImpl <em>Identity Pipe</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.IdentityPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIdentityPipe()
-	 * @generated
-	 */
-	int IDENTITY_PIPE = 9;
+	int STEP = 8;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -461,16 +424,53 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IDENTITY_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int STEP__NEXT_ELEMENT = TRAVERSAL_ELEMENT__NEXT_ELEMENT;
 
 	/**
-	 * The number of structural features of the '<em>Identity Pipe</em>' class.
+	 * The number of structural features of the '<em>Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int IDENTITY_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 0;
+	int STEP_FEATURE_COUNT = TRAVERSAL_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STEP_OPERATION_COUNT = TRAVERSAL_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.IdentityStepImpl <em>Identity Step</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.IdentityStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIdentityStep()
+	 * @generated
+	 */
+	int IDENTITY_STEP = 9;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IDENTITY_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
+
+	/**
+	 * The number of structural features of the '<em>Identity Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IDENTITY_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -479,26 +479,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IDENTITY_PIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int IDENTITY_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Identity Pipe</em>' class.
+	 * The number of operations of the '<em>Identity Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int IDENTITY_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int IDENTITY_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FillPipeImpl <em>Fill Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FillStepImpl <em>Fill Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FillPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFillPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FillStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFillStep()
 	 * @generated
 	 */
-	int FILL_PIPE = 10;
+	int FILL_STEP = 10;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -507,7 +507,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FILL_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int FILL_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Instruction</b></em>' containment reference.
@@ -516,16 +516,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FILL_PIPE__INSTRUCTION = PIPE_FEATURE_COUNT + 0;
+	int FILL_STEP__INSTRUCTION = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Fill Pipe</em>' class.
+	 * The number of structural features of the '<em>Fill Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FILL_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int FILL_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -534,26 +534,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FILL_PIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int FILL_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Fill Pipe</em>' class.
+	 * The number of operations of the '<em>Fill Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FILL_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int FILL_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StartPipeImpl <em>Start Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StartStepImpl <em>Start Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.StartPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStartPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.StartStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStartStep()
 	 * @generated
 	 */
-	int START_PIPE = 11;
+	int START_STEP = 11;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -562,16 +562,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int START_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int START_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
-	 * The number of structural features of the '<em>Start Pipe</em>' class.
+	 * The number of structural features of the '<em>Start Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int START_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 0;
+	int START_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -580,26 +580,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int START_PIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int START_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Start Pipe</em>' class.
+	 * The number of operations of the '<em>Start Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int START_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int START_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.VerticesPipeImpl <em>Vertices Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.VerticesStepImpl <em>Vertices Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.VerticesPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getVerticesPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.VerticesStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getVerticesStep()
 	 * @generated
 	 */
-	int VERTICES_PIPE = 12;
+	int VERTICES_STEP = 12;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -608,7 +608,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VERTICES_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int VERTICES_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Vertex Id</b></em>' attribute.
@@ -617,16 +617,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VERTICES_PIPE__VERTEX_ID = PIPE_FEATURE_COUNT + 0;
+	int VERTICES_STEP__VERTEX_ID = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Vertices Pipe</em>' class.
+	 * The number of structural features of the '<em>Vertices Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VERTICES_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int VERTICES_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -635,26 +635,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VERTICES_PIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int VERTICES_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Vertices Pipe</em>' class.
+	 * The number of operations of the '<em>Vertices Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VERTICES_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int VERTICES_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.EdgesPipeImpl <em>Edges Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.EdgesStepImpl <em>Edges Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.EdgesPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getEdgesPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.EdgesStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getEdgesStep()
 	 * @generated
 	 */
-	int EDGES_PIPE = 13;
+	int EDGES_STEP = 13;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -663,7 +663,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EDGES_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int EDGES_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Relationship Name</b></em>' attribute.
@@ -672,35 +672,35 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EDGES_PIPE__RELATIONSHIP_NAME = PIPE_FEATURE_COUNT + 0;
+	int EDGES_STEP__RELATIONSHIP_NAME = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Edges Pipe</em>' class.
+	 * The number of structural features of the '<em>Edges Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EDGES_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int EDGES_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Edges Pipe</em>' class.
+	 * The number of operations of the '<em>Edges Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EDGES_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 0;
+	int EDGES_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.PropertyPipeImpl <em>Property Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.PropertyStepImpl <em>Property Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.PropertyPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getPropertyPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.PropertyStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getPropertyStep()
 	 * @generated
 	 */
-	int PROPERTY_PIPE = 14;
+	int PROPERTY_STEP = 14;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -709,7 +709,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int PROPERTY_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -718,16 +718,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_PIPE__NAME = PIPE_FEATURE_COUNT + 0;
+	int PROPERTY_STEP__NAME = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Property Pipe</em>' class.
+	 * The number of structural features of the '<em>Property Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int PROPERTY_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -736,26 +736,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_PIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int PROPERTY_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Property Pipe</em>' class.
+	 * The number of operations of the '<em>Property Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int PROPERTY_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutEPipeImpl <em>Out EPipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutEStepImpl <em>Out EStep</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutEPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutEPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutEStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutEStep()
 	 * @generated
 	 */
-	int OUT_EPIPE = 15;
+	int OUT_ESTEP = 15;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -764,7 +764,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_EPIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int OUT_ESTEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Relationship Name</b></em>' attribute.
@@ -773,16 +773,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_EPIPE__RELATIONSHIP_NAME = PIPE_FEATURE_COUNT + 0;
+	int OUT_ESTEP__RELATIONSHIP_NAME = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Out EPipe</em>' class.
+	 * The number of structural features of the '<em>Out EStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_EPIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int OUT_ESTEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -791,26 +791,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_EPIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int OUT_ESTEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Out EPipe</em>' class.
+	 * The number of operations of the '<em>Out EStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_EPIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int OUT_ESTEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InEPipeImpl <em>In EPipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InEStepImpl <em>In EStep</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InEPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInEPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InEStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInEStep()
 	 * @generated
 	 */
-	int IN_EPIPE = 16;
+	int IN_ESTEP = 16;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -819,7 +819,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IN_EPIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int IN_ESTEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Relationship Name</b></em>' attribute.
@@ -828,16 +828,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IN_EPIPE__RELATIONSHIP_NAME = PIPE_FEATURE_COUNT + 0;
+	int IN_ESTEP__RELATIONSHIP_NAME = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>In EPipe</em>' class.
+	 * The number of structural features of the '<em>In EStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int IN_EPIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int IN_ESTEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -846,26 +846,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IN_EPIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int IN_ESTEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>In EPipe</em>' class.
+	 * The number of operations of the '<em>In EStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int IN_EPIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int IN_ESTEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InVPipeImpl <em>In VPipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InVStepImpl <em>In VStep</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InVPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInVPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InVStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInVStep()
 	 * @generated
 	 */
-	int IN_VPIPE = 17;
+	int IN_VSTEP = 17;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -874,16 +874,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IN_VPIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int IN_VSTEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
-	 * The number of structural features of the '<em>In VPipe</em>' class.
+	 * The number of structural features of the '<em>In VStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int IN_VPIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 0;
+	int IN_VSTEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -892,26 +892,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int IN_VPIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int IN_VSTEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>In VPipe</em>' class.
+	 * The number of operations of the '<em>In VStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int IN_VPIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int IN_VSTEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutVPipeImpl <em>Out VPipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutVStepImpl <em>Out VStep</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutVPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutVPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutVStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutVStep()
 	 * @generated
 	 */
-	int OUT_VPIPE = 18;
+	int OUT_VSTEP = 18;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -920,16 +920,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_VPIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int OUT_VSTEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
-	 * The number of structural features of the '<em>Out VPipe</em>' class.
+	 * The number of structural features of the '<em>Out VStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_VPIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 0;
+	int OUT_VSTEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -938,26 +938,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_VPIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int OUT_VSTEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Out VPipe</em>' class.
+	 * The number of operations of the '<em>Out VStep</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int OUT_VPIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int OUT_VSTEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FilterPipeImpl <em>Filter Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FilterStepImpl <em>Filter Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FilterPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFilterPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FilterStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFilterStep()
 	 * @generated
 	 */
-	int FILTER_PIPE = 19;
+	int FILTER_STEP = 19;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -966,7 +966,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FILTER_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int FILTER_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Closure</b></em>' containment reference.
@@ -975,16 +975,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FILTER_PIPE__CLOSURE = PIPE_FEATURE_COUNT + 0;
+	int FILTER_STEP__CLOSURE = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Filter Pipe</em>' class.
+	 * The number of structural features of the '<em>Filter Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FILTER_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int FILTER_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -993,26 +993,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FILTER_PIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int FILTER_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Filter Pipe</em>' class.
+	 * The number of operations of the '<em>Filter Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FILTER_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int FILTER_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TransformPipeImpl <em>Transform Pipe</em>}' class.
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TransformStepImpl <em>Transform Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TransformPipeImpl
-	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTransformPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TransformStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTransformStep()
 	 * @generated
 	 */
-	int TRANSFORM_PIPE = 20;
+	int TRANSFORM_STEP = 20;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1021,7 +1021,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORM_PIPE__NEXT_ELEMENT = PIPE__NEXT_ELEMENT;
+	int TRANSFORM_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Closure</b></em>' containment reference.
@@ -1030,16 +1030,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORM_PIPE__CLOSURE = PIPE_FEATURE_COUNT + 0;
+	int TRANSFORM_STEP__CLOSURE = STEP_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Transform Pipe</em>' class.
+	 * The number of structural features of the '<em>Transform Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORM_PIPE_FEATURE_COUNT = PIPE_FEATURE_COUNT + 1;
+	int TRANSFORM_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -1048,16 +1048,16 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORM_PIPE___TO_STRING = PIPE_OPERATION_COUNT + 0;
+	int TRANSFORM_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Transform Pipe</em>' class.
+	 * The number of operations of the '<em>Transform Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TRANSFORM_PIPE_OPERATION_COUNT = PIPE_OPERATION_COUNT + 1;
+	int TRANSFORM_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.MethodCallImpl <em>Method Call</em>}' class.
@@ -1076,7 +1076,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METHOD_CALL__NEXT_ELEMENT = CHAIN_ELEMENT__NEXT_ELEMENT;
+	int METHOD_CALL__NEXT_ELEMENT = TRAVERSAL_ELEMENT__NEXT_ELEMENT;
 
 	/**
 	 * The number of structural features of the '<em>Method Call</em>' class.
@@ -1085,7 +1085,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METHOD_CALL_FEATURE_COUNT = CHAIN_ELEMENT_FEATURE_COUNT + 0;
+	int METHOD_CALL_FEATURE_COUNT = TRAVERSAL_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Method Call</em>' class.
@@ -1094,7 +1094,7 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METHOD_CALL_OPERATION_COUNT = CHAIN_ELEMENT_OPERATION_COUNT + 0;
+	int METHOD_CALL_OPERATION_COUNT = TRAVERSAL_ELEMENT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.NextCallImpl <em>Next Call</em>}' class.
@@ -2386,25 +2386,25 @@ public interface GremlinPackage extends EPackage {
 	EOperation getVectorType__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.ChainElement <em>Chain Element</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.TraversalElement <em>Traversal Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Chain Element</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.ChainElement
+	 * @return the meta object for class '<em>Traversal Element</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TraversalElement
 	 * @generated
 	 */
-	EClass getChainElement();
+	EClass getTraversalElement();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.ChainElement#getNextElement <em>Next Element</em>}'.
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.TraversalElement#getNextElement <em>Next Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Next Element</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.ChainElement#getNextElement()
-	 * @see #getChainElement()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TraversalElement#getNextElement()
+	 * @see #getTraversalElement()
 	 * @generated
 	 */
-	EReference getChainElement_NextElement();
+	EReference getTraversalElement_NextElement();
 
 	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.Closure <em>Closure</em>}'.
@@ -2489,332 +2489,332 @@ public interface GremlinPackage extends EPackage {
 	EOperation getVariableAccess__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.Pipe <em>Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.Step <em>Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.Pipe
+	 * @return the meta object for class '<em>Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.Step
 	 * @generated
 	 */
-	EClass getPipe();
+	EClass getStep();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.IdentityPipe <em>Identity Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.IdentityStep <em>Identity Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Identity Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.IdentityPipe
+	 * @return the meta object for class '<em>Identity Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.IdentityStep
 	 * @generated
 	 */
-	EClass getIdentityPipe();
+	EClass getIdentityStep();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.IdentityPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.IdentityStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.IdentityPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.IdentityStep#toString()
 	 * @generated
 	 */
-	EOperation getIdentityPipe__ToString();
+	EOperation getIdentityStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.FillPipe <em>Fill Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.FillStep <em>Fill Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Fill Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FillPipe
+	 * @return the meta object for class '<em>Fill Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FillStep
 	 * @generated
 	 */
-	EClass getFillPipe();
+	EClass getFillStep();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.FillPipe#getInstruction <em>Instruction</em>}'.
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.FillStep#getInstruction <em>Instruction</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Instruction</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FillPipe#getInstruction()
-	 * @see #getFillPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FillStep#getInstruction()
+	 * @see #getFillStep()
 	 * @generated
 	 */
-	EReference getFillPipe_Instruction();
+	EReference getFillStep_Instruction();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.FillPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.FillStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FillPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FillStep#toString()
 	 * @generated
 	 */
-	EOperation getFillPipe__ToString();
+	EOperation getFillStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.StartPipe <em>Start Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.StartStep <em>Start Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Start Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.StartPipe
+	 * @return the meta object for class '<em>Start Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.StartStep
 	 * @generated
 	 */
-	EClass getStartPipe();
+	EClass getStartStep();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.StartPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.StartStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.StartPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.StartStep#toString()
 	 * @generated
 	 */
-	EOperation getStartPipe__ToString();
+	EOperation getStartStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesPipe <em>Vertices Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesStep <em>Vertices Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Vertices Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesPipe
+	 * @return the meta object for class '<em>Vertices Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesStep
 	 * @generated
 	 */
-	EClass getVerticesPipe();
+	EClass getVerticesStep();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesPipe#getVertexId <em>Vertex Id</em>}'.
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesStep#getVertexId <em>Vertex Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Vertex Id</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesPipe#getVertexId()
-	 * @see #getVerticesPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesStep#getVertexId()
+	 * @see #getVerticesStep()
 	 * @generated
 	 */
-	EAttribute getVerticesPipe_VertexId();
+	EAttribute getVerticesStep_VertexId();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesStep#toString()
 	 * @generated
 	 */
-	EOperation getVerticesPipe__ToString();
+	EOperation getVerticesStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesPipe <em>Edges Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesStep <em>Edges Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Edges Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.EdgesPipe
+	 * @return the meta object for class '<em>Edges Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.EdgesStep
 	 * @generated
 	 */
-	EClass getEdgesPipe();
+	EClass getEdgesStep();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesPipe#getRelationshipName <em>Relationship Name</em>}'.
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesStep#getRelationshipName <em>Relationship Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Relationship Name</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.EdgesPipe#getRelationshipName()
-	 * @see #getEdgesPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.EdgesStep#getRelationshipName()
+	 * @see #getEdgesStep()
 	 * @generated
 	 */
-	EAttribute getEdgesPipe_RelationshipName();
+	EAttribute getEdgesStep_RelationshipName();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyPipe <em>Property Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyStep <em>Property Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Property Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyPipe
+	 * @return the meta object for class '<em>Property Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyStep
 	 * @generated
 	 */
-	EClass getPropertyPipe();
+	EClass getPropertyStep();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyPipe#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyStep#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyPipe#getName()
-	 * @see #getPropertyPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyStep#getName()
+	 * @see #getPropertyStep()
 	 * @generated
 	 */
-	EAttribute getPropertyPipe_Name();
+	EAttribute getPropertyStep_Name();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyStep#toString()
 	 * @generated
 	 */
-	EOperation getPropertyPipe__ToString();
+	EOperation getPropertyStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.OutEPipe <em>Out EPipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.OutEStep <em>Out EStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Out EPipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEPipe
+	 * @return the meta object for class '<em>Out EStep</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEStep
 	 * @generated
 	 */
-	EClass getOutEPipe();
+	EClass getOutEStep();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.OutEPipe#getRelationshipName <em>Relationship Name</em>}'.
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.OutEStep#getRelationshipName <em>Relationship Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Relationship Name</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEPipe#getRelationshipName()
-	 * @see #getOutEPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEStep#getRelationshipName()
+	 * @see #getOutEStep()
 	 * @generated
 	 */
-	EAttribute getOutEPipe_RelationshipName();
+	EAttribute getOutEStep_RelationshipName();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.OutEPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.OutEStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEStep#toString()
 	 * @generated
 	 */
-	EOperation getOutEPipe__ToString();
+	EOperation getOutEStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.InEPipe <em>In EPipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.InEStep <em>In EStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>In EPipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.InEPipe
+	 * @return the meta object for class '<em>In EStep</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InEStep
 	 * @generated
 	 */
-	EClass getInEPipe();
+	EClass getInEStep();
 
 	/**
-	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.InEPipe#getRelationshipName <em>Relationship Name</em>}'.
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.InEStep#getRelationshipName <em>Relationship Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Relationship Name</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.InEPipe#getRelationshipName()
-	 * @see #getInEPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InEStep#getRelationshipName()
+	 * @see #getInEStep()
 	 * @generated
 	 */
-	EAttribute getInEPipe_RelationshipName();
+	EAttribute getInEStep_RelationshipName();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.InEPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.InEStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.InEPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InEStep#toString()
 	 * @generated
 	 */
-	EOperation getInEPipe__ToString();
+	EOperation getInEStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.InVPipe <em>In VPipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.InVStep <em>In VStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>In VPipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.InVPipe
+	 * @return the meta object for class '<em>In VStep</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InVStep
 	 * @generated
 	 */
-	EClass getInVPipe();
+	EClass getInVStep();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.InVPipe#toString() <em>To String</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.InVPipe#toString()
-	 * @generated
-	 */
-	EOperation getInVPipe__ToString();
-
-	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.OutVPipe <em>Out VPipe</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Out VPipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.OutVPipe
-	 * @generated
-	 */
-	EClass getOutVPipe();
-
-	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.OutVPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.InVStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.OutVPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InVStep#toString()
 	 * @generated
 	 */
-	EOperation getOutVPipe__ToString();
+	EOperation getInVStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.FilterPipe <em>Filter Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.OutVStep <em>Out VStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Filter Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterPipe
+	 * @return the meta object for class '<em>Out VStep</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.OutVStep
 	 * @generated
 	 */
-	EClass getFilterPipe();
+	EClass getOutVStep();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.FilterPipe#getClosure <em>Closure</em>}'.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.OutVStep#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.OutVStep#toString()
+	 * @generated
+	 */
+	EOperation getOutVStep__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.FilterStep <em>Filter Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Filter Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterStep
+	 * @generated
+	 */
+	EClass getFilterStep();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.FilterStep#getClosure <em>Closure</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Closure</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterPipe#getClosure()
-	 * @see #getFilterPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterStep#getClosure()
+	 * @see #getFilterStep()
 	 * @generated
 	 */
-	EReference getFilterPipe_Closure();
+	EReference getFilterStep_Closure();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.FilterPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.FilterStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterStep#toString()
 	 * @generated
 	 */
-	EOperation getFilterPipe__ToString();
+	EOperation getFilterStep__ToString();
 
 	/**
-	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.TransformPipe <em>Transform Pipe</em>}'.
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.TransformStep <em>Transform Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Transform Pipe</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformPipe
+	 * @return the meta object for class '<em>Transform Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformStep
 	 * @generated
 	 */
-	EClass getTransformPipe();
+	EClass getTransformStep();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.TransformPipe#getClosure <em>Closure</em>}'.
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.TransformStep#getClosure <em>Closure</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Closure</em>'.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformPipe#getClosure()
-	 * @see #getTransformPipe()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformStep#getClosure()
+	 * @see #getTransformStep()
 	 * @generated
 	 */
-	EReference getTransformPipe_Closure();
+	EReference getTransformStep_Closure();
 
 	/**
-	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.TransformPipe#toString() <em>To String</em>}' operation.
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.TransformStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the '<em>To String</em>' operation.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformPipe#toString()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformStep#toString()
 	 * @generated
 	 */
-	EOperation getTransformPipe__ToString();
+	EOperation getTransformStep__ToString();
 
 	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.MethodCall <em>Method Call</em>}'.
@@ -3498,14 +3498,14 @@ public interface GremlinPackage extends EPackage {
 		EOperation VECTOR_TYPE___TO_STRING = eINSTANCE.getVectorType__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ChainElementImpl <em>Chain Element</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TraversalElementImpl <em>Traversal Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ChainElementImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getChainElement()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TraversalElementImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTraversalElement()
 		 * @generated
 		 */
-		EClass CHAIN_ELEMENT = eINSTANCE.getChainElement();
+		EClass TRAVERSAL_ELEMENT = eINSTANCE.getTraversalElement();
 
 		/**
 		 * The meta object literal for the '<em><b>Next Element</b></em>' containment reference feature.
@@ -3513,7 +3513,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference CHAIN_ELEMENT__NEXT_ELEMENT = eINSTANCE.getChainElement_NextElement();
+		EReference TRAVERSAL_ELEMENT__NEXT_ELEMENT = eINSTANCE.getTraversalElement_NextElement();
 
 		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ClosureImpl <em>Closure</em>}' class.
@@ -3586,24 +3586,24 @@ public interface GremlinPackage extends EPackage {
 		EOperation VARIABLE_ACCESS___TO_STRING = eINSTANCE.getVariableAccess__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.PipeImpl <em>Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StepImpl <em>Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.PipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.StepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStep()
 		 * @generated
 		 */
-		EClass PIPE = eINSTANCE.getPipe();
+		EClass STEP = eINSTANCE.getStep();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.IdentityPipeImpl <em>Identity Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.IdentityStepImpl <em>Identity Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.IdentityPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIdentityPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.IdentityStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIdentityStep()
 		 * @generated
 		 */
-		EClass IDENTITY_PIPE = eINSTANCE.getIdentityPipe();
+		EClass IDENTITY_STEP = eINSTANCE.getIdentityStep();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3611,17 +3611,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation IDENTITY_PIPE___TO_STRING = eINSTANCE.getIdentityPipe__ToString();
+		EOperation IDENTITY_STEP___TO_STRING = eINSTANCE.getIdentityStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FillPipeImpl <em>Fill Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FillStepImpl <em>Fill Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FillPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFillPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FillStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFillStep()
 		 * @generated
 		 */
-		EClass FILL_PIPE = eINSTANCE.getFillPipe();
+		EClass FILL_STEP = eINSTANCE.getFillStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Instruction</b></em>' containment reference feature.
@@ -3629,7 +3629,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference FILL_PIPE__INSTRUCTION = eINSTANCE.getFillPipe_Instruction();
+		EReference FILL_STEP__INSTRUCTION = eINSTANCE.getFillStep_Instruction();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3637,17 +3637,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation FILL_PIPE___TO_STRING = eINSTANCE.getFillPipe__ToString();
+		EOperation FILL_STEP___TO_STRING = eINSTANCE.getFillStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StartPipeImpl <em>Start Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StartStepImpl <em>Start Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.StartPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStartPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.StartStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStartStep()
 		 * @generated
 		 */
-		EClass START_PIPE = eINSTANCE.getStartPipe();
+		EClass START_STEP = eINSTANCE.getStartStep();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3655,17 +3655,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation START_PIPE___TO_STRING = eINSTANCE.getStartPipe__ToString();
+		EOperation START_STEP___TO_STRING = eINSTANCE.getStartStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.VerticesPipeImpl <em>Vertices Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.VerticesStepImpl <em>Vertices Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.VerticesPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getVerticesPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.VerticesStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getVerticesStep()
 		 * @generated
 		 */
-		EClass VERTICES_PIPE = eINSTANCE.getVerticesPipe();
+		EClass VERTICES_STEP = eINSTANCE.getVerticesStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Vertex Id</b></em>' attribute feature.
@@ -3673,7 +3673,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute VERTICES_PIPE__VERTEX_ID = eINSTANCE.getVerticesPipe_VertexId();
+		EAttribute VERTICES_STEP__VERTEX_ID = eINSTANCE.getVerticesStep_VertexId();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3681,17 +3681,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation VERTICES_PIPE___TO_STRING = eINSTANCE.getVerticesPipe__ToString();
+		EOperation VERTICES_STEP___TO_STRING = eINSTANCE.getVerticesStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.EdgesPipeImpl <em>Edges Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.EdgesStepImpl <em>Edges Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.EdgesPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getEdgesPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.EdgesStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getEdgesStep()
 		 * @generated
 		 */
-		EClass EDGES_PIPE = eINSTANCE.getEdgesPipe();
+		EClass EDGES_STEP = eINSTANCE.getEdgesStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Relationship Name</b></em>' attribute feature.
@@ -3699,17 +3699,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute EDGES_PIPE__RELATIONSHIP_NAME = eINSTANCE.getEdgesPipe_RelationshipName();
+		EAttribute EDGES_STEP__RELATIONSHIP_NAME = eINSTANCE.getEdgesStep_RelationshipName();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.PropertyPipeImpl <em>Property Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.PropertyStepImpl <em>Property Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.PropertyPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getPropertyPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.PropertyStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getPropertyStep()
 		 * @generated
 		 */
-		EClass PROPERTY_PIPE = eINSTANCE.getPropertyPipe();
+		EClass PROPERTY_STEP = eINSTANCE.getPropertyStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -3717,7 +3717,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PROPERTY_PIPE__NAME = eINSTANCE.getPropertyPipe_Name();
+		EAttribute PROPERTY_STEP__NAME = eINSTANCE.getPropertyStep_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3725,17 +3725,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation PROPERTY_PIPE___TO_STRING = eINSTANCE.getPropertyPipe__ToString();
+		EOperation PROPERTY_STEP___TO_STRING = eINSTANCE.getPropertyStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutEPipeImpl <em>Out EPipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutEStepImpl <em>Out EStep</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutEPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutEPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutEStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutEStep()
 		 * @generated
 		 */
-		EClass OUT_EPIPE = eINSTANCE.getOutEPipe();
+		EClass OUT_ESTEP = eINSTANCE.getOutEStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Relationship Name</b></em>' attribute feature.
@@ -3743,7 +3743,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute OUT_EPIPE__RELATIONSHIP_NAME = eINSTANCE.getOutEPipe_RelationshipName();
+		EAttribute OUT_ESTEP__RELATIONSHIP_NAME = eINSTANCE.getOutEStep_RelationshipName();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3751,17 +3751,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation OUT_EPIPE___TO_STRING = eINSTANCE.getOutEPipe__ToString();
+		EOperation OUT_ESTEP___TO_STRING = eINSTANCE.getOutEStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InEPipeImpl <em>In EPipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InEStepImpl <em>In EStep</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InEPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInEPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InEStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInEStep()
 		 * @generated
 		 */
-		EClass IN_EPIPE = eINSTANCE.getInEPipe();
+		EClass IN_ESTEP = eINSTANCE.getInEStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Relationship Name</b></em>' attribute feature.
@@ -3769,7 +3769,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute IN_EPIPE__RELATIONSHIP_NAME = eINSTANCE.getInEPipe_RelationshipName();
+		EAttribute IN_ESTEP__RELATIONSHIP_NAME = eINSTANCE.getInEStep_RelationshipName();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3777,35 +3777,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation IN_EPIPE___TO_STRING = eINSTANCE.getInEPipe__ToString();
+		EOperation IN_ESTEP___TO_STRING = eINSTANCE.getInEStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InVPipeImpl <em>In VPipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InVStepImpl <em>In VStep</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InVPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInVPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InVStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInVStep()
 		 * @generated
 		 */
-		EClass IN_VPIPE = eINSTANCE.getInVPipe();
-
-		/**
-		 * The meta object literal for the '<em><b>To String</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation IN_VPIPE___TO_STRING = eINSTANCE.getInVPipe__ToString();
-
-		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutVPipeImpl <em>Out VPipe</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutVPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutVPipe()
-		 * @generated
-		 */
-		EClass OUT_VPIPE = eINSTANCE.getOutVPipe();
+		EClass IN_VSTEP = eINSTANCE.getInVStep();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3813,17 +3795,35 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation OUT_VPIPE___TO_STRING = eINSTANCE.getOutVPipe__ToString();
+		EOperation IN_VSTEP___TO_STRING = eINSTANCE.getInVStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FilterPipeImpl <em>Filter Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.OutVStepImpl <em>Out VStep</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FilterPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFilterPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.OutVStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOutVStep()
 		 * @generated
 		 */
-		EClass FILTER_PIPE = eINSTANCE.getFilterPipe();
+		EClass OUT_VSTEP = eINSTANCE.getOutVStep();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation OUT_VSTEP___TO_STRING = eINSTANCE.getOutVStep__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.FilterStepImpl <em>Filter Step</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.FilterStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFilterStep()
+		 * @generated
+		 */
+		EClass FILTER_STEP = eINSTANCE.getFilterStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Closure</b></em>' containment reference feature.
@@ -3831,7 +3831,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference FILTER_PIPE__CLOSURE = eINSTANCE.getFilterPipe_Closure();
+		EReference FILTER_STEP__CLOSURE = eINSTANCE.getFilterStep_Closure();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3839,17 +3839,17 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation FILTER_PIPE___TO_STRING = eINSTANCE.getFilterPipe__ToString();
+		EOperation FILTER_STEP___TO_STRING = eINSTANCE.getFilterStep__ToString();
 
 		/**
-		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TransformPipeImpl <em>Transform Pipe</em>}' class.
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TransformStepImpl <em>Transform Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TransformPipeImpl
-		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTransformPipe()
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TransformStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTransformStep()
 		 * @generated
 		 */
-		EClass TRANSFORM_PIPE = eINSTANCE.getTransformPipe();
+		EClass TRANSFORM_STEP = eINSTANCE.getTransformStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Closure</b></em>' containment reference feature.
@@ -3857,7 +3857,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference TRANSFORM_PIPE__CLOSURE = eINSTANCE.getTransformPipe_Closure();
+		EReference TRANSFORM_STEP__CLOSURE = eINSTANCE.getTransformStep_Closure();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3865,7 +3865,7 @@ public interface GremlinPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation TRANSFORM_PIPE___TO_STRING = eINSTANCE.getTransformPipe__ToString();
+		EOperation TRANSFORM_STEP___TO_STRING = eINSTANCE.getTransformStep__ToString();
 
 		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.MethodCallImpl <em>Method Call</em>}' class.

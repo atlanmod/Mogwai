@@ -19,7 +19,7 @@ package fr.inria.atlanmod.mogwai.gremlin;
  * @model
  * @generated
  */
-public interface VariableAccess extends ChainElement {
+public interface VariableAccess extends TraversalElement {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

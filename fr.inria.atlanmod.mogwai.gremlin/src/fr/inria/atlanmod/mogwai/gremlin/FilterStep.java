@@ -5,21 +5,21 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Transform Pipe</b></em>'.
+ * A representation of the model object '<em><b>Filter Step</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.TransformPipe#getClosure <em>Closure</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.FilterStep#getClosure <em>Closure</em>}</li>
  * </ul>
  * </p>
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getTransformPipe()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getFilterStep()
  * @model
  * @generated
  */
-public interface TransformPipe extends Pipe {
+public interface FilterStep extends Step {
 	/**
 	 * Returns the value of the '<em><b>Closure</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -30,14 +30,14 @@ public interface TransformPipe extends Pipe {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Closure</em>' containment reference.
 	 * @see #setClosure(Closure)
-	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getTransformPipe_Closure()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getFilterStep_Closure()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	Closure getClosure();
 
 	/**
-	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.TransformPipe#getClosure <em>Closure</em>}' containment reference.
+	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.FilterStep#getClosure <em>Closure</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Closure</em>' containment reference.
@@ -49,9 +49,9 @@ public interface TransformPipe extends Pipe {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(\"transform\");\nres.append(getClosure().toString());\nif(getNextElement() != null) {\n\tres.append(\".\").append(getNextElement().toString());\n}\nreturn res.toString();'"
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(\"filter\");\nres.append(getClosure().toString());\nif(getNextElement() != null) {\n\tres.append(\".\").append(getNextElement().toString());\n}\nreturn res.toString();'"
 	 * @generated
 	 */
 	String toString();
 
-} // TransformPipe
+} // FilterStep

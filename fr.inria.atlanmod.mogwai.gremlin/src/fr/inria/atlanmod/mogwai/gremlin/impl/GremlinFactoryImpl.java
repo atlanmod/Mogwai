@@ -62,18 +62,18 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.CLOSURE: return createClosure();
 			case GremlinPackage.CLOSURE_IT: return createClosureIt();
 			case GremlinPackage.VARIABLE_ACCESS: return createVariableAccess();
-			case GremlinPackage.IDENTITY_PIPE: return createIdentityPipe();
-			case GremlinPackage.FILL_PIPE: return createFillPipe();
-			case GremlinPackage.START_PIPE: return createStartPipe();
-			case GremlinPackage.VERTICES_PIPE: return createVerticesPipe();
-			case GremlinPackage.EDGES_PIPE: return createEdgesPipe();
-			case GremlinPackage.PROPERTY_PIPE: return createPropertyPipe();
-			case GremlinPackage.OUT_EPIPE: return createOutEPipe();
-			case GremlinPackage.IN_EPIPE: return createInEPipe();
-			case GremlinPackage.IN_VPIPE: return createInVPipe();
-			case GremlinPackage.OUT_VPIPE: return createOutVPipe();
-			case GremlinPackage.FILTER_PIPE: return createFilterPipe();
-			case GremlinPackage.TRANSFORM_PIPE: return createTransformPipe();
+			case GremlinPackage.IDENTITY_STEP: return createIdentityStep();
+			case GremlinPackage.FILL_STEP: return createFillStep();
+			case GremlinPackage.START_STEP: return createStartStep();
+			case GremlinPackage.VERTICES_STEP: return createVerticesStep();
+			case GremlinPackage.EDGES_STEP: return createEdgesStep();
+			case GremlinPackage.PROPERTY_STEP: return createPropertyStep();
+			case GremlinPackage.OUT_ESTEP: return createOutEStep();
+			case GremlinPackage.IN_ESTEP: return createInEStep();
+			case GremlinPackage.IN_VSTEP: return createInVStep();
+			case GremlinPackage.OUT_VSTEP: return createOutVStep();
+			case GremlinPackage.FILTER_STEP: return createFilterStep();
+			case GremlinPackage.TRANSFORM_STEP: return createTransformStep();
 			case GremlinPackage.NEXT_CALL: return createNextCall();
 			case GremlinPackage.HAS_NEXT_CALL: return createHasNextCall();
 			case GremlinPackage.INDEX_CALL: return createIndexCall();
@@ -168,9 +168,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IdentityPipe createIdentityPipe() {
-		IdentityPipeImpl identityPipe = new IdentityPipeImpl();
-		return identityPipe;
+	public IdentityStep createIdentityStep() {
+		IdentityStepImpl identityStep = new IdentityStepImpl();
+		return identityStep;
 	}
 
 	/**
@@ -178,9 +178,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FillPipe createFillPipe() {
-		FillPipeImpl fillPipe = new FillPipeImpl();
-		return fillPipe;
+	public FillStep createFillStep() {
+		FillStepImpl fillStep = new FillStepImpl();
+		return fillStep;
 	}
 
 	/**
@@ -188,9 +188,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StartPipe createStartPipe() {
-		StartPipeImpl startPipe = new StartPipeImpl();
-		return startPipe;
+	public StartStep createStartStep() {
+		StartStepImpl startStep = new StartStepImpl();
+		return startStep;
 	}
 
 	/**
@@ -198,9 +198,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VerticesPipe createVerticesPipe() {
-		VerticesPipeImpl verticesPipe = new VerticesPipeImpl();
-		return verticesPipe;
+	public VerticesStep createVerticesStep() {
+		VerticesStepImpl verticesStep = new VerticesStepImpl();
+		return verticesStep;
 	}
 
 	/**
@@ -208,9 +208,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EdgesPipe createEdgesPipe() {
-		EdgesPipeImpl edgesPipe = new EdgesPipeImpl();
-		return edgesPipe;
+	public EdgesStep createEdgesStep() {
+		EdgesStepImpl edgesStep = new EdgesStepImpl();
+		return edgesStep;
 	}
 
 	/**
@@ -218,9 +218,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PropertyPipe createPropertyPipe() {
-		PropertyPipeImpl propertyPipe = new PropertyPipeImpl();
-		return propertyPipe;
+	public PropertyStep createPropertyStep() {
+		PropertyStepImpl propertyStep = new PropertyStepImpl();
+		return propertyStep;
 	}
 
 	/**
@@ -228,9 +228,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OutEPipe createOutEPipe() {
-		OutEPipeImpl outEPipe = new OutEPipeImpl();
-		return outEPipe;
+	public OutEStep createOutEStep() {
+		OutEStepImpl outEStep = new OutEStepImpl();
+		return outEStep;
 	}
 
 	/**
@@ -238,9 +238,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InEPipe createInEPipe() {
-		InEPipeImpl inEPipe = new InEPipeImpl();
-		return inEPipe;
+	public InEStep createInEStep() {
+		InEStepImpl inEStep = new InEStepImpl();
+		return inEStep;
 	}
 
 	/**
@@ -248,9 +248,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InVPipe createInVPipe() {
-		InVPipeImpl inVPipe = new InVPipeImpl();
-		return inVPipe;
+	public InVStep createInVStep() {
+		InVStepImpl inVStep = new InVStepImpl();
+		return inVStep;
 	}
 
 	/**
@@ -258,9 +258,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OutVPipe createOutVPipe() {
-		OutVPipeImpl outVPipe = new OutVPipeImpl();
-		return outVPipe;
+	public OutVStep createOutVStep() {
+		OutVStepImpl outVStep = new OutVStepImpl();
+		return outVStep;
 	}
 
 	/**
@@ -268,9 +268,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FilterPipe createFilterPipe() {
-		FilterPipeImpl filterPipe = new FilterPipeImpl();
-		return filterPipe;
+	public FilterStep createFilterStep() {
+		FilterStepImpl filterStep = new FilterStepImpl();
+		return filterStep;
 	}
 
 	/**
@@ -278,9 +278,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TransformPipe createTransformPipe() {
-		TransformPipeImpl transformPipe = new TransformPipeImpl();
-		return transformPipe;
+	public TransformStep createTransformStep() {
+		TransformStepImpl transformStep = new TransformStepImpl();
+		return transformStep;
 	}
 
 	/**

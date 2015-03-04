@@ -84,8 +84,8 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createVectorTypeAdapter();
 			}
 			@Override
-			public Adapter caseChainElement(ChainElement object) {
-				return createChainElementAdapter();
+			public Adapter caseTraversalElement(TraversalElement object) {
+				return createTraversalElementAdapter();
 			}
 			@Override
 			public Adapter caseClosure(Closure object) {
@@ -100,56 +100,56 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createVariableAccessAdapter();
 			}
 			@Override
-			public Adapter casePipe(Pipe object) {
-				return createPipeAdapter();
+			public Adapter caseStep(Step object) {
+				return createStepAdapter();
 			}
 			@Override
-			public Adapter caseIdentityPipe(IdentityPipe object) {
-				return createIdentityPipeAdapter();
+			public Adapter caseIdentityStep(IdentityStep object) {
+				return createIdentityStepAdapter();
 			}
 			@Override
-			public Adapter caseFillPipe(FillPipe object) {
-				return createFillPipeAdapter();
+			public Adapter caseFillStep(FillStep object) {
+				return createFillStepAdapter();
 			}
 			@Override
-			public Adapter caseStartPipe(StartPipe object) {
-				return createStartPipeAdapter();
+			public Adapter caseStartStep(StartStep object) {
+				return createStartStepAdapter();
 			}
 			@Override
-			public Adapter caseVerticesPipe(VerticesPipe object) {
-				return createVerticesPipeAdapter();
+			public Adapter caseVerticesStep(VerticesStep object) {
+				return createVerticesStepAdapter();
 			}
 			@Override
-			public Adapter caseEdgesPipe(EdgesPipe object) {
-				return createEdgesPipeAdapter();
+			public Adapter caseEdgesStep(EdgesStep object) {
+				return createEdgesStepAdapter();
 			}
 			@Override
-			public Adapter casePropertyPipe(PropertyPipe object) {
-				return createPropertyPipeAdapter();
+			public Adapter casePropertyStep(PropertyStep object) {
+				return createPropertyStepAdapter();
 			}
 			@Override
-			public Adapter caseOutEPipe(OutEPipe object) {
-				return createOutEPipeAdapter();
+			public Adapter caseOutEStep(OutEStep object) {
+				return createOutEStepAdapter();
 			}
 			@Override
-			public Adapter caseInEPipe(InEPipe object) {
-				return createInEPipeAdapter();
+			public Adapter caseInEStep(InEStep object) {
+				return createInEStepAdapter();
 			}
 			@Override
-			public Adapter caseInVPipe(InVPipe object) {
-				return createInVPipeAdapter();
+			public Adapter caseInVStep(InVStep object) {
+				return createInVStepAdapter();
 			}
 			@Override
-			public Adapter caseOutVPipe(OutVPipe object) {
-				return createOutVPipeAdapter();
+			public Adapter caseOutVStep(OutVStep object) {
+				return createOutVStepAdapter();
 			}
 			@Override
-			public Adapter caseFilterPipe(FilterPipe object) {
-				return createFilterPipeAdapter();
+			public Adapter caseFilterStep(FilterStep object) {
+				return createFilterStepAdapter();
 			}
 			@Override
-			public Adapter caseTransformPipe(TransformPipe object) {
-				return createTransformPipeAdapter();
+			public Adapter caseTransformStep(TransformStep object) {
+				return createTransformStepAdapter();
 			}
 			@Override
 			public Adapter caseMethodCall(MethodCall object) {
@@ -328,16 +328,16 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ChainElement <em>Chain Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.TraversalElement <em>Traversal Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.ChainElement
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TraversalElement
 	 * @generated
 	 */
-	public Adapter createChainElementAdapter() {
+	public Adapter createTraversalElementAdapter() {
 		return null;
 	}
 
@@ -384,184 +384,184 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.Pipe <em>Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.Step <em>Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.Pipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.Step
 	 * @generated
 	 */
-	public Adapter createPipeAdapter() {
+	public Adapter createStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.IdentityPipe <em>Identity Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.IdentityStep <em>Identity Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.IdentityPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.IdentityStep
 	 * @generated
 	 */
-	public Adapter createIdentityPipeAdapter() {
+	public Adapter createIdentityStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.FillPipe <em>Fill Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.FillStep <em>Fill Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FillPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FillStep
 	 * @generated
 	 */
-	public Adapter createFillPipeAdapter() {
+	public Adapter createFillStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.StartPipe <em>Start Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.StartStep <em>Start Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.StartPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.StartStep
 	 * @generated
 	 */
-	public Adapter createStartPipeAdapter() {
+	public Adapter createStartStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesPipe <em>Vertices Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.VerticesStep <em>Vertices Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.VerticesStep
 	 * @generated
 	 */
-	public Adapter createVerticesPipeAdapter() {
+	public Adapter createVerticesStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesPipe <em>Edges Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.EdgesStep <em>Edges Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.EdgesPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.EdgesStep
 	 * @generated
 	 */
-	public Adapter createEdgesPipeAdapter() {
+	public Adapter createEdgesStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyPipe <em>Property Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyStep <em>Property Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyStep
 	 * @generated
 	 */
-	public Adapter createPropertyPipeAdapter() {
+	public Adapter createPropertyStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.OutEPipe <em>Out EPipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.OutEStep <em>Out EStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.OutEStep
 	 * @generated
 	 */
-	public Adapter createOutEPipeAdapter() {
+	public Adapter createOutEStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.InEPipe <em>In EPipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.InEStep <em>In EStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.InEPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InEStep
 	 * @generated
 	 */
-	public Adapter createInEPipeAdapter() {
+	public Adapter createInEStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.InVPipe <em>In VPipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.InVStep <em>In VStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.InVPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InVStep
 	 * @generated
 	 */
-	public Adapter createInVPipeAdapter() {
+	public Adapter createInVStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.OutVPipe <em>Out VPipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.OutVStep <em>Out VStep</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.OutVPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.OutVStep
 	 * @generated
 	 */
-	public Adapter createOutVPipeAdapter() {
+	public Adapter createOutVStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.FilterPipe <em>Filter Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.FilterStep <em>Filter Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.FilterStep
 	 * @generated
 	 */
-	public Adapter createFilterPipeAdapter() {
+	public Adapter createFilterStepAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.TransformPipe <em>Transform Pipe</em>}'.
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.TransformStep <em>Transform Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformPipe
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TransformStep
 	 * @generated
 	 */
-	public Adapter createTransformPipeAdapter() {
+	public Adapter createTransformStepAdapter() {
 		return null;
 	}
 

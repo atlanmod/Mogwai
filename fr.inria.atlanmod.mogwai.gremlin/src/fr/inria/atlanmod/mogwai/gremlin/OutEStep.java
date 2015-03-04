@@ -5,21 +5,21 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>In EPipe</b></em>'.
+ * A representation of the model object '<em><b>Out EStep</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.InEPipe#getRelationshipName <em>Relationship Name</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.OutEStep#getRelationshipName <em>Relationship Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getInEPipe()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getOutEStep()
  * @model
  * @generated
  */
-public interface InEPipe extends Pipe {
+public interface OutEStep extends Step {
 	/**
 	 * Returns the value of the '<em><b>Relationship Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -30,14 +30,14 @@ public interface InEPipe extends Pipe {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Relationship Name</em>' attribute.
 	 * @see #setRelationshipName(String)
-	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getInEPipe_RelationshipName()
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getOutEStep_RelationshipName()
 	 * @model
 	 * @generated
 	 */
 	String getRelationshipName();
 
 	/**
-	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.InEPipe#getRelationshipName <em>Relationship Name</em>}' attribute.
+	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.OutEStep#getRelationshipName <em>Relationship Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Relationship Name</em>' attribute.
@@ -49,9 +49,9 @@ public interface InEPipe extends Pipe {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(\"inE\");\nif(getRelationshipName() != null) {\n\tres.append(\"(\\\"\"+getRelationshipName()+\"\\\")\");\n}\nif(getNextElement() != null) {\n\tres.append(\".\").append(getNextElement().toString());\n}\nreturn res.toString();'"
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(\"outE\");\nif(getRelationshipName() != null) {\n\tres.append(\"(\\\"\").append(getRelationshipName()).append(\"\\\")\");\n}\nif(getNextElement() != null) {\n\tres.append(\".\").append(getNextElement().toString());\n}\nreturn res.toString();'"
 	 * @generated
 	 */
 	String toString();
 
-} // InEPipe
+} // OutEStep

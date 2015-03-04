@@ -5,21 +5,21 @@ package fr.inria.atlanmod.mogwai.gremlin;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Chain Element</b></em>'.
+ * A representation of the model object '<em><b>Traversal Element</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.ChainElement#getNextElement <em>Next Element</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.TraversalElement#getNextElement <em>Next Element</em>}</li>
  * </ul>
  * </p>
  *
- * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getChainElement()
+ * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getTraversalElement()
  * @model abstract="true"
  * @generated
  */
-public interface ChainElement extends Instruction {
+public interface TraversalElement extends Instruction {
 	/**
 	 * Returns the value of the '<em><b>Next Element</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -29,21 +29,21 @@ public interface ChainElement extends Instruction {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Next Element</em>' containment reference.
-	 * @see #setNextElement(ChainElement)
-	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getChainElement_NextElement()
+	 * @see #setNextElement(TraversalElement)
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getTraversalElement_NextElement()
 	 * @model containment="true"
 	 * @generated
 	 */
-	ChainElement getNextElement();
+	TraversalElement getNextElement();
 
 	/**
-	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.ChainElement#getNextElement <em>Next Element</em>}' containment reference.
+	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.TraversalElement#getNextElement <em>Next Element</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Next Element</em>' containment reference.
 	 * @see #getNextElement()
 	 * @generated
 	 */
-	void setNextElement(ChainElement value);
+	void setNextElement(TraversalElement value);
 
-} // ChainElement
+} // TraversalElement

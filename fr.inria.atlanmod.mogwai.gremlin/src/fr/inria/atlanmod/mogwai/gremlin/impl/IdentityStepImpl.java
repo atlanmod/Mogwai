@@ -3,7 +3,7 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.InVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.IdentityStep;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -13,20 +13,20 @@ import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>In VPipe</b></em>'.
+ * An implementation of the model object '<em><b>Identity Step</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * </p>
  *
  * @generated
  */
-public class InVPipeImpl extends PipeImpl implements InVPipe {
+public class IdentityStepImpl extends StepImpl implements IdentityStep {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected InVPipeImpl() {
+	protected IdentityStepImpl() {
 		super();
 	}
 
@@ -37,7 +37,7 @@ public class InVPipeImpl extends PipeImpl implements InVPipe {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.IN_VPIPE;
+		return GremlinPackage.Literals.IDENTITY_STEP;
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class InVPipeImpl extends PipeImpl implements InVPipe {
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		res.append("inV");
+		res.append("_()");
 		if(getNextElement() != null) {
 			res.append(".").append(getNextElement().toString());
 		}
@@ -62,10 +62,10 @@ public class InVPipeImpl extends PipeImpl implements InVPipe {
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case GremlinPackage.IN_VPIPE___TO_STRING:
+			case GremlinPackage.IDENTITY_STEP___TO_STRING:
 				return toString();
 		}
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //InVPipeImpl
+} //IdentityStepImpl
