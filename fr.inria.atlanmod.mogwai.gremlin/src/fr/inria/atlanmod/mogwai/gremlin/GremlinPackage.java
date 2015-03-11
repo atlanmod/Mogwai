@@ -197,13 +197,22 @@ public interface GremlinPackage extends EPackage {
 	int VECTOR_TYPE = 3;
 
 	/**
+	 * The feature id for the '<em><b>Values</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VECTOR_TYPE__VALUES = INSTRUCTION_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Vector Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VECTOR_TYPE_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 0;
+	int VECTOR_TYPE_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -1005,6 +1014,116 @@ public interface GremlinPackage extends EPackage {
 	int FILTER_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.RetainStepImpl <em>Retain Step</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.RetainStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getRetainStep()
+	 * @generated
+	 */
+	int RETAIN_STEP = 20;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RETAIN_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Collection</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RETAIN_STEP__COLLECTION = STEP_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Retain Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RETAIN_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RETAIN_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Retain Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RETAIN_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ExceptStepImpl <em>Except Step</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ExceptStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getExceptStep()
+	 * @generated
+	 */
+	int EXCEPT_STEP = 21;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXCEPT_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Collection</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXCEPT_STEP__COLLECTION = STEP_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Except Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXCEPT_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXCEPT_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Except Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXCEPT_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TransformStepImpl <em>Transform Step</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1012,7 +1131,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTransformStep()
 	 * @generated
 	 */
-	int TRANSFORM_STEP = 20;
+	int TRANSFORM_STEP = 22;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1060,6 +1179,107 @@ public interface GremlinPackage extends EPackage {
 	int TRANSFORM_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.GatherStepImpl <em>Gather Step</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GatherStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getGatherStep()
+	 * @generated
+	 */
+	int GATHER_STEP = 23;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GATHER_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Closure</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GATHER_STEP__CLOSURE = STEP_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Gather Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GATHER_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GATHER_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Gather Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GATHER_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ScatterStepImpl <em>Scatter Step</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ScatterStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getScatterStep()
+	 * @generated
+	 */
+	int SCATTER_STEP = 24;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCATTER_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
+
+	/**
+	 * The number of structural features of the '<em>Scatter Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCATTER_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCATTER_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Scatter Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCATTER_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.MethodCallImpl <em>Method Call</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1067,7 +1287,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getMethodCall()
 	 * @generated
 	 */
-	int METHOD_CALL = 21;
+	int METHOD_CALL = 25;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1104,7 +1324,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getNextCall()
 	 * @generated
 	 */
-	int NEXT_CALL = 22;
+	int NEXT_CALL = 26;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1150,7 +1370,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getHasNextCall()
 	 * @generated
 	 */
-	int HAS_NEXT_CALL = 23;
+	int HAS_NEXT_CALL = 27;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1196,7 +1416,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIndexCall()
 	 * @generated
 	 */
-	int INDEX_CALL = 24;
+	int INDEX_CALL = 28;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1269,7 +1489,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getCountCall()
 	 * @generated
 	 */
-	int COUNT_CALL = 25;
+	int COUNT_CALL = 29;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1315,7 +1535,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getFirstCall()
 	 * @generated
 	 */
-	int FIRST_CALL = 26;
+	int FIRST_CALL = 30;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1361,7 +1581,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getToListCall()
 	 * @generated
 	 */
-	int TO_LIST_CALL = 27;
+	int TO_LIST_CALL = 31;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1407,7 +1627,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIsEmptyCall()
 	 * @generated
 	 */
-	int IS_EMPTY_CALL = 28;
+	int IS_EMPTY_CALL = 32;
 
 	/**
 	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
@@ -1446,6 +1666,116 @@ public interface GremlinPackage extends EPackage {
 	int IS_EMPTY_CALL_OPERATION_COUNT = METHOD_CALL_OPERATION_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ContainsCallImpl <em>Contains Call</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ContainsCallImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getContainsCall()
+	 * @generated
+	 */
+	int CONTAINS_CALL = 33;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_CALL__NEXT_ELEMENT = METHOD_CALL__NEXT_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_CALL__VALUE = METHOD_CALL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Contains Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_CALL_FEATURE_COUNT = METHOD_CALL_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_CALL___TO_STRING = METHOD_CALL_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Contains Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_CALL_OPERATION_COUNT = METHOD_CALL_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ContainsAllCallImpl <em>Contains All Call</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ContainsAllCallImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getContainsAllCall()
+	 * @generated
+	 */
+	int CONTAINS_ALL_CALL = 34;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_ALL_CALL__NEXT_ELEMENT = METHOD_CALL__NEXT_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_ALL_CALL__VALUE = METHOD_CALL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Contains All Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_ALL_CALL_FEATURE_COUNT = METHOD_CALL_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_ALL_CALL___TO_STRING = METHOD_CALL_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Contains All Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTAINS_ALL_CALL_OPERATION_COUNT = METHOD_CALL_OPERATION_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ExpressionImpl <em>Expression</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1453,7 +1783,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getExpression()
 	 * @generated
 	 */
-	int EXPRESSION = 29;
+	int EXPRESSION = 35;
 
 	/**
 	 * The number of structural features of the '<em>Expression</em>' class.
@@ -1481,7 +1811,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getUnaryExpression()
 	 * @generated
 	 */
-	int UNARY_EXPRESSION = 30;
+	int UNARY_EXPRESSION = 36;
 
 	/**
 	 * The feature id for the '<em><b>Exp</b></em>' containment reference.
@@ -1518,7 +1848,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getNotExpression()
 	 * @generated
 	 */
-	int NOT_EXPRESSION = 31;
+	int NOT_EXPRESSION = 37;
 
 	/**
 	 * The feature id for the '<em><b>Exp</b></em>' containment reference.
@@ -1564,7 +1894,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getBinaryExpression()
 	 * @generated
 	 */
-	int BINARY_EXPRESSION = 32;
+	int BINARY_EXPRESSION = 38;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1610,7 +1940,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getEqualityExpression()
 	 * @generated
 	 */
-	int EQUALITY_EXPRESSION = 33;
+	int EQUALITY_EXPRESSION = 39;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1665,7 +1995,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getDifferenceExpression()
 	 * @generated
 	 */
-	int DIFFERENCE_EXPRESSION = 34;
+	int DIFFERENCE_EXPRESSION = 40;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1720,7 +2050,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOrExpression()
 	 * @generated
 	 */
-	int OR_EXPRESSION = 35;
+	int OR_EXPRESSION = 41;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1775,7 +2105,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getAndExpression()
 	 * @generated
 	 */
-	int AND_EXPRESSION = 36;
+	int AND_EXPRESSION = 42;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1830,7 +2160,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getGreaterExpression()
 	 * @generated
 	 */
-	int GREATER_EXPRESSION = 37;
+	int GREATER_EXPRESSION = 43;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1885,7 +2215,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getGreaterOrEqualExpression()
 	 * @generated
 	 */
-	int GREATER_OR_EQUAL_EXPRESSION = 38;
+	int GREATER_OR_EQUAL_EXPRESSION = 44;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1940,7 +2270,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getLessExpression()
 	 * @generated
 	 */
-	int LESS_EXPRESSION = 39;
+	int LESS_EXPRESSION = 45;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1995,7 +2325,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getLessOrEqualExpression()
 	 * @generated
 	 */
-	int LESS_OR_EQUAL_EXPRESSION = 40;
+	int LESS_OR_EQUAL_EXPRESSION = 46;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2050,7 +2380,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getAffectationExpression()
 	 * @generated
 	 */
-	int AFFECTATION_EXPRESSION = 41;
+	int AFFECTATION_EXPRESSION = 47;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2098,6 +2428,61 @@ public interface GremlinPackage extends EPackage {
 	int AFFECTATION_EXPRESSION_OPERATION_COUNT = BINARY_EXPRESSION_OPERATION_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.LeftShiftExpressionImpl <em>Left Shift Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.LeftShiftExpressionImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getLeftShiftExpression()
+	 * @generated
+	 */
+	int LEFT_SHIFT_EXPRESSION = 48;
+
+	/**
+	 * The feature id for the '<em><b>Left</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEFT_SHIFT_EXPRESSION__LEFT = BINARY_EXPRESSION__LEFT;
+
+	/**
+	 * The feature id for the '<em><b>Right</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEFT_SHIFT_EXPRESSION__RIGHT = BINARY_EXPRESSION__RIGHT;
+
+	/**
+	 * The number of structural features of the '<em>Left Shift Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEFT_SHIFT_EXPRESSION_FEATURE_COUNT = BINARY_EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEFT_SHIFT_EXPRESSION___TO_STRING = BINARY_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Left Shift Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LEFT_SHIFT_EXPRESSION_OPERATION_COUNT = BINARY_EXPRESSION_OPERATION_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StringLiteralImpl <em>String Literal</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2105,7 +2490,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStringLiteral()
 	 * @generated
 	 */
-	int STRING_LITERAL = 42;
+	int STRING_LITERAL = 49;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2151,7 +2536,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIntegerLiteral()
 	 * @generated
 	 */
-	int INTEGER_LITERAL = 43;
+	int INTEGER_LITERAL = 50;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2197,7 +2582,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getDoubleLiteral()
 	 * @generated
 	 */
-	int DOUBLE_LITERAL = 44;
+	int DOUBLE_LITERAL = 51;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2243,7 +2628,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getBooleanLiteral()
 	 * @generated
 	 */
-	int BOOLEAN_LITERAL = 45;
+	int BOOLEAN_LITERAL = 52;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2374,6 +2759,17 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getVectorType();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link fr.inria.atlanmod.mogwai.gremlin.VectorType#getValues <em>Values</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Values</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.VectorType#getValues()
+	 * @see #getVectorType()
+	 * @generated
+	 */
+	EReference getVectorType_Values();
 
 	/**
 	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.VectorType#toString() <em>To String</em>}' operation.
@@ -2786,6 +3182,68 @@ public interface GremlinPackage extends EPackage {
 	EOperation getFilterStep__ToString();
 
 	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.RetainStep <em>Retain Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Retain Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.RetainStep
+	 * @generated
+	 */
+	EClass getRetainStep();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.RetainStep#getCollection <em>Collection</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Collection</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.RetainStep#getCollection()
+	 * @see #getRetainStep()
+	 * @generated
+	 */
+	EReference getRetainStep_Collection();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.RetainStep#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.RetainStep#toString()
+	 * @generated
+	 */
+	EOperation getRetainStep__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.ExceptStep <em>Except Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Except Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ExceptStep
+	 * @generated
+	 */
+	EClass getExceptStep();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.ExceptStep#getCollection <em>Collection</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Collection</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ExceptStep#getCollection()
+	 * @see #getExceptStep()
+	 * @generated
+	 */
+	EReference getExceptStep_Collection();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.ExceptStep#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ExceptStep#toString()
+	 * @generated
+	 */
+	EOperation getExceptStep__ToString();
+
+	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.TransformStep <em>Transform Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2815,6 +3273,57 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getTransformStep__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.GatherStep <em>Gather Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Gather Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GatherStep
+	 * @generated
+	 */
+	EClass getGatherStep();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.GatherStep#getClosure <em>Closure</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Closure</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GatherStep#getClosure()
+	 * @see #getGatherStep()
+	 * @generated
+	 */
+	EReference getGatherStep_Closure();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.GatherStep#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GatherStep#toString()
+	 * @generated
+	 */
+	EOperation getGatherStep__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.ScatterStep <em>Scatter Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Scatter Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ScatterStep
+	 * @generated
+	 */
+	EClass getScatterStep();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.ScatterStep#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ScatterStep#toString()
+	 * @generated
+	 */
+	EOperation getScatterStep__ToString();
 
 	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.MethodCall <em>Method Call</em>}'.
@@ -2998,6 +3507,68 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getIsEmptyCall__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsCall <em>Contains Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Contains Call</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsCall
+	 * @generated
+	 */
+	EClass getContainsCall();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsCall#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Value</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsCall#getValue()
+	 * @see #getContainsCall()
+	 * @generated
+	 */
+	EReference getContainsCall_Value();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsCall#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsCall#toString()
+	 * @generated
+	 */
+	EOperation getContainsCall__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall <em>Contains All Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Contains All Call</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall
+	 * @generated
+	 */
+	EClass getContainsAllCall();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Value</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall#getValue()
+	 * @see #getContainsAllCall()
+	 * @generated
+	 */
+	EReference getContainsAllCall_Value();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall#toString()
+	 * @generated
+	 */
+	EOperation getContainsAllCall__ToString();
 
 	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.Expression <em>Expression</em>}'.
@@ -3263,6 +3834,26 @@ public interface GremlinPackage extends EPackage {
 	EOperation getAffectationExpression__ToString();
 
 	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression <em>Left Shift Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Left Shift Expression</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression
+	 * @generated
+	 */
+	EClass getLeftShiftExpression();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression#toString()
+	 * @generated
+	 */
+	EOperation getLeftShiftExpression__ToString();
+
+	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.StringLiteral <em>String Literal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3488,6 +4079,14 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EClass VECTOR_TYPE = eINSTANCE.getVectorType();
+
+		/**
+		 * The meta object literal for the '<em><b>Values</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference VECTOR_TYPE__VALUES = eINSTANCE.getVectorType_Values();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
@@ -3842,6 +4441,58 @@ public interface GremlinPackage extends EPackage {
 		EOperation FILTER_STEP___TO_STRING = eINSTANCE.getFilterStep__ToString();
 
 		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.RetainStepImpl <em>Retain Step</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.RetainStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getRetainStep()
+		 * @generated
+		 */
+		EClass RETAIN_STEP = eINSTANCE.getRetainStep();
+
+		/**
+		 * The meta object literal for the '<em><b>Collection</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RETAIN_STEP__COLLECTION = eINSTANCE.getRetainStep_Collection();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation RETAIN_STEP___TO_STRING = eINSTANCE.getRetainStep__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ExceptStepImpl <em>Except Step</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ExceptStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getExceptStep()
+		 * @generated
+		 */
+		EClass EXCEPT_STEP = eINSTANCE.getExceptStep();
+
+		/**
+		 * The meta object literal for the '<em><b>Collection</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EXCEPT_STEP__COLLECTION = eINSTANCE.getExceptStep_Collection();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation EXCEPT_STEP___TO_STRING = eINSTANCE.getExceptStep__ToString();
+
+		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TransformStepImpl <em>Transform Step</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3866,6 +4517,50 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation TRANSFORM_STEP___TO_STRING = eINSTANCE.getTransformStep__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.GatherStepImpl <em>Gather Step</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GatherStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getGatherStep()
+		 * @generated
+		 */
+		EClass GATHER_STEP = eINSTANCE.getGatherStep();
+
+		/**
+		 * The meta object literal for the '<em><b>Closure</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GATHER_STEP__CLOSURE = eINSTANCE.getGatherStep_Closure();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation GATHER_STEP___TO_STRING = eINSTANCE.getGatherStep__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ScatterStepImpl <em>Scatter Step</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ScatterStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getScatterStep()
+		 * @generated
+		 */
+		EClass SCATTER_STEP = eINSTANCE.getScatterStep();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation SCATTER_STEP___TO_STRING = eINSTANCE.getScatterStep__ToString();
 
 		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.MethodCallImpl <em>Method Call</em>}' class.
@@ -4026,6 +4721,58 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation IS_EMPTY_CALL___TO_STRING = eINSTANCE.getIsEmptyCall__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ContainsCallImpl <em>Contains Call</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ContainsCallImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getContainsCall()
+		 * @generated
+		 */
+		EClass CONTAINS_CALL = eINSTANCE.getContainsCall();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONTAINS_CALL__VALUE = eINSTANCE.getContainsCall_Value();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CONTAINS_CALL___TO_STRING = eINSTANCE.getContainsCall__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ContainsAllCallImpl <em>Contains All Call</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ContainsAllCallImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getContainsAllCall()
+		 * @generated
+		 */
+		EClass CONTAINS_ALL_CALL = eINSTANCE.getContainsAllCall();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONTAINS_ALL_CALL__VALUE = eINSTANCE.getContainsAllCall_Value();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CONTAINS_ALL_CALL___TO_STRING = eINSTANCE.getContainsAllCall__ToString();
 
 		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ExpressionImpl <em>Expression</em>}' class.
@@ -4260,6 +5007,24 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation AFFECTATION_EXPRESSION___TO_STRING = eINSTANCE.getAffectationExpression__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.LeftShiftExpressionImpl <em>Left Shift Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.LeftShiftExpressionImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getLeftShiftExpression()
+		 * @generated
+		 */
+		EClass LEFT_SHIFT_EXPRESSION = eINSTANCE.getLeftShiftExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation LEFT_SHIFT_EXPRESSION___TO_STRING = eINSTANCE.getLeftShiftExpression__ToString();
 
 		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StringLiteralImpl <em>String Literal</em>}' class.

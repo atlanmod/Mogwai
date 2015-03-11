@@ -8,15 +8,19 @@ import fr.inria.atlanmod.mogwai.gremlin.BinaryExpression;
 import fr.inria.atlanmod.mogwai.gremlin.BooleanLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
+import fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall;
+import fr.inria.atlanmod.mogwai.gremlin.ContainsCall;
 import fr.inria.atlanmod.mogwai.gremlin.CountCall;
 import fr.inria.atlanmod.mogwai.gremlin.DifferenceExpression;
 import fr.inria.atlanmod.mogwai.gremlin.DoubleLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.EdgesStep;
 import fr.inria.atlanmod.mogwai.gremlin.EqualityExpression;
+import fr.inria.atlanmod.mogwai.gremlin.ExceptStep;
 import fr.inria.atlanmod.mogwai.gremlin.Expression;
 import fr.inria.atlanmod.mogwai.gremlin.FillStep;
 import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
 import fr.inria.atlanmod.mogwai.gremlin.FirstCall;
+import fr.inria.atlanmod.mogwai.gremlin.GatherStep;
 import fr.inria.atlanmod.mogwai.gremlin.GreaterExpression;
 import fr.inria.atlanmod.mogwai.gremlin.GreaterOrEqualExpression;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinFactory;
@@ -30,6 +34,7 @@ import fr.inria.atlanmod.mogwai.gremlin.IndexCall;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
 import fr.inria.atlanmod.mogwai.gremlin.IntegerLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.IsEmptyCall;
+import fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression;
 import fr.inria.atlanmod.mogwai.gremlin.LessExpression;
 import fr.inria.atlanmod.mogwai.gremlin.LessOrEqualExpression;
 import fr.inria.atlanmod.mogwai.gremlin.MethodCall;
@@ -39,6 +44,8 @@ import fr.inria.atlanmod.mogwai.gremlin.OrExpression;
 import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
 import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
+import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
+import fr.inria.atlanmod.mogwai.gremlin.ScatterStep;
 import fr.inria.atlanmod.mogwai.gremlin.StartStep;
 import fr.inria.atlanmod.mogwai.gremlin.Step;
 import fr.inria.atlanmod.mogwai.gremlin.StringLiteral;
@@ -211,7 +218,35 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass retainStepEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass exceptStepEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass transformStepEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass gatherStepEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass scatterStepEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -268,6 +303,20 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass isEmptyCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass containsCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass containsAllCallEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -359,6 +408,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass affectationExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass leftShiftExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -528,6 +584,15 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EClass getVectorType() {
 		return vectorTypeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getVectorType_Values() {
+		return (EReference)vectorTypeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -895,6 +960,60 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getRetainStep() {
+		return retainStepEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRetainStep_Collection() {
+		return (EReference)retainStepEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRetainStep__ToString() {
+		return retainStepEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getExceptStep() {
+		return exceptStepEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getExceptStep_Collection() {
+		return (EReference)exceptStepEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getExceptStep__ToString() {
+		return exceptStepEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTransformStep() {
 		return transformStepEClass;
 	}
@@ -915,6 +1034,51 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EOperation getTransformStep__ToString() {
 		return transformStepEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGatherStep() {
+		return gatherStepEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGatherStep_Closure() {
+		return (EReference)gatherStepEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getGatherStep__ToString() {
+		return gatherStepEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getScatterStep() {
+		return scatterStepEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getScatterStep__ToString() {
+		return scatterStepEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -1077,6 +1241,60 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EOperation getIsEmptyCall__ToString() {
 		return isEmptyCallEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getContainsCall() {
+		return containsCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getContainsCall_Value() {
+		return (EReference)containsCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getContainsCall__ToString() {
+		return containsCallEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getContainsAllCall() {
+		return containsAllCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getContainsAllCall_Value() {
+		return (EReference)containsAllCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getContainsAllCall__ToString() {
+		return containsAllCallEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -1318,6 +1536,24 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getLeftShiftExpression() {
+		return leftShiftExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getLeftShiftExpression__ToString() {
+		return leftShiftExpressionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getStringLiteral() {
 		return stringLiteralEClass;
 	}
@@ -1461,6 +1697,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		createEOperation(variableDeclarationEClass, VARIABLE_DECLARATION___TO_STRING);
 
 		vectorTypeEClass = createEClass(VECTOR_TYPE);
+		createEReference(vectorTypeEClass, VECTOR_TYPE__VALUES);
 		createEOperation(vectorTypeEClass, VECTOR_TYPE___TO_STRING);
 
 		traversalElementEClass = createEClass(TRAVERSAL_ELEMENT);
@@ -1518,9 +1755,24 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		createEReference(filterStepEClass, FILTER_STEP__CLOSURE);
 		createEOperation(filterStepEClass, FILTER_STEP___TO_STRING);
 
+		retainStepEClass = createEClass(RETAIN_STEP);
+		createEReference(retainStepEClass, RETAIN_STEP__COLLECTION);
+		createEOperation(retainStepEClass, RETAIN_STEP___TO_STRING);
+
+		exceptStepEClass = createEClass(EXCEPT_STEP);
+		createEReference(exceptStepEClass, EXCEPT_STEP__COLLECTION);
+		createEOperation(exceptStepEClass, EXCEPT_STEP___TO_STRING);
+
 		transformStepEClass = createEClass(TRANSFORM_STEP);
 		createEReference(transformStepEClass, TRANSFORM_STEP__CLOSURE);
 		createEOperation(transformStepEClass, TRANSFORM_STEP___TO_STRING);
+
+		gatherStepEClass = createEClass(GATHER_STEP);
+		createEReference(gatherStepEClass, GATHER_STEP__CLOSURE);
+		createEOperation(gatherStepEClass, GATHER_STEP___TO_STRING);
+
+		scatterStepEClass = createEClass(SCATTER_STEP);
+		createEOperation(scatterStepEClass, SCATTER_STEP___TO_STRING);
 
 		methodCallEClass = createEClass(METHOD_CALL);
 
@@ -1547,6 +1799,14 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		isEmptyCallEClass = createEClass(IS_EMPTY_CALL);
 		createEOperation(isEmptyCallEClass, IS_EMPTY_CALL___TO_STRING);
+
+		containsCallEClass = createEClass(CONTAINS_CALL);
+		createEReference(containsCallEClass, CONTAINS_CALL__VALUE);
+		createEOperation(containsCallEClass, CONTAINS_CALL___TO_STRING);
+
+		containsAllCallEClass = createEClass(CONTAINS_ALL_CALL);
+		createEReference(containsAllCallEClass, CONTAINS_ALL_CALL__VALUE);
+		createEOperation(containsAllCallEClass, CONTAINS_ALL_CALL___TO_STRING);
 
 		expressionEClass = createEClass(EXPRESSION);
 
@@ -1586,6 +1846,9 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		affectationExpressionEClass = createEClass(AFFECTATION_EXPRESSION);
 		createEOperation(affectationExpressionEClass, AFFECTATION_EXPRESSION___TO_STRING);
+
+		leftShiftExpressionEClass = createEClass(LEFT_SHIFT_EXPRESSION);
+		createEOperation(leftShiftExpressionEClass, LEFT_SHIFT_EXPRESSION___TO_STRING);
 
 		stringLiteralEClass = createEClass(STRING_LITERAL);
 		createEAttribute(stringLiteralEClass, STRING_LITERAL__VALUE);
@@ -1650,7 +1913,11 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		inVStepEClass.getESuperTypes().add(this.getStep());
 		outVStepEClass.getESuperTypes().add(this.getStep());
 		filterStepEClass.getESuperTypes().add(this.getStep());
+		retainStepEClass.getESuperTypes().add(this.getStep());
+		exceptStepEClass.getESuperTypes().add(this.getStep());
 		transformStepEClass.getESuperTypes().add(this.getStep());
+		gatherStepEClass.getESuperTypes().add(this.getStep());
+		scatterStepEClass.getESuperTypes().add(this.getStep());
 		methodCallEClass.getESuperTypes().add(this.getTraversalElement());
 		nextCallEClass.getESuperTypes().add(this.getMethodCall());
 		hasNextCallEClass.getESuperTypes().add(this.getMethodCall());
@@ -1659,6 +1926,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		firstCallEClass.getESuperTypes().add(this.getMethodCall());
 		toListCallEClass.getESuperTypes().add(this.getMethodCall());
 		isEmptyCallEClass.getESuperTypes().add(this.getMethodCall());
+		containsCallEClass.getESuperTypes().add(this.getMethodCall());
+		containsAllCallEClass.getESuperTypes().add(this.getMethodCall());
 		expressionEClass.getESuperTypes().add(this.getInstruction());
 		unaryExpressionEClass.getESuperTypes().add(this.getExpression());
 		notExpressionEClass.getESuperTypes().add(this.getUnaryExpression());
@@ -1672,6 +1941,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		lessExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		lessOrEqualExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		affectationExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
+		leftShiftExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		stringLiteralEClass.getESuperTypes().add(this.getExpression());
 		integerLiteralEClass.getESuperTypes().add(this.getExpression());
 		doubleLiteralEClass.getESuperTypes().add(this.getExpression());
@@ -1692,6 +1962,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEOperation(getVariableDeclaration__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(vectorTypeEClass, VectorType.class, "VectorType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVectorType_Values(), this.getInstruction(), null, "values", null, 0, -1, VectorType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getVectorType__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -1763,10 +2034,29 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEOperation(getFilterStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		initEClass(retainStepEClass, RetainStep.class, "RetainStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRetainStep_Collection(), this.getVectorType(), null, "collection", null, 1, 1, RetainStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getRetainStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(exceptStepEClass, ExceptStep.class, "ExceptStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getExceptStep_Collection(), this.getVectorType(), null, "collection", null, 1, 1, ExceptStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getExceptStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(transformStepEClass, TransformStep.class, "TransformStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTransformStep_Closure(), this.getClosure(), null, "closure", null, 1, 1, TransformStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getTransformStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(gatherStepEClass, GatherStep.class, "GatherStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGatherStep_Closure(), this.getClosure(), null, "closure", null, 0, 1, GatherStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getGatherStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(scatterStepEClass, ScatterStep.class, "ScatterStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getScatterStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(methodCallEClass, MethodCall.class, "MethodCall", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1800,6 +2090,16 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEClass(isEmptyCallEClass, IsEmptyCall.class, "IsEmptyCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getIsEmptyCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(containsCallEClass, ContainsCall.class, "ContainsCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContainsCall_Value(), this.getInstruction(), null, "value", null, 1, 1, ContainsCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getContainsCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(containsAllCallEClass, ContainsAllCall.class, "ContainsAllCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContainsAllCall_Value(), this.getVectorType(), null, "value", null, 1, 1, ContainsAllCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getContainsAllCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1849,6 +2149,10 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEClass(affectationExpressionEClass, AffectationExpression.class, "AffectationExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getAffectationExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(leftShiftExpressionEClass, LeftShiftExpression.class, "LeftShiftExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getLeftShiftExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(stringLiteralEClass, StringLiteral.class, "StringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStringLiteral_Value(), ecorePackage.getEString(), "value", null, 1, 1, StringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

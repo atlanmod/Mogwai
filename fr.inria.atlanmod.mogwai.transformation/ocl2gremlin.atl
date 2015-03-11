@@ -1,5 +1,5 @@
--- @path OCL=/fr.inria.atlanmod.ocl2query.transfo/OCL.ecore
--- @path Gremlin=/fr.inria.atlanmod.ocl2query.gremlin/model/gremlin.ecore
+-- @path OCL=http://www.eclipse.org/ocl/1.1.0/Ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
 
 -- OCL to Gremlin ATL Module
 
@@ -298,7 +298,7 @@ rule constraint2script {
 					cc.specification.bodyExpression.getTypeExps()
 				->collect(e | thisModule.typeExp2metaNodes(e))).append(
 					if OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union').first() <> OclUndefined then
-						thisModule.union2meta(OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union').first().debug())
+						thisModule.union2meta(OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union').first())
 					else
 						OclUndefined
 					endif).
@@ -603,24 +603,120 @@ rule excludes2steps {
 	from
 		excludes : OCL!OperationCallExp (excludes.getOpName() = 'excludes')
 	to
-		pp : Gremlin!FilterStep (
-			closure <- clos,
-			nextElement <- toListCall
+		retain : Gremlin!RetainStep(
+			collection <- vec,
+			nextElement <- toListCall	
 		),
-		clos : Gremlin!Closure(
-			instructions <- closEq	
-		),
-		closEq : Gremlin!EqualityExpression(
-			left <- closIt,
-			right <- excludes.argument.first()
-		),
-		closIt : Gremlin!ClosureIt(),
 		toListCall : Gremlin!ToListCall(
 			nextElement <- isEmptyCall	
 		),
-		isEmptyCall : Gremlin!IsEmptyCall (
-			nextElement <- excludes.getComposite()	
-		)	
+		isEmptyCall : Gremlin!IsEmptyCall(
+		),
+		vec : Gremlin!VectorType(
+			values <- excludes.argument.first()	
+		)
+}
+
+rule excludesAll2steps {
+	from
+		excludesAll : OCL!OperationCallExp (excludesAll.getOpName() = 'excludesAll')
+	to
+		retain : Gremlin!RetainStep(
+			collection <- excludesAll.argument.first(),
+			nextElement <- toListCall
+		),
+		toListCall : Gremlin!ToListCall(
+			nextElement <- isEmptyCall	
+		),
+		isEmptyCall : Gremlin!IsEmptyCall(
+		)
+}
+
+rule excluding2steps {
+	from
+		excluding : OCL!OperationCallExp (excluding.getOpName() = 'excluding')
+	to
+		exStep : Gremlin!ExceptStep (
+			collection <- vec,
+			nextElement <- excluding.getComposite()
+		),
+		vec : Gremlin!VectorType (
+			values <- excluding.argument.first()	
+		)
+}
+
+rule includes2steps {
+	from
+		includes : OCL!OperationCallExp (includes.getOpName() = 'includes')
+	to
+		gather : Gremlin!GatherStep(
+			nextElement <- transform	
+		),
+		transform : Gremlin!TransformStep(
+			closure <- clos,
+			nextElement <- nextCall
+		),
+		clos : Gremlin!Closure (
+			instructions <- it
+		),
+		it : Gremlin!ClosureIt(
+			nextElement <- containsCall	
+		),
+		containsCall : Gremlin!ContainsCall(
+			value <- includes.argument.first()
+		),
+		nextCall : Gremlin!NextCall(
+			nextElement <- includes.getComposite()	
+		)
+}
+
+rule includesAll2steps {
+	from
+		includesAll : OCL!OperationCallExp (includesAll.getOpName() = 'includesAll')
+	to
+		gather : Gremlin!GatherStep(
+			nextElement <- transform	
+		),
+		transform : Gremlin!TransformStep(
+			closure <- clos,
+			nextElement <- nextCall
+		),
+		clos : Gremlin!Closure (
+			instructions <- it
+		),
+		it : Gremlin!ClosureIt(
+			nextElement <- containsAllCall	
+		),
+		containsAllCall : Gremlin!ContainsAllCall(
+			value <- includesAll.argument.first()
+		),
+		nextCall : Gremlin!NextCall(
+			nextElement <- includesAll.getComposite()	
+		)
+}
+
+rule including2steps {
+	from
+		including : OCL!OperationCallExp (including.getOpName() = 'including')
+	to
+		gather : Gremlin!GatherStep(
+			nextElement <- transform	
+		),
+		transform : Gremlin!TransformStep(
+			closure <- clos,
+			nextElement <- scatter
+		),
+		clos : Gremlin!Closure (
+			instructions <- shift
+		),
+		shift : Gremlin!LeftShiftExpression(
+			left <- it,
+			right <- including.argument.first()
+		),
+		it : Gremlin!ClosureIt(),
+		scatter : Gremlin!ScatterStep(
+			nextElement <- including.getComposite()	
+		)
 }
 
 rule exists2steps {
@@ -1058,5 +1154,14 @@ rule oclFirst2steps {
 	to
 		fc : Gremlin!FirstCall(
 			nextElement <- oclFirst.getComposite()
+		)
+}
+
+rule sequence2steps {
+	from
+		sequence : OCL!CollectionLiteralExp (sequence.eType.oclIsTypeOf(OCL!SequenceType))
+	to
+		vec : Gremlin!VectorType(
+			values <- sequence.part->collect(e | e.item)
 		)
 }

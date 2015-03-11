@@ -175,6 +175,24 @@ public interface GremlinFactory extends EFactory {
 	FilterStep createFilterStep();
 
 	/**
+	 * Returns a new object of class '<em>Retain Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Retain Step</em>'.
+	 * @generated
+	 */
+	RetainStep createRetainStep();
+
+	/**
+	 * Returns a new object of class '<em>Except Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Except Step</em>'.
+	 * @generated
+	 */
+	ExceptStep createExceptStep();
+
+	/**
 	 * Returns a new object of class '<em>Transform Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -182,6 +200,24 @@ public interface GremlinFactory extends EFactory {
 	 * @generated
 	 */
 	TransformStep createTransformStep();
+
+	/**
+	 * Returns a new object of class '<em>Gather Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Gather Step</em>'.
+	 * @generated
+	 */
+	GatherStep createGatherStep();
+
+	/**
+	 * Returns a new object of class '<em>Scatter Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Scatter Step</em>'.
+	 * @generated
+	 */
+	ScatterStep createScatterStep();
 
 	/**
 	 * Returns a new object of class '<em>Next Call</em>'.
@@ -245,6 +281,24 @@ public interface GremlinFactory extends EFactory {
 	 * @generated
 	 */
 	IsEmptyCall createIsEmptyCall();
+
+	/**
+	 * Returns a new object of class '<em>Contains Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Contains Call</em>'.
+	 * @generated
+	 */
+	ContainsCall createContainsCall();
+
+	/**
+	 * Returns a new object of class '<em>Contains All Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Contains All Call</em>'.
+	 * @generated
+	 */
+	ContainsAllCall createContainsAllCall();
 
 	/**
 	 * Returns a new object of class '<em>Expression</em>'.
@@ -362,6 +416,15 @@ public interface GremlinFactory extends EFactory {
 	 * @generated
 	 */
 	AffectationExpression createAffectationExpression();
+
+	/**
+	 * Returns a new object of class '<em>Left Shift Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Left Shift Expression</em>'.
+	 * @generated
+	 */
+	LeftShiftExpression createLeftShiftExpression();
 
 	/**
 	 * Returns a new object of class '<em>String Literal</em>'.

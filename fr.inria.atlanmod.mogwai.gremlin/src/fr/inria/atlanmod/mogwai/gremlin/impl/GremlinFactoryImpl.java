@@ -73,7 +73,11 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.IN_VSTEP: return createInVStep();
 			case GremlinPackage.OUT_VSTEP: return createOutVStep();
 			case GremlinPackage.FILTER_STEP: return createFilterStep();
+			case GremlinPackage.RETAIN_STEP: return createRetainStep();
+			case GremlinPackage.EXCEPT_STEP: return createExceptStep();
 			case GremlinPackage.TRANSFORM_STEP: return createTransformStep();
+			case GremlinPackage.GATHER_STEP: return createGatherStep();
+			case GremlinPackage.SCATTER_STEP: return createScatterStep();
 			case GremlinPackage.NEXT_CALL: return createNextCall();
 			case GremlinPackage.HAS_NEXT_CALL: return createHasNextCall();
 			case GremlinPackage.INDEX_CALL: return createIndexCall();
@@ -81,6 +85,8 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.FIRST_CALL: return createFirstCall();
 			case GremlinPackage.TO_LIST_CALL: return createToListCall();
 			case GremlinPackage.IS_EMPTY_CALL: return createIsEmptyCall();
+			case GremlinPackage.CONTAINS_CALL: return createContainsCall();
+			case GremlinPackage.CONTAINS_ALL_CALL: return createContainsAllCall();
 			case GremlinPackage.EXPRESSION: return createExpression();
 			case GremlinPackage.UNARY_EXPRESSION: return createUnaryExpression();
 			case GremlinPackage.NOT_EXPRESSION: return createNotExpression();
@@ -94,6 +100,7 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.LESS_EXPRESSION: return createLessExpression();
 			case GremlinPackage.LESS_OR_EQUAL_EXPRESSION: return createLessOrEqualExpression();
 			case GremlinPackage.AFFECTATION_EXPRESSION: return createAffectationExpression();
+			case GremlinPackage.LEFT_SHIFT_EXPRESSION: return createLeftShiftExpression();
 			case GremlinPackage.STRING_LITERAL: return createStringLiteral();
 			case GremlinPackage.INTEGER_LITERAL: return createIntegerLiteral();
 			case GremlinPackage.DOUBLE_LITERAL: return createDoubleLiteral();
@@ -278,9 +285,49 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public RetainStep createRetainStep() {
+		RetainStepImpl retainStep = new RetainStepImpl();
+		return retainStep;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ExceptStep createExceptStep() {
+		ExceptStepImpl exceptStep = new ExceptStepImpl();
+		return exceptStep;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public TransformStep createTransformStep() {
 		TransformStepImpl transformStep = new TransformStepImpl();
 		return transformStep;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GatherStep createGatherStep() {
+		GatherStepImpl gatherStep = new GatherStepImpl();
+		return gatherStep;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScatterStep createScatterStep() {
+		ScatterStepImpl scatterStep = new ScatterStepImpl();
+		return scatterStep;
 	}
 
 	/**
@@ -351,6 +398,26 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public IsEmptyCall createIsEmptyCall() {
 		IsEmptyCallImpl isEmptyCall = new IsEmptyCallImpl();
 		return isEmptyCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ContainsCall createContainsCall() {
+		ContainsCallImpl containsCall = new ContainsCallImpl();
+		return containsCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ContainsAllCall createContainsAllCall() {
+		ContainsAllCallImpl containsAllCall = new ContainsAllCallImpl();
+		return containsAllCall;
 	}
 
 	/**
@@ -481,6 +548,16 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public AffectationExpression createAffectationExpression() {
 		AffectationExpressionImpl affectationExpression = new AffectationExpressionImpl();
 		return affectationExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public LeftShiftExpression createLeftShiftExpression() {
+		LeftShiftExpressionImpl leftShiftExpression = new LeftShiftExpressionImpl();
+		return leftShiftExpression;
 	}
 
 	/**

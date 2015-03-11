@@ -148,8 +148,24 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createFilterStepAdapter();
 			}
 			@Override
+			public Adapter caseRetainStep(RetainStep object) {
+				return createRetainStepAdapter();
+			}
+			@Override
+			public Adapter caseExceptStep(ExceptStep object) {
+				return createExceptStepAdapter();
+			}
+			@Override
 			public Adapter caseTransformStep(TransformStep object) {
 				return createTransformStepAdapter();
+			}
+			@Override
+			public Adapter caseGatherStep(GatherStep object) {
+				return createGatherStepAdapter();
+			}
+			@Override
+			public Adapter caseScatterStep(ScatterStep object) {
+				return createScatterStepAdapter();
 			}
 			@Override
 			public Adapter caseMethodCall(MethodCall object) {
@@ -182,6 +198,14 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseIsEmptyCall(IsEmptyCall object) {
 				return createIsEmptyCallAdapter();
+			}
+			@Override
+			public Adapter caseContainsCall(ContainsCall object) {
+				return createContainsCallAdapter();
+			}
+			@Override
+			public Adapter caseContainsAllCall(ContainsAllCall object) {
+				return createContainsAllCallAdapter();
 			}
 			@Override
 			public Adapter caseExpression(Expression object) {
@@ -234,6 +258,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseAffectationExpression(AffectationExpression object) {
 				return createAffectationExpressionAdapter();
+			}
+			@Override
+			public Adapter caseLeftShiftExpression(LeftShiftExpression object) {
+				return createLeftShiftExpressionAdapter();
 			}
 			@Override
 			public Adapter caseStringLiteral(StringLiteral object) {
@@ -552,6 +580,34 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.RetainStep <em>Retain Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.RetainStep
+	 * @generated
+	 */
+	public Adapter createRetainStepAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ExceptStep <em>Except Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ExceptStep
+	 * @generated
+	 */
+	public Adapter createExceptStepAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.TransformStep <em>Transform Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -562,6 +618,34 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTransformStepAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.GatherStep <em>Gather Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GatherStep
+	 * @generated
+	 */
+	public Adapter createGatherStepAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ScatterStep <em>Scatter Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ScatterStep
+	 * @generated
+	 */
+	public Adapter createScatterStepAdapter() {
 		return null;
 	}
 
@@ -674,6 +758,34 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIsEmptyCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsCall <em>Contains Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsCall
+	 * @generated
+	 */
+	public Adapter createContainsCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall <em>Contains All Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall
+	 * @generated
+	 */
+	public Adapter createContainsAllCallAdapter() {
 		return null;
 	}
 
@@ -856,6 +968,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAffectationExpressionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression <em>Left Shift Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression
+	 * @generated
+	 */
+	public Adapter createLeftShiftExpressionAdapter() {
 		return null;
 	}
 

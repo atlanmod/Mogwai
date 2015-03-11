@@ -229,12 +229,48 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.RETAIN_STEP: {
+				RetainStep retainStep = (RetainStep)theEObject;
+				T result = caseRetainStep(retainStep);
+				if (result == null) result = caseStep(retainStep);
+				if (result == null) result = caseTraversalElement(retainStep);
+				if (result == null) result = caseInstruction(retainStep);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.EXCEPT_STEP: {
+				ExceptStep exceptStep = (ExceptStep)theEObject;
+				T result = caseExceptStep(exceptStep);
+				if (result == null) result = caseStep(exceptStep);
+				if (result == null) result = caseTraversalElement(exceptStep);
+				if (result == null) result = caseInstruction(exceptStep);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GremlinPackage.TRANSFORM_STEP: {
 				TransformStep transformStep = (TransformStep)theEObject;
 				T result = caseTransformStep(transformStep);
 				if (result == null) result = caseStep(transformStep);
 				if (result == null) result = caseTraversalElement(transformStep);
 				if (result == null) result = caseInstruction(transformStep);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.GATHER_STEP: {
+				GatherStep gatherStep = (GatherStep)theEObject;
+				T result = caseGatherStep(gatherStep);
+				if (result == null) result = caseStep(gatherStep);
+				if (result == null) result = caseTraversalElement(gatherStep);
+				if (result == null) result = caseInstruction(gatherStep);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.SCATTER_STEP: {
+				ScatterStep scatterStep = (ScatterStep)theEObject;
+				T result = caseScatterStep(scatterStep);
+				if (result == null) result = caseStep(scatterStep);
+				if (result == null) result = caseTraversalElement(scatterStep);
+				if (result == null) result = caseInstruction(scatterStep);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -306,6 +342,24 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = caseMethodCall(isEmptyCall);
 				if (result == null) result = caseTraversalElement(isEmptyCall);
 				if (result == null) result = caseInstruction(isEmptyCall);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.CONTAINS_CALL: {
+				ContainsCall containsCall = (ContainsCall)theEObject;
+				T result = caseContainsCall(containsCall);
+				if (result == null) result = caseMethodCall(containsCall);
+				if (result == null) result = caseTraversalElement(containsCall);
+				if (result == null) result = caseInstruction(containsCall);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.CONTAINS_ALL_CALL: {
+				ContainsAllCall containsAllCall = (ContainsAllCall)theEObject;
+				T result = caseContainsAllCall(containsAllCall);
+				if (result == null) result = caseMethodCall(containsAllCall);
+				if (result == null) result = caseTraversalElement(containsAllCall);
+				if (result == null) result = caseInstruction(containsAllCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -419,6 +473,15 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = caseBinaryExpression(affectationExpression);
 				if (result == null) result = caseExpression(affectationExpression);
 				if (result == null) result = caseInstruction(affectationExpression);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.LEFT_SHIFT_EXPRESSION: {
+				LeftShiftExpression leftShiftExpression = (LeftShiftExpression)theEObject;
+				T result = caseLeftShiftExpression(leftShiftExpression);
+				if (result == null) result = caseBinaryExpression(leftShiftExpression);
+				if (result == null) result = caseExpression(leftShiftExpression);
+				if (result == null) result = caseInstruction(leftShiftExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -759,6 +822,36 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Retain Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Retain Step</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRetainStep(RetainStep object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Except Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Except Step</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseExceptStep(ExceptStep object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Transform Step</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -770,6 +863,36 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTransformStep(TransformStep object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Gather Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Gather Step</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGatherStep(GatherStep object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Scatter Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Scatter Step</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseScatterStep(ScatterStep object) {
 		return null;
 	}
 
@@ -890,6 +1013,36 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseIsEmptyCall(IsEmptyCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Contains Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Contains Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContainsCall(ContainsCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Contains All Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Contains All Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContainsAllCall(ContainsAllCall object) {
 		return null;
 	}
 
@@ -1085,6 +1238,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseAffectationExpression(AffectationExpression object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Left Shift Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Left Shift Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseLeftShiftExpression(LeftShiftExpression object) {
 		return null;
 	}
 
