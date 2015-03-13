@@ -11,27 +11,65 @@
         eType="#//Instruction" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Instruction" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MethodDeclaration" eSuperTypes="#//Instruction">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;def &quot;);&#xA;res.append(getName());&#xA;res.append(&quot;(&quot;);&#xA;int gen = 0;&#xA;for(String s : getParameters()) {&#xA;&#x9;res.append(s);&#xA;&#x9;gen++;&#xA;&#x9;if(gen &lt; getParameters().size()) {&#xA;&#x9;&#x9;res.append(&quot;, &quot;);&#xA;&#x9;}&#xA;}&#xA;res.append(&quot;) {&quot;);&#xA;for(Instruction i : getInstructions()) {&#xA;&#x9;res.append(i.toString()).append(&quot;;&quot;);&#xA;}&#xA;res.append(&quot;}&quot;);&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parameters" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instructions" upperBound="-1"
+        eType="#//Instruction" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeDeclaration" abstract="true" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ListDeclaration" eSuperTypes="#//TypeDeclaration">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return &quot; List&quot;;"/>
+      </eAnnotations>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SetDeclaration" eSuperTypes="#//TypeDeclaration">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return &quot; Set&quot;;"/>
+      </eAnnotations>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SortedSetDeclaration" eSuperTypes="#//TypeDeclaration">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return &quot; SortedSet&quot;;"/>
+      </eAnnotations>
+    </eOperations>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableDeclaration" eSuperTypes="#//Instruction">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="if(getValue() != null) {&#xA;&#x9;return &quot;def &quot; + getName() + &quot; = &quot; + getValue().toString();&#xA;}&#xA;else {&#xA;&#x9;return &quot;def &quot; + getName();&#xA;}"/>
+        <details key="body" value="if(getType() != null) {&#xA;&#x9;if(getValue() != null) {&#xA;&#x9;&#x9;return getType().toString() + &quot; &quot; + getName() + &quot; = &quot; + getValue().toString();&#xA;&#x9;}&#xA;&#x9;else {&#xA;&#x9;&#x9;return getType().toString() + &quot; &quot; + getName();&#xA;&#x9;}&#xA;}&#xA;else {&#xA;&#x9;if(getValue() != null) {&#xA;&#x9;&#x9;return &quot;def &quot; + getName() + &quot; = &quot; + getValue().toString();&#xA;&#x9;}&#xA;&#x9;else {&#xA;&#x9;&#x9;return &quot;def &quot; + getName();&#xA;&#x9;}&#xA;}"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Instruction"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeDeclaration"
+        containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VectorType" eSuperTypes="#//Instruction">
+  <eClassifiers xsi:type="ecore:EClass" name="TraversalElement" abstract="true" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nextElement" eType="#//TraversalElement"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CollectionDefinition" eSuperTypes="#//TraversalElement">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;[&quot;);&#xA;int gen = 0;&#xA;for(Instruction i : getValues()) {&#xA;&#x9;res.append(i.toString());&#xA;&#x9;gen++;&#xA;&#x9;if(gen &lt; getValues().size()) {&#xA;&#x9;&#x9;res.append(&quot;,&quot;);&#xA;&#x9;}&#xA;}&#xA;res.append(&quot;]&quot;);&#xA;return res.toString();"/>
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getType() != null) {&#xA;&#x9;res.append(&quot;(&quot;);&#xA;}&#xA;res.append(&quot;[&quot;);&#xA;int gen = 0;&#xA;for(Instruction i : getValues()) {&#xA;&#x9;res.append(i.toString());&#xA;&#x9;gen++;&#xA;&#x9;if(gen &lt; getValues().size()) {&#xA;&#x9;&#x9;res.append(&quot;,&quot;);&#xA;&#x9;}&#xA;}&#xA;res.append(&quot;]&quot;);&#xA;if(getType() != null) {&#xA;&#x9;res.append(&quot; as &quot;);&#xA;&#x9;res.append(getType().toString());&#xA;&#x9;res.append(&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="values" upperBound="-1"
         eType="#//Instruction" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TraversalElement" abstract="true" eSuperTypes="#//Instruction">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="nextElement" eType="#//TraversalElement"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeDeclaration"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Closure" eSuperTypes="#//Instruction">
@@ -43,20 +81,27 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="instructions" upperBound="-1"
         eType="#//Instruction" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClosureIt" eSuperTypes="#//TraversalElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ClosureIt" eSuperTypes="#//VariableAccess">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;it&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+        <details key="body" value="return super.toString();"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return &quot;it&quot;;"/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableAccess" eSuperTypes="#//TraversalElement">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(getName());&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot;(&quot;);&#xA;}&#xA;res.append(getName());&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot; as &quot;);&#xA;&#x9;res.append(getCast().toString());&#xA;&#x9;res.append(&quot;)&quot;);&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cast" eType="#//TypeDeclaration"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Step" abstract="true" eSuperTypes="#//TraversalElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="IdentityStep" eSuperTypes="#//Step">
@@ -147,7 +192,7 @@
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="collection" lowerBound="1"
-        eType="#//VectorType" containment="true"/>
+        eType="#//ListDeclaration" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExceptStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -156,7 +201,7 @@
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="collection" lowerBound="1"
-        eType="#//VectorType" containment="true"/>
+        eType="#//ListDeclaration" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TransformStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -254,7 +299,29 @@
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;containsAll(&quot;);&#xA;res.append(getValue().toString()+&quot;)&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//VectorType"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Instruction"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AddAllCall" eSuperTypes="#//MethodCall">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;addAll(&quot;);&#xA;res.append(getValue().toString()+&quot;)&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Instruction"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnionCall" eSuperTypes="#//MethodCall">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot;(&quot;);&#xA;}&#xA;res.append(&quot;computeUnion(&quot;);&#xA;res.append(getLeftCollection().toString());&#xA;res.append(&quot;, &quot;);&#xA;res.append(getRightCollection().toString());&#xA;res.append(&quot;)&quot;);&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot; as &quot; + getCast().toString());&#xA;&#x9;res.append(&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftCollection" lowerBound="1"
+        eType="#//Instruction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightCollection" lowerBound="1"
+        eType="#//Instruction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cast" eType="#//TypeDeclaration"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="#//Instruction"/>

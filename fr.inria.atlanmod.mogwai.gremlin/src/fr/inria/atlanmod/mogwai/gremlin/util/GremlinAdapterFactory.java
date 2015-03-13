@@ -76,16 +76,36 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createInstructionAdapter();
 			}
 			@Override
+			public Adapter caseMethodDeclaration(MethodDeclaration object) {
+				return createMethodDeclarationAdapter();
+			}
+			@Override
+			public Adapter caseTypeDeclaration(TypeDeclaration object) {
+				return createTypeDeclarationAdapter();
+			}
+			@Override
+			public Adapter caseListDeclaration(ListDeclaration object) {
+				return createListDeclarationAdapter();
+			}
+			@Override
+			public Adapter caseSetDeclaration(SetDeclaration object) {
+				return createSetDeclarationAdapter();
+			}
+			@Override
+			public Adapter caseSortedSetDeclaration(SortedSetDeclaration object) {
+				return createSortedSetDeclarationAdapter();
+			}
+			@Override
 			public Adapter caseVariableDeclaration(VariableDeclaration object) {
 				return createVariableDeclarationAdapter();
 			}
 			@Override
-			public Adapter caseVectorType(VectorType object) {
-				return createVectorTypeAdapter();
-			}
-			@Override
 			public Adapter caseTraversalElement(TraversalElement object) {
 				return createTraversalElementAdapter();
+			}
+			@Override
+			public Adapter caseCollectionDefinition(CollectionDefinition object) {
+				return createCollectionDefinitionAdapter();
 			}
 			@Override
 			public Adapter caseClosure(Closure object) {
@@ -208,6 +228,14 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createContainsAllCallAdapter();
 			}
 			@Override
+			public Adapter caseAddAllCall(AddAllCall object) {
+				return createAddAllCallAdapter();
+			}
+			@Override
+			public Adapter caseUnionCall(UnionCall object) {
+				return createUnionCallAdapter();
+			}
+			@Override
 			public Adapter caseExpression(Expression object) {
 				return createExpressionAdapter();
 			}
@@ -328,6 +356,76 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.MethodDeclaration <em>Method Declaration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.MethodDeclaration
+	 * @generated
+	 */
+	public Adapter createMethodDeclarationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.TypeDeclaration <em>Type Declaration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TypeDeclaration
+	 * @generated
+	 */
+	public Adapter createTypeDeclarationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ListDeclaration <em>List Declaration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ListDeclaration
+	 * @generated
+	 */
+	public Adapter createListDeclarationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.SetDeclaration <em>Set Declaration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.SetDeclaration
+	 * @generated
+	 */
+	public Adapter createSetDeclarationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.SortedSetDeclaration <em>Sorted Set Declaration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.SortedSetDeclaration
+	 * @generated
+	 */
+	public Adapter createSortedSetDeclarationAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration <em>Variable Declaration</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -342,20 +440,6 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.VectorType <em>Vector Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see fr.inria.atlanmod.mogwai.gremlin.VectorType
-	 * @generated
-	 */
-	public Adapter createVectorTypeAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.TraversalElement <em>Traversal Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -366,6 +450,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTraversalElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.CollectionDefinition <em>Collection Definition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.CollectionDefinition
+	 * @generated
+	 */
+	public Adapter createCollectionDefinitionAdapter() {
 		return null;
 	}
 
@@ -786,6 +884,34 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createContainsAllCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.AddAllCall <em>Add All Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.AddAllCall
+	 * @generated
+	 */
+	public Adapter createAddAllCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.UnionCall <em>Union Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.UnionCall
+	 * @generated
+	 */
+	public Adapter createUnionCallAdapter() {
 		return null;
 	}
 

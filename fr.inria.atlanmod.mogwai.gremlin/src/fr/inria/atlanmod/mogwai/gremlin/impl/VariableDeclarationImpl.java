@@ -4,6 +4,7 @@ package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
+import fr.inria.atlanmod.mogwai.gremlin.TypeDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +28,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableDeclarationImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableDeclarationImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableDeclarationImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -62,6 +64,16 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 	 * @ordered
 	 */
 	protected Instruction value;
+
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected TypeDeclaration type;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,12 +163,65 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public TypeDeclaration getType() {
+		return type;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetType(TypeDeclaration newType, NotificationChain msgs) {
+		TypeDeclaration oldType = type;
+		type = newType;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.VARIABLE_DECLARATION__TYPE, oldType, newType);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setType(TypeDeclaration newType) {
+		if (newType != type) {
+			NotificationChain msgs = null;
+			if (type != null)
+				msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.VARIABLE_DECLARATION__TYPE, null, msgs);
+			if (newType != null)
+				msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.VARIABLE_DECLARATION__TYPE, null, msgs);
+			msgs = basicSetType(newType, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.VARIABLE_DECLARATION__TYPE, newType, newType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String toString() {
-		if(getValue() != null) {
-			return "def " + getName() + " = " + getValue().toString();
+		if(getType() != null) {
+			if(getValue() != null) {
+				return getType().toString() + " " + getName() + " = " + getValue().toString();
+			}
+			else {
+				return getType().toString() + " " + getName();
+			}
 		}
 		else {
-			return "def " + getName();
+			if(getValue() != null) {
+				return "def " + getName() + " = " + getValue().toString();
+			}
+			else {
+				return "def " + getName();
+			}
 		}
 	}
 
@@ -170,6 +235,8 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 		switch (featureID) {
 			case GremlinPackage.VARIABLE_DECLARATION__VALUE:
 				return basicSetValue(null, msgs);
+			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
+				return basicSetType(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -186,6 +253,8 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 				return getName();
 			case GremlinPackage.VARIABLE_DECLARATION__VALUE:
 				return getValue();
+			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
+				return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -203,6 +272,9 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 				return;
 			case GremlinPackage.VARIABLE_DECLARATION__VALUE:
 				setValue((Instruction)newValue);
+				return;
+			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
+				setType((TypeDeclaration)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -222,6 +294,9 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 			case GremlinPackage.VARIABLE_DECLARATION__VALUE:
 				setValue((Instruction)null);
 				return;
+			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
+				setType((TypeDeclaration)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -238,6 +313,8 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case GremlinPackage.VARIABLE_DECLARATION__VALUE:
 				return value != null;
+			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
+				return type != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -3,10 +3,12 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.TypeDeclaration;
-import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
+import fr.inria.atlanmod.mogwai.gremlin.Instruction;
+import fr.inria.atlanmod.mogwai.gremlin.MethodDeclaration;
 
 import java.lang.reflect.InvocationTargetException;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -18,21 +20,26 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Variable Access</b></em>'.
+ * An implementation of the model object '<em><b>Method Declaration</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableAccessImpl#getName <em>Name</em>}</li>
- *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableAccessImpl#getCast <em>Cast</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.MethodDeclarationImpl#getName <em>Name</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.MethodDeclarationImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.MethodDeclarationImpl#getInstructions <em>Instructions</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class VariableAccessImpl extends TraversalElementImpl implements VariableAccess {
+public class MethodDeclarationImpl extends InstructionImpl implements MethodDeclaration {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -54,21 +61,31 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getCast() <em>Cast</em>}' containment reference.
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCast()
+	 * @see #getParameters()
 	 * @generated
 	 * @ordered
 	 */
-	protected TypeDeclaration cast;
+	protected EList<String> parameters;
+
+	/**
+	 * The cached value of the '{@link #getInstructions() <em>Instructions</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInstructions()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Instruction> instructions;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VariableAccessImpl() {
+	protected MethodDeclarationImpl() {
 		super();
 	}
 
@@ -79,7 +96,7 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.VARIABLE_ACCESS;
+		return GremlinPackage.Literals.METHOD_DECLARATION;
 	}
 
 	/**
@@ -100,7 +117,7 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.VARIABLE_ACCESS__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.METHOD_DECLARATION__NAME, oldName, name));
 	}
 
 	/**
@@ -108,23 +125,11 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TypeDeclaration getCast() {
-		return cast;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetCast(TypeDeclaration newCast, NotificationChain msgs) {
-		TypeDeclaration oldCast = cast;
-		cast = newCast;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.VARIABLE_ACCESS__CAST, oldCast, newCast);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+	public EList<String> getParameters() {
+		if (parameters == null) {
+			parameters = new EDataTypeUniqueEList<String>(String.class, this, GremlinPackage.METHOD_DECLARATION__PARAMETERS);
 		}
-		return msgs;
+		return parameters;
 	}
 
 	/**
@@ -132,18 +137,11 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCast(TypeDeclaration newCast) {
-		if (newCast != cast) {
-			NotificationChain msgs = null;
-			if (cast != null)
-				msgs = ((InternalEObject)cast).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.VARIABLE_ACCESS__CAST, null, msgs);
-			if (newCast != null)
-				msgs = ((InternalEObject)newCast).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.VARIABLE_ACCESS__CAST, null, msgs);
-			msgs = basicSetCast(newCast, msgs);
-			if (msgs != null) msgs.dispatch();
+	public EList<Instruction> getInstructions() {
+		if (instructions == null) {
+			instructions = new EObjectContainmentEList<Instruction>(Instruction.class, this, GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS);
 		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.VARIABLE_ACCESS__CAST, newCast, newCast));
+		return instructions;
 	}
 
 	/**
@@ -153,18 +151,22 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		if(getCast() != null) {
-			res.append("(");
-		}
+		res.append("def ");
 		res.append(getName());
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
+		res.append("(");
+		int gen = 0;
+		for(String s : getParameters()) {
+			res.append(s);
+			gen++;
+			if(gen < getParameters().size()) {
+				res.append(", ");
+			}
 		}
-		if(getCast() != null) {
-			res.append(" as ");
-			res.append(getCast().toString());
-			res.append(")");
+		res.append(") {");
+		for(Instruction i : getInstructions()) {
+			res.append(i.toString()).append(";");
 		}
+		res.append("}");
 		return res.toString();
 	}
 
@@ -176,8 +178,8 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case GremlinPackage.VARIABLE_ACCESS__CAST:
-				return basicSetCast(null, msgs);
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				return ((InternalEList<?>)getInstructions()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -190,10 +192,12 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case GremlinPackage.VARIABLE_ACCESS__NAME:
+			case GremlinPackage.METHOD_DECLARATION__NAME:
 				return getName();
-			case GremlinPackage.VARIABLE_ACCESS__CAST:
-				return getCast();
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				return getParameters();
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				return getInstructions();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -203,14 +207,20 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case GremlinPackage.VARIABLE_ACCESS__NAME:
+			case GremlinPackage.METHOD_DECLARATION__NAME:
 				setName((String)newValue);
 				return;
-			case GremlinPackage.VARIABLE_ACCESS__CAST:
-				setCast((TypeDeclaration)newValue);
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends String>)newValue);
+				return;
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				getInstructions().clear();
+				getInstructions().addAll((Collection<? extends Instruction>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -224,11 +234,14 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.VARIABLE_ACCESS__NAME:
+			case GremlinPackage.METHOD_DECLARATION__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case GremlinPackage.VARIABLE_ACCESS__CAST:
-				setCast((TypeDeclaration)null);
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				getParameters().clear();
+				return;
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				getInstructions().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -242,10 +255,12 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case GremlinPackage.VARIABLE_ACCESS__NAME:
+			case GremlinPackage.METHOD_DECLARATION__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case GremlinPackage.VARIABLE_ACCESS__CAST:
-				return cast != null;
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				return instructions != null && !instructions.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -258,10 +273,10 @@ public class VariableAccessImpl extends TraversalElementImpl implements Variable
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case GremlinPackage.VARIABLE_ACCESS___TO_STRING:
+			case GremlinPackage.METHOD_DECLARATION___TO_STRING:
 				return toString();
 		}
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //VariableAccessImpl
+} //MethodDeclarationImpl

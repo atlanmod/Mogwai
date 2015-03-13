@@ -57,8 +57,12 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case GremlinPackage.GREMLIN_SCRIPT: return createGremlinScript();
+			case GremlinPackage.METHOD_DECLARATION: return createMethodDeclaration();
+			case GremlinPackage.LIST_DECLARATION: return createListDeclaration();
+			case GremlinPackage.SET_DECLARATION: return createSetDeclaration();
+			case GremlinPackage.SORTED_SET_DECLARATION: return createSortedSetDeclaration();
 			case GremlinPackage.VARIABLE_DECLARATION: return createVariableDeclaration();
-			case GremlinPackage.VECTOR_TYPE: return createVectorType();
+			case GremlinPackage.COLLECTION_DEFINITION: return createCollectionDefinition();
 			case GremlinPackage.CLOSURE: return createClosure();
 			case GremlinPackage.CLOSURE_IT: return createClosureIt();
 			case GremlinPackage.VARIABLE_ACCESS: return createVariableAccess();
@@ -87,6 +91,8 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.IS_EMPTY_CALL: return createIsEmptyCall();
 			case GremlinPackage.CONTAINS_CALL: return createContainsCall();
 			case GremlinPackage.CONTAINS_ALL_CALL: return createContainsAllCall();
+			case GremlinPackage.ADD_ALL_CALL: return createAddAllCall();
+			case GremlinPackage.UNION_CALL: return createUnionCall();
 			case GremlinPackage.EXPRESSION: return createExpression();
 			case GremlinPackage.UNARY_EXPRESSION: return createUnaryExpression();
 			case GremlinPackage.NOT_EXPRESSION: return createNotExpression();
@@ -125,6 +131,46 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public MethodDeclaration createMethodDeclaration() {
+		MethodDeclarationImpl methodDeclaration = new MethodDeclarationImpl();
+		return methodDeclaration;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ListDeclaration createListDeclaration() {
+		ListDeclarationImpl listDeclaration = new ListDeclarationImpl();
+		return listDeclaration;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SetDeclaration createSetDeclaration() {
+		SetDeclarationImpl setDeclaration = new SetDeclarationImpl();
+		return setDeclaration;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SortedSetDeclaration createSortedSetDeclaration() {
+		SortedSetDeclarationImpl sortedSetDeclaration = new SortedSetDeclarationImpl();
+		return sortedSetDeclaration;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public VariableDeclaration createVariableDeclaration() {
 		VariableDeclarationImpl variableDeclaration = new VariableDeclarationImpl();
 		return variableDeclaration;
@@ -135,9 +181,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VectorType createVectorType() {
-		VectorTypeImpl vectorType = new VectorTypeImpl();
-		return vectorType;
+	public CollectionDefinition createCollectionDefinition() {
+		CollectionDefinitionImpl collectionDefinition = new CollectionDefinitionImpl();
+		return collectionDefinition;
 	}
 
 	/**
@@ -418,6 +464,26 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public ContainsAllCall createContainsAllCall() {
 		ContainsAllCallImpl containsAllCall = new ContainsAllCallImpl();
 		return containsAllCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AddAllCall createAddAllCall() {
+		AddAllCallImpl addAllCall = new AddAllCallImpl();
+		return addAllCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public UnionCall createUnionCall() {
+		UnionCallImpl unionCall = new UnionCallImpl();
+		return unionCall;
 	}
 
 	/**

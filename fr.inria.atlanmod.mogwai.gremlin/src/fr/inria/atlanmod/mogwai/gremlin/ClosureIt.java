@@ -13,13 +13,22 @@ package fr.inria.atlanmod.mogwai.gremlin;
  * @model
  * @generated
  */
-public interface ClosureIt extends TraversalElement {
+public interface ClosureIt extends VariableAccess {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(\"it\");\nif(getNextElement() != null) {\n\tres.append(\".\").append(getNextElement().toString());\n}\nreturn res.toString();'"
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return super.toString();'"
 	 * @generated
 	 */
 	String toString();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return \"it\";'"
+	 * @generated
+	 */
+	String getName();
 
 } // ClosureIt

@@ -2,12 +2,14 @@
  */
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
+import fr.inria.atlanmod.mogwai.gremlin.AddAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.AffectationExpression;
 import fr.inria.atlanmod.mogwai.gremlin.AndExpression;
 import fr.inria.atlanmod.mogwai.gremlin.BinaryExpression;
 import fr.inria.atlanmod.mogwai.gremlin.BooleanLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
+import fr.inria.atlanmod.mogwai.gremlin.CollectionDefinition;
 import fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.ContainsCall;
 import fr.inria.atlanmod.mogwai.gremlin.CountCall;
@@ -37,7 +39,9 @@ import fr.inria.atlanmod.mogwai.gremlin.IsEmptyCall;
 import fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression;
 import fr.inria.atlanmod.mogwai.gremlin.LessExpression;
 import fr.inria.atlanmod.mogwai.gremlin.LessOrEqualExpression;
+import fr.inria.atlanmod.mogwai.gremlin.ListDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.MethodCall;
+import fr.inria.atlanmod.mogwai.gremlin.MethodDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.NextCall;
 import fr.inria.atlanmod.mogwai.gremlin.NotExpression;
 import fr.inria.atlanmod.mogwai.gremlin.OrExpression;
@@ -46,16 +50,19 @@ import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
 import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
 import fr.inria.atlanmod.mogwai.gremlin.ScatterStep;
+import fr.inria.atlanmod.mogwai.gremlin.SetDeclaration;
+import fr.inria.atlanmod.mogwai.gremlin.SortedSetDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.StartStep;
 import fr.inria.atlanmod.mogwai.gremlin.Step;
 import fr.inria.atlanmod.mogwai.gremlin.StringLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.ToListCall;
 import fr.inria.atlanmod.mogwai.gremlin.TransformStep;
 import fr.inria.atlanmod.mogwai.gremlin.TraversalElement;
+import fr.inria.atlanmod.mogwai.gremlin.TypeDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.UnaryExpression;
+import fr.inria.atlanmod.mogwai.gremlin.UnionCall;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
-import fr.inria.atlanmod.mogwai.gremlin.VectorType;
 import fr.inria.atlanmod.mogwai.gremlin.VerticesStep;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -92,6 +99,41 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass methodDeclarationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass typeDeclarationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass listDeclarationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass setDeclarationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass sortedSetDeclarationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass variableDeclarationEClass = null;
 
 	/**
@@ -99,14 +141,14 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass vectorTypeEClass = null;
+	private EClass traversalElementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass traversalElementEClass = null;
+	private EClass collectionDefinitionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -317,6 +359,20 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass containsAllCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass addAllCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass unionCallEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -546,6 +602,114 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getMethodDeclaration() {
+		return methodDeclarationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMethodDeclaration_Name() {
+		return (EAttribute)methodDeclarationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMethodDeclaration_Parameters() {
+		return (EAttribute)methodDeclarationEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getMethodDeclaration_Instructions() {
+		return (EReference)methodDeclarationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getMethodDeclaration__ToString() {
+		return methodDeclarationEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getTypeDeclaration() {
+		return typeDeclarationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getListDeclaration() {
+		return listDeclarationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getListDeclaration__ToString() {
+		return listDeclarationEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSetDeclaration() {
+		return setDeclarationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getSetDeclaration__ToString() {
+		return setDeclarationEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSortedSetDeclaration() {
+		return sortedSetDeclarationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getSortedSetDeclaration__ToString() {
+		return sortedSetDeclarationEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVariableDeclaration() {
 		return variableDeclarationEClass;
 	}
@@ -573,35 +737,17 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getVariableDeclaration_Type() {
+		return (EReference)variableDeclarationEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getVariableDeclaration__ToString() {
 		return variableDeclarationEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getVectorType() {
-		return vectorTypeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getVectorType_Values() {
-		return (EReference)vectorTypeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getVectorType__ToString() {
-		return vectorTypeEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -620,6 +766,42 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EReference getTraversalElement_NextElement() {
 		return (EReference)traversalElementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getCollectionDefinition() {
+		return collectionDefinitionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getCollectionDefinition_Values() {
+		return (EReference)collectionDefinitionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getCollectionDefinition_Type() {
+		return (EReference)collectionDefinitionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCollectionDefinition__ToString() {
+		return collectionDefinitionEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -672,6 +854,15 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getClosureIt__GetName() {
+		return closureItEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVariableAccess() {
 		return variableAccessEClass;
 	}
@@ -683,6 +874,15 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EAttribute getVariableAccess_Name() {
 		return (EAttribute)variableAccessEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getVariableAccess_Cast() {
+		return (EReference)variableAccessEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1302,6 +1502,78 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getAddAllCall() {
+		return addAllCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAddAllCall_Value() {
+		return (EReference)addAllCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getAddAllCall__ToString() {
+		return addAllCallEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getUnionCall() {
+		return unionCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getUnionCall_LeftCollection() {
+		return (EReference)unionCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getUnionCall_RightCollection() {
+		return (EReference)unionCallEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getUnionCall_Cast() {
+		return (EReference)unionCallEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getUnionCall__ToString() {
+		return unionCallEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getExpression() {
 		return expressionEClass;
 	}
@@ -1691,17 +1963,36 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		instructionEClass = createEClass(INSTRUCTION);
 
+		methodDeclarationEClass = createEClass(METHOD_DECLARATION);
+		createEAttribute(methodDeclarationEClass, METHOD_DECLARATION__NAME);
+		createEAttribute(methodDeclarationEClass, METHOD_DECLARATION__PARAMETERS);
+		createEReference(methodDeclarationEClass, METHOD_DECLARATION__INSTRUCTIONS);
+		createEOperation(methodDeclarationEClass, METHOD_DECLARATION___TO_STRING);
+
+		typeDeclarationEClass = createEClass(TYPE_DECLARATION);
+
+		listDeclarationEClass = createEClass(LIST_DECLARATION);
+		createEOperation(listDeclarationEClass, LIST_DECLARATION___TO_STRING);
+
+		setDeclarationEClass = createEClass(SET_DECLARATION);
+		createEOperation(setDeclarationEClass, SET_DECLARATION___TO_STRING);
+
+		sortedSetDeclarationEClass = createEClass(SORTED_SET_DECLARATION);
+		createEOperation(sortedSetDeclarationEClass, SORTED_SET_DECLARATION___TO_STRING);
+
 		variableDeclarationEClass = createEClass(VARIABLE_DECLARATION);
 		createEAttribute(variableDeclarationEClass, VARIABLE_DECLARATION__NAME);
 		createEReference(variableDeclarationEClass, VARIABLE_DECLARATION__VALUE);
+		createEReference(variableDeclarationEClass, VARIABLE_DECLARATION__TYPE);
 		createEOperation(variableDeclarationEClass, VARIABLE_DECLARATION___TO_STRING);
-
-		vectorTypeEClass = createEClass(VECTOR_TYPE);
-		createEReference(vectorTypeEClass, VECTOR_TYPE__VALUES);
-		createEOperation(vectorTypeEClass, VECTOR_TYPE___TO_STRING);
 
 		traversalElementEClass = createEClass(TRAVERSAL_ELEMENT);
 		createEReference(traversalElementEClass, TRAVERSAL_ELEMENT__NEXT_ELEMENT);
+
+		collectionDefinitionEClass = createEClass(COLLECTION_DEFINITION);
+		createEReference(collectionDefinitionEClass, COLLECTION_DEFINITION__VALUES);
+		createEReference(collectionDefinitionEClass, COLLECTION_DEFINITION__TYPE);
+		createEOperation(collectionDefinitionEClass, COLLECTION_DEFINITION___TO_STRING);
 
 		closureEClass = createEClass(CLOSURE);
 		createEReference(closureEClass, CLOSURE__INSTRUCTIONS);
@@ -1709,9 +2000,11 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		closureItEClass = createEClass(CLOSURE_IT);
 		createEOperation(closureItEClass, CLOSURE_IT___TO_STRING);
+		createEOperation(closureItEClass, CLOSURE_IT___GET_NAME);
 
 		variableAccessEClass = createEClass(VARIABLE_ACCESS);
 		createEAttribute(variableAccessEClass, VARIABLE_ACCESS__NAME);
+		createEReference(variableAccessEClass, VARIABLE_ACCESS__CAST);
 		createEOperation(variableAccessEClass, VARIABLE_ACCESS___TO_STRING);
 
 		stepEClass = createEClass(STEP);
@@ -1808,6 +2101,16 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		createEReference(containsAllCallEClass, CONTAINS_ALL_CALL__VALUE);
 		createEOperation(containsAllCallEClass, CONTAINS_ALL_CALL___TO_STRING);
 
+		addAllCallEClass = createEClass(ADD_ALL_CALL);
+		createEReference(addAllCallEClass, ADD_ALL_CALL__VALUE);
+		createEOperation(addAllCallEClass, ADD_ALL_CALL___TO_STRING);
+
+		unionCallEClass = createEClass(UNION_CALL);
+		createEReference(unionCallEClass, UNION_CALL__LEFT_COLLECTION);
+		createEReference(unionCallEClass, UNION_CALL__RIGHT_COLLECTION);
+		createEReference(unionCallEClass, UNION_CALL__CAST);
+		createEOperation(unionCallEClass, UNION_CALL___TO_STRING);
+
 		expressionEClass = createEClass(EXPRESSION);
 
 		unaryExpressionEClass = createEClass(UNARY_EXPRESSION);
@@ -1895,11 +2198,16 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		methodDeclarationEClass.getESuperTypes().add(this.getInstruction());
+		typeDeclarationEClass.getESuperTypes().add(this.getInstruction());
+		listDeclarationEClass.getESuperTypes().add(this.getTypeDeclaration());
+		setDeclarationEClass.getESuperTypes().add(this.getTypeDeclaration());
+		sortedSetDeclarationEClass.getESuperTypes().add(this.getTypeDeclaration());
 		variableDeclarationEClass.getESuperTypes().add(this.getInstruction());
-		vectorTypeEClass.getESuperTypes().add(this.getInstruction());
 		traversalElementEClass.getESuperTypes().add(this.getInstruction());
+		collectionDefinitionEClass.getESuperTypes().add(this.getTraversalElement());
 		closureEClass.getESuperTypes().add(this.getInstruction());
-		closureItEClass.getESuperTypes().add(this.getTraversalElement());
+		closureItEClass.getESuperTypes().add(this.getVariableAccess());
 		variableAccessEClass.getESuperTypes().add(this.getTraversalElement());
 		stepEClass.getESuperTypes().add(this.getTraversalElement());
 		identityStepEClass.getESuperTypes().add(this.getStep());
@@ -1928,6 +2236,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		isEmptyCallEClass.getESuperTypes().add(this.getMethodCall());
 		containsCallEClass.getESuperTypes().add(this.getMethodCall());
 		containsAllCallEClass.getESuperTypes().add(this.getMethodCall());
+		addAllCallEClass.getESuperTypes().add(this.getMethodCall());
+		unionCallEClass.getESuperTypes().add(this.getMethodCall());
 		expressionEClass.getESuperTypes().add(this.getInstruction());
 		unaryExpressionEClass.getESuperTypes().add(this.getExpression());
 		notExpressionEClass.getESuperTypes().add(this.getUnaryExpression());
@@ -1955,19 +2265,42 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEClass(instructionEClass, Instruction.class, "Instruction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(methodDeclarationEClass, MethodDeclaration.class, "MethodDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getMethodDeclaration_Name(), ecorePackage.getEString(), "name", null, 1, 1, MethodDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMethodDeclaration_Parameters(), ecorePackage.getEString(), "parameters", null, 0, -1, MethodDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMethodDeclaration_Instructions(), this.getInstruction(), null, "instructions", null, 0, -1, MethodDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getMethodDeclaration__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(typeDeclarationEClass, TypeDeclaration.class, "TypeDeclaration", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(listDeclarationEClass, ListDeclaration.class, "ListDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getListDeclaration__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(setDeclarationEClass, SetDeclaration.class, "SetDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getSetDeclaration__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(sortedSetDeclarationEClass, SortedSetDeclaration.class, "SortedSetDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getSortedSetDeclaration__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(variableDeclarationEClass, VariableDeclaration.class, "VariableDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariableDeclaration_Name(), ecorePackage.getEString(), "name", null, 1, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVariableDeclaration_Value(), this.getInstruction(), null, "value", null, 0, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariableDeclaration_Type(), this.getTypeDeclaration(), null, "type", null, 0, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getVariableDeclaration__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(vectorTypeEClass, VectorType.class, "VectorType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getVectorType_Values(), this.getInstruction(), null, "values", null, 0, -1, VectorType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getVectorType__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
-
 		initEClass(traversalElementEClass, TraversalElement.class, "TraversalElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTraversalElement_NextElement(), this.getTraversalElement(), null, "nextElement", null, 0, 1, TraversalElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(collectionDefinitionEClass, CollectionDefinition.class, "CollectionDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getCollectionDefinition_Values(), this.getInstruction(), null, "values", null, 0, -1, CollectionDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCollectionDefinition_Type(), this.getTypeDeclaration(), null, "type", null, 0, 1, CollectionDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getCollectionDefinition__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(closureEClass, Closure.class, "Closure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getClosure_Instructions(), this.getInstruction(), null, "instructions", null, 0, -1, Closure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1978,8 +2311,11 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEOperation(getClosureIt__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		initEOperation(getClosureIt__GetName(), ecorePackage.getEString(), "getName", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(variableAccessEClass, VariableAccess.class, "VariableAccess", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariableAccess_Name(), ecorePackage.getEString(), "name", null, 1, 1, VariableAccess.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariableAccess_Cast(), this.getTypeDeclaration(), null, "cast", null, 0, 1, VariableAccess.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getVariableAccess__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -2035,12 +2371,12 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEOperation(getFilterStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(retainStepEClass, RetainStep.class, "RetainStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getRetainStep_Collection(), this.getVectorType(), null, "collection", null, 1, 1, RetainStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRetainStep_Collection(), this.getListDeclaration(), null, "collection", null, 1, 1, RetainStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getRetainStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(exceptStepEClass, ExceptStep.class, "ExceptStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getExceptStep_Collection(), this.getVectorType(), null, "collection", null, 1, 1, ExceptStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExceptStep_Collection(), this.getListDeclaration(), null, "collection", null, 1, 1, ExceptStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getExceptStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -2097,9 +2433,21 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEOperation(getContainsCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(containsAllCallEClass, ContainsAllCall.class, "ContainsAllCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getContainsAllCall_Value(), this.getVectorType(), null, "value", null, 1, 1, ContainsAllCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContainsAllCall_Value(), this.getInstruction(), null, "value", null, 1, 1, ContainsAllCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getContainsAllCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(addAllCallEClass, AddAllCall.class, "AddAllCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getAddAllCall_Value(), this.getInstruction(), null, "value", null, 1, 1, AddAllCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getAddAllCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(unionCallEClass, UnionCall.class, "UnionCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getUnionCall_LeftCollection(), this.getInstruction(), null, "leftCollection", null, 1, 1, UnionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUnionCall_RightCollection(), this.getInstruction(), null, "rightCollection", null, 1, 1, UnionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUnionCall_Cast(), this.getTypeDeclaration(), null, "cast", null, 0, 1, UnionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getUnionCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

@@ -78,6 +78,44 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.METHOD_DECLARATION: {
+				MethodDeclaration methodDeclaration = (MethodDeclaration)theEObject;
+				T result = caseMethodDeclaration(methodDeclaration);
+				if (result == null) result = caseInstruction(methodDeclaration);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.TYPE_DECLARATION: {
+				TypeDeclaration typeDeclaration = (TypeDeclaration)theEObject;
+				T result = caseTypeDeclaration(typeDeclaration);
+				if (result == null) result = caseInstruction(typeDeclaration);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.LIST_DECLARATION: {
+				ListDeclaration listDeclaration = (ListDeclaration)theEObject;
+				T result = caseListDeclaration(listDeclaration);
+				if (result == null) result = caseTypeDeclaration(listDeclaration);
+				if (result == null) result = caseInstruction(listDeclaration);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.SET_DECLARATION: {
+				SetDeclaration setDeclaration = (SetDeclaration)theEObject;
+				T result = caseSetDeclaration(setDeclaration);
+				if (result == null) result = caseTypeDeclaration(setDeclaration);
+				if (result == null) result = caseInstruction(setDeclaration);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.SORTED_SET_DECLARATION: {
+				SortedSetDeclaration sortedSetDeclaration = (SortedSetDeclaration)theEObject;
+				T result = caseSortedSetDeclaration(sortedSetDeclaration);
+				if (result == null) result = caseTypeDeclaration(sortedSetDeclaration);
+				if (result == null) result = caseInstruction(sortedSetDeclaration);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GremlinPackage.VARIABLE_DECLARATION: {
 				VariableDeclaration variableDeclaration = (VariableDeclaration)theEObject;
 				T result = caseVariableDeclaration(variableDeclaration);
@@ -85,17 +123,18 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case GremlinPackage.VECTOR_TYPE: {
-				VectorType vectorType = (VectorType)theEObject;
-				T result = caseVectorType(vectorType);
-				if (result == null) result = caseInstruction(vectorType);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case GremlinPackage.TRAVERSAL_ELEMENT: {
 				TraversalElement traversalElement = (TraversalElement)theEObject;
 				T result = caseTraversalElement(traversalElement);
 				if (result == null) result = caseInstruction(traversalElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.COLLECTION_DEFINITION: {
+				CollectionDefinition collectionDefinition = (CollectionDefinition)theEObject;
+				T result = caseCollectionDefinition(collectionDefinition);
+				if (result == null) result = caseTraversalElement(collectionDefinition);
+				if (result == null) result = caseInstruction(collectionDefinition);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -109,6 +148,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 			case GremlinPackage.CLOSURE_IT: {
 				ClosureIt closureIt = (ClosureIt)theEObject;
 				T result = caseClosureIt(closureIt);
+				if (result == null) result = caseVariableAccess(closureIt);
 				if (result == null) result = caseTraversalElement(closureIt);
 				if (result == null) result = caseInstruction(closureIt);
 				if (result == null) result = defaultCase(theEObject);
@@ -363,6 +403,24 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.ADD_ALL_CALL: {
+				AddAllCall addAllCall = (AddAllCall)theEObject;
+				T result = caseAddAllCall(addAllCall);
+				if (result == null) result = caseMethodCall(addAllCall);
+				if (result == null) result = caseTraversalElement(addAllCall);
+				if (result == null) result = caseInstruction(addAllCall);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.UNION_CALL: {
+				UnionCall unionCall = (UnionCall)theEObject;
+				T result = caseUnionCall(unionCall);
+				if (result == null) result = caseMethodCall(unionCall);
+				if (result == null) result = caseTraversalElement(unionCall);
+				if (result == null) result = caseInstruction(unionCall);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GremlinPackage.EXPRESSION: {
 				Expression expression = (Expression)theEObject;
 				T result = caseExpression(expression);
@@ -552,6 +610,81 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Method Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Method Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMethodDeclaration(MethodDeclaration object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTypeDeclaration(TypeDeclaration object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>List Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>List Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseListDeclaration(ListDeclaration object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Set Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Set Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSetDeclaration(SetDeclaration object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Sorted Set Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Sorted Set Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSortedSetDeclaration(SortedSetDeclaration object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Variable Declaration</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -567,21 +700,6 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Vector Type</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Vector Type</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseVectorType(VectorType object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Traversal Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -593,6 +711,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTraversalElement(TraversalElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Collection Definition</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Collection Definition</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCollectionDefinition(CollectionDefinition object) {
 		return null;
 	}
 
@@ -1043,6 +1176,36 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseContainsAllCall(ContainsAllCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Add All Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Add All Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAddAllCall(AddAllCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Union Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Union Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseUnionCall(UnionCall object) {
 		return null;
 	}
 

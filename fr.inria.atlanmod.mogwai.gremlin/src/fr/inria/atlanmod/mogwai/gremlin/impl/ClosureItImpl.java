@@ -4,6 +4,7 @@ package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -20,7 +21,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ClosureItImpl extends TraversalElementImpl implements ClosureIt {
+public class ClosureItImpl extends VariableAccessImpl implements ClosureIt {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -46,12 +47,32 @@ public class ClosureItImpl extends TraversalElementImpl implements ClosureIt {
 	 * @generated
 	 */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("it");
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
+		return super.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+		return "it";
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == VariableAccess.class) {
+			switch (baseOperationID) {
+				case GremlinPackage.VARIABLE_ACCESS___TO_STRING: return GremlinPackage.CLOSURE_IT___TO_STRING;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
 		}
-		return res.toString();
+		return super.eDerivedOperationID(baseOperationID, baseClass);
 	}
 
 	/**
@@ -64,6 +85,8 @@ public class ClosureItImpl extends TraversalElementImpl implements ClosureIt {
 		switch (operationID) {
 			case GremlinPackage.CLOSURE_IT___TO_STRING:
 				return toString();
+			case GremlinPackage.CLOSURE_IT___GET_NAME:
+				return getName();
 		}
 		return super.eInvoke(operationID, arguments);
 	}

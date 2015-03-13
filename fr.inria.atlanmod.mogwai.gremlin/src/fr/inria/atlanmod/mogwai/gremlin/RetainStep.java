@@ -29,12 +29,12 @@ public interface RetainStep extends Step {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Collection</em>' containment reference.
-	 * @see #setCollection(VectorType)
+	 * @see #setCollection(ListDeclaration)
 	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getRetainStep_Collection()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	VectorType getCollection();
+	ListDeclaration getCollection();
 
 	/**
 	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.RetainStep#getCollection <em>Collection</em>}' containment reference.
@@ -44,7 +44,7 @@ public interface RetainStep extends Step {
 	 * @see #getCollection()
 	 * @generated
 	 */
-	void setCollection(VectorType value);
+	void setCollection(ListDeclaration value);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -3,8 +3,8 @@
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+import fr.inria.atlanmod.mogwai.gremlin.ListDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
-import fr.inria.atlanmod.mogwai.gremlin.VectorType;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -40,7 +40,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * @generated
 	 * @ordered
 	 */
-	protected VectorType collection;
+	protected ListDeclaration collection;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -66,7 +66,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VectorType getCollection() {
+	public ListDeclaration getCollection() {
 		return collection;
 	}
 
@@ -75,8 +75,8 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCollection(VectorType newCollection, NotificationChain msgs) {
-		VectorType oldCollection = collection;
+	public NotificationChain basicSetCollection(ListDeclaration newCollection, NotificationChain msgs) {
+		ListDeclaration oldCollection = collection;
 		collection = newCollection;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.RETAIN_STEP__COLLECTION, oldCollection, newCollection);
@@ -90,7 +90,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCollection(VectorType newCollection) {
+	public void setCollection(ListDeclaration newCollection) {
 		if (newCollection != collection) {
 			NotificationChain msgs = null;
 			if (collection != null)
@@ -157,7 +157,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GremlinPackage.RETAIN_STEP__COLLECTION:
-				setCollection((VectorType)newValue);
+				setCollection((ListDeclaration)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -172,7 +172,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case GremlinPackage.RETAIN_STEP__COLLECTION:
-				setCollection((VectorType)null);
+				setCollection((ListDeclaration)null);
 				return;
 		}
 		super.eUnset(featureID);

@@ -4,18 +4,13 @@ package fr.inria.atlanmod.mogwai.gremlin.impl;
 
 import fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.VectorType;
-
+import fr.inria.atlanmod.mogwai.gremlin.Instruction;
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -40,7 +35,7 @@ public class ContainsAllCallImpl extends MethodCallImpl implements ContainsAllCa
 	 * @generated
 	 * @ordered
 	 */
-	protected VectorType value;
+	protected Instruction value;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -66,7 +61,7 @@ public class ContainsAllCallImpl extends MethodCallImpl implements ContainsAllCa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VectorType getValue() {
+	public Instruction getValue() {
 		return value;
 	}
 
@@ -75,8 +70,8 @@ public class ContainsAllCallImpl extends MethodCallImpl implements ContainsAllCa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetValue(VectorType newValue, NotificationChain msgs) {
-		VectorType oldValue = value;
+	public NotificationChain basicSetValue(Instruction newValue, NotificationChain msgs) {
+		Instruction oldValue = value;
 		value = newValue;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.CONTAINS_ALL_CALL__VALUE, oldValue, newValue);
@@ -90,7 +85,7 @@ public class ContainsAllCallImpl extends MethodCallImpl implements ContainsAllCa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setValue(VectorType newValue) {
+	public void setValue(Instruction newValue) {
 		if (newValue != value) {
 			NotificationChain msgs = null;
 			if (value != null)
@@ -156,7 +151,7 @@ public class ContainsAllCallImpl extends MethodCallImpl implements ContainsAllCa
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GremlinPackage.CONTAINS_ALL_CALL__VALUE:
-				setValue((VectorType)newValue);
+				setValue((Instruction)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -171,7 +166,7 @@ public class ContainsAllCallImpl extends MethodCallImpl implements ContainsAllCa
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case GremlinPackage.CONTAINS_ALL_CALL__VALUE:
-				setValue((VectorType)null);
+				setValue((Instruction)null);
 				return;
 		}
 		super.eUnset(featureID);

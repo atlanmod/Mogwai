@@ -31,6 +31,42 @@ public interface GremlinFactory extends EFactory {
 	GremlinScript createGremlinScript();
 
 	/**
+	 * Returns a new object of class '<em>Method Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Method Declaration</em>'.
+	 * @generated
+	 */
+	MethodDeclaration createMethodDeclaration();
+
+	/**
+	 * Returns a new object of class '<em>List Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>List Declaration</em>'.
+	 * @generated
+	 */
+	ListDeclaration createListDeclaration();
+
+	/**
+	 * Returns a new object of class '<em>Set Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Set Declaration</em>'.
+	 * @generated
+	 */
+	SetDeclaration createSetDeclaration();
+
+	/**
+	 * Returns a new object of class '<em>Sorted Set Declaration</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Sorted Set Declaration</em>'.
+	 * @generated
+	 */
+	SortedSetDeclaration createSortedSetDeclaration();
+
+	/**
 	 * Returns a new object of class '<em>Variable Declaration</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -40,13 +76,13 @@ public interface GremlinFactory extends EFactory {
 	VariableDeclaration createVariableDeclaration();
 
 	/**
-	 * Returns a new object of class '<em>Vector Type</em>'.
+	 * Returns a new object of class '<em>Collection Definition</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Vector Type</em>'.
+	 * @return a new object of class '<em>Collection Definition</em>'.
 	 * @generated
 	 */
-	VectorType createVectorType();
+	CollectionDefinition createCollectionDefinition();
 
 	/**
 	 * Returns a new object of class '<em>Closure</em>'.
@@ -299,6 +335,24 @@ public interface GremlinFactory extends EFactory {
 	 * @generated
 	 */
 	ContainsAllCall createContainsAllCall();
+
+	/**
+	 * Returns a new object of class '<em>Add All Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Add All Call</em>'.
+	 * @generated
+	 */
+	AddAllCall createAddAllCall();
+
+	/**
+	 * Returns a new object of class '<em>Union Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Union Call</em>'.
+	 * @generated
+	 */
+	UnionCall createUnionCall();
 
 	/**
 	 * Returns a new object of class '<em>Expression</em>'.
