@@ -412,12 +412,30 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.RETAIN_ALL_CALL: {
+				RetainAllCall retainAllCall = (RetainAllCall)theEObject;
+				T result = caseRetainAllCall(retainAllCall);
+				if (result == null) result = caseMethodCall(retainAllCall);
+				if (result == null) result = caseTraversalElement(retainAllCall);
+				if (result == null) result = caseInstruction(retainAllCall);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GremlinPackage.UNION_CALL: {
 				UnionCall unionCall = (UnionCall)theEObject;
 				T result = caseUnionCall(unionCall);
 				if (result == null) result = caseMethodCall(unionCall);
 				if (result == null) result = caseTraversalElement(unionCall);
 				if (result == null) result = caseInstruction(unionCall);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.INTERSECTION_CALL: {
+				IntersectionCall intersectionCall = (IntersectionCall)theEObject;
+				T result = caseIntersectionCall(intersectionCall);
+				if (result == null) result = caseMethodCall(intersectionCall);
+				if (result == null) result = caseTraversalElement(intersectionCall);
+				if (result == null) result = caseInstruction(intersectionCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1195,6 +1213,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Retain All Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Retain All Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRetainAllCall(RetainAllCall object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Union Call</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1206,6 +1239,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseUnionCall(UnionCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Intersection Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Intersection Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIntersectionCall(IntersectionCall object) {
 		return null;
 	}
 

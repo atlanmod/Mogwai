@@ -311,10 +311,32 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Instruction"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RetainAllCall" eSuperTypes="#//MethodCall">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;retainAll(&quot;);&#xA;res.append(getValue().toString()+&quot;)&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Instruction"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UnionCall" eSuperTypes="#//MethodCall">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot;(&quot;);&#xA;}&#xA;res.append(&quot;computeUnion(&quot;);&#xA;res.append(getLeftCollection().toString());&#xA;res.append(&quot;, &quot;);&#xA;res.append(getRightCollection().toString());&#xA;res.append(&quot;)&quot;);&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot; as &quot; + getCast().toString());&#xA;&#x9;res.append(&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftCollection" lowerBound="1"
+        eType="#//Instruction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightCollection" lowerBound="1"
+        eType="#//Instruction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cast" eType="#//TypeDeclaration"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntersectionCall" eSuperTypes="#//MethodCall">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot;(&quot;);&#xA;}&#xA;res.append(&quot;computeIntersection(&quot;);&#xA;res.append(getLeftCollection().toString());&#xA;res.append(&quot;, &quot;);&#xA;res.append(getRightCollection().toString());&#xA;res.append(&quot;)&quot;);&#xA;if(getCast() != null) {&#xA;&#x9;res.append(&quot; as &quot; + getCast().toString());&#xA;&#x9;res.append(&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="leftCollection" lowerBound="1"

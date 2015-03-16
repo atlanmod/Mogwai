@@ -92,7 +92,9 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.CONTAINS_CALL: return createContainsCall();
 			case GremlinPackage.CONTAINS_ALL_CALL: return createContainsAllCall();
 			case GremlinPackage.ADD_ALL_CALL: return createAddAllCall();
+			case GremlinPackage.RETAIN_ALL_CALL: return createRetainAllCall();
 			case GremlinPackage.UNION_CALL: return createUnionCall();
+			case GremlinPackage.INTERSECTION_CALL: return createIntersectionCall();
 			case GremlinPackage.EXPRESSION: return createExpression();
 			case GremlinPackage.UNARY_EXPRESSION: return createUnaryExpression();
 			case GremlinPackage.NOT_EXPRESSION: return createNotExpression();
@@ -481,9 +483,29 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public RetainAllCall createRetainAllCall() {
+		RetainAllCallImpl retainAllCall = new RetainAllCallImpl();
+		return retainAllCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public UnionCall createUnionCall() {
 		UnionCallImpl unionCall = new UnionCallImpl();
 		return unionCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IntersectionCall createIntersectionCall() {
+		IntersectionCallImpl intersectionCall = new IntersectionCallImpl();
+		return intersectionCall;
 	}
 
 	/**

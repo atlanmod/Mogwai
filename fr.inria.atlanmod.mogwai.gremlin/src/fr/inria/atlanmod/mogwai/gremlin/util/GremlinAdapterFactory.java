@@ -232,8 +232,16 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createAddAllCallAdapter();
 			}
 			@Override
+			public Adapter caseRetainAllCall(RetainAllCall object) {
+				return createRetainAllCallAdapter();
+			}
+			@Override
 			public Adapter caseUnionCall(UnionCall object) {
 				return createUnionCallAdapter();
+			}
+			@Override
+			public Adapter caseIntersectionCall(IntersectionCall object) {
+				return createIntersectionCallAdapter();
 			}
 			@Override
 			public Adapter caseExpression(Expression object) {
@@ -902,6 +910,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.RetainAllCall <em>Retain All Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.RetainAllCall
+	 * @generated
+	 */
+	public Adapter createRetainAllCallAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.UnionCall <em>Union Call</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -912,6 +934,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createUnionCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.IntersectionCall <em>Intersection Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.IntersectionCall
+	 * @generated
+	 */
+	public Adapter createIntersectionCallAdapter() {
 		return null;
 	}
 

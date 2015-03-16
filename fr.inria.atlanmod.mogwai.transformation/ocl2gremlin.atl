@@ -118,7 +118,7 @@ helper context OclAny def : getComposite() : OclAny =
 							composite
 						endif
 					else
-						if composite.getOpName() = 'union' then
+						if Set{'union','intersection'}->includes(composite.getOpName()) then
 							OclUndefined
 						else
 					-- The container is a function call
@@ -224,9 +224,9 @@ helper context OCL!OCLExpression def : getFirstInstruction() : OCL!OCLExpression
 	endif
 	;
 
-helper context OCL!OCLExpression def : getFirstInstructionUnion() : OCL!OCLExpression =
+helper context OCL!OCLExpression def : getFirstInstructionCollectionOperation() : OCL!OCLExpression =
 	if self.oclIsTypeOf(OCL!OperationCallExp) or self.oclIsTypeOf(OCL!IteratorExp) then
-		if self.getOpName() = 'union' then
+		if Set{'union','intersection'}.includes(self.getOpName()) then
 			self
 		else
 			self.source.getFirstInstructionUnion()
@@ -238,25 +238,25 @@ helper context OCL!OCLExpression def : getFirstInstructionUnion() : OCL!OCLExpre
 			self.oclIsKindOf(OCL!BooleanLiteralExp) then
 			self
 		else
-			self.source.getFirstInstructionUnion()
+			self.source.getFirstInstructionCollectionIntersection()
 		endif
 	endif
 	;
 
-helper context OCL!OCLExpression def : getFirstInstructionInUnions() : OrderedSet(OCL!OCLExpression) =
-	if OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union').size() = 0 then
+helper context OCL!OCLExpression def : getFirstInstructionInCollectionOperations() : OrderedSet(OCL!OCLExpression) =
+	if OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName())).size() = 0 then
 --		self.getFirstInstruction() removed to avoid cast error if there is no union
 		OrderedSet{}
 	else
-		thisModule.reverse(OCL!OperationCallExp.allInstances())->select(each | each.getOpName() = 'union')->collect(e | OrderedSet{}.append(e.argument.first().getFirstInstructionUnion())).flatten()
+		thisModule.reverse(OCL!OperationCallExp.allInstances())->select(each | Set{'union','intersection'}.includes(each.getOpName()))->collect(e | OrderedSet{}.append(e.argument.first().getFirstInstructionCollectionOperation())).flatten()
 	endif
 	;
 
 helper def : reverse(seq : Sequence(OclAny)): Sequence(OclAny) = seq->iterate(e; res : Sequence(OclAny) = Sequence{} | res.prepend(e));
 
-helper context OCL!OCLExpression def : isLastInUnion() : Boolean =
+helper context OCL!OCLExpression def : isLastInCollectionOperation() : Boolean =
 	if self.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
-		if self.refImmediateComposite().getOpName() = 'union' then
+		if Sequence{'union','intersection'}.includes(self.refImmediateComposite().getOpName()) then
 			true
 		else
 			false
@@ -267,19 +267,19 @@ helper context OCL!OCLExpression def : isLastInUnion() : Boolean =
 	;
 
 helper context OCL!OCLExpression def : isInUnionLeftPart() : Boolean =
-	if self.isLastInUnion() then
+	if self.isLastInCollectionOperation() then
 		self.refImmediateComposite().source = self
 	else
 		false
 	endif
 	;
 
-helper context OCL!OCLExpression def : getUnionVariableName() : String =
-	let res : String = 'union' in
+helper context OCL!OCLExpression def : getCollectionVariableName() : String =
+	let res : String = 'collection' in
 		if self.isInUnionLeftPart() then
-			res + 'Left' + thisModule.getUnionIndex(self.refImmediateComposite())
+			res + thisModule.getUnionIndex(self.refImmediateComposite()) + 'Left'
 		else
-			res + 'Right' + thisModule.getUnionIndex(self.refImmediateComposite())
+			res + thisModule.getUnionIndex(self.refImmediateComposite()) + 'Right'
 		endif
 	;
 
@@ -337,22 +337,35 @@ rule constraint2script {
 				->collect(e | thisModule.typeExp2meta(e)).union(
 					cc.specification.bodyExpression.getTypeExps()
 				->collect(e | thisModule.typeExp2metaNodes(e))).union(
-					let unions : Sequence(OCL!OperationCallExp) = OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union') in
-					if unions.isEmpty() then
+					let collectionOperations : Sequence(OCL!OperationCallExp) = OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName())) in
+					if collectionOperations.isEmpty() then
 						OrderedSet{}
 					else
-						unions->collect(e | thisModule.union2metaLeft(e)).union(
-							unions->collect(e | thisModule.union2metaRight(e))	
-						).append(thisModule.unionMetaMethod(unions.first()))
+						collectionOperations->collect(e | thisModule.collectionOperation2metaLeft(e)).union(
+							collectionOperations->collect(e | thisModule.collectionOperation2metaRight(e))	
+						)
+						.append(
+							if(collectionOperations->exists(e | e.getOpName() = 'union')) then
+							thisModule.unionMetaMethod(collectionOperations.first())
+							else
+								OclUndefined
+							endif
+						).append(
+							if(collectionOperations->exists(e | e.getOpName() = 'intersection')) then
+							thisModule.intersectionMetaMethod(collectionOperations.first())
+							else
+								OclUndefined
+							endif
+						)
 					endif).
 				append(
 					cc.specification.bodyExpression.getFirstInstruction()
 				).
 				union(
-					cc.specification.bodyExpression.getFirstInstructionInUnions()
+					cc.specification.bodyExpression.getFirstInstructionInCollectionOperations()
 				).
 				union(
-					OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union')	
+					OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName()))	
 				)
 		)
 }
@@ -405,44 +418,68 @@ lazy rule unionMetaMethod {
 	from
 		oclUnion : OCL!OperationCallExp
 	to
-		md : Gremlin!MethodDeclaration(
+		computeUnion : Gremlin!MethodDeclaration(
 			name <- 'computeUnion',
 			parameters <- Sequence{'c1','c2'},
-			instructions <- Sequence{i1,i2}
+			instructions <- Sequence{unionInstruction1,unionInstruction2}
 		),
-		i1 : Gremlin!VariableAccess(
+		unionInstruction1 : Gremlin!VariableAccess(
 			name <- 'c1',
-			nextElement <- addAllCall
+			nextElement <- unionAddAllCall
 		),
-		addAllCall : Gremlin!AddAllCall(
-			value <- vc2	
+		unionAddAllCall : Gremlin!AddAllCall(
+			value <- unionV2	
 		),
-		vc2 : Gremlin!VariableAccess(
+		unionV2 : Gremlin!VariableAccess(
 			name <- 'c2'	
 		),
-		i2 : Gremlin!VariableAccess(
+		unionInstruction2 : Gremlin!VariableAccess(
+			name <- 'c1'	
+		)
+}
+
+lazy rule intersectionMetaMethod {
+	from
+		oclUnion : OCL!OperationCallExp
+	to
+		computeIntersection : Gremlin!MethodDeclaration(
+			name <- 'computeIntersection',
+			parameters <- Sequence{'c1','c2'},
+			instructions <- Sequence{intersectionInstruction1,intersectionInstruction2}
+		),
+		intersectionInstruction1 : Gremlin!VariableAccess(
+			name <- 'c1',
+			nextElement <- intersectionRetainAllCall
+		),
+		intersectionRetainAllCall : Gremlin!RetainAllCall(
+			value <- intersectionV2	
+		),
+		intersectionV2 : Gremlin!VariableAccess(
+			name <- 'c2'	
+		),
+		intersectionInstruction2 : Gremlin!VariableAccess(
 			name <- 'c1'	
 		)
 }
 
 -- Create variables to store union parts
-lazy rule union2metaLeft {
+lazy rule collectionOperation2metaLeft {
 	from
 		oclUnion : OCL!OperationCallExp
 	to
 		metaUnionVar : Gremlin!VariableDeclaration (
-			name <- 'unionLeft' + thisModule.getUnionIndex(oclUnion),
+			name <- 'collection' + thisModule.getUnionIndex(oclUnion) + 'Left',
 			value <- col
 		),
 		col : Gremlin!CollectionDefinition ()
 }
 
-lazy rule union2metaRight {
+lazy rule collectionOperation2metaRight {
 	from
 		oclUnion : OCL!OperationCallExp
 	to
 		metaUnionVar : Gremlin!VariableDeclaration(
-			name <- 'unionRight' + thisModule.getUnionIndex(oclUnion),
+			name <- 'collection' + thisModule.getUnionIndex(oclUnion) + 'Right',
 			value <- col
 		),
 		col : Gremlin!CollectionDefinition()
@@ -459,13 +496,34 @@ rule union2steps {
 			nextElement <- idStep
 		),
 		vaL : Gremlin!VariableAccess(
-			name <- union.source.getUnionVariableName()	
+			name <- union.source.getCollectionVariableName()	
 		),
 		vaR : Gremlin!VariableAccess(
-			name <- union.argument.first().getUnionVariableName()	
+			name <- union.argument.first().getCollectionVariableName()	
 		),
 		idStep : Gremlin!IdentityStep(
 			nextElement <- union.getComposite()	
+		)
+}
+
+rule intersection2steps {
+	from
+		intersection : OCL!OperationCallExp (intersection.getOpName() = 'intersection')
+	to
+		ic : Gremlin!IntersectionCall(
+			leftCollection <- vaL,
+			rightCollection <- vaR,
+			cast <- thisModule.lazyCol(intersection.eType),
+			nextElement <- idStep
+		),
+		vaL : Gremlin!VariableAccess(
+			name <- intersection.source.getCollectionVariableName()	
+		),
+		vaR : Gremlin!VariableAccess(
+			name <- intersection.argument.first().getCollectionVariableName()	
+		),
+		idStep : Gremlin!IdentityStep(
+			nextElement <- intersection.getComposite()	
 		)
 }
 
@@ -555,7 +613,7 @@ rule typeExp2steps {
 -- Transforms 'collect' expressions into edge and vertex step.
 rule collect2steps {
 	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and not collect.isLastInUnion())
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and not collect.isLastInCollectionOperation())
 	to
 		id : Gremlin!IdentityStep(
 			nextElement <- collect.getComposite()
@@ -564,7 +622,7 @@ rule collect2steps {
 
 rule collectLastInUnionRightPart2steps {
 	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInUnion() and not collect.isInUnionLeftPart())
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and not collect.isInUnionLeftPart())
 	to
 		fill : Gremlin!FillStep(
 			instruction <- unionContentVariableAccess
@@ -576,7 +634,7 @@ rule collectLastInUnionRightPart2steps {
 
 rule collectLastInUnionLeftPart2steps {
 	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInUnion() and collect.isInUnionLeftPart())
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and collect.isInUnionLeftPart())
 	to
 		fill : Gremlin!FillStep(
 			instruction <- affect
@@ -605,7 +663,7 @@ rule oclIsUndefined2steps {
 
 rule select2steps {
 	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and not select.isLastInUnion())
+		select : OCL!IteratorExp (select.getOpName() = 'select' and not select.isLastInCollectionOperation())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- cl,
@@ -629,7 +687,7 @@ lazy rule varIterator2def {
 
 rule selectLastInUnionRightPart2steps {
 	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInUnion() and not select.isInUnionLeftPart())
+		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and not select.isInUnionLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- cl,
@@ -648,7 +706,7 @@ rule selectLastInUnionRightPart2steps {
 
 rule selectLastInUnionLeftPart2steps {
 	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInUnion() and select.isInUnionLeftPart())
+		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and select.isInUnionLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- cl,
@@ -672,7 +730,7 @@ rule selectLastInUnionLeftPart2steps {
 
 rule reject2steps {
 	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and not reject.isLastInUnion())
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and not reject.isLastInCollectionOperation())
 	to
 		pp : Gremlin!FilterStep (
 			closure <-  clos,
@@ -688,7 +746,7 @@ rule reject2steps {
 
 rule rejectLastInUnionRightPart2steps {
 	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInUnion() and not reject.isInUnionLeftPart())
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and not reject.isInUnionLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- clos,
@@ -710,7 +768,7 @@ rule rejectLastInUnionRightPart2steps {
 
 rule rejectLastInUnionLeftPart2steps {
 	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInUnion() and reject.isInUnionLeftPart())
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and reject.isInUnionLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- clos,
@@ -1287,7 +1345,7 @@ rule oclAsSequence2steps {
 -- handle asSequence operation as part of a collection operation
 rule oclAsSequenceCol2steps extends oclAsSequence2steps {
 	from
-		asSequence : OCL!OperationCallExp (asSequence.isLastInUnion())
+		asSequence : OCL!OperationCallExp (asSequence.isLastInCollectionOperation())
 	to
 		ip : Gremlin!IdentityStep(
 			nextElement <- fill	
@@ -1296,7 +1354,7 @@ rule oclAsSequenceCol2steps extends oclAsSequence2steps {
 			instruction <- va	
 		),
 		va : Gremlin!VariableAccess(
-			name <- asSequence.getUnionVariableName()	
+			name <- asSequence.getCollectionVariableName()	
 		)
 }
 
@@ -1314,7 +1372,7 @@ rule oclAsBag2steps {
 -- handle asBag oepration as part of a collection operation
 rule oclAsBagCol2steps extends oclAsBag2steps {
 	from
-		asBag : OCL!OperationCallExp (asBag.isLastInUnion())
+		asBag : OCL!OperationCallExp (asBag.isLastInCollectionOperation())
 	to
 		ip : Gremlin!IdentityStep(
 			nextElement <- fill	
@@ -1323,7 +1381,7 @@ rule oclAsBagCol2steps extends oclAsBag2steps {
 			instruction <- va	
 		),
 		va : Gremlin!VariableAccess(
-			name <- asBag.getUnionVariableName()	
+			name <- asBag.getCollectionVariableName()	
 		)
 }
 
@@ -1353,7 +1411,7 @@ rule oclAsSet2steps {
 -- handle asSet operation as part of a collection operation
 rule oclAsSetCol2steps extends oclAsSet2steps {
 	from
-		asSet : OCL!OperationCallExp(asSet.isLastInUnion())
+		asSet : OCL!OperationCallExp(asSet.isLastInCollectionOperation())
 	to
 		gather : Gremlin!GatherStep(),
 		transform : Gremlin!TransformStep(),
@@ -1367,7 +1425,7 @@ rule oclAsSetCol2steps extends oclAsSet2steps {
 			instruction <- va	
 		),
 		va : Gremlin!VariableAccess(
-			name <- asSet.getUnionVariableName()	
+			name <- asSet.getCollectionVariableName()	
 		)
 }
 
@@ -1397,7 +1455,7 @@ rule oclAsOrderedSet2steps {
 -- handle asOrderedSet operation as part of a collection operation
 rule oclAsOrderedSetCol2steps extends oclAsOrderedSet2steps {
 	from
-		asOrderedSet : OCL!OperationCallExp(asOrderedSet.isLastInUnion())
+		asOrderedSet : OCL!OperationCallExp(asOrderedSet.isLastInCollectionOperation())
 	to
 		gather : Gremlin!GatherStep(),
 		transform : Gremlin!TransformStep(),
@@ -1411,7 +1469,7 @@ rule oclAsOrderedSetCol2steps extends oclAsOrderedSet2steps {
 			instruction <- va	
 		),
 		va : Gremlin!VariableAccess(
-			name <- asOrderedSet.getUnionVariableName()	
+			name <- asOrderedSet.getCollectionVariableName()	
 		)
 }
 
@@ -1439,7 +1497,7 @@ rule sequence2steps {
 -- handle sequence declaration as part of a collection operation
 rule sequenceCol2steps extends sequence2steps {
 	from 
-		sequence : OCL!CollectionLiteralExp (sequence.isLastInUnion())
+		sequence : OCL!CollectionLiteralExp (sequence.isLastInCollectionOperation())
 	to
 		col : Gremlin!CollectionDefinition(
 			nextElement <- id	
@@ -1451,7 +1509,7 @@ rule sequenceCol2steps extends sequence2steps {
 			instruction <- va
 		),
 		va : Gremlin!VariableAccess(
-			name <- sequence.getUnionVariableName()
+			name <- sequence.getCollectionVariableName()
 		)
 }
 
@@ -1469,7 +1527,7 @@ rule set2steps {
 -- handle set declaration as part of a collection operation
 rule setCol2steps extends set2steps {
 	from
-		set : OCL!CollectionLiteralExp (set.isLastInUnion())
+		set : OCL!CollectionLiteralExp (set.isLastInCollectionOperation())
 	to
 		col : Gremlin!CollectionDefinition(
 			nextElement <- id	
@@ -1481,7 +1539,7 @@ rule setCol2steps extends set2steps {
 			instruction <- va	
 		),
 		va : Gremlin!VariableAccess(
-			name <- set.getUnionVariableName()	
+			name <- set.getCollectionVariableName()	
 		)
 }
 
@@ -1499,7 +1557,7 @@ rule orderedSet2steps {
 -- handle ordered set declaration as part of a collection operation
 rule orderedSetCol2steps extends orderedSet2steps {
 	from
-		orderedSet : OCL!CollectionLiteralExp (orderedSet.isLastInUnion())
+		orderedSet : OCL!CollectionLiteralExp (orderedSet.isLastInCollectionOperation())
 	to
 		col : Gremlin!CollectionDefinition(
 			nextElement <- id	
@@ -1511,7 +1569,7 @@ rule orderedSetCol2steps extends orderedSet2steps {
 			instruction <- va
 		),
 		va : Gremlin!VariableAccess(
-			name <- orderedSet.getUnionVariableName()	
+			name <- orderedSet.getCollectionVariableName()	
 		)
 }
 
@@ -1529,7 +1587,7 @@ rule bag2steps {
 -- handle bag declaration as part of a collection operation
 rule bagCol2steps extends bag2steps {
 	from
-		bag : OCL!CollectionLiteralExp (bag.isLastInUnion())
+		bag : OCL!CollectionLiteralExp (bag.isLastInCollectionOperation())
 	to
 		col : Gremlin!CollectionDefinition(
 			nextElement <- id	
@@ -1541,7 +1599,7 @@ rule bagCol2steps extends bag2steps {
 			instruction <- va	
 		),
 		va : Gremlin!VariableAccess(
-			name <- bag.getUnionVariableName()	
+			name <- bag.getCollectionVariableName()	
 		)
 }
 

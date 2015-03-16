@@ -35,6 +35,7 @@ import fr.inria.atlanmod.mogwai.gremlin.InVStep;
 import fr.inria.atlanmod.mogwai.gremlin.IndexCall;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
 import fr.inria.atlanmod.mogwai.gremlin.IntegerLiteral;
+import fr.inria.atlanmod.mogwai.gremlin.IntersectionCall;
 import fr.inria.atlanmod.mogwai.gremlin.IsEmptyCall;
 import fr.inria.atlanmod.mogwai.gremlin.LeftShiftExpression;
 import fr.inria.atlanmod.mogwai.gremlin.LessExpression;
@@ -48,6 +49,7 @@ import fr.inria.atlanmod.mogwai.gremlin.OrExpression;
 import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
 import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
+import fr.inria.atlanmod.mogwai.gremlin.RetainAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
 import fr.inria.atlanmod.mogwai.gremlin.ScatterStep;
 import fr.inria.atlanmod.mogwai.gremlin.SetDeclaration;
@@ -372,7 +374,21 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass retainAllCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass unionCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass intersectionCallEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1529,6 +1545,33 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getRetainAllCall() {
+		return retainAllCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getRetainAllCall_Value() {
+		return (EReference)retainAllCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getRetainAllCall__ToString() {
+		return retainAllCallEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getUnionCall() {
 		return unionCallEClass;
 	}
@@ -1567,6 +1610,51 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EOperation getUnionCall__ToString() {
 		return unionCallEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getIntersectionCall() {
+		return intersectionCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIntersectionCall_LeftCollection() {
+		return (EReference)intersectionCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIntersectionCall_RightCollection() {
+		return (EReference)intersectionCallEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getIntersectionCall_Cast() {
+		return (EReference)intersectionCallEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getIntersectionCall__ToString() {
+		return intersectionCallEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -2105,11 +2193,21 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		createEReference(addAllCallEClass, ADD_ALL_CALL__VALUE);
 		createEOperation(addAllCallEClass, ADD_ALL_CALL___TO_STRING);
 
+		retainAllCallEClass = createEClass(RETAIN_ALL_CALL);
+		createEReference(retainAllCallEClass, RETAIN_ALL_CALL__VALUE);
+		createEOperation(retainAllCallEClass, RETAIN_ALL_CALL___TO_STRING);
+
 		unionCallEClass = createEClass(UNION_CALL);
 		createEReference(unionCallEClass, UNION_CALL__LEFT_COLLECTION);
 		createEReference(unionCallEClass, UNION_CALL__RIGHT_COLLECTION);
 		createEReference(unionCallEClass, UNION_CALL__CAST);
 		createEOperation(unionCallEClass, UNION_CALL___TO_STRING);
+
+		intersectionCallEClass = createEClass(INTERSECTION_CALL);
+		createEReference(intersectionCallEClass, INTERSECTION_CALL__LEFT_COLLECTION);
+		createEReference(intersectionCallEClass, INTERSECTION_CALL__RIGHT_COLLECTION);
+		createEReference(intersectionCallEClass, INTERSECTION_CALL__CAST);
+		createEOperation(intersectionCallEClass, INTERSECTION_CALL___TO_STRING);
 
 		expressionEClass = createEClass(EXPRESSION);
 
@@ -2237,7 +2335,9 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		containsCallEClass.getESuperTypes().add(this.getMethodCall());
 		containsAllCallEClass.getESuperTypes().add(this.getMethodCall());
 		addAllCallEClass.getESuperTypes().add(this.getMethodCall());
+		retainAllCallEClass.getESuperTypes().add(this.getMethodCall());
 		unionCallEClass.getESuperTypes().add(this.getMethodCall());
+		intersectionCallEClass.getESuperTypes().add(this.getMethodCall());
 		expressionEClass.getESuperTypes().add(this.getInstruction());
 		unaryExpressionEClass.getESuperTypes().add(this.getExpression());
 		notExpressionEClass.getESuperTypes().add(this.getUnaryExpression());
@@ -2442,12 +2542,24 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEOperation(getAddAllCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		initEClass(retainAllCallEClass, RetainAllCall.class, "RetainAllCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRetainAllCall_Value(), this.getInstruction(), null, "value", null, 1, 1, RetainAllCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getRetainAllCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(unionCallEClass, UnionCall.class, "UnionCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getUnionCall_LeftCollection(), this.getInstruction(), null, "leftCollection", null, 1, 1, UnionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUnionCall_RightCollection(), this.getInstruction(), null, "rightCollection", null, 1, 1, UnionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUnionCall_Cast(), this.getTypeDeclaration(), null, "cast", null, 0, 1, UnionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getUnionCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(intersectionCallEClass, IntersectionCall.class, "IntersectionCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIntersectionCall_LeftCollection(), this.getInstruction(), null, "leftCollection", null, 1, 1, IntersectionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIntersectionCall_RightCollection(), this.getInstruction(), null, "rightCollection", null, 1, 1, IntersectionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getIntersectionCall_Cast(), this.getTypeDeclaration(), null, "cast", null, 0, 1, IntersectionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getIntersectionCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

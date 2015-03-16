@@ -346,6 +346,15 @@ public interface GremlinFactory extends EFactory {
 	AddAllCall createAddAllCall();
 
 	/**
+	 * Returns a new object of class '<em>Retain All Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Retain All Call</em>'.
+	 * @generated
+	 */
+	RetainAllCall createRetainAllCall();
+
+	/**
 	 * Returns a new object of class '<em>Union Call</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -353,6 +362,15 @@ public interface GremlinFactory extends EFactory {
 	 * @generated
 	 */
 	UnionCall createUnionCall();
+
+	/**
+	 * Returns a new object of class '<em>Intersection Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Intersection Call</em>'.
+	 * @generated
+	 */
+	IntersectionCall createIntersectionCall();
 
 	/**
 	 * Returns a new object of class '<em>Expression</em>'.
