@@ -35,13 +35,7 @@ helper context OCL!OCLExpression def : getTypeExps() : OrderedSet(OCL!TypeExp) =
 		endif)
 	;
 	
-helper context OCL!OCLExpression def : isInCollect() : Boolean = 
-	if self.refImmediateComposite().oclIsTypeOf(OCL!IteratorExp) then
-		self.refImmediateComposite().name = 'collect'
-	else
-		self.refImmediateComposite().isInCollect()
-	endif
-	;
+
 
 
 
@@ -50,7 +44,7 @@ helper context OCL!OCLExpression def : getFirstInstructionCollectionOperation() 
 		if Set{'union','intersection'}.includes(self.getOpName()) then
 			self
 		else
-			self.source.getFirstInstructionUnion()
+			self.source.getFirstInstructionCollectionOperation()
 		endif
 	else
 		if self.oclIsTypeOf(OCL!VariableExp) or
@@ -66,7 +60,6 @@ helper context OCL!OCLExpression def : getFirstInstructionCollectionOperation() 
 
 helper context OCL!OCLExpression def : getFirstInstructionInCollectionOperations() : OrderedSet(OCL!OCLExpression) =
 	if OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName())).size() = 0 then
---		self.getFirstInstruction() removed to avoid cast error if there is no union
 		OrderedSet{}
 	else
 		thisModule.reverse(OCL!OperationCallExp.allInstances())->select(each | Set{'union','intersection'}.includes(each.getOpName()))->collect(e | OrderedSet{}.append(e.argument.first().getFirstInstructionCollectionOperation())).flatten()
@@ -88,19 +81,15 @@ helper context OCL!OCLExpression def : isLastInCollectionOperation() : Boolean =
 	;
 
 helper context OCL!OCLExpression def : isInCollectionOperationLeftPart() : Boolean =
-	if self.isLastInCollectionOperation() then
-		self.refImmediateComposite().source = self
-	else
-		false
-	endif
+	self.refImmediateComposite().source = self
 	;
 
 helper context OCL!OCLExpression def : getCollectionVariableName() : String =
 	let res : String = 'collection' in
 		if self.isInCollectionOperationLeftPart() then
-			res + thisModule.getUnionIndex(self.refImmediateComposite()) + 'Left'
+			res + thisModule.getCollectionOperationIndex(self.refImmediateComposite()) + 'Left'
 		else
-			res + thisModule.getUnionIndex(self.refImmediateComposite()) + 'Right'
+			res + thisModule.getCollectionOperationIndex(self.refImmediateComposite()) + 'Right'
 		endif
 	;
 
@@ -109,6 +98,17 @@ helper context OCL!PropertyCallExp def : isLastInComparison() : Boolean =
 		self.refImmediateComposite().isComparison()
 	else
 		false
+	endif
+	;
+
+helper def : getCollectionOperationIndex(op : OCL!OperationCallExp) : Integer =
+	if op.getOpName() = 'union' then
+		OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union')->indexOf(op)
+	else if op.getOpName() = 'intersection' then
+		OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'intersection')->indexOf(op)
+	else
+		-1
+	endif
 	endif
 	;
 
@@ -202,9 +202,7 @@ lazy rule typeExp2metaNodes {
 		
 }
 
-helper def : getUnionIndex(u : OCL!OperationCallExp) : Integer =
-	OCL!OperationCallExp.allInstances()->select(each | each.getOpName() = 'union')->indexOf(u)
-	;
+
 
 lazy rule unionMetaMethod {
 	from
@@ -254,13 +252,13 @@ lazy rule intersectionMetaMethod {
 		)
 }
 
--- Create variables to store union parts
+-- Create variables to store collection operations results
 lazy rule collectionOperation2metaLeft {
 	from
 		oclUnion : OCL!OperationCallExp
 	to
 		metaUnionVar : Gremlin!VariableDeclaration (
-			name <- 'collection' + thisModule.getUnionIndex(oclUnion) + 'Left',
+			name <- 'collection' + thisModule.getCollectionOperationIndex(oclUnion) + 'Left',
 			value <- col
 		),
 		col : Gremlin!CollectionDefinition ()
@@ -271,7 +269,7 @@ lazy rule collectionOperation2metaRight {
 		oclUnion : OCL!OperationCallExp
 	to
 		metaUnionVar : Gremlin!VariableDeclaration(
-			name <- 'collection' + thisModule.getUnionIndex(oclUnion) + 'Right',
+			name <- 'collection' + thisModule.getCollectionOperationIndex(oclUnion) + 'Right',
 			value <- col
 		),
 		col : Gremlin!CollectionDefinition()
@@ -353,22 +351,6 @@ lazy rule lazyBag extends lazyCol {
 	to
 		decl : Gremlin!ListDeclaration
 }
---rule union2steps {
---	from
---		oclUnion : OCL!OperationCallExp (oclUnion.getOpName() = 'union')
---	to
---		gg : Gremlin!VariableAccess(
---			name <- 'unionContent',
---			nextElement <- idStep
---		),
---		idStep : Gremlin!IdentityStep(
---			nextElement <- if oclUnion.getComposite().getOpName() = 'union' then
---							OclUndefined
---							else
---								oclUnion.getComposite()
---							endif
---		)
---}
 
 -- Transforms 'allInstances' expressions into kyanosInstanceOf edge step
 -- and vertex step.
@@ -402,43 +384,13 @@ rule typeExp2steps {
 		)
 }
 
--- Transforms 'collect' expressions into edge and vertex step.
 rule collect2steps {
 	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and not collect.isLastInCollectionOperation())
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect')
 	to
 		id : Gremlin!IdentityStep(
 			nextElement <- collect.getComposite()
 		)
-}
-
-rule collectLastInUnionRightPart2steps {
-	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and not collect.isInCollectionOperationLeftPart())
-	to
-		fill : Gremlin!FillStep(
-			instruction <- unionContentVariableAccess
-		),
-		unionContentVariableAccess : Gremlin!VariableAccess (
-			name <- 'unionContent'
-		)
-}
-
-rule collectLastInUnionLeftPart2steps {
-	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and collect.isInCollectionOperationLeftPart())
-	to
-		fill : Gremlin!FillStep(
-			instruction <- affect
-		),
-		affect : Gremlin!AffectationExpression(
-			left <- unionContentVariableAccess,
-			right <- vectorType
-		),
-		unionContentVariableAccess : Gremlin!VariableAccess(
-			name <- 'unionContent'	
-		),
-		vectorType : Gremlin!VectorDefinition()
 }
 
 rule oclIsUndefined2steps {
@@ -453,19 +405,6 @@ rule oclIsUndefined2steps {
 		)
 }
 
-rule select2steps {
-	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and not select.isLastInCollectionOperation())
-	to
-		pp : Gremlin!FilterStep (
-			closure <- cl,
-			nextElement <- select.getComposite()
-		),
-		cl : Gremlin!Closure(
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
-		)
-}
-
 lazy rule varIterator2def {
 	from
 		var :  OCL!Variable
@@ -477,52 +416,22 @@ lazy rule varIterator2def {
 		fi : Gremlin!ClosureIt()
 }
 
-rule selectLastInUnionRightPart2steps {
+rule select2steps {
 	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and not select.isInCollectionOperationLeftPart())
+		select : OCL!IteratorExp (select.getOpName() = 'select')
 	to
 		pp : Gremlin!FilterStep (
 			closure <- cl,
-			nextElement <- fill
+			nextElement <- select.getComposite()
 		),
 		cl : Gremlin!Closure(
 			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- unionContentVariableAccess
-		),
-		unionContentVariableAccess : Gremlin!VariableAccess (
-			name <- 'unionContent'
 		)
-}
-
-rule selectLastInUnionLeftPart2steps {
-	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and select.isInCollectionOperationLeftPart())
-	to
-		pp : Gremlin!FilterStep (
-			closure <- cl,
-			nextElement <- fill
-		),
-		cl : Gremlin!Closure(
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- affect
-		),
-		affect : Gremlin!AffectationExpression(
-			left <- unionContentVariableAccess,
-			right <- vectorType
-		),
-		unionContentVariableAccess : Gremlin!VariableAccess(
-			name <- 'unionContent'	
-		),
-		vectorType : Gremlin!VectorDefinition()
 }
 
 rule reject2steps {
 	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and not reject.isLastInCollectionOperation())
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject')
 	to
 		pp : Gremlin!FilterStep (
 			closure <-  clos,
@@ -534,55 +443,6 @@ rule reject2steps {
 		notExp : Gremlin!NotExpression (
 			exp <- reject.body.getFirstInstruction()
 		)
-}
-
-rule rejectLastInUnionRightPart2steps {
-	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and not reject.isInCollectionOperationLeftPart())
-	to
-		pp : Gremlin!FilterStep (
-			closure <- clos,
-			nextElement <- fill
-		),
-		clos : Gremlin!Closure (
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(reject.iterator.first())).append(notExp)
-		),
-		notExp : Gremlin!NotExpression (
-			exp <- reject.body.getFirstInstruction()
-		),
-		fill : Gremlin!FillStep(
-			instruction <- unionContentVariableAccess
-		),
-		unionContentVariableAccess : Gremlin!VariableAccess(
-			name <- 'unionContent'	
-		)
-}
-
-rule rejectLastInUnionLeftPart2steps {
-	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and reject.isInCollectionOperationLeftPart())
-	to
-		pp : Gremlin!FilterStep (
-			closure <- clos,
-			nextElement <- fill
-		),
-		clos : Gremlin!Closure(
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(reject.iterator.first())).append(notExp)
-		),
-		notExp : Gremlin!NotExpression (
-			exp <- reject.body
-		),
-		fill : Gremlin!FillStep(
-			instruction <- affect
-		),
-		affect : Gremlin!AffectationExpression(
-			left <- unionContentVariableAccess,
-			right <- vectorType
-		),
-		unionContentVariableAccess : Gremlin!VariableAccess(
-			name <- 'unionContent'	
-		),
-		vectorType : Gremlin!VectorDefinition()
 }
 
 rule excludes2steps {

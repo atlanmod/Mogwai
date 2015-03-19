@@ -154,3 +154,12 @@ helper context OCL!IteratorExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLE
 		endif
 	endif
 	;
+
+-- Returns true if self is contained in the body expression of a collect OperationCallExp
+helper context OCL!OCLExpression def : isInCollect() : Boolean = 
+	if self.refImmediateComposite().oclIsTypeOf(OCL!IteratorExp) then
+		self.refImmediateComposite().name = 'collect'
+	else
+		self.refImmediateComposite().isInCollect()
+	endif
+	;
