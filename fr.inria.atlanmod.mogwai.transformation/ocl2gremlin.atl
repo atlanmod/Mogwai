@@ -22,19 +22,7 @@ module ocl2gremlin;
 
 create OUT: Gremlin from IN: OCL;
 
--- Get the name of a call expression
--- Supported expression are OperationCall and Iterator
-helper context OCL!CallExp def : getOpName() : String = 
-	if self.oclIsTypeOf(OCL!OperationCallExp) then
-		self.referredOperation.name
-	else
-		if self.oclIsTypeOf(OCL!IteratorExp) then
-			self.name
-		else
-			OclUndefined
-		endif
-	endif
-	;
+uses common;
 
 -- Returns all the expressions in the OCLExpression tree that
 -- are allInstances() operations
@@ -47,152 +35,6 @@ helper context OCL!OCLExpression def : getTypeExps() : OrderedSet(OCL!TypeExp) =
 		endif)
 	;
 	
-helper context OclAny def : getComposite() : OclAny =
-	let composite : OclAny = self.refImmediateComposite() in
-	if composite.oclIsTypeOf(OCL!ExpressionInOCL) then
-		-- ExpressionInOCL is the root element of the query (the "specification" reference
-		-- of the constraint). Returns OclUndefined to flag the end of the traversal
-		OclUndefined
-	else
-		-- Collect flattening
-		if composite.oclIsTypeOf(OCL!IteratorExp) then
-			if composite.getOpName() = 'collect' then
-				if composite.hasInBody(self) then
-					-- If self is the last element in the collect expression returns
-					-- the collect operation to handle unions
-					composite
-				else
-					-- If self is not in the collect expression returns the content
-					-- of the expression (it flatten collect and delegate its translation
-					-- at the end of its inner expression)
-					composite.body.getFirstInstruction()
-				endif
-			else 
-				if composite.getOpName() = 'select' then
-					if composite.hasInBody(self) then
-						OclUndefined
-					else
-						composite
-					endif
-				else
-					if composite.getOpName() = 'reject' then
-						if composite.hasInBody(self) then
-							OclUndefined
-						else
-							-- If the next operation is not a collect returns it
-							composite
-						endif
-					else
-						if composite.getOpName() = 'exists' then
-							if composite.hasInBody(self) then
-								OclUndefined
-							else
-								composite
-							endif
-						else
-							if composite.getOpName() = 'forAll' then
-								if composite.hasInBody(self) then
-									OclUndefined
-								else
-									composite
-								endif
-							else
-								composite
-							endif
-						endif
-					endif
-				endif
-			endif
-		else
-			if composite.oclIsTypeOf(OCL!OperationCallExp) then
-				if composite.isComparison() then
-					-- If the container is a comparison there is two solutions:
-					-- (i)  It contains self, and has been handled before
-					-- (ii) It doesn't, and it is an error (it should have been handeled before)
-					OclUndefined
-				else
-					if composite.getOpName() = 'oclIsTypeOf' then
-						if composite.hasInBody(self) then
-							OclUndefined
-						else
-							composite
-						endif
-					else
-						if Set{'union','intersection'}->includes(composite.getOpName()) then
-							OclUndefined
-						else
-					-- The container is a function call
-						if composite.hasInArguments(self) then
-						-- The container contains self in its arguments, it has been handled
-						-- before
-							OclUndefined
-						else
-						-- The container does not contain self in its argument, simply handle it
-							composite
-						endif
-						endif
-					endif
-				endif
-			else
-				-- If the next element is not an iterator or an operation returns it
-				composite
-			endif
-		endif
-	endif
-	;
-
-helper context OCL!OperationCallExp def : hasInArguments(o : OclAny) : Boolean =
-	if self.argument->size() = 0 then
-		false
-	else
-		self.recursiveHasInArguments(o, self.argument.first().getFirstInstruction())
-	endif
-	;
-
-helper context OCL!OperationCallExp def : recursiveHasInArguments(o : OclAny, e : OCL!OCLExpression) : Boolean =
-	if e = self then
-		false
-	else
-		if e = o then
-			true
-		else
-			self.recursiveHasInArguments(o, e.refImmediateComposite())
-		endif
-	endif
-	;
-
-helper context OCL!IteratorExp def : hasInBody(o : OclAny) : Boolean = 
-	self.recursiveHasInBody(o,self.body.getFirstInstruction())
-	;
-
-helper context OCL!OperationCallExp def : hasInBody(o : OclAny): Boolean =
-	self.recursiveHasInBody(o,self.argument.first().getFirstInstruction())
-	;
-
-helper context OCL!IteratorExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLExpression) : Boolean =
-	if e = self then
-		false
-	else
-		if e = o then
-			true
-		else
-			self.recursiveHasInBody(o, e.refImmediateComposite())
-		endif
-	endif
-	;
-
-helper context OCL!OperationCallExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLExpression) : Boolean =
-	if e = self then
-		false
-	else
-		if e = o then
-			true
-		else
-			self.recursiveHasInBody(o, e.refImmediateComposite())
-		endif
-	endif
-	;
-	
 helper context OCL!OCLExpression def : isInCollect() : Boolean = 
 	if self.refImmediateComposite().oclIsTypeOf(OCL!IteratorExp) then
 		self.refImmediateComposite().name = 'collect'
@@ -201,28 +43,7 @@ helper context OCL!OCLExpression def : isInCollect() : Boolean =
 	endif
 	;
 
-helper context OCL!OCLExpression def : getFirstInstruction() : OCL!OCLExpression =
-	if self.oclIsTypeOf(OCL!OperationCallExp) then
-		if self.isComparison() then
-			self
-		else
-			self.source.getFirstInstruction()
-		endif
-	else
-		if self.oclIsTypeOf(OCL!IteratorExp) then
-			self.source.getFirstInstruction()
-		else
-			if self.oclIsTypeOf(OCL!VariableExp) or
-				self.oclIsKindOf(OCL!LiteralExp) or
-				self.oclIsTypeOf(OCL!TypeExp) or
-				self.oclIsKindOf(OCL!BooleanLiteralExp) then
-				self
-			else
-				self.source.getFirstInstruction()
-			endif
-		endif
-	endif
-	;
+
 
 helper context OCL!OCLExpression def : getFirstInstructionCollectionOperation() : OCL!OCLExpression =
 	if self.oclIsTypeOf(OCL!OperationCallExp) or self.oclIsTypeOf(OCL!IteratorExp) then
@@ -266,7 +87,7 @@ helper context OCL!OCLExpression def : isLastInCollectionOperation() : Boolean =
 	endif
 	;
 
-helper context OCL!OCLExpression def : isInUnionLeftPart() : Boolean =
+helper context OCL!OCLExpression def : isInCollectionOperationLeftPart() : Boolean =
 	if self.isLastInCollectionOperation() then
 		self.refImmediateComposite().source = self
 	else
@@ -276,7 +97,7 @@ helper context OCL!OCLExpression def : isInUnionLeftPart() : Boolean =
 
 helper context OCL!OCLExpression def : getCollectionVariableName() : String =
 	let res : String = 'collection' in
-		if self.isInUnionLeftPart() then
+		if self.isInCollectionOperationLeftPart() then
 			res + thisModule.getUnionIndex(self.refImmediateComposite()) + 'Left'
 		else
 			res + thisModule.getUnionIndex(self.refImmediateComposite()) + 'Right'
@@ -318,9 +139,7 @@ helper context OCL!PropertyCallExp def : isLastInComparison() : Boolean =
 	endif
 	;
 
-helper context OCL!OperationCallExp def : isComparison() : Boolean =
-	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())
-	;
+
 	
 -- Creates the Gremlin container (GremlinScript) from
 -- the OCL container (Constraint)
@@ -622,7 +441,7 @@ rule collect2steps {
 
 rule collectLastInUnionRightPart2steps {
 	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and not collect.isInUnionLeftPart())
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and not collect.isInCollectionOperationLeftPart())
 	to
 		fill : Gremlin!FillStep(
 			instruction <- unionContentVariableAccess
@@ -634,7 +453,7 @@ rule collectLastInUnionRightPart2steps {
 
 rule collectLastInUnionLeftPart2steps {
 	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and collect.isInUnionLeftPart())
+		collect : OCL!IteratorExp (collect.getOpName() = 'collect' and collect.isLastInCollectionOperation() and collect.isInCollectionOperationLeftPart())
 	to
 		fill : Gremlin!FillStep(
 			instruction <- affect
@@ -687,7 +506,7 @@ lazy rule varIterator2def {
 
 rule selectLastInUnionRightPart2steps {
 	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and not select.isInUnionLeftPart())
+		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and not select.isInCollectionOperationLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- cl,
@@ -706,7 +525,7 @@ rule selectLastInUnionRightPart2steps {
 
 rule selectLastInUnionLeftPart2steps {
 	from
-		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and select.isInUnionLeftPart())
+		select : OCL!IteratorExp (select.getOpName() = 'select' and select.isLastInCollectionOperation() and select.isInCollectionOperationLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- cl,
@@ -746,7 +565,7 @@ rule reject2steps {
 
 rule rejectLastInUnionRightPart2steps {
 	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and not reject.isInUnionLeftPart())
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and not reject.isInCollectionOperationLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- clos,
@@ -768,7 +587,7 @@ rule rejectLastInUnionRightPart2steps {
 
 rule rejectLastInUnionLeftPart2steps {
 	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and reject.isInUnionLeftPart())
+		reject : OCL!IteratorExp (reject.getOpName() = 'reject' and reject.isLastInCollectionOperation() and reject.isInCollectionOperationLeftPart())
 	to
 		pp : Gremlin!FilterStep (
 			closure <- clos,
@@ -1024,126 +843,6 @@ rule isEmpty2steps {
 		)
 }
 
--- Transforms '=' expression into Gremlin EqualityExpression.
--- First left and right operations are computed to get the correct sub-Step start.
--- @see equality2steps for equality generation with empty references checking.
-rule equality2steps2 {
-	from
-		eq : OCL!OperationCallExp(eq.getOpName() = '=')
-	to
-		eqExp : Gremlin!EqualityExpression(
-			left <- eq.source.getFirstOperation(),
-			right <- eq.argument.first().getFirstOperation()
-		)
-}
-
-rule not2steps {
-	from
-		notExp : OCL!OperationCallExp(
-			notExp.getOpName() = 'not'	
-		)
-	to
-		gremlinNot : Gremlin!NotExpression(
-			exp <- notExp.source.getFirstInstruction()
-		)
-}
-
--- Transforms 'or' expression into Gremlin OrExpression.
--- First left and right operations are computed to get the correct sub-Step start.
-rule or2steps {
-	from
-		orExp : OCL!OperationCallExp(
-			orExp.getOpName() = 'or'
-			)
-	to
-		gremlinOr : Gremlin!OrExpression(
-			left <- orExp.source.getFirstOperation(),
-			right <- orExp.argument.first().getFirstOperation()
-		)
-}
-
--- Transforms 'and' expression into Gremlin AndExpression.
--- First left and right operations are computed to get the correct sub-Step start.
-rule and2steps {
-	from
-		andExp : OCL!OperationCallExp (
-			andExp.getOpName() = 'and'	
-		)
-	to
-		gremlinAnd : Gremlin!AndExpression(
-			left <- andExp.source.getFirstInstruction(),
-			right <- andExp.argument.first().getFirstInstruction()
-		)
-}
-
--- Transforms '>' expression into Gremlin GreaterExpression.
--- First left and right operations are computed to get the correct sub-Step start.
-rule greater2steps {
-	from
-		greaterExp : OCL!OperationCallExp (
-			greaterExp.getOpName() = '>'	
-		)
-	to
-		gremlinGreater : Gremlin!GreaterExpression (
-			left <- greaterExp.source.getFirstOperation(),
-			right <- greaterExp.argument.first().getFirstOperation()
-		)
-}
-
--- Transforms '>=' expression into Gremlin GreaterOrEqualExpression.
--- First left and right operations are computed to get the correct sub-Step start.
-rule greaterOrEqual2steps {
-	from
-		greaterOrEqualExp : OCL!OperationCallExp (
-			greaterOrEqualExp.getOpName() = '>='	
-		)
-	to
-		gremlinGreaterOrEqual : Gremlin!GreaterOrEqualExpression (
-			left <- greaterOrEqualExp.source.getFirstOperation(),
-			right <- greaterOrEqualExp.argument.first().getFirstOperation()
-		)
-}
-
--- Transforms '<' expression into Gremlin LessExpression.
--- First left and right operations are computed to get the correct sub-Step start.
-rule less2steps {
-	from
-		lessExp : OCL!OperationCallExp (
-			lessExp.getOpName() = '<'	
-		)
-	to
-		gremlinLess : Gremlin!LessExpression (
-			left <- lessExp.source.getFirstOperation(),
-			right <- lessExp.argument.first().getFirstOperation()
-		)
-}
-
--- Transforms '<=' expression into Gremlin LessOrEqualExpression.
--- First left and right operations are computed to get the correct sub-Step start.
-rule lessOrEqual2steps {
-	from
-		lessOrEqualExp : OCL!OperationCallExp (
-			lessOrEqualExp.getOpName() = '<='
-		)
-	to
-		gremlinLessOrEqual : Gremlin!LessOrEqualExpression (
-			left <- lessOrEqualExp.source.getFirstOperation(),
-			right <- lessOrEqualExp.argument.first().getFirstOperation()
-		)
-}
-
-rule different2steps {
-	from
-		differentExp : OCL!OperationCallExp (
-			differentExp.getOpName() = '<>'
-		)
-	to
-		gremlinDifferent : Gremlin!DifferenceExpression (
-			left <- differentExp.source.getFirstOperation(),
-			right <- differentExp.argument.first().getFirstOperation()
-		)
-}
-
 -- Transfroms a variable access expression into Gremlin filter iterator Step.
 -- TODO : handle non-iterator variables
 rule varExp2steps {
@@ -1252,413 +951,11 @@ rule propertyAttBooleanLastInComparison2steps {
 		)
 }
 
--- Match OCL StringLiteral expressions to Gremlin StringLiteral
-rule oclString2gremlinString {
-	from
-		oclStringLit : OCL!StringLiteralExp
-	to
-		gremlinStringLit : Gremlin!StringLiteral(
-			value <- oclStringLit.stringSymbol	
-		)
-}
-
-rule oclPositiveInteger2gremlinInteger {
-	from
-		oclIntLit : OCL!IntegerLiteralExp (
-			if oclIntLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
-				not(oclIntLit.refImmediateComposite().getOpName() = '-')
-			else
-				true
-			endif
-		)
-	to
-		gremlinIntLit : Gremlin!IntegerLiteral(
-			value <-  oclIntLit.integerSymbol
-		)
-}
-
-rule oclNegativeInteger2gremlinInteger {
-	from
-		oclIntLit : OCL!IntegerLiteralExp (
-			if oclIntLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
-				oclIntLit.refImmediateComposite().getOpName() = '-'
-			else
-				false
-			endif	
-		)
-	to
-		gremlinIntLit : Gremlin!IntegerLiteral(
-			value <- 0-oclIntLit.integerSymbol	
-		)
-}
-
-rule oclPositiveReal2gremlinDouble {
-	from
-		oclRealLit : OCL!RealLiteralExp (
-			if oclRealLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
-				not(oclRealLit.refImmediateComposite().getOpName() = '-')
-			else
-				true
-			endif
-		)
-	to
-		gremlinDoubleLit : Gremlin!DoubleLiteral(
-			value <- oclRealLit.realSymbol
-		)
-}
-
-rule oclNegativeReal2gremlinDouble {
-	from
-		oclRealLit : OCL!RealLiteralExp (
-			if oclRealLit.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
-				oclRealLit.refImmediateComposite().getOpName() = '-'
-			else
-				false
-			endif	
-		)
-	to
-		gremlinDoubleLit : Gremlin!DoubleLiteral(
-			value <- 0-oclRealLit.realSymbol
-		)
-}
-
-rule oclBoolean2gremlinBoolean {
-	from
-		oclBoolean : OCL!BooleanLiteralExp
-	to
-		gremlinBoolLit : Gremlin!BooleanLiteral(
-			value <- oclBoolean.booleanSymbol	
-		)
-}
-
--- asSequence oepration are ignored because Gremlin default collection is List, which corresponds
--- to the Sequence concept.
-rule oclAsSequence2steps {
-	from
-		asSequence : OCL!OperationCallExp(asSequence.getOpName() = 'asSequence')
-	to
-		ip : Gremlin!IdentityStep(
-			nextElement <- asSequence.getComposite()
-		)
-}
-
--- handle asSequence operation as part of a collection operation
-rule oclAsSequenceCol2steps extends oclAsSequence2steps {
-	from
-		asSequence : OCL!OperationCallExp (asSequence.isLastInCollectionOperation())
-	to
-		ip : Gremlin!IdentityStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va	
-		),
-		va : Gremlin!VariableAccess(
-			name <- asSequence.getCollectionVariableName()	
-		)
-}
-
-
--- Mogwaï v0.1 handles Bags and Sequences using a List, so the cast is ignored for Bags as well as Sequences
-rule oclAsBag2steps {
-	from
-		asBag : OCL!OperationCallExp(asBag.getOpName() = 'asBag')
-	to
-		ip : Gremlin!IdentityStep(
-			nextElement <- asBag.getComposite()	
-		)
-}
-
--- handle asBag oepration as part of a collection operation
-rule oclAsBagCol2steps extends oclAsBag2steps {
-	from
-		asBag : OCL!OperationCallExp (asBag.isLastInCollectionOperation())
-	to
-		ip : Gremlin!IdentityStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va	
-		),
-		va : Gremlin!VariableAccess(
-			name <- asBag.getCollectionVariableName()	
-		)
-}
-
-rule oclAsSet2steps {
-	from
-		asSet : OCL!OperationCallExp(asSet.getOpName() = 'asSet')
-	to
-		gather : Gremlin!GatherStep(
-			nextElement <- transform
-		),
-		transform : Gremlin!TransformStep(
-			closure <- cl,
-			nextElement <- scatter
-		),
-		cl : Gremlin!Closure(
-			instructions <- it	
-		),
-		it : Gremlin!ClosureIt(
-			cast <- setCast	
-		),
-		setCast : Gremlin!SetDeclaration(),
-		scatter : Gremlin!ScatterStep(
-			nextElement <- asSet.getComposite()	
-		)
-}
-
--- handle asSet operation as part of a collection operation
-rule oclAsSetCol2steps extends oclAsSet2steps {
-	from
-		asSet : OCL!OperationCallExp(asSet.isLastInCollectionOperation())
-	to
-		gather : Gremlin!GatherStep(),
-		transform : Gremlin!TransformStep(),
-		cl : Gremlin!Closure(),
-		it : Gremlin!ClosureIt(),
-		setCast : Gremlin!SetDeclaration(),
-		scatter : Gremlin!ScatterStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va	
-		),
-		va : Gremlin!VariableAccess(
-			name <- asSet.getCollectionVariableName()	
-		)
-}
-
-rule oclAsOrderedSet2steps {
-	from
-		asOrderedSet : OCL!OperationCallExp(asOrderedSet.getOpName() = 'asOrderedSet')
-	to
-		gather : Gremlin!GatherStep(
-			nextElement <- transform
-		),
-		transform : Gremlin!TransformStep(
-			closure <- cl,
-			nextElement <- scatter
-		),
-		cl : Gremlin!Closure(
-			instructions <- it	
-		),
-		it : Gremlin!ClosureIt(
-			cast <- sortedSetCast	
-		),
-		sortedSetCast : Gremlin!SortedSetDeclaration(),
-		scatter : Gremlin!ScatterStep(
-			nextElement <- asOrderedSet.getComposite()	
-		)
-}
-
--- handle asOrderedSet operation as part of a collection operation
-rule oclAsOrderedSetCol2steps extends oclAsOrderedSet2steps {
-	from
-		asOrderedSet : OCL!OperationCallExp(asOrderedSet.isLastInCollectionOperation())
-	to
-		gather : Gremlin!GatherStep(),
-		transform : Gremlin!TransformStep(),
-		cl : Gremlin!Closure(),
-		it : Gremlin!ClosureIt(),
-		sortedSetCast : Gremlin!SortedSetDeclaration(),
-		scatter : Gremlin!ScatterStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va	
-		),
-		va : Gremlin!VariableAccess(
-			name <- asOrderedSet.getCollectionVariableName()	
-		)
-}
-
 rule oclFirst2steps {
 	from
 		oclFirst : OCL!OperationCallExp(oclFirst.getOpName() = 'first')
 	to
 		fc : Gremlin!FirstCall(
 			nextElement <- oclFirst.getComposite()
-		)
-}
-
-
-rule sequence2steps {
-	from
-		sequence : OCL!CollectionLiteralExp (sequence.eType.oclIsTypeOf(OCL!SequenceType) and sequence.getComposite() = OclUndefined)
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- sequence.part->collect(e | e.item),
-			type <- listDecl
-		),
-		listDecl : Gremlin!ListDeclaration()
-}
-
--- handle sequence declaration as part of a collection operation
-rule sequenceCol2steps extends sequence2steps {
-	from 
-		sequence : OCL!CollectionLiteralExp (sequence.isLastInCollectionOperation())
-	to
-		col : Gremlin!CollectionDefinition(
-			nextElement <- id	
-		),
-		id : Gremlin!IdentityStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va
-		),
-		va : Gremlin!VariableAccess(
-			name <- sequence.getCollectionVariableName()
-		)
-}
-
-rule set2steps {
-	from
-		set : OCL!CollectionLiteralExp (set.eType.oclIsTypeOf(OCL!SetType) and set.getComposite() = OclUndefined)
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- set.part->collect(e | e.item),
-			type <- setDecl
-		),
-		setDecl : Gremlin!SetDeclaration()
-}
-
--- handle set declaration as part of a collection operation
-rule setCol2steps extends set2steps {
-	from
-		set : OCL!CollectionLiteralExp (set.isLastInCollectionOperation())
-	to
-		col : Gremlin!CollectionDefinition(
-			nextElement <- id	
-		),
-		id : Gremlin!IdentityStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va	
-		),
-		va : Gremlin!VariableAccess(
-			name <- set.getCollectionVariableName()	
-		)
-}
-
-rule orderedSet2steps {
-	from
-		orderedSet : OCL!CollectionLiteralExp (orderedSet.eType.oclIsTypeOf(OCL!OrderedSetType) and orderedSet.getComposite() = OclUndefined)
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- orderedSet.part->collect(e | e.item),
-			type <- sortedSetDecl
-		),
-		sortedSetDecl : Gremlin!SortedSetDeclaration()
-}
-
--- handle ordered set declaration as part of a collection operation
-rule orderedSetCol2steps extends orderedSet2steps {
-	from
-		orderedSet : OCL!CollectionLiteralExp (orderedSet.isLastInCollectionOperation())
-	to
-		col : Gremlin!CollectionDefinition(
-			nextElement <- id	
-		),
-		id : Gremlin!IdentityStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va
-		),
-		va : Gremlin!VariableAccess(
-			name <- orderedSet.getCollectionVariableName()	
-		)
-}
-
-rule bag2steps {
-	from
-		bag : OCL!CollectionLiteralExp (bag.eType.oclIsTypeOf(OCL!BagType) and bag.getComposite() = OclUndefined)
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- bag.part->collect(e | e.item),
-			type <- listDecl
-		),
-		listDecl : Gremlin!ListDeclaration()
-}
-
--- handle bag declaration as part of a collection operation
-rule bagCol2steps extends bag2steps {
-	from
-		bag : OCL!CollectionLiteralExp (bag.isLastInCollectionOperation())
-	to
-		col : Gremlin!CollectionDefinition(
-			nextElement <- id	
-		),
-		id : Gremlin!IdentityStep(
-			nextElement <- fill	
-		),
-		fill : Gremlin!FillStep(
-			instruction <- va	
-		),
-		va : Gremlin!VariableAccess(
-			name <- bag.getCollectionVariableName()	
-		)
-}
-
-rule sequenceInChain2steps {
-	from
-		sequence : OCL!CollectionLiteralExp (sequence.eType.oclIsTypeOf(OCL!SequenceType) and sequence.getComposite() <> OclUndefined)
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- sequence.part->collect(e | e.item),
-			type <- listDecl,
-			nextElement <- idStep
-		),
-		listDecl : Gremlin!ListDeclaration(),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- sequence.getComposite()
-		)
-}
-
-rule setInChain2steps {
-	from
-		set : OCL!CollectionLiteralExp (set.eType.oclIsTypeOf(OCL!SetType) and set.getComposite() <> OclUndefined)
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- set.part->collect(e | e.item),
-			type <- setDecl,
-			nextElement <- idStep
-		),
-		setDecl : Gremlin!SetDeclaration(),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- set.getComposite()
-		)
-}
-
-rule orderedSetInChain2steps {
-	from
-		orderedSet : OCL!CollectionLiteralExp (orderedSet.eType.oclIsTypeOf(OCL!OrderedSetType) and orderedSet.getComposite() <> OclUndefined) 
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- orderedSet.part->collect(e | e.item),
-			type <- sortedSetDecl,
-			nextElement <- idStep
-		),
-		sortedSetDecl : Gremlin!SortedSetDeclaration(),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- orderedSet.getComposite()	
-		)
-}
-
-rule bagInChain2steps{
-	from
-		bag : OCL!CollectionLiteralExp (bag.eType.oclIsTypeOf(OCL!BagType) and bag.getComposite() <> OclUndefined)
-	to
-		col : Gremlin!CollectionDefinition(
-			values <- bag.part->collect(e | e.item),
-			type <- listDecl,
-			nextElement <- idStep
-		),
-		listDecl : Gremlin!ListDeclaration(),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- bag.getComposite()	
 		)
 }

@@ -1,0 +1,272 @@
+-- @path OCL=http://www.eclipse.org/ocl/1.1.0/Ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
+-- Collection transformations from OCL to Gremlin
+-- Covered features are:
+--		Collection declarations (chained or not)
+--		Collection declarations in collection operations (will be removed with new collection operation support)
+
+-- Author AtlanMod - Inria
+
+module collections;
+
+create OUT: Gremlin from IN: OCL;
+
+uses common;
+
+-- Transforms a Set Collection Literal into equivalent Gremlin collection definition.
+-- Generates a simple collection definition if the collection is not a part of an instruction chain
+-- and does not have to be the input of a Gremlin step.
+rule set2steps {
+	from
+		oclSet : OCL!CollectionLiteralExp (
+			oclSet.eType.oclIsTypeOf(OCL!SetType) and 
+			oclSet.getComposite() = OclUndefined
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclSet.part->collect(e | e.item),
+			type <- gremlinSetDecl
+		),
+		gremlinSetDecl : Gremlin!SetDeclaration()
+}
+
+-- Transforms a Set Collection Literal in a collection instruction into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition as parent rule, and add an identity and a fill step to store the result in a 
+-- variable.
+rule setCol2steps extends set2steps {
+	from
+		oclSet : OCL!CollectionLiteralExp (
+			oclSet.isLastInCollectionOperation()
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			nextElement <- gremlinIdentity	
+		),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- gremlinFill	
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess	
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclSet.getCollectionVariableName()	
+		)
+}
+
+-- Transforms a Set Collection Literal in an expression chain into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition set2steps, and add an identity step to transform it into
+-- step compatible input.
+rule setInChain2steps {
+	from
+		oclSet : OCL!CollectionLiteralExp (
+			oclSet.eType.oclIsTypeOf(OCL!SetType) and 
+			oclSet.getComposite() <> OclUndefined)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclSet.part->collect(e | e.item),
+			type <- gremlinSetDecl,
+			nextElement <- gremlinIdentity
+		),
+		gremlinSetDecl : Gremlin!SetDeclaration(),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- oclSet.getComposite()
+		)
+}
+
+-- Transforms an OrderedSet Collection Literal into equivalent Gremlin collection definition.
+-- Generates a simple collection definition if the collection is not a part of an instruction chain
+-- and does not have to be the input of a Gremlin step.
+rule orderedSet2steps {
+	from
+		oclOrderedSet : OCL!CollectionLiteralExp (
+			oclOrderedSet.eType.oclIsTypeOf(OCL!OrderedSetType) and 
+			oclOrderedSet.getComposite() = OclUndefined
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclOrderedSet.part->collect(e | e.item),
+			type <- gremlinSortedSetDecl
+		),
+		gremlinSortedSetDecl : Gremlin!SortedSetDeclaration()
+}
+
+-- Transforms an OrderedSet Collection Literal in a collection instruction into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition as parent rule, and add an identity and a fill step to store the result in a 
+-- variable.
+rule orderedSetCol2steps extends orderedSet2steps {
+	from
+		oclOrderedSet : OCL!CollectionLiteralExp (
+			oclOrderedSet.isLastInCollectionOperation()
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			nextElement <- gremlinIdentity	
+		),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- gremlinFill	
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclOrderedSet.getCollectionVariableName()	
+		)
+}
+
+-- Transforms an OrderedSet Collection Literal in an expression chain into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition orderedSet2steps, and add an identity step to transform it into
+-- step compatible input.
+rule orderedSetInChain2steps {
+	from
+		oclOrderedSet : OCL!CollectionLiteralExp (
+			oclOrderedSet.eType.oclIsTypeOf(OCL!OrderedSetType) and 
+			oclOrderedSet.getComposite() <> OclUndefined
+		) 
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclOrderedSet.part->collect(e | e.item),
+			type <- gremlinSortedSetDecl,
+			nextElement <- gremlinIdentity
+		),
+		gremlinSortedSetDecl : Gremlin!SortedSetDeclaration(),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- oclOrderedSet.getComposite()	
+		)
+}
+
+-- Transforms a Bag Collection Literal into equivalent Gremlin collection definition.
+-- Generates a simple collection definition if the collection is not a part of an instruction chain
+-- and does not have to be the input of a Gremlin step.
+-- Note: Mogwaï v0.1 does not differentiate Bags and Sequences and transforms them into Lists.
+rule bag2steps {
+	from
+		oclBag : OCL!CollectionLiteralExp (
+			oclBag.eType.oclIsTypeOf(OCL!BagType) and 
+			oclBag.getComposite() = OclUndefined
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclBag.part->collect(e | e.item),
+			type <- gremlinListDecl
+		),
+		gremlinListDecl : Gremlin!ListDeclaration()
+}
+
+-- Transforms a Bag Collection Literal in a collection instruction into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition as parent rule, and add an identity and a fill step to store the result in a 
+-- variable.
+-- Note: Mogwaï vO.1 does not differentiate Bags and Sequences and transforms them into Lists.
+rule bagCol2steps extends bag2steps {
+	from
+		oclBag : OCL!CollectionLiteralExp (
+			oclBag.isLastInCollectionOperation()
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			nextElement <- gremlinIdentity	
+		),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- gremlinFill	
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess	
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclBag.getCollectionVariableName()	
+		)
+}
+
+-- Transforms a Bag Collection Literal in an expression chain into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition bag2steps, and add an identity step to transform it into
+-- step compatible input.
+-- Note: Mogwaï v0.1 does not differentiate Bags and Sequences and transforms them into Lists.
+rule bagInChain2steps{
+	from
+		oclBag : OCL!CollectionLiteralExp (
+			oclBag.eType.oclIsTypeOf(OCL!BagType) and 
+			oclBag.getComposite() <> OclUndefined
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclBag.part->collect(e | e.item),
+			type <- gremlinListDecl,
+			nextElement <- gremlinIdentity
+		),
+		gremlinListDecl : Gremlin!ListDeclaration(),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- oclBag.getComposite()	
+		)
+}
+
+-- Transforms a Sequence Collection Literal into equivalent Gremlin collection definition.
+-- Generates a simple collection definition if the collection is not a part of an instruction chain
+-- and does not have to be the input of a Gremlin step.
+-- Note: Mogwaï v0.1 does not differentiate Bags and Sequences and transforms them into Lists.
+rule sequence2steps {
+	from
+		oclSequence : OCL!CollectionLiteralExp (
+			oclSequence.eType.oclIsTypeOf(OCL!SequenceType) and 
+			oclSequence.getComposite() = OclUndefined
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclSequence.part->collect(e | e.item),
+			type <- gremlinListDecl
+		),
+		gremlinListDecl : Gremlin!ListDeclaration()
+}
+
+-- Transforms a Sequence Collection Literal in a collection instruction into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition as parent rule, and add an identity and a fill step to store the result in a 
+-- variable.
+-- Note: Mogwaï vO.1 does not differentiate Bags and Sequences and transforms them into Lists.
+rule sequenceCol2steps extends sequence2steps {
+	from 
+		oclSequence : OCL!CollectionLiteralExp (
+			oclSequence.isLastInCollectionOperation()
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			nextElement <- gremlinIdentity	
+		),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- gremlinFill
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclSequence.getCollectionVariableName()
+		)
+}
+
+-- Transforms a Sequence Collection Literal in an expression chain into equivalent 
+-- Gremlin collection definition.
+-- Generates the same definition bag2steps, and add an identity step to transform it into
+-- step compatible input.
+-- Note: Mogwaï v0.1 does not differentiate Bags and Sequences and transforms them into Lists.
+rule sequenceInChain2steps {
+	from
+		oclSequence : OCL!CollectionLiteralExp (
+			oclSequence.eType.oclIsTypeOf(OCL!SequenceType) and 
+			oclSequence.getComposite() <> OclUndefined
+		)
+	to
+		gremlinColDef : Gremlin!CollectionDefinition(
+			values <- oclSequence.part->collect(e | e.item),
+			type <- gremlinListDecl,
+			nextElement <- gremlinIdentity
+		),
+		gremlinListDecl : Gremlin!ListDeclaration(),
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- oclSequence.getComposite()
+		)
+}

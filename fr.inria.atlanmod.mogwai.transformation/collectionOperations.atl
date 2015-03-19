@@ -1,0 +1,193 @@
+-- @path OCL=http://www.eclipse.org/ocl/1.1.0/Ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
+-- Collection operations transformations from OCL to Gremlin
+-- Covered features are:
+--		Collection Casts (asX)
+
+-- Author AtlanMod - Inria
+
+module collectionOperations;
+
+create OUT: Gremlin from IN: OCL;
+
+uses common;
+
+--
+-- Collection Casts
+--
+
+
+-- Transforms a Set cast operation into equivalent Gremlin collection cast.
+-- Casting is done by a gather step that allow casting of the entire collection. A scatter
+-- step is then generated to transform the resulting collection into a step compatible input.
+rule asSet2steps {
+	from
+		oclAsSet : OCL!OperationCallExp(
+			oclAsSet.getOpName() = 'asSet'
+		)
+	to
+		gremlinGather : Gremlin!GatherStep(
+			nextElement <- gremlinTransform
+		),
+		gremlinTransform : Gremlin!TransformStep(
+			closure <- gremlinClosure,
+			nextElement <- gremlinScatter
+		),
+		gremlinClosure : Gremlin!Closure(
+			instructions <- gremlinClosureIt	
+		),
+		gremlinClosureIt : Gremlin!ClosureIt(
+			cast <- gremlinSetDecl	
+		),
+		gremlinSetDecl : Gremlin!SetDeclaration(),
+		gremlinScatter : Gremlin!ScatterStep(
+			nextElement <- oclAsSet.getComposite()	
+		)
+}
+
+-- Transforms a Set cast operation in a collection instruction into equivalent Gremlin collection cast.
+-- Generates the same steps as parent rule, and add an identity and a fill step to store the result in a 
+-- variable.
+rule asSetCol2steps extends asSet2steps {
+	from
+		oclAsSet : OCL!OperationCallExp(
+			oclAsSet.isLastInCollectionOperation()
+		)
+	to
+		gremlinGather : Gremlin!GatherStep(),
+		gremlinTransform : Gremlin!TransformStep(),
+		gremlinClosure : Gremlin!Closure(),
+		gremlinClosureIt : Gremlin!ClosureIt(),
+		gremlinSetDecl : Gremlin!SetDeclaration(),
+		gremlinScatter : Gremlin!ScatterStep(
+			nextElement <- gremlinFill	
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess	
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclAsSet.getCollectionVariableName()	
+		)
+}
+
+-- Transforms an OrderedSet cast operation into equivalent Gremlin collection cast.
+-- Casting is done by a gather step that allow casting of the entire collection. A scatter
+-- step is then generated to transform the resulting collection into a step compatible input.
+rule asOrderedSet2steps {
+	from
+		oclAsOrderedSet : OCL!OperationCallExp(
+			oclAsOrderedSet.getOpName() = 'asOrderedSet'
+		)
+	to
+		gremlinGather : Gremlin!GatherStep(
+			nextElement <- gremlinTransform
+		),
+		gremlinTransform : Gremlin!TransformStep(
+			closure <- gremlinClosure,
+			nextElement <- gremlinScatter
+		),
+		gremlinClosure : Gremlin!Closure(
+			instructions <- gremlinClosureIt
+		),
+		gremlinClosureIt : Gremlin!ClosureIt(
+			cast <- gremlinSortedSetDecl	
+		),
+		gremlinSortedSetDecl : Gremlin!SortedSetDeclaration(),
+		gremlinScatter : Gremlin!ScatterStep(
+			nextElement <- oclAsOrderedSet.getComposite()	
+		)
+}
+
+-- Transforms an OrderedSet cast operation in a collection instruction into equivalent Gremlin collection cast.
+-- Generates the same steps as parent rule, and add an identity and a fill step to store the result in a 
+-- variable.
+rule asOrderedSetCol2steps extends asOrderedSet2steps {
+	from
+		oclAsOrderedSet : OCL!OperationCallExp(
+			oclAsOrderedSet.isLastInCollectionOperation()
+		)
+	to
+		gremlinGather : Gremlin!GatherStep(),
+		gremlinTransform : Gremlin!TransformStep(),
+		gremlinClosure : Gremlin!Closure(),
+		gremlinClosureIt : Gremlin!ClosureIt(),
+		gremlinSortedSetDecl : Gremlin!SortedSetDeclaration(),
+		gremlinScatter : Gremlin!ScatterStep(
+			nextElement <- gremlinFill	
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess	
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclAsOrderedSet.getCollectionVariableName()	
+		)
+}
+
+-- Transforms a Bag cast operation into equivalent Gremlin collection cast.
+-- Note: Mogwaï vO.1 handles Bags and Sequences with Lists, which are the default Groovy collections.
+-- Bags and Sequence casts does not need a particular transformation and are simply mapped to an identity step
+-- to transform them into step compatible inputs.
+rule asBag2steps {
+	from
+		oclAsBag : OCL!OperationCallExp(
+			oclAsBag.getOpName() = 'asBag'
+		)
+	to
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- oclAsBag.getComposite()	
+		)
+}
+
+-- Transforms an OrderedSet cast operation in a collection instruction into equivalent Gremlin collection cast.
+-- Generates the same step as parent rule, and add a fill step to store the result in a variable.
+rule asBagCol2steps extends asBag2steps {
+	from
+		oclAsBag : OCL!OperationCallExp (
+			oclAsBag.isLastInCollectionOperation()
+		)
+	to
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- gremlinFill
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess	
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclAsBag.getCollectionVariableName()	
+		)
+}
+
+-- Transforms a Sequence cast operation into equivalent Gremlin collection cast.
+-- Note: Mogwaï vO.1 handles Bags and Sequences with Lists, which are the default Groovy collections.
+-- Bags and Sequence casts does not need a particular transformation and are simply mapped to an identity step
+-- to transform them into step compatible inputs.
+rule asSequence2steps {
+	from
+		oclAsSequence : OCL!OperationCallExp(
+			oclAsSequence.getOpName() = 'asSequence'
+		)
+	to
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- oclAsSequence.getComposite()
+		)
+}
+
+-- Transforms an OrderedSet cast operation in a collection instruction into equivalent Gremlin collection cast.
+-- Generates the same step as parent rule, and add a fill step to store the result in a variable.
+rule asSequenceCol2steps extends asSequence2steps {
+	from
+		oclAsSequence : OCL!OperationCallExp (
+			oclAsSequence.isLastInCollectionOperation()
+		)
+	to
+		gremlinIdentity : Gremlin!IdentityStep(
+			nextElement <- gremlinFill	
+		),
+		gremlinFill : Gremlin!FillStep(
+			instruction <- gremlinVariableAccess	
+		),
+		gremlinVariableAccess : Gremlin!VariableAccess(
+			name <- oclAsSequence.getCollectionVariableName()	
+		)
+}
