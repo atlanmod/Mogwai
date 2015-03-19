@@ -73,39 +73,16 @@ helper context OclAny def : getComposite() : OclAny =
 					composite.body.getFirstInstruction()
 				endif
 			else 
-				if composite.getOpName() = 'select' then
+				if Set{'select','reject','exists','forAll'}->includes(composite.getOpName()) then
 					if composite.hasInBody(self) then
+						-- Do not return OperationCallExp if they are the parent of their argument
+						-- (they have been transformed before)
 						OclUndefined
 					else
 						composite
 					endif
 				else
-					if composite.getOpName() = 'reject' then
-						if composite.hasInBody(self) then
-							OclUndefined
-						else
-							-- If the next operation is not a collect returns it
-							composite
-						endif
-					else
-						if composite.getOpName() = 'exists' then
-							if composite.hasInBody(self) then
-								OclUndefined
-							else
-								composite
-							endif
-						else
-							if composite.getOpName() = 'forAll' then
-								if composite.hasInBody(self) then
-									OclUndefined
-								else
-									composite
-								endif
-							else
-								composite
-							endif
-						endif
-					endif
+					composite
 				endif
 			endif
 		else
@@ -116,16 +93,9 @@ helper context OclAny def : getComposite() : OclAny =
 					-- (ii) It doesn't, and it is an error (it should have been handeled before)
 					OclUndefined
 				else
-					if composite.getOpName() = 'oclIsTypeOf' then
-						if composite.hasInBody(self) then
+					if Set{'union','intersection'}->includes(composite.getOpName()) then
 							OclUndefined
-						else
-							composite
-						endif
 					else
-						if Set{'union','intersection'}->includes(composite.getOpName()) then
-							OclUndefined
-						else
 					-- The container is a function call
 						if composite.hasInArguments(self) then
 						-- The container contains self in its arguments, it has been handled
@@ -135,11 +105,10 @@ helper context OclAny def : getComposite() : OclAny =
 						-- The container does not contain self in its argument, simply handle it
 							composite
 						endif
-						endif
 					endif
 				endif
 			else
-				-- If the next element is not an iterator or an operation returns it
+				-- If the next element is not an IteratorExp or an OperationCallExp, returns it
 				composite
 			endif
 		endif
@@ -173,26 +142,8 @@ helper context OCL!IteratorExp def : hasInBody(o : OclAny) : Boolean =
 	self.recursiveHasInBody(o,self.body.getFirstInstruction())
 	;
 
--- Returns true if o is contained in the body expression of self.
-helper context OCL!OperationCallExp def : hasInBody(o : OclAny): Boolean =
-	self.recursiveHasInBody(o,self.argument.first().getFirstInstruction())
-	;
-
 -- Recursive search function of hasInBody helper.
 helper context OCL!IteratorExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLExpression) : Boolean =
-	if e = self then
-		false
-	else
-		if e = o then
-			true
-		else
-			self.recursiveHasInBody(o, e.refImmediateComposite())
-		endif
-	endif
-	;
-
--- Recursive search function of hasInBody helper.
-helper context OCL!OperationCallExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLExpression) : Boolean =
 	if e = self then
 		false
 	else
