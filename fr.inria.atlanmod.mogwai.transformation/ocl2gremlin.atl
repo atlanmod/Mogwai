@@ -104,33 +104,6 @@ helper context OCL!OCLExpression def : getCollectionVariableName() : String =
 		endif
 	;
 
--- Returns the first element in an OCL operation chain. Allow the transformation of
--- the chain in Gremlin order.
--- TODO : Check if all the termination conditions have been met.
-helper context OCL!OCLExpression def : getFirstOperation() : OCL!OCLExpression = 
-	if self.oclIsTypeOf(OCL!OperationCallExp) then
-		if self.getOpName() = 'size' then
-			self.source.getFirstOperation()
-		else if self.getOpName() = 'oclAsType' then
-			self.source.getFirstOperation()
-		else if self.getOpName() = 'oclIsUndefined' then
-			self.source.getFirstOperation()
-		else
-			self
-		endif
-		endif
-		endif
-	else
-		if self.oclIsTypeOf(OCL!VariableExp) or
-			self.oclIsKindOf(OCL!LiteralExp) or
-			self.oclIsKindOf(OCL!BooleanLiteralExp) then
-			self
-		else
-			self.source.getFirstOperation()
-		endif
-	endif
-	;
-
 helper context OCL!PropertyCallExp def : isLastInComparison() : Boolean =
 	if self.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
 		self.refImmediateComposite().isComparison()

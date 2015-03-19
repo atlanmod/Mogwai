@@ -35,8 +35,8 @@ rule greater2steps {
 		)
 	to
 		gremlinGreater : Gremlin!GreaterExpression (
-			left <- oclGreater.source.getFirstOperation(),
-			right <- oclGreater.argument.first().getFirstOperation()
+			left <- oclGreater.source.getFirstInstruction(),
+			right <- oclGreater.argument.first().getFirstInstruction()
 		)
 }
 
@@ -49,8 +49,8 @@ rule greaterOrEqual2steps {
 		)
 	to
 		gremlinGreaterOrEqual : Gremlin!GreaterOrEqualExpression (
-			left <- oclGreaterOrEqual.source.getFirstOperation(),
-			right <- oclGreaterOrEqual.argument.first().getFirstOperation()
+			left <- oclGreaterOrEqual.source.getFirstInstruction(),
+			right <- oclGreaterOrEqual.argument.first().getFirstInstruction()
 		)
 }
 
@@ -63,8 +63,8 @@ rule less2steps {
 		)
 	to
 		gremlinLess : Gremlin!LessExpression (
-			left <- oclLess.source.getFirstOperation(),
-			right <- oclLess.argument.first().getFirstOperation()
+			left <- oclLess.source.getFirstInstruction(),
+			right <- oclLess.argument.first().getFirstInstruction()
 		)
 }
 
@@ -77,8 +77,8 @@ rule lessOrEqual2steps {
 		)
 	to
 		gremlinLessOrEqual : Gremlin!LessOrEqualExpression (
-			left <- oclLessOrEqual.source.getFirstOperation(),
-			right <- oclLessOrEqual.argument.first().getFirstOperation()
+			left <- oclLessOrEqual.source.getFirstInstruction(),
+			right <- oclLessOrEqual.argument.first().getFirstInstruction()
 		)
 }
 
@@ -91,8 +91,8 @@ rule different2steps {
 		)
 	to
 		gremlinDifferent : Gremlin!DifferenceExpression (
-			left <- oclDifferent.source.getFirstOperation(),
-			right <- oclDifferent.argument.first().getFirstOperation()
+			left <- oclDifferent.source.getFirstInstruction(),
+			right <- oclDifferent.argument.first().getFirstInstruction()
 		)
 }
 
@@ -106,8 +106,8 @@ rule equality2steps2 {
 		)
 	to
 		eqExp : Gremlin!EqualityExpression(
-			left <- oclEquals.source.getFirstOperation(),
-			right <- oclEquals.argument.first().getFirstOperation()
+			left <- oclEquals.source.getFirstInstruction(),
+			right <- oclEquals.argument.first().getFirstInstruction()
 		)
 }
 
@@ -138,8 +138,8 @@ rule or2steps {
 			)
 	to
 		gremlinOr : Gremlin!OrExpression(
-			left <- oclOr.source.getFirstOperation(),
-			right <- oclOr.argument.first().getFirstOperation()
+			left <- oclOr.source.getFirstInstruction(),
+			right <- oclOr.argument.first().getFirstInstruction()
 		)
 }
 
