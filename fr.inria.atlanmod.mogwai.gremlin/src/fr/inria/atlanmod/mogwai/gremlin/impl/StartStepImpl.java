@@ -22,50 +22,50 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class StartStepImpl extends StepImpl implements StartStep {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected StartStepImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.START_STEP;
-	}
+        return GremlinPackage.Literals.START_STEP;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("g");
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        res.append("g");
+        if(getNextElement() != null) {
+            res.append(".").append(getNextElement().toString());
+        }
+        return res.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.START_STEP___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
+        switch (operationID) {
+            case GremlinPackage.START_STEP___TO_STRING:
+                return toString();
+        }
+        return super.eInvoke(operationID, arguments);
+    }
 
 } //StartStepImpl

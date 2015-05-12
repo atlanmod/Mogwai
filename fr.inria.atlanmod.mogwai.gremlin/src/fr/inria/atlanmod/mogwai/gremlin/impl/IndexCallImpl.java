@@ -32,251 +32,251 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class IndexCallImpl extends MethodCallImpl implements IndexCall {
 	/**
-	 * The default value of the '{@link #getIndexName() <em>Index Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getIndexName() <em>Index Name</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndexName()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndexName()
+     * @generated
+     * @ordered
+     */
 	protected static final String INDEX_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getIndexName() <em>Index Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getIndexName() <em>Index Name</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndexName()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndexName()
+     * @generated
+     * @ordered
+     */
 	protected String indexName = INDEX_NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIndexProperty() <em>Index Property</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getIndexProperty() <em>Index Property</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndexProperty()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndexProperty()
+     * @generated
+     * @ordered
+     */
 	protected static final String INDEX_PROPERTY_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getIndexProperty() <em>Index Property</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getIndexProperty() <em>Index Property</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndexProperty()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndexProperty()
+     * @generated
+     * @ordered
+     */
 	protected String indexProperty = INDEX_PROPERTY_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getIndexQuery() <em>Index Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getIndexQuery() <em>Index Query</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndexQuery()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndexQuery()
+     * @generated
+     * @ordered
+     */
 	protected static final String INDEX_QUERY_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getIndexQuery() <em>Index Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getIndexQuery() <em>Index Query</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIndexQuery()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getIndexQuery()
+     * @generated
+     * @ordered
+     */
 	protected String indexQuery = INDEX_QUERY_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected IndexCallImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.INDEX_CALL;
-	}
+        return GremlinPackage.Literals.INDEX_CALL;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getIndexName() {
-		return indexName;
-	}
+        return indexName;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setIndexName(String newIndexName) {
-		String oldIndexName = indexName;
-		indexName = newIndexName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.INDEX_CALL__INDEX_NAME, oldIndexName, indexName));
-	}
+        String oldIndexName = indexName;
+        indexName = newIndexName;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.INDEX_CALL__INDEX_NAME, oldIndexName, indexName));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getIndexProperty() {
-		return indexProperty;
-	}
+        return indexProperty;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setIndexProperty(String newIndexProperty) {
-		String oldIndexProperty = indexProperty;
-		indexProperty = newIndexProperty;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.INDEX_CALL__INDEX_PROPERTY, oldIndexProperty, indexProperty));
-	}
+        String oldIndexProperty = indexProperty;
+        indexProperty = newIndexProperty;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.INDEX_CALL__INDEX_PROPERTY, oldIndexProperty, indexProperty));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getIndexQuery() {
-		return indexQuery;
-	}
+        return indexQuery;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setIndexQuery(String newIndexQuery) {
-		String oldIndexQuery = indexQuery;
-		indexQuery = newIndexQuery;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.INDEX_CALL__INDEX_QUERY, oldIndexQuery, indexQuery));
-	}
+        String oldIndexQuery = indexQuery;
+        indexQuery = newIndexQuery;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.INDEX_CALL__INDEX_QUERY, oldIndexQuery, indexQuery));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("getIndex(\""+getIndexName()+"\",Vertex.class)[["+getIndexProperty()+":\""+getIndexQuery()+"\"]]");
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        res.append("getIndex(\""+getIndexName()+"\",Vertex.class)[["+getIndexProperty()+":\""+getIndexQuery()+"\"]]");
+        if(getNextElement() != null) {
+            res.append(".").append(getNextElement().toString());
+        }
+        return res.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case GremlinPackage.INDEX_CALL__INDEX_NAME:
-				return getIndexName();
-			case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
-				return getIndexProperty();
-			case GremlinPackage.INDEX_CALL__INDEX_QUERY:
-				return getIndexQuery();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case GremlinPackage.INDEX_CALL__INDEX_NAME:
+                return getIndexName();
+            case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
+                return getIndexProperty();
+            case GremlinPackage.INDEX_CALL__INDEX_QUERY:
+                return getIndexQuery();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case GremlinPackage.INDEX_CALL__INDEX_NAME:
-				setIndexName((String)newValue);
-				return;
-			case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
-				setIndexProperty((String)newValue);
-				return;
-			case GremlinPackage.INDEX_CALL__INDEX_QUERY:
-				setIndexQuery((String)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case GremlinPackage.INDEX_CALL__INDEX_NAME:
+                setIndexName((String)newValue);
+                return;
+            case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
+                setIndexProperty((String)newValue);
+                return;
+            case GremlinPackage.INDEX_CALL__INDEX_QUERY:
+                setIndexQuery((String)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.INDEX_CALL__INDEX_NAME:
-				setIndexName(INDEX_NAME_EDEFAULT);
-				return;
-			case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
-				setIndexProperty(INDEX_PROPERTY_EDEFAULT);
-				return;
-			case GremlinPackage.INDEX_CALL__INDEX_QUERY:
-				setIndexQuery(INDEX_QUERY_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.INDEX_CALL__INDEX_NAME:
+                setIndexName(INDEX_NAME_EDEFAULT);
+                return;
+            case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
+                setIndexProperty(INDEX_PROPERTY_EDEFAULT);
+                return;
+            case GremlinPackage.INDEX_CALL__INDEX_QUERY:
+                setIndexQuery(INDEX_QUERY_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.INDEX_CALL__INDEX_NAME:
-				return INDEX_NAME_EDEFAULT == null ? indexName != null : !INDEX_NAME_EDEFAULT.equals(indexName);
-			case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
-				return INDEX_PROPERTY_EDEFAULT == null ? indexProperty != null : !INDEX_PROPERTY_EDEFAULT.equals(indexProperty);
-			case GremlinPackage.INDEX_CALL__INDEX_QUERY:
-				return INDEX_QUERY_EDEFAULT == null ? indexQuery != null : !INDEX_QUERY_EDEFAULT.equals(indexQuery);
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.INDEX_CALL__INDEX_NAME:
+                return INDEX_NAME_EDEFAULT == null ? indexName != null : !INDEX_NAME_EDEFAULT.equals(indexName);
+            case GremlinPackage.INDEX_CALL__INDEX_PROPERTY:
+                return INDEX_PROPERTY_EDEFAULT == null ? indexProperty != null : !INDEX_PROPERTY_EDEFAULT.equals(indexProperty);
+            case GremlinPackage.INDEX_CALL__INDEX_QUERY:
+                return INDEX_QUERY_EDEFAULT == null ? indexQuery != null : !INDEX_QUERY_EDEFAULT.equals(indexQuery);
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.INDEX_CALL___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
+        switch (operationID) {
+            case GremlinPackage.INDEX_CALL___TO_STRING:
+                return toString();
+        }
+        return super.eInvoke(operationID, arguments);
+    }
 
 } //IndexCallImpl

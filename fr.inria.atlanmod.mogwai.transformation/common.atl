@@ -160,6 +160,25 @@ helper context OCL!OCLExpression def : isInCollect() : Boolean =
 	if self.refImmediateComposite().oclIsTypeOf(OCL!IteratorExp) then
 		self.refImmediateComposite().name = 'collect'
 	else
-		self.refImmediateComposite().isInCollect()
+		if self.refImmediateComposite().oclIsKindOf(OCL!OCLExpression) then
+			self.refImmediateComposite().isInCollect()
+		else
+			false
+		endif
 	endif
+	;
+
+-- Returns true if self is a complex collection operation (union or intersection).
+helper context OCL!OperationCallExp def : isComplexCollectionOperation() : Boolean =
+	Set{'union','intersection'}->includes(self.getOpName())
+	;
+
+-- Returns all the accessed TypeExps in a Set with no duplicates.
+helper context OCL!OCLExpression def : getUsedTypes() : OrderedSet(OCL!TypeExp) =
+	OCL!TypeExp.allInstances()->iterate(each; res : OrderedSet(OCL!TypeExp) = OrderedSet{} | 
+		if(res->collect(e | e.referredType.name)->includes(each.referredType.name)) then
+			res
+		else
+			res.append(each)
+		endif)
 	;

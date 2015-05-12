@@ -22,50 +22,50 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class IdentityStepImpl extends StepImpl implements IdentityStep {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected IdentityStepImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.IDENTITY_STEP;
-	}
+        return GremlinPackage.Literals.IDENTITY_STEP;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("_()");
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        res.append("_()");
+        if(getNextElement() != null) {
+            res.append(".").append(getNextElement().toString());
+        }
+        return res.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.IDENTITY_STEP___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
+        switch (operationID) {
+            case GremlinPackage.IDENTITY_STEP___TO_STRING:
+                return toString();
+        }
+        return super.eInvoke(operationID, arguments);
+    }
 
 } //IdentityStepImpl

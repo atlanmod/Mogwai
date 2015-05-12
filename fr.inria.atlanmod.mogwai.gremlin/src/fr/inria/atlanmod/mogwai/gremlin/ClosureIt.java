@@ -15,20 +15,20 @@ package fr.inria.atlanmod.mogwai.gremlin;
  */
 public interface ClosureIt extends VariableAccess {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return super.toString();'"
-	 * @generated
-	 */
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return super.toString();'"
+     * @generated
+     */
 	String toString();
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return \"it\";'"
-	 * @generated
-	 */
+     * @model kind="operation"
+     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return \"it\";'"
+     * @generated
+     */
 	String getName();
 
 } // ClosureIt

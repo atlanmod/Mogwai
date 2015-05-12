@@ -24,21 +24,6 @@ create OUT: Gremlin from IN: OCL;
 
 uses common;
 
--- Returns all the expressions in the OCLExpression tree that
--- are allInstances() operations
-helper context OCL!OCLExpression def : getTypeExps() : OrderedSet(OCL!TypeExp) =
-	OCL!TypeExp.allInstances()->iterate(each; res : OrderedSet(OCL!TypeExp) = OrderedSet{} | 
-		if(res->collect(e | e.referredType.name)->includes(each.referredType.name)) then
-			res
-		else
-			res.append(each)
-		endif)
-	;
-	
-
-
-
-
 helper context OCL!OCLExpression def : getFirstInstructionCollectionOperation() : OCL!OCLExpression =
 	if self.oclIsTypeOf(OCL!OperationCallExp) or self.oclIsTypeOf(OCL!IteratorExp) then
 		if Set{'union','intersection'}.includes(self.getOpName()) then
@@ -125,9 +110,9 @@ rule constraint2script {
 		cc : OCL!Constraint
 	to
 		gg : Gremlin!GremlinScript (
-			instructions <- cc.specification.bodyExpression.getTypeExps()
+			instructions <- cc.specification.bodyExpression.getUsedTypes()
 				->collect(e | thisModule.typeExp2meta(e)).union(
-					cc.specification.bodyExpression.getTypeExps()
+					cc.specification.bodyExpression.getUsedTypes()
 				->collect(e | thisModule.typeExp2metaNodes(e))).union(
 					let collectionOperations : Sequence(OCL!OperationCallExp) = OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName())) in
 					if collectionOperations.isEmpty() then
@@ -151,13 +136,14 @@ rule constraint2script {
 						)
 					endif).
 				append(
-					cc.specification.bodyExpression.getFirstInstruction()
+					cc.specification.bodyExpression.getFirstInstruction().debug()
 				).
 				union(
 					cc.specification.bodyExpression.getFirstInstructionInCollectionOperations()
 				).
 				union(
-					OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName()))	
+					OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName()))
+						->collect(e | thisModule.collectionOperation2instruction(e))	
 				)
 		)
 }
@@ -204,153 +190,13 @@ lazy rule typeExp2metaNodes {
 
 
 
-lazy rule unionMetaMethod {
-	from
-		oclUnion : OCL!OperationCallExp
-	to
-		computeUnion : Gremlin!MethodDeclaration(
-			name <- 'computeUnion',
-			parameters <- Sequence{'c1','c2'},
-			instructions <- Sequence{unionInstruction1,unionInstruction2}
-		),
-		unionInstruction1 : Gremlin!VariableAccess(
-			name <- 'c1',
-			nextElement <- unionAddAllCall
-		),
-		unionAddAllCall : Gremlin!AddAllCall(
-			value <- unionV2	
-		),
-		unionV2 : Gremlin!VariableAccess(
-			name <- 'c2'	
-		),
-		unionInstruction2 : Gremlin!VariableAccess(
-			name <- 'c1'	
-		)
-}
 
-lazy rule intersectionMetaMethod {
-	from
-		oclUnion : OCL!OperationCallExp
-	to
-		computeIntersection : Gremlin!MethodDeclaration(
-			name <- 'computeIntersection',
-			parameters <- Sequence{'c1','c2'},
-			instructions <- Sequence{intersectionInstruction1,intersectionInstruction2}
-		),
-		intersectionInstruction1 : Gremlin!VariableAccess(
-			name <- 'c1',
-			nextElement <- intersectionRetainAllCall
-		),
-		intersectionRetainAllCall : Gremlin!RetainAllCall(
-			value <- intersectionV2	
-		),
-		intersectionV2 : Gremlin!VariableAccess(
-			name <- 'c2'	
-		),
-		intersectionInstruction2 : Gremlin!VariableAccess(
-			name <- 'c1'	
-		)
-}
 
--- Create variables to store collection operations results
-lazy rule collectionOperation2metaLeft {
-	from
-		oclUnion : OCL!OperationCallExp
-	to
-		metaUnionVar : Gremlin!VariableDeclaration (
-			name <- 'collection' + thisModule.getCollectionOperationIndex(oclUnion) + 'Left',
-			value <- col
-		),
-		col : Gremlin!CollectionDefinition ()
-}
 
-lazy rule collectionOperation2metaRight {
-	from
-		oclUnion : OCL!OperationCallExp
-	to
-		metaUnionVar : Gremlin!VariableDeclaration(
-			name <- 'collection' + thisModule.getCollectionOperationIndex(oclUnion) + 'Right',
-			value <- col
-		),
-		col : Gremlin!CollectionDefinition()
-}
 
-rule union2steps {
-	from
-		union : OCL!OperationCallExp (union.getOpName() = 'union')
-	to
-		uc : Gremlin!UnionCall(
-			leftCollection <- vaL,
-			rightCollection <- vaR,
-			cast <- thisModule.lazyCol(union.eType),
-			nextElement <- idStep
-		),
-		vaL : Gremlin!VariableAccess(
-			name <- union.source.getCollectionVariableName()	
-		),
-		vaR : Gremlin!VariableAccess(
-			name <- union.argument.first().getCollectionVariableName()	
-		),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- union.getComposite()	
-		)
-}
 
-rule intersection2steps {
-	from
-		intersection : OCL!OperationCallExp (intersection.getOpName() = 'intersection')
-	to
-		ic : Gremlin!IntersectionCall(
-			leftCollection <- vaL,
-			rightCollection <- vaR,
-			cast <- thisModule.lazyCol(intersection.eType),
-			nextElement <- idStep
-		),
-		vaL : Gremlin!VariableAccess(
-			name <- intersection.source.getCollectionVariableName()	
-		),
-		vaR : Gremlin!VariableAccess(
-			name <- intersection.argument.first().getCollectionVariableName()	
-		),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- intersection.getComposite()	
-		)
-}
 
-lazy rule lazyCol {
-	from
-		colType : OCL!CollectionType
-	to
-		decl : Gremlin!TypeDeclaration()
-}
 
-lazy rule lazySeq extends lazyCol {
-	from
-		colType : OCL!SequenceType
-	to
-		decl : Gremlin!ListDeclaration
-}
-
-lazy rule lazySet extends lazyCol {
-	from
-		colType : OCL!SetType
-	to
-		decl : Gremlin!SetDeclaration
-}
-
-lazy rule lazyOrderedSet extends lazyCol {
-	from
-		colType : OCL!OrderedSetType
-	to
-		decl : Gremlin!SortedSetDeclaration
-}
-
-lazy rule lazyBag extends lazyCol {
-	from
-		colType : OCL!BagType
-	to
-		decl : Gremlin!ListDeclaration
-}
 
 -- Transforms 'allInstances' expressions into kyanosInstanceOf edge step
 -- and vertex step.
@@ -384,14 +230,7 @@ rule typeExp2steps {
 		)
 }
 
-rule collect2steps {
-	from 
-		collect : OCL!IteratorExp (collect.getOpName() = 'collect')
-	to
-		id : Gremlin!IdentityStep(
-			nextElement <- collect.getComposite()
-		)
-}
+
 
 rule oclIsUndefined2steps {
 	from
@@ -414,193 +253,6 @@ lazy rule varIterator2def {
 			value <- fi
 		),
 		fi : Gremlin!ClosureIt()
-}
-
-rule select2steps {
-	from
-		select : OCL!IteratorExp (select.getOpName() = 'select')
-	to
-		pp : Gremlin!FilterStep (
-			closure <- cl,
-			nextElement <- select.getComposite()
-		),
-		cl : Gremlin!Closure(
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(select.iterator.first())).append(select.body.getFirstInstruction())	
-		)
-}
-
-rule reject2steps {
-	from
-		reject : OCL!IteratorExp (reject.getOpName() = 'reject')
-	to
-		pp : Gremlin!FilterStep (
-			closure <-  clos,
-			nextElement <- reject.getComposite()
-		),
-		clos : Gremlin!Closure (
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(reject.iterator.first())).append(notExp)
-		),
-		notExp : Gremlin!NotExpression (
-			exp <- reject.body.getFirstInstruction()
-		)
-}
-
-rule excludes2steps {
-	from
-		excludes : OCL!OperationCallExp (excludes.getOpName() = 'excludes')
-	to
-		retain : Gremlin!RetainStep(
-			collection <- vec,
-			nextElement <- toListCall	
-		),
-		toListCall : Gremlin!ToListCall(
-			nextElement <- isEmptyCall	
-		),
-		isEmptyCall : Gremlin!IsEmptyCall(
-		),
-		vec : Gremlin!VectorType(
-			values <- excludes.argument.first()	
-		)
-}
-
-rule excludesAll2steps {
-	from
-		excludesAll : OCL!OperationCallExp (excludesAll.getOpName() = 'excludesAll')
-	to
-		retain : Gremlin!RetainStep(
-			collection <- excludesAll.argument.first(),
-			nextElement <- toListCall
-		),
-		toListCall : Gremlin!ToListCall(
-			nextElement <- isEmptyCall	
-		),
-		isEmptyCall : Gremlin!IsEmptyCall(
-		)
-}
-
-rule excluding2steps {
-	from
-		excluding : OCL!OperationCallExp (excluding.getOpName() = 'excluding')
-	to
-		exStep : Gremlin!ExceptStep (
-			collection <- vec,
-			nextElement <- excluding.getComposite()
-		),
-		vec : Gremlin!VectorDefinition (
-			values <- excluding.argument.first()	
-		)
-}
-
-rule includes2steps {
-	from
-		includes : OCL!OperationCallExp (includes.getOpName() = 'includes')
-	to
-		gather : Gremlin!GatherStep(
-			nextElement <- transform	
-		),
-		transform : Gremlin!TransformStep(
-			closure <- clos,
-			nextElement <- nextCall
-		),
-		clos : Gremlin!Closure (
-			instructions <- it
-		),
-		it : Gremlin!ClosureIt(
-			nextElement <- containsCall	
-		),
-		containsCall : Gremlin!ContainsCall(
-			value <- includes.argument.first()
-		),
-		nextCall : Gremlin!NextCall(
-			nextElement <- includes.getComposite()	
-		)
-}
-
-rule includesAll2steps {
-	from
-		includesAll : OCL!OperationCallExp (includesAll.getOpName() = 'includesAll')
-	to
-		gather : Gremlin!GatherStep(
-			nextElement <- transform	
-		),
-		transform : Gremlin!TransformStep(
-			closure <- clos,
-			nextElement <- nextCall
-		),
-		clos : Gremlin!Closure (
-			instructions <- it
-		),
-		it : Gremlin!ClosureIt(
-			nextElement <- containsAllCall	
-		),
-		containsAllCall : Gremlin!ContainsAllCall(
-			value <- includesAll.argument.first()
-		),
-		nextCall : Gremlin!NextCall(
-			nextElement <- includesAll.getComposite()	
-		)
-}
-
-rule including2steps {
-	from
-		including : OCL!OperationCallExp (including.getOpName() = 'including')
-	to
-		gather : Gremlin!GatherStep(
-			nextElement <- transform	
-		),
-		transform : Gremlin!TransformStep(
-			closure <- clos,
-			nextElement <- scatter
-		),
-		clos : Gremlin!Closure (
-			instructions <- shift
-		),
-		shift : Gremlin!LeftShiftExpression(
-			left <- it,
-			right <- including.argument.first()
-		),
-		it : Gremlin!ClosureIt(),
-		scatter : Gremlin!ScatterStep(
-			nextElement <- including.getComposite()	
-		)
-}
-
-rule exists2steps {
-	from
-		exists : OCL!IteratorExp (exists.getOpName() = 'exists')
-	to
-		pp : Gremlin!FilterStep (
-			closure <-  clos,
-			nextElement <- hasNext
-		),
-		clos : Gremlin!Closure (
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(exists.iterator.first())).append(exists.body.getFirstInstruction())
-		),
-		hasNext : Gremlin!HasNextCall(
-			
-		)
-}
-
-rule forAll2steps {
-	from
-		forAll : OCL!IteratorExp (forAll.getOpName() = 'forAll')
-	to
-		pp : Gremlin!FilterStep(
-			closure <- clos,
-			nextElement <- toList
-		),
-		clos : Gremlin!Closure(
-			instructions <- OrderedSet{}.append(thisModule.varIterator2def(forAll.iterator.first())).append(notExp)
-		),
-		notExp : Gremlin!NotExpression(
-			exp <- forAll.body.getFirstInstruction()	
-		),
-		toList : Gremlin!ToListCall(
-			nextElement <- isEmptyCall	
-		),
-		isEmptyCall : Gremlin!IsEmptyCall(
-			
-		)
 }
 
 -- Create a TransformStep from an oclIsTypeOf() OperationCallExp
@@ -652,40 +304,20 @@ rule oclAsType2steps {
 		)
 }
 
-rule size2steps {
-	from
-		size : OCL!OperationCallExp (
-			size.getOpName() = 'size'
-		)
-	to
-		cc : Gremlin!CountCall (	
-		)
-}
 
-rule isEmpty2steps {
-	from
-		isEmpty : OCL!OperationCallExp (
-			isEmpty.getOpName() = 'isEmpty'	
-		)
-	to
-		toList : Gremlin!ToListCall(
-			nextElement <- isEmptyCall
-		),
-		isEmptyCall : Gremlin!IsEmptyCall(
-			nextElement <- isEmpty.getComposite()
-		)
-}
+
+
 
 -- Transfroms a variable access expression into Gremlin filter iterator Step.
 -- TODO : handle non-iterator variables
 rule varExp2steps {
 	from
 		varExp : OCL!VariableExp(
-			not(varExp.isInCollect())	
+			not(varExp.isInCollect()) or varExp.referredVariable.name='self'
 		)
 	to
 		va : Gremlin!VariableAccess(
-			name <- varExp.referredVariable.name,
+			name <- varExp.referredVariable.name.debug(),
 			nextElement <- varExp.getComposite()
 		)
 }
@@ -693,7 +325,7 @@ rule varExp2steps {
 rule varExpInCollect2steps {
 	from
 		varExp : OCL!VariableExp (
-			varExp.isInCollect()	
+			varExp.isInCollect() and not(varExp.referredVariable.name='self')	
 		)
 	to
 		id : Gremlin!IdentityStep(
@@ -739,13 +371,30 @@ rule propertyRefLastInComparison2steps {
 rule propertyAttCallExp2steps {
 	from
 		prop : OCL!PropertyCallExp(
-			prop.referredProperty.oclIsKindOf(OCL!EAttribute)-- and
-	--		not(prop.isLastInComparison())
+			prop.referredProperty.oclIsKindOf(OCL!EAttribute) and
+			not(prop.isLastInComparison())
 		)
 	to
 		pp : Gremlin!PropertyStep(
 			name <- prop.referredProperty.name,
 			nextElement <- prop.getComposite()
+		)
+}
+
+rule propertyAttCallExpLastInComparison2steps {
+	from
+		prop : OCL!PropertyCallExp(
+			prop.referredProperty.oclIsKindOf(OCL!EAttribute) and
+			prop.isLastInComparison() and not(prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType))
+		)
+	to
+		pp : Gremlin!PropertyStep(
+			name <- prop.referredProperty.name,
+			nextElement <- nCall
+		),
+		
+		nCall : Gremlin!NextCall(
+			nextElement <- prop.getComposite()	
 		)
 }
 
@@ -784,11 +433,4 @@ rule propertyAttBooleanLastInComparison2steps {
 		)
 }
 
-rule oclFirst2steps {
-	from
-		oclFirst : OCL!OperationCallExp(oclFirst.getOpName() = 'first')
-	to
-		fc : Gremlin!FirstCall(
-			nextElement <- oclFirst.getComposite()
-		)
-}
+

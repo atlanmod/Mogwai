@@ -33,176 +33,176 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class AddAllCallImpl extends MethodCallImpl implements AddAllCall {
 	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getValue()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getValue()
+     * @generated
+     * @ordered
+     */
 	protected Instruction value;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected AddAllCallImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.ADD_ALL_CALL;
-	}
+        return GremlinPackage.Literals.ADD_ALL_CALL;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Instruction getValue() {
-		return value;
-	}
+        return value;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public NotificationChain basicSetValue(Instruction newValue, NotificationChain msgs) {
-		Instruction oldValue = value;
-		value = newValue;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.ADD_ALL_CALL__VALUE, oldValue, newValue);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
+        Instruction oldValue = value;
+        value = newValue;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.ADD_ALL_CALL__VALUE, oldValue, newValue);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setValue(Instruction newValue) {
-		if (newValue != value) {
-			NotificationChain msgs = null;
-			if (value != null)
-				msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.ADD_ALL_CALL__VALUE, null, msgs);
-			if (newValue != null)
-				msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.ADD_ALL_CALL__VALUE, null, msgs);
-			msgs = basicSetValue(newValue, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.ADD_ALL_CALL__VALUE, newValue, newValue));
-	}
+        if (newValue != value) {
+            NotificationChain msgs = null;
+            if (value != null)
+                msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.ADD_ALL_CALL__VALUE, null, msgs);
+            if (newValue != null)
+                msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.ADD_ALL_CALL__VALUE, null, msgs);
+            msgs = basicSetValue(newValue, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.ADD_ALL_CALL__VALUE, newValue, newValue));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("addAll(");
-		res.append(getValue().toString()+")");
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        res.append("addAll(");
+        res.append(getValue().toString()+")");
+        if(getNextElement() != null) {
+            res.append(".").append(getNextElement().toString());
+        }
+        return res.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case GremlinPackage.ADD_ALL_CALL__VALUE:
-				return basicSetValue(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID) {
+            case GremlinPackage.ADD_ALL_CALL__VALUE:
+                return basicSetValue(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case GremlinPackage.ADD_ALL_CALL__VALUE:
-				return getValue();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case GremlinPackage.ADD_ALL_CALL__VALUE:
+                return getValue();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case GremlinPackage.ADD_ALL_CALL__VALUE:
-				setValue((Instruction)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case GremlinPackage.ADD_ALL_CALL__VALUE:
+                setValue((Instruction)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.ADD_ALL_CALL__VALUE:
-				setValue((Instruction)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.ADD_ALL_CALL__VALUE:
+                setValue((Instruction)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.ADD_ALL_CALL__VALUE:
-				return value != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.ADD_ALL_CALL__VALUE:
+                return value != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.ADD_ALL_CALL___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
+        switch (operationID) {
+            case GremlinPackage.ADD_ALL_CALL___TO_STRING:
+                return toString();
+        }
+        return super.eInvoke(operationID, arguments);
+    }
 
 } //AddAllCallImpl

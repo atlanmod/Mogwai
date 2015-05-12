@@ -22,50 +22,50 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class IsEmptyCallImpl extends MethodCallImpl implements IsEmptyCall {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected IsEmptyCallImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.IS_EMPTY_CALL;
-	}
+        return GremlinPackage.Literals.IS_EMPTY_CALL;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("isEmpty()");
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        res.append("isEmpty()");
+        if(getNextElement() != null) {
+            res.append(".").append(getNextElement().toString());
+        }
+        return res.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.IS_EMPTY_CALL___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
+        switch (operationID) {
+            case GremlinPackage.IS_EMPTY_CALL___TO_STRING:
+                return toString();
+        }
+        return super.eInvoke(operationID, arguments);
+    }
 
 } //IsEmptyCallImpl

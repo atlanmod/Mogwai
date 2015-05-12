@@ -15,11 +15,11 @@ package fr.inria.atlanmod.mogwai.gremlin;
  */
 public interface AffectationExpression extends BinaryExpression {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(getLeft().toString()).append(\" = \").append(getRight().toString());\nreturn res.toString();'"
-	 * @generated
-	 */
+     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(getLeft().toString()).append(\" = \").append(getRight().toString());\nreturn res.toString();'"
+     * @generated
+     */
 	String toString();
 
 } // AffectationExpression

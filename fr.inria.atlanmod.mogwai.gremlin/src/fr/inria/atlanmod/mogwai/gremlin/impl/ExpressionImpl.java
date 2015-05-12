@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class ExpressionImpl extends InstructionImpl implements Expression {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected ExpressionImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.EXPRESSION;
-	}
+        return GremlinPackage.Literals.EXPRESSION;
+    }
 
 } //ExpressionImpl

@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public abstract class StepImpl extends TraversalElementImpl implements Step {
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected StepImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.STEP;
-	}
+        return GremlinPackage.Literals.STEP;
+    }
 
 } //StepImpl

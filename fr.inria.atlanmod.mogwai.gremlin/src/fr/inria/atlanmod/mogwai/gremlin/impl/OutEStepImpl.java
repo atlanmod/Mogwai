@@ -30,152 +30,152 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class OutEStepImpl extends StepImpl implements OutEStep {
 	/**
-	 * The default value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The default value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getRelationshipName()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getRelationshipName()
+     * @generated
+     * @ordered
+     */
 	protected static final String RELATIONSHIP_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getRelationshipName() <em>Relationship Name</em>}' attribute.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getRelationshipName()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getRelationshipName()
+     * @generated
+     * @ordered
+     */
 	protected String relationshipName = RELATIONSHIP_NAME_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected OutEStepImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.OUT_ESTEP;
-	}
+        return GremlinPackage.Literals.OUT_ESTEP;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String getRelationshipName() {
-		return relationshipName;
-	}
+        return relationshipName;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setRelationshipName(String newRelationshipName) {
-		String oldRelationshipName = relationshipName;
-		relationshipName = newRelationshipName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME, oldRelationshipName, relationshipName));
-	}
+        String oldRelationshipName = relationshipName;
+        relationshipName = newRelationshipName;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME, oldRelationshipName, relationshipName));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("outE");
-		if(getRelationshipName() != null) {
-			res.append("(\"").append(getRelationshipName()).append("\")");
-		}
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        res.append("outE");
+        if(getRelationshipName() != null) {
+            res.append("(\"").append(getRelationshipName()).append("\")");
+        }
+        if(getNextElement() != null) {
+            res.append(".").append(getNextElement().toString());
+        }
+        return res.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
-				return getRelationshipName();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
+                return getRelationshipName();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
-				setRelationshipName((String)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
+                setRelationshipName((String)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
-				setRelationshipName(RELATIONSHIP_NAME_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
+                setRelationshipName(RELATIONSHIP_NAME_EDEFAULT);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
-				return RELATIONSHIP_NAME_EDEFAULT == null ? relationshipName != null : !RELATIONSHIP_NAME_EDEFAULT.equals(relationshipName);
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.OUT_ESTEP__RELATIONSHIP_NAME:
+                return RELATIONSHIP_NAME_EDEFAULT == null ? relationshipName != null : !RELATIONSHIP_NAME_EDEFAULT.equals(relationshipName);
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.OUT_ESTEP___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
+        switch (operationID) {
+            case GremlinPackage.OUT_ESTEP___TO_STRING:
+                return toString();
+        }
+        return super.eInvoke(operationID, arguments);
+    }
 
 } //OutEStepImpl

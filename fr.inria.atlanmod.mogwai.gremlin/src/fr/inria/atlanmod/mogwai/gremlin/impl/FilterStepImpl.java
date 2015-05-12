@@ -33,176 +33,176 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class FilterStepImpl extends StepImpl implements FilterStep {
 	/**
-	 * The cached value of the '{@link #getClosure() <em>Closure</em>}' containment reference.
-	 * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getClosure() <em>Closure</em>}' containment reference.
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getClosure()
-	 * @generated
-	 * @ordered
-	 */
+     * @see #getClosure()
+     * @generated
+     * @ordered
+     */
 	protected Closure closure;
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	protected FilterStepImpl() {
-		super();
-	}
+        super();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	protected EClass eStaticClass() {
-		return GremlinPackage.Literals.FILTER_STEP;
-	}
+        return GremlinPackage.Literals.FILTER_STEP;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public Closure getClosure() {
-		return closure;
-	}
+        return closure;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public NotificationChain basicSetClosure(Closure newClosure, NotificationChain msgs) {
-		Closure oldClosure = closure;
-		closure = newClosure;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.FILTER_STEP__CLOSURE, oldClosure, newClosure);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
+        Closure oldClosure = closure;
+        closure = newClosure;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.FILTER_STEP__CLOSURE, oldClosure, newClosure);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public void setClosure(Closure newClosure) {
-		if (newClosure != closure) {
-			NotificationChain msgs = null;
-			if (closure != null)
-				msgs = ((InternalEObject)closure).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.FILTER_STEP__CLOSURE, null, msgs);
-			if (newClosure != null)
-				msgs = ((InternalEObject)newClosure).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.FILTER_STEP__CLOSURE, null, msgs);
-			msgs = basicSetClosure(newClosure, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.FILTER_STEP__CLOSURE, newClosure, newClosure));
-	}
+        if (newClosure != closure) {
+            NotificationChain msgs = null;
+            if (closure != null)
+                msgs = ((InternalEObject)closure).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.FILTER_STEP__CLOSURE, null, msgs);
+            if (newClosure != null)
+                msgs = ((InternalEObject)newClosure).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.FILTER_STEP__CLOSURE, null, msgs);
+            msgs = basicSetClosure(newClosure, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.FILTER_STEP__CLOSURE, newClosure, newClosure));
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	public String toString() {
-		StringBuffer res = new StringBuffer();
-		res.append("filter");
-		res.append(getClosure().toString());
-		if(getNextElement() != null) {
-			res.append(".").append(getNextElement().toString());
-		}
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        res.append("filter");
+        res.append(getClosure().toString());
+        if(getNextElement() != null) {
+            res.append(".").append(getNextElement().toString());
+        }
+        return res.toString();
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case GremlinPackage.FILTER_STEP__CLOSURE:
-				return basicSetClosure(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+        switch (featureID) {
+            case GremlinPackage.FILTER_STEP__CLOSURE:
+                return basicSetClosure(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case GremlinPackage.FILTER_STEP__CLOSURE:
-				return getClosure();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+        switch (featureID) {
+            case GremlinPackage.FILTER_STEP__CLOSURE:
+                return getClosure();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case GremlinPackage.FILTER_STEP__CLOSURE:
-				setClosure((Closure)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+        switch (featureID) {
+            case GremlinPackage.FILTER_STEP__CLOSURE:
+                setClosure((Closure)newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public void eUnset(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.FILTER_STEP__CLOSURE:
-				setClosure((Closure)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.FILTER_STEP__CLOSURE:
+                setClosure((Closure)null);
+                return;
+        }
+        super.eUnset(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case GremlinPackage.FILTER_STEP__CLOSURE:
-				return closure != null;
-		}
-		return super.eIsSet(featureID);
-	}
+        switch (featureID) {
+            case GremlinPackage.FILTER_STEP__CLOSURE:
+                return closure != null;
+        }
+        return super.eIsSet(featureID);
+    }
 
 	/**
-	 * <!-- begin-user-doc -->
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+     * @generated
+     */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case GremlinPackage.FILTER_STEP___TO_STRING:
-				return toString();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
+        switch (operationID) {
+            case GremlinPackage.FILTER_STEP___TO_STRING:
+                return toString();
+        }
+        return super.eInvoke(operationID, arguments);
+    }
 
 } //FilterStepImpl
