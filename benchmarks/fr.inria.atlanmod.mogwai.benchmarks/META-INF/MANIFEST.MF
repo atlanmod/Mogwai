@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Benchmarks
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.benchmarks
+Bundle-Version: 1.0.0.qualifier
+Export-Package: fr.inria.atlanmod.mogwai.benchmarks.ocl,
+ fr.inria.atlanmod.mogwai.benchmarks.ocl.tests
+Require-Bundle: org.eclipse.ocl;bundle-version="3.4.2",
+ org.eclipse.ocl.ecore;bundle-version="3.3.100"
