@@ -6,4 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Export-Package: fr.inria.atlanmod.mogwai.benchmarks.ocl,
  fr.inria.atlanmod.mogwai.benchmarks.ocl.tests
 Require-Bundle: org.eclipse.ocl;bundle-version="3.4.2",
- org.eclipse.ocl.ecore;bundle-version="3.3.100"
+ org.eclipse.ocl.ecore;bundle-version="3.3.100",
+ org.eclipse.incquery.runtime;bundle-version="0.8.1",
+ fr.inria.atlanmod.mogwai.incquery.queries;bundle-version="0.0.1"

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: incquery-tutorial
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.incquery.queries;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Export-Package: fr.inria.atlanmod.mogwai.incquery.queries,
+ fr.inria.atlanmod.mogwai.incquery.queries.util
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.incquery.runtime,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.gmt.modisco.java;bundle-version="0.11.1",
+ org.eclipse.gmt.modisco.java.neoemf;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.apache.log4j

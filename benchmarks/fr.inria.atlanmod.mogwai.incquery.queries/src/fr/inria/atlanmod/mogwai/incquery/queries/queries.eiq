@@ -1,0 +1,32 @@
+package fr.inria.atlanmod.mogwai.incquery.queries
+
+import "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf"
+
+pattern invisibleMethods(Met) {
+	ClassDeclaration.bodyDeclarations(_Cl, Met);
+	MethodDeclaration(Met);
+	MethodDeclaration.modifier.visibility(Met,VisibilityKind::^private);
+} or
+{
+	ClassDeclaration.bodyDeclarations(_Cl, Met);
+	MethodDeclaration(Met);
+	MethodDeclaration.modifier.visibility(Met,VisibilityKind::protected);
+}
+
+pattern thrownExceptions(Ex) {
+	Package(Pack); 
+	Package.ownedElements(Pack,Owned);
+	ClassDeclaration(Owned);
+	ClassDeclaration.bodyDeclarations(Owned,Body);
+	MethodDeclaration(Body);
+	MethodDeclaration.thrownExceptions(Body,Ex);
+}
+
+pattern grabats09(Tt) {
+	TypeDeclaration(Tt);
+	TypeDeclaration.bodyDeclarations(Tt,Bod);
+	MethodDeclaration(Bod);
+	MethodDeclaration.modifier.^static(Bod,true);
+	MethodDeclaration.returnType.type(Bod,Tt);
+}
+

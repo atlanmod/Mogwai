@@ -10,8 +10,6 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.benchmarks.ocl.tests;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;

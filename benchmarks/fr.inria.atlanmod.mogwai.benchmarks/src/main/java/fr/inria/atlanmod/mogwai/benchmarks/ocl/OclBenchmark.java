@@ -26,6 +26,6 @@ import fr.inria.atlanmod.mogwai.benchmarks.ocl.tests.ThrownExceptionsQuery;
     ThrownExceptionsQuery.class,
     TextElementInJavadocQuery.class
     })
-public class OclBenchmarks {
+public class OclBenchmark {
 
 }
