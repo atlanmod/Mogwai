@@ -16,13 +16,15 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import fr.inria.atlanmod.mogwai.benchmarks.incquery.tests.Grabats09Query;
 import fr.inria.atlanmod.mogwai.benchmarks.incquery.tests.InvisibleMethodsQuery;
+import fr.inria.atlanmod.mogwai.benchmarks.incquery.tests.TextElementInJavadocQuery;
 import fr.inria.atlanmod.mogwai.benchmarks.incquery.tests.ThrownExceptionsQuery;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    InvisibleMethodsQuery.class,
-    Grabats09Query.class,
-    ThrownExceptionsQuery.class
+//    InvisibleMethodsQuery.class,
+//    Grabats09Query.class,
+//    ThrownExceptionsQuery.class,
+    TextElementInJavadocQuery.class
     })
 public class IncQueryBenchmark {
 

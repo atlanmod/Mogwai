@@ -10,46 +10,54 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.benchmarks.incquery.tests;
 
+import static org.junit.Assert.*;
+
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.benchmarks.AbstractQueryTest;
+import fr.inria.atlanmod.mogwai.incquery.queries.CommentTextMatch;
+import fr.inria.atlanmod.mogwai.incquery.queries.CommentTextMatcher;
+import fr.inria.atlanmod.mogwai.incquery.queries.InvisibleMethodsMatch;
+import fr.inria.atlanmod.mogwai.incquery.queries.InvisibleMethodsMatcher;
 
-public class IncQueryTest extends AbstractQueryTest {
-    
-    protected AdvancedIncQueryEngine engine;
-    
-    public IncQueryTest(String resourceName) {
+public class TextElementInJavadocQuery extends IncQueryTest {
+
+    public TextElementInJavadocQuery(String resourceName) {
         super(resourceName);
     }
-    
+
+    @Override
     protected Notifier getStartPoint() {
-        return resource;
+        return this.resource.getContents().get(0);
     }
     
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        if(getStartPoint() != null) {
-            try {
-                System.out.println(getStartPoint().toString());
-                engine = AdvancedIncQueryEngine.createUnmanagedEngine(getStartPoint(), false,false);
-            }catch(IncQueryException e) {
-                System.out.println("Can not initialize IncQuery engine");
-                e.printStackTrace();
-            }
-        }
     }
 
     @After
     public void tearDown() throws Exception {
         super.tearDown();
-        engine.dispose();
-        engine = null;
-        Runtime.getRuntime().gc();
+    }
+
+    @Test
+    public void run() throws IncQueryException {
+        try {
+            startTimer();
+            CommentTextMatcher matcher = CommentTextMatcher.on(engine);
+            Collection<CommentTextMatch> matches = matcher.getAllMatches();
+            System.out.println("Result set size : " + matches.size());
+            endTimer();
+        }catch(IncQueryException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
 }

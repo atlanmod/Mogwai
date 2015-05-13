@@ -30,3 +30,11 @@ pattern grabats09(Tt) {
 	MethodDeclaration.returnType.type(Bod,Tt);
 }
 
+pattern commentText(Ff) {
+	Model(Mm);
+	Model.compilationUnits.commentList(Mm,Cl);
+	Javadoc(Cl);
+	Javadoc.tags.fragments(Cl,Ff);
+	TextElement(Ff);
+}
+
