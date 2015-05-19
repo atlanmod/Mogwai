@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mogwai
+Bundle-SymbolicName: mogwai-core
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.m2m.atl.core;bundle-version="3.5.0",
+ org.eclipse.m2m.atl.engine.emfvm;bundle-version="3.5.0",
+ org.eclipse.ocl.ecore;bundle-version="3.3.100",
+ gremlin;bundle-version="0.1.0",
+ fr.inria.atlanmod.neoemf.core;bundle-version="0.0.1",
+ fr.inria.atlanmod.neoemf.graph.blueprints;bundle-version="0.0.1",
+ fr.inria.atlanmod.neoemf.graph.blueprints.neo4j;bundle-version="0.0.1"
+Export-Package: fr.inria.atlanmod.mogwai.core,
+ fr.inria.atlanmod.mogwai.transformation,
+ fr.inria.atlanmod.mogwai.resources,
+ fr.inria.atlanmod.mogwai.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

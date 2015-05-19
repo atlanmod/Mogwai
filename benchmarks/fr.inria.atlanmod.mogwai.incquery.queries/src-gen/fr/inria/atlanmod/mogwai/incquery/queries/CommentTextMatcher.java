@@ -14,7 +14,6 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
-import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 
 /**
@@ -44,15 +43,6 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
  */
 @SuppressWarnings("all")
 public class CommentTextMatcher extends BaseMatcher<CommentTextMatch> {
-  /**
-   * @return the singleton instance of the query specification of this pattern
-   * @throws IncQueryException if the pattern definition could not be loaded
-   * 
-   */
-  public static IQuerySpecification<CommentTextMatcher> querySpecification() throws IncQueryException {
-    return CommentTextQuerySpecification.instance();
-  }
-  
   /**
    * Initializes the pattern matcher within an existing EMF-IncQuery engine.
    * If the pattern matcher is already constructed in the engine, only a light-weight reference is returned.
@@ -171,23 +161,6 @@ public class CommentTextMatcher extends BaseMatcher<CommentTextMatch> {
   }
   
   /**
-   * Registers a new filtered delta monitor on this pattern matcher.
-   * The DeltaMonitor can be used to track changes (delta) in the set of filtered pattern matches from now on, considering those matches only that conform to the given fixed values of some parameters.
-   * It can also be reset to track changes from a later point in time,
-   * and changes can even be acknowledged on an individual basis.
-   * See {@link DeltaMonitor} for details.
-   * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
-   * @param pFf the fixed value of pattern parameter Ff, or null if not bound.
-   * @return the delta monitor.
-   * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
-   * 
-   */
-  @Deprecated
-  public DeltaMonitor<CommentTextMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final TextElement pFf) {
-    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pFf});
-  }
-  
-  /**
    * Returns a new (partial) match.
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
@@ -197,7 +170,6 @@ public class CommentTextMatcher extends BaseMatcher<CommentTextMatch> {
    */
   public CommentTextMatch newMatch(final TextElement pFf) {
     return CommentTextMatch.newMatch(pFf);
-    
   }
   
   /**
@@ -223,33 +195,39 @@ public class CommentTextMatcher extends BaseMatcher<CommentTextMatch> {
   @Override
   protected CommentTextMatch tupleToMatch(final Tuple t) {
     try {
-      return CommentTextMatch.newMatch((org.eclipse.gmt.modisco.java.TextElement) t.get(POSITION_FF));
+    	return CommentTextMatch.newMatch((org.eclipse.gmt.modisco.java.TextElement) t.get(POSITION_FF));
     } catch(ClassCastException e) {
-      LOGGER.error("Element(s) in tuple not properly typed!",e);
-      return null;
+    	LOGGER.error("Element(s) in tuple not properly typed!",e);
+    	return null;
     }
-    
   }
   
   @Override
   protected CommentTextMatch arrayToMatch(final Object[] match) {
     try {
-      return CommentTextMatch.newMatch((org.eclipse.gmt.modisco.java.TextElement) match[POSITION_FF]);
+    	return CommentTextMatch.newMatch((org.eclipse.gmt.modisco.java.TextElement) match[POSITION_FF]);
     } catch(ClassCastException e) {
-      LOGGER.error("Element(s) in array not properly typed!",e);
-      return null;
+    	LOGGER.error("Element(s) in array not properly typed!",e);
+    	return null;
     }
-    
   }
   
   @Override
   protected CommentTextMatch arrayToMatchMutable(final Object[] match) {
     try {
-      return CommentTextMatch.newMutableMatch((org.eclipse.gmt.modisco.java.TextElement) match[POSITION_FF]);
+    	return CommentTextMatch.newMutableMatch((org.eclipse.gmt.modisco.java.TextElement) match[POSITION_FF]);
     } catch(ClassCastException e) {
-      LOGGER.error("Element(s) in array not properly typed!",e);
-      return null;
+    	LOGGER.error("Element(s) in array not properly typed!",e);
+    	return null;
     }
-    
+  }
+  
+  /**
+   * @return the singleton instance of the query specification of this pattern
+   * @throws IncQueryException if the pattern definition could not be loaded
+   * 
+   */
+  public static IQuerySpecification<CommentTextMatcher> querySpecification() throws IncQueryException {
+    return CommentTextQuerySpecification.instance();
   }
 }
