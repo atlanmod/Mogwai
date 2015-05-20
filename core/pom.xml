@@ -1,41 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>parent</artifactId>
-    <groupId>fr.inria.atlanmod.mogwai</groupId>
-    <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../parent</relativePath>
-  </parent>
+  <groupId>fr.inria.atlanmod.mogwai</groupId>
   <artifactId>core</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <name>Mogwai :: Core</name>
   <dependencies>
   	<dependency>
 		<groupId>com.tinkerpop.gremlin</groupId>
 		<artifactId>gremlin-groovy</artifactId>
+		<version>2.4.0</version>
 	</dependency>
 	<dependency>
 		<groupId>com.tinkerpop.gremlin</groupId>
 		<artifactId>gremlin-java</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>fr.inria.atlanmod.neoemf</groupId>
-		<artifactId>core</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>fr.inria.atlanmod.neoemf</groupId>
-		<artifactId>graph.blueprints</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>fr.inria.atlanmod.neoemf</groupId>
-		<artifactId>graph.blueprints.neo4j</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>fr.inria.atlanmod.mogwai</groupId>
-		<artifactId>gremlin</artifactId>
-		<version>${project.version}</version>
+		<version>2.4.0</version>
 	</dependency>
   </dependencies>
 </project>
