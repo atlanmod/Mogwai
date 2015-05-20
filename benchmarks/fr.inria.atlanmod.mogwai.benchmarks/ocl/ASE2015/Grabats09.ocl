@@ -6,7 +6,7 @@ package java
 context Package
 	
 def: grabats09 : ecore::EEList = 
-	TypeDeclaration.allInstances()->
+	ClassDeclaration.allInstances()->
 		select(each | each.bodyDeclarations->
 			exists(bd | bd.oclIsTypeOf(MethodDeclaration) and (not bd.modifier.oclIsUndefined()) and bd.modifier._static and (not bd.oclAsType(MethodDeclaration).returnType.oclIsUndefined()) and bd.oclAsType(MethodDeclaration).returnType.type = each)
 		)

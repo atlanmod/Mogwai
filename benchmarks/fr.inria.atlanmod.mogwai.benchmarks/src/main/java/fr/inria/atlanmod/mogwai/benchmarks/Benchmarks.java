@@ -20,8 +20,8 @@ import fr.inria.atlanmod.mogwai.benchmarks.ocl.OclBenchmark;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-//    OclBenchmark.class
-//    IncQueryBenchmark.class
+    OclBenchmark.class,
+    IncQueryBenchmark.class,
     MogwaiBenchmark.class
     })
 public class Benchmarks {

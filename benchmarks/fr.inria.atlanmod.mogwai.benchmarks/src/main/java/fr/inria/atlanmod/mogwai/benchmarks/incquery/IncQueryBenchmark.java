@@ -21,9 +21,9 @@ import fr.inria.atlanmod.mogwai.benchmarks.incquery.tests.ThrownExceptionsQuery;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-//    InvisibleMethodsQuery.class,
-//    Grabats09Query.class,
-//    ThrownExceptionsQuery.class,
+    InvisibleMethodsQuery.class,
+    Grabats09Query.class,
+    ThrownExceptionsQuery.class,
     TextElementInJavadocQuery.class
     })
 public class IncQueryBenchmark {
