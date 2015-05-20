@@ -1,8 +1,7 @@
 package fr.inria.atlanmod.mogwai.benchmarks.mogwai.tests;
 
-import static org.junit.Assert.fail;
-
 import org.eclipse.emf.common.util.URI;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,29 +9,29 @@ import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 
-public class Grabats09Query extends MogwaiQueryTest {
+public class TextElementInJavadocQuery extends MogwaiQueryTest {
 
-	public Grabats09Query(String resourceName) {
+	public TextElementInJavadocQuery(String resourceName) {
 		super(resourceName);
 	}
 
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE2015/Grabats09.ocl"), resource);
+		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE2015/TextElementInJavadoc.ocl"), resource);
 	}
-	
+
+	@After
 	public void tearDown() throws Exception {
 		super.tearDown();
-		oclConstraint = null;
 	}
-	
+
 	@Test
 	public void run() {
 		System.out.println(oclConstraint.toString());
         startTimer();
         MogwaiResource mogwaiResource = (MogwaiResource)resource;
-        MogwaiQueryResult result = mogwaiResource.query(oclConstraint);
+        MogwaiQueryResult result = mogwaiResource.query(oclConstraint,mogwaiResource.getContents().get(0));
         endTimer();
         System.out.println(result.resultSize());
 	}

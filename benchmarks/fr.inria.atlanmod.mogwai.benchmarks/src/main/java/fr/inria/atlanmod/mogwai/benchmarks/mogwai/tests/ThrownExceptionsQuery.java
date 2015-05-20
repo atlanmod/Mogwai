@@ -1,7 +1,5 @@
 package fr.inria.atlanmod.mogwai.benchmarks.mogwai.tests;
 
-import static org.junit.Assert.*;
-
 import org.eclipse.emf.common.util.URI;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +18,7 @@ public class ThrownExceptionsQuery extends MogwaiQueryTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE15/ThrownExceptions.ocl"), resource);
+		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE2015/ThrownExceptions.ocl"), resource);
 	}
 
 	@After

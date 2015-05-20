@@ -29,7 +29,7 @@ public class InvisibleMethodsQuery extends MogwaiQueryTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE15/InvisibleMethods.ocl"), resource);
+        oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE2015/InvisibleMethods.ocl"), resource);
     }
 
     @After
