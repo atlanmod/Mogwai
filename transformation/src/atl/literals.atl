@@ -1,0 +1,114 @@
+-- @path OCL=http://www.eclipse.org/ocl/1.1.0/Ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
+-- Literal transformations from OCL to Gremlin
+-- Covered literals are:
+--		Integer (positive and negative)
+--		Real (positive and negative)
+--		String
+--		Boolean
+-- Note: Collection Literals are handled by the rules in the {collections} module.
+
+-- Author AtlanMod - Inria
+
+module literals;
+
+create OUT: Gremlin from IN: OCL;
+
+uses common;
+
+-- Transforms a positive integer into equivalent Gremlin integer literal.
+-- A verification is necessary to be sure the literal represents a positive value by checking its containing
+-- operation.
+-- Generated Gremlin integers can handle positive and negative values and does not need a particular processing.
+rule oclPositiveInteger2gremlinInteger {
+	from
+		oclPositiveIntegerLiteral : OCL!IntegerLiteralExp (
+			if oclPositiveIntegerLiteral.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				not(oclPositiveIntegerLiteral.refImmediateComposite().getOpName() = '-')
+			else
+				true
+			endif
+		)
+	to
+		gremlinIntegerLiteral : Gremlin!IntegerLiteral(
+			value <-  oclPositiveIntegerLiteral.integerSymbol
+		)
+}
+
+-- Transforms a positive integer into equivalent Gremlin integer literal.
+-- A verification is necessary to be sure the literal represents a negative value by checking its containing
+-- operation.
+-- Generated Gremlin integers can handle positive and negative values and does not need a particular processing.
+rule oclNegativeInteger2gremlinInteger {
+	from
+		oclNegativeIntegerLiteral : OCL!IntegerLiteralExp (
+			if oclNegativeIntegerLiteral.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				oclNegativeIntegerLiteral.refImmediateComposite().getOpName() = '-'
+			else
+				false
+			endif	
+		)
+	to
+		gremlinIntegerLiteral : Gremlin!IntegerLiteral(
+			value <- 0-oclNegativeIntegerLiteral.integerSymbol	
+		)
+}
+
+-- Transforms a positive real into equivalent Gremlin double literal.
+-- A verification is necessary to be sure the literal represents a positive value by checking its containing
+-- operation.
+-- Generated Gremlin doubles can handle positive and negative values and does not need a particular processing.
+rule oclPositiveReal2gremlinDouble {
+	from
+		oclPositiveRealLiteral : OCL!RealLiteralExp (
+			if oclPositiveRealLiteral.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				not(oclPositiveRealLiteral.refImmediateComposite().getOpName() = '-')
+			else
+				true
+			endif
+		)
+	to
+		gremlinDoubleLiteral : Gremlin!DoubleLiteral(
+			value <- oclPositiveRealLiteral.realSymbol
+		)
+}
+
+-- Transforms a negative real into equivalent Gremlin double literal.
+-- A verification is necessary to be sure the literal represents a negative value by checking its containing
+-- operation.
+-- Generated Gremlin doubles can handle positive and negative values and does not need a particular processing.
+rule oclNegativeReal2gremlinDouble {
+	from
+		oclNegativeRealLiteral : OCL!RealLiteralExp (
+			if oclNegativeRealLiteral.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				oclNegativeRealLiteral.refImmediateComposite().getOpName() = '-'
+			else
+				false
+			endif	
+		)
+	to
+		gremlinDoubleLiteral : Gremlin!DoubleLiteral(
+			value <- 0-oclNegativeRealLiteral.realSymbol
+		)
+}
+
+-- Transforms a string literal into equivalent Gremlin string literal.
+rule oclString2gremlinString {
+	from
+		oclStringLiteral : OCL!StringLiteralExp
+	to
+		gremlinStringLiteral : Gremlin!StringLiteral(
+			value <- oclStringLiteral.stringSymbol	
+		)
+}
+
+-- Transforms a boolean literal into equivalent Gremlin boolean literal.
+rule oclBoolean2gremlinBoolean {
+	from
+		oclBoolean : OCL!BooleanLiteralExp
+	to
+		gremlinBooleanLiteral : Gremlin!BooleanLiteral(
+			value <- oclBoolean.booleanSymbol	
+		)
+}
