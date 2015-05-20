@@ -18,8 +18,24 @@
 		<artifactId>gremlin-java</artifactId>
 	</dependency>
 	<dependency>
-		<groupId>commons-io</groupId>
-		<artifactId>commons-io</artifactId>
+		<groupId>fr.inria.atlanmod.neoemf</groupId>
+		<artifactId>core</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+		<groupId>fr.inria.atlanmod.neoemf</groupId>
+		<artifactId>graph.blueprints</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+		<groupId>fr.inria.atlanmod.neoemf</groupId>
+		<artifactId>graph.blueprints.neo4j</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+		<groupId>fr.inria.atlanmod.mogwai</groupId>
+		<artifactId>gremlin</artifactId>
+		<version>${project.version}</version>
 	</dependency>
   </dependencies>
 </project>
