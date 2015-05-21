@@ -11,8 +11,12 @@ Mogwaï does not reify the query results into a navigable model, this task is le
   There is no available update site for Mogwaï, it will be provided with the first release of the tool.
   To install Mogwaï, please follow this instructions:
   * Clone the repository
-  * Resolve dependencies for the project com.tinkerpop.gremlin (maven generate source)
-  * Import the following projects in your workspace: com.tinkerpop.gremlin, fr.inria.atlanmod.mogwai.gremlin, fr.inria.atlanmod.mogwai.transformation
-  * Start a new eclipse instance and import the project fr.inria.atlanmod.mogwai
+  * Import the following projects in your workspace: fr.inria.atlanmod.mogwai.gremlin, fr.inria.atlanmod.mogwai.transformation, fr.inria.atlanmod.mogwai.core
 
-ATL and EMF plugins have to be installed in your Eclipse environment to run Mogwaï.
+An update site will be available with the first release of the tool.
+
+Eclipse m2e (maven plugin), ATL and NeoEMF plugins have to be installed in your Eclipse environment to run Mogwaï.
+
+## Issues
+
+If you have problems running Mogwaï or if you find a bug, please submit an issue on the [issue tracker](https://github.com/atlanmod/Mogwai/issues)
