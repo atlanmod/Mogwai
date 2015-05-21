@@ -11,6 +11,7 @@
 package fr.inria.atlanmod.mogwai.benchmarks;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -27,10 +29,12 @@ import org.eclipse.gmt.modisco.java.neoemf.impl.JavaPackageImpl;
 import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import fr.inria.atlanmod.mogwai.benchmarks.util.ModelCreator;
 import fr.inria.atlanmod.neoemf.datastore.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.graph.blueprints.resources.BlueprintsResourceOptions;
@@ -44,11 +48,13 @@ import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
 @RunWith(Parameterized.class)
 public class AbstractQueryTest {
     
+	private static String[][] parameters = new String[][]{
+		{"src/main/resources/jdt-core.graph"},
+		{"src/main/resources/modisco.graph"}};
+	
     @Parameters
     public static Collection<String[]> resourceNames() {
-        return Arrays.asList(new String[][] { 
-                { "src/main/resources/jdt-core.graph" },
-                { "src/main/resources/modisco.graph" } });
+        return Arrays.asList(parameters);
     }
     
     protected EPackage.Registry registry = null;
@@ -63,6 +69,45 @@ public class AbstractQueryTest {
     
     public AbstractQueryTest(String resourceName) {
         this.resourceName = resourceName;
+    }
+    
+    public void checkModels() {
+    	System.out.println("Checking databases");
+    	File modelFile = new File(parameters[0][0]);
+    	System.out.println(modelFile.getAbsolutePath());
+    }
+    
+    @BeforeClass
+    public static void setUpBeforeClass() {
+    	System.out.println("Checking databases");
+    	File modelFile = new File(parameters[0][0]);
+    	if(!modelFile.exists()) {
+    		System.out.println("Databases can not be found, creating them");
+    		JavaPackageImpl.init();
+    		try {
+    			System.out.println("Unzipping XMI models");
+				ModelCreator.unzip("src/main/resources.zip", "src/main/xmi");
+				System.out.println("Creating modisco.graph");
+				ModelCreator.createNeoEMFModel(
+						new File("src/main/xmi/resources/org.eclipse.gmt.modisco.java.kyanos.xmi"), 
+						new File("src/main/resources/modisco.graph"));
+				System.out.println("Creating jdt-core.graph");
+				ModelCreator.createNeoEMFModel(
+						new File("src/main/xmi/resources/org.eclipse.jdt.core.xmi"), 
+						new File("src/main/resources/jdt-core.graph"));
+				System.out.println("Cleaning temp files");
+				File xmiFolder = new File("src/main/xmi/resources");
+				File[] xmiContents = xmiFolder.listFiles();
+				for(int i = 0; i < xmiContents.length; i++) {
+					xmiContents[i].delete();
+				}
+				xmiFolder.delete();
+				File xmiRoot = new File("src/main.xmi/");
+				xmiRoot.delete();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
     }
     
     @Before
