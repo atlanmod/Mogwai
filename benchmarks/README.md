@@ -25,4 +25,5 @@ The benchmarks consist of a set of 4 queries processed by 3 different query fram
   * Eclipse OCL
   * EMF-IncQuery
   * Mogwai
+
 The databases storing the models are constructed the first time the benchmarks is launched. This might take some time, depending on your system configuration. It is recommanded to use a large JVM to avoid garbage collection problems during the database creation.
