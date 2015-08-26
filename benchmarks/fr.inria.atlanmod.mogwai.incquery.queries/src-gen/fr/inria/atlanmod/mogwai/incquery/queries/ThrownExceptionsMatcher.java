@@ -14,6 +14,7 @@ import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
+import org.eclipse.incquery.runtime.rete.misc.DeltaMonitor;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 
 /**
@@ -44,6 +45,15 @@ import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
  */
 @SuppressWarnings("all")
 public class ThrownExceptionsMatcher extends BaseMatcher<ThrownExceptionsMatch> {
+  /**
+   * @return the singleton instance of the query specification of this pattern
+   * @throws IncQueryException if the pattern definition could not be loaded
+   * 
+   */
+  public static IQuerySpecification<ThrownExceptionsMatcher> querySpecification() throws IncQueryException {
+    return ThrownExceptionsQuerySpecification.instance();
+  }
+  
   /**
    * Initializes the pattern matcher within an existing EMF-IncQuery engine.
    * If the pattern matcher is already constructed in the engine, only a light-weight reference is returned.
@@ -162,6 +172,23 @@ public class ThrownExceptionsMatcher extends BaseMatcher<ThrownExceptionsMatch> 
   }
   
   /**
+   * Registers a new filtered delta monitor on this pattern matcher.
+   * The DeltaMonitor can be used to track changes (delta) in the set of filtered pattern matches from now on, considering those matches only that conform to the given fixed values of some parameters.
+   * It can also be reset to track changes from a later point in time,
+   * and changes can even be acknowledged on an individual basis.
+   * See {@link DeltaMonitor} for details.
+   * @param fillAtStart if true, all current matches are reported as new match events; if false, the delta monitor starts empty.
+   * @param pEx the fixed value of pattern parameter Ex, or null if not bound.
+   * @return the delta monitor.
+   * @deprecated use the IncQuery Databinding API (IncQueryObservables) instead.
+   * 
+   */
+  @Deprecated
+  public DeltaMonitor<ThrownExceptionsMatch> newFilteredDeltaMonitor(final boolean fillAtStart, final TypeAccess pEx) {
+    return rawNewFilteredDeltaMonitor(fillAtStart, new Object[]{pEx});
+  }
+  
+  /**
    * Returns a new (partial) match.
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
@@ -171,6 +198,7 @@ public class ThrownExceptionsMatcher extends BaseMatcher<ThrownExceptionsMatch> 
    */
   public ThrownExceptionsMatch newMatch(final TypeAccess pEx) {
     return ThrownExceptionsMatch.newMatch(pEx);
+    
   }
   
   /**
@@ -196,39 +224,33 @@ public class ThrownExceptionsMatcher extends BaseMatcher<ThrownExceptionsMatch> 
   @Override
   protected ThrownExceptionsMatch tupleToMatch(final Tuple t) {
     try {
-    	return ThrownExceptionsMatch.newMatch((org.eclipse.gmt.modisco.java.TypeAccess) t.get(POSITION_EX));
+      return ThrownExceptionsMatch.newMatch((org.eclipse.gmt.modisco.java.TypeAccess) t.get(POSITION_EX));
     } catch(ClassCastException e) {
-    	LOGGER.error("Element(s) in tuple not properly typed!",e);
-    	return null;
+      LOGGER.error("Element(s) in tuple not properly typed!",e);
+      return null;
     }
+    
   }
   
   @Override
   protected ThrownExceptionsMatch arrayToMatch(final Object[] match) {
     try {
-    	return ThrownExceptionsMatch.newMatch((org.eclipse.gmt.modisco.java.TypeAccess) match[POSITION_EX]);
+      return ThrownExceptionsMatch.newMatch((org.eclipse.gmt.modisco.java.TypeAccess) match[POSITION_EX]);
     } catch(ClassCastException e) {
-    	LOGGER.error("Element(s) in array not properly typed!",e);
-    	return null;
+      LOGGER.error("Element(s) in array not properly typed!",e);
+      return null;
     }
+    
   }
   
   @Override
   protected ThrownExceptionsMatch arrayToMatchMutable(final Object[] match) {
     try {
-    	return ThrownExceptionsMatch.newMutableMatch((org.eclipse.gmt.modisco.java.TypeAccess) match[POSITION_EX]);
+      return ThrownExceptionsMatch.newMutableMatch((org.eclipse.gmt.modisco.java.TypeAccess) match[POSITION_EX]);
     } catch(ClassCastException e) {
-    	LOGGER.error("Element(s) in array not properly typed!",e);
-    	return null;
+      LOGGER.error("Element(s) in array not properly typed!",e);
+      return null;
     }
-  }
-  
-  /**
-   * @return the singleton instance of the query specification of this pattern
-   * @throws IncQueryException if the pattern definition could not be loaded
-   * 
-   */
-  public static IQuerySpecification<ThrownExceptionsMatcher> querySpecification() throws IncQueryException {
-    return ThrownExceptionsQuerySpecification.instance();
+    
   }
 }

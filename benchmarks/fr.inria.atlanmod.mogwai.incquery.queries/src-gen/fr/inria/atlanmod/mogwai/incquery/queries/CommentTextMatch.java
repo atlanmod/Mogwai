@@ -29,16 +29,19 @@ public abstract class CommentTextMatch extends BasePatternMatch {
   
   private CommentTextMatch(final TextElement pFf) {
     this.fFf = pFf;
+    
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("Ff".equals(parameterName)) return this.fFf;
     return null;
+    
   }
   
   public TextElement getFf() {
     return this.fFf;
+    
   }
   
   @Override
@@ -49,39 +52,45 @@ public abstract class CommentTextMatch extends BasePatternMatch {
     	return true;
     }
     return false;
+    
   }
   
   public void setFf(final TextElement pFf) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fFf = pFf;
+    
   }
   
   @Override
   public String patternName() {
     return "fr.inria.atlanmod.mogwai.incquery.queries.commentText";
+    
   }
   
   @Override
   public List<String> parameterNames() {
     return CommentTextMatch.parameterNames;
+    
   }
   
   @Override
   public Object[] toArray() {
     return new Object[]{fFf};
+    
   }
   
   @Override
   public CommentTextMatch toImmutable() {
     return isMutable() ? newMatch(fFf) : this;
+    
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"Ff\"=" + prettyPrintValue(fFf)
-    );
+    result.append("\"Ff\"=" + prettyPrintValue(fFf));
     return result.toString();
+    
   }
   
   @Override
@@ -90,6 +99,7 @@ public abstract class CommentTextMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fFf == null) ? 0 : fFf.hashCode());
     return result;
+    
   }
   
   @Override
@@ -97,12 +107,10 @@ public abstract class CommentTextMatch extends BasePatternMatch {
     if (this == obj)
     	return true;
     if (!(obj instanceof CommentTextMatch)) { // this should be infrequent
-    	if (obj == null) {
+    	if (obj == null)
     		return false;
-    	}
-    	if (!(obj instanceof IPatternMatch)) {
+    	if (!(obj instanceof IPatternMatch))
     		return false;
-    	}
     	IPatternMatch otherSig  = (IPatternMatch) obj;
     	if (!specification().equals(otherSig.specification()))
     		return false;
@@ -120,8 +128,9 @@ public abstract class CommentTextMatch extends BasePatternMatch {
     	return CommentTextQuerySpecification.instance();
     } catch (IncQueryException ex) {
      	// This cannot happen, as the match object can only be instantiated if the query specification exists
-     	throw new IllegalStateException (ex);
+     	throw new IllegalStateException	(ex);
     }
+    
   }
   
   /**
@@ -133,6 +142,7 @@ public abstract class CommentTextMatch extends BasePatternMatch {
    */
   public static CommentTextMatch newEmptyMatch() {
     return new Mutable(null);
+    
   }
   
   /**
@@ -145,6 +155,7 @@ public abstract class CommentTextMatch extends BasePatternMatch {
    */
   public static CommentTextMatch newMutableMatch(final TextElement pFf) {
     return new Mutable(pFf);
+    
   }
   
   /**
@@ -157,11 +168,13 @@ public abstract class CommentTextMatch extends BasePatternMatch {
    */
   public static CommentTextMatch newMatch(final TextElement pFf) {
     return new Immutable(pFf);
+    
   }
   
   private static final class Mutable extends CommentTextMatch {
     Mutable(final TextElement pFf) {
       super(pFf);
+      
     }
     
     @Override
@@ -173,6 +186,7 @@ public abstract class CommentTextMatch extends BasePatternMatch {
   private static final class Immutable extends CommentTextMatch {
     Immutable(final TextElement pFf) {
       super(pFf);
+      
     }
     
     @Override

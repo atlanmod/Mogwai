@@ -29,16 +29,19 @@ public abstract class Grabats09Match extends BasePatternMatch {
   
   private Grabats09Match(final TypeDeclaration pTt) {
     this.fTt = pTt;
+    
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("Tt".equals(parameterName)) return this.fTt;
     return null;
+    
   }
   
   public TypeDeclaration getTt() {
     return this.fTt;
+    
   }
   
   @Override
@@ -49,39 +52,45 @@ public abstract class Grabats09Match extends BasePatternMatch {
     	return true;
     }
     return false;
+    
   }
   
   public void setTt(final TypeDeclaration pTt) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fTt = pTt;
+    
   }
   
   @Override
   public String patternName() {
     return "fr.inria.atlanmod.mogwai.incquery.queries.grabats09";
+    
   }
   
   @Override
   public List<String> parameterNames() {
     return Grabats09Match.parameterNames;
+    
   }
   
   @Override
   public Object[] toArray() {
     return new Object[]{fTt};
+    
   }
   
   @Override
   public Grabats09Match toImmutable() {
     return isMutable() ? newMatch(fTt) : this;
+    
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"Tt\"=" + prettyPrintValue(fTt)
-    );
+    result.append("\"Tt\"=" + prettyPrintValue(fTt));
     return result.toString();
+    
   }
   
   @Override
@@ -90,6 +99,7 @@ public abstract class Grabats09Match extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fTt == null) ? 0 : fTt.hashCode());
     return result;
+    
   }
   
   @Override
@@ -97,12 +107,10 @@ public abstract class Grabats09Match extends BasePatternMatch {
     if (this == obj)
     	return true;
     if (!(obj instanceof Grabats09Match)) { // this should be infrequent
-    	if (obj == null) {
+    	if (obj == null)
     		return false;
-    	}
-    	if (!(obj instanceof IPatternMatch)) {
+    	if (!(obj instanceof IPatternMatch))
     		return false;
-    	}
     	IPatternMatch otherSig  = (IPatternMatch) obj;
     	if (!specification().equals(otherSig.specification()))
     		return false;
@@ -120,8 +128,9 @@ public abstract class Grabats09Match extends BasePatternMatch {
     	return Grabats09QuerySpecification.instance();
     } catch (IncQueryException ex) {
      	// This cannot happen, as the match object can only be instantiated if the query specification exists
-     	throw new IllegalStateException (ex);
+     	throw new IllegalStateException	(ex);
     }
+    
   }
   
   /**
@@ -133,6 +142,7 @@ public abstract class Grabats09Match extends BasePatternMatch {
    */
   public static Grabats09Match newEmptyMatch() {
     return new Mutable(null);
+    
   }
   
   /**
@@ -145,6 +155,7 @@ public abstract class Grabats09Match extends BasePatternMatch {
    */
   public static Grabats09Match newMutableMatch(final TypeDeclaration pTt) {
     return new Mutable(pTt);
+    
   }
   
   /**
@@ -157,11 +168,13 @@ public abstract class Grabats09Match extends BasePatternMatch {
    */
   public static Grabats09Match newMatch(final TypeDeclaration pTt) {
     return new Immutable(pTt);
+    
   }
   
   private static final class Mutable extends Grabats09Match {
     Mutable(final TypeDeclaration pTt) {
       super(pTt);
+      
     }
     
     @Override
@@ -173,6 +186,7 @@ public abstract class Grabats09Match extends BasePatternMatch {
   private static final class Immutable extends Grabats09Match {
     Immutable(final TypeDeclaration pTt) {
       super(pTt);
+      
     }
     
     @Override

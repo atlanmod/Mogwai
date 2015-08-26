@@ -29,16 +29,19 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
   
   private InvisibleMethodsMatch(final MethodDeclaration pMet) {
     this.fMet = pMet;
+    
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("Met".equals(parameterName)) return this.fMet;
     return null;
+    
   }
   
   public MethodDeclaration getMet() {
     return this.fMet;
+    
   }
   
   @Override
@@ -49,39 +52,45 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
     	return true;
     }
     return false;
+    
   }
   
   public void setMet(final MethodDeclaration pMet) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fMet = pMet;
+    
   }
   
   @Override
   public String patternName() {
     return "fr.inria.atlanmod.mogwai.incquery.queries.invisibleMethods";
+    
   }
   
   @Override
   public List<String> parameterNames() {
     return InvisibleMethodsMatch.parameterNames;
+    
   }
   
   @Override
   public Object[] toArray() {
     return new Object[]{fMet};
+    
   }
   
   @Override
   public InvisibleMethodsMatch toImmutable() {
     return isMutable() ? newMatch(fMet) : this;
+    
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"Met\"=" + prettyPrintValue(fMet)
-    );
+    result.append("\"Met\"=" + prettyPrintValue(fMet));
     return result.toString();
+    
   }
   
   @Override
@@ -90,6 +99,7 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fMet == null) ? 0 : fMet.hashCode());
     return result;
+    
   }
   
   @Override
@@ -97,12 +107,10 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
     if (this == obj)
     	return true;
     if (!(obj instanceof InvisibleMethodsMatch)) { // this should be infrequent
-    	if (obj == null) {
+    	if (obj == null)
     		return false;
-    	}
-    	if (!(obj instanceof IPatternMatch)) {
+    	if (!(obj instanceof IPatternMatch))
     		return false;
-    	}
     	IPatternMatch otherSig  = (IPatternMatch) obj;
     	if (!specification().equals(otherSig.specification()))
     		return false;
@@ -120,8 +128,9 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
     	return InvisibleMethodsQuerySpecification.instance();
     } catch (IncQueryException ex) {
      	// This cannot happen, as the match object can only be instantiated if the query specification exists
-     	throw new IllegalStateException (ex);
+     	throw new IllegalStateException	(ex);
     }
+    
   }
   
   /**
@@ -133,6 +142,7 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
    */
   public static InvisibleMethodsMatch newEmptyMatch() {
     return new Mutable(null);
+    
   }
   
   /**
@@ -145,6 +155,7 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
    */
   public static InvisibleMethodsMatch newMutableMatch(final MethodDeclaration pMet) {
     return new Mutable(pMet);
+    
   }
   
   /**
@@ -157,11 +168,13 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
    */
   public static InvisibleMethodsMatch newMatch(final MethodDeclaration pMet) {
     return new Immutable(pMet);
+    
   }
   
   private static final class Mutable extends InvisibleMethodsMatch {
     Mutable(final MethodDeclaration pMet) {
       super(pMet);
+      
     }
     
     @Override
@@ -173,6 +186,7 @@ public abstract class InvisibleMethodsMatch extends BasePatternMatch {
   private static final class Immutable extends InvisibleMethodsMatch {
     Immutable(final MethodDeclaration pMet) {
       super(pMet);
+      
     }
     
     @Override
