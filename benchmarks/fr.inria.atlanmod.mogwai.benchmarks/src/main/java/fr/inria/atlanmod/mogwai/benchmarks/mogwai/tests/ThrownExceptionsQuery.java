@@ -18,7 +18,7 @@ public class ThrownExceptionsQuery extends MogwaiQueryTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE2015/ThrownExceptions.ocl"), resource);
+		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/FASE/ThrownExceptions.ocl"), resource);
 	}
 
 	@After

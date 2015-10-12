@@ -10,8 +10,10 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.benchmarks.ocl.tests;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
 import org.eclipse.ocl.ParserException;
 import org.junit.After;

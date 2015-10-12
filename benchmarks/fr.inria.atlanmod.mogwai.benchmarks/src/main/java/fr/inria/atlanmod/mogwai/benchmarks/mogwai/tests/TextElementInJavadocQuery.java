@@ -18,7 +18,7 @@ public class TextElementInJavadocQuery extends MogwaiQueryTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/ASE2015/TextElementInJavadoc.ocl"), resource);
+		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/FASE/TextElementInJavadoc.ocl"), resource);
 	}
 
 	@After
