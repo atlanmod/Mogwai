@@ -37,6 +37,7 @@ import org.junit.runners.Parameterized.Parameters;
 import fr.inria.atlanmod.mogwai.benchmarks.util.ModelCreator;
 import fr.inria.atlanmod.neoemf.datastore.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.graph.blueprints.neo4j.resources.BlueprintsNeo4jResourceOptions;
 import fr.inria.atlanmod.neoemf.graph.blueprints.resources.BlueprintsResourceOptions;
 import fr.inria.atlanmod.neoemf.graph.blueprints.util.NeoBlueprintsURI;
 import fr.inria.atlanmod.neoemf.resources.PersistentResource;
@@ -49,8 +50,9 @@ import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
 public class AbstractQueryTest {
     
 	private static String[][] parameters = new String[][]{
-		{"src/main/resources/jdt-core.graph"},
-		{"src/main/resources/modisco.graph"}};
+		{"src/main/resources/jdt-core.graph"}//,
+//		{"src/main/resources/modisco.graph"}
+		};
 	
     @Parameters
     public static Collection<String[]> resourceNames() {
@@ -128,7 +130,9 @@ public class AbstractQueryTest {
         List<StoreOption> storeOptions = new ArrayList<StoreOption>();
         storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.AUTOCOMMIT);
         loadOpts.put(PersistentResourceOptions.STORE_OPTIONS, storeOptions);
-        loadOpts.put("blueprints.neo4j.conf.cache_type", "weak");
+        loadOpts.put(BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_NEO4J_CACHE_TYPE, BlueprintsNeo4jResourceOptions.CACHE_TYPE.WEAK.toString());
+//        loadOpts.put(BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_NEO4J_USE_MEMORY_MAPPED_BUFFERS, BlueprintsNeo4jResourceOptions.USE_MEMORY_MAPPED_BUFFER.FALSE.toString());
+//        loadOpts.put("blueprints.neo4j.conf.cache_type", "weak");
         this.resource.load(loadOpts);
     }
     
