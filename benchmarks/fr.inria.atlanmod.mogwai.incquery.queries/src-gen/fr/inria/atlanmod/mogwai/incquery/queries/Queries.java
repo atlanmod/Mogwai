@@ -43,7 +43,6 @@ public final class Queries extends BaseGeneratedPatternGroup {
     	INSTANCE = new Queries();
     }
     return INSTANCE;
-    
   }
   
   private static Queries INSTANCE;
@@ -53,7 +52,6 @@ public final class Queries extends BaseGeneratedPatternGroup {
     querySpecifications.add(ThrownExceptionsQuerySpecification.instance());
     querySpecifications.add(Grabats09QuerySpecification.instance());
     querySpecifications.add(CommentTextQuerySpecification.instance());
-    
   }
   
   public InvisibleMethodsQuerySpecification getInvisibleMethods() throws IncQueryException {

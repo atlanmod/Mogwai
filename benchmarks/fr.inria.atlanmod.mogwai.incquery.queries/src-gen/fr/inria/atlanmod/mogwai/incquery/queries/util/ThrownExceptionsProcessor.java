@@ -22,6 +22,5 @@ public abstract class ThrownExceptionsProcessor implements IMatchProcessor<Throw
   @Override
   public void process(final ThrownExceptionsMatch match) {
     process(match.getEx());
-    
   }
 }

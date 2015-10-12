@@ -22,6 +22,5 @@ public abstract class InvisibleMethodsProcessor implements IMatchProcessor<Invis
   @Override
   public void process(final InvisibleMethodsMatch match) {
     process(match.getMet());
-    
   }
 }

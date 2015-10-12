@@ -22,6 +22,5 @@ public abstract class CommentTextProcessor implements IMatchProcessor<CommentTex
   @Override
   public void process(final CommentTextMatch match) {
     process(match.getFf());
-    
   }
 }

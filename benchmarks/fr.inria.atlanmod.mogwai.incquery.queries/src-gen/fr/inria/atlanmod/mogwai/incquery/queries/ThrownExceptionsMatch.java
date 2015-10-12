@@ -29,19 +29,16 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
   
   private ThrownExceptionsMatch(final TypeAccess pEx) {
     this.fEx = pEx;
-    
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("Ex".equals(parameterName)) return this.fEx;
     return null;
-    
   }
   
   public TypeAccess getEx() {
     return this.fEx;
-    
   }
   
   @Override
@@ -52,45 +49,39 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
     	return true;
     }
     return false;
-    
   }
   
   public void setEx(final TypeAccess pEx) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fEx = pEx;
-    
   }
   
   @Override
   public String patternName() {
     return "fr.inria.atlanmod.mogwai.incquery.queries.thrownExceptions";
-    
   }
   
   @Override
   public List<String> parameterNames() {
     return ThrownExceptionsMatch.parameterNames;
-    
   }
   
   @Override
   public Object[] toArray() {
     return new Object[]{fEx};
-    
   }
   
   @Override
   public ThrownExceptionsMatch toImmutable() {
     return isMutable() ? newMatch(fEx) : this;
-    
   }
   
   @Override
   public String prettyPrint() {
     StringBuilder result = new StringBuilder();
-    result.append("\"Ex\"=" + prettyPrintValue(fEx));
+    result.append("\"Ex\"=" + prettyPrintValue(fEx)
+    );
     return result.toString();
-    
   }
   
   @Override
@@ -99,7 +90,6 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fEx == null) ? 0 : fEx.hashCode());
     return result;
-    
   }
   
   @Override
@@ -107,10 +97,12 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
     if (this == obj)
     	return true;
     if (!(obj instanceof ThrownExceptionsMatch)) { // this should be infrequent
-    	if (obj == null)
+    	if (obj == null) {
     		return false;
-    	if (!(obj instanceof IPatternMatch))
+    	}
+    	if (!(obj instanceof IPatternMatch)) {
     		return false;
+    	}
     	IPatternMatch otherSig  = (IPatternMatch) obj;
     	if (!specification().equals(otherSig.specification()))
     		return false;
@@ -128,9 +120,8 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
     	return ThrownExceptionsQuerySpecification.instance();
     } catch (IncQueryException ex) {
      	// This cannot happen, as the match object can only be instantiated if the query specification exists
-     	throw new IllegalStateException	(ex);
+     	throw new IllegalStateException (ex);
     }
-    
   }
   
   /**
@@ -142,7 +133,6 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
    */
   public static ThrownExceptionsMatch newEmptyMatch() {
     return new Mutable(null);
-    
   }
   
   /**
@@ -155,7 +145,6 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
    */
   public static ThrownExceptionsMatch newMutableMatch(final TypeAccess pEx) {
     return new Mutable(pEx);
-    
   }
   
   /**
@@ -168,13 +157,11 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
    */
   public static ThrownExceptionsMatch newMatch(final TypeAccess pEx) {
     return new Immutable(pEx);
-    
   }
   
   private static final class Mutable extends ThrownExceptionsMatch {
     Mutable(final TypeAccess pEx) {
       super(pEx);
-      
     }
     
     @Override
@@ -186,7 +173,6 @@ public abstract class ThrownExceptionsMatch extends BasePatternMatch {
   private static final class Immutable extends ThrownExceptionsMatch {
     Immutable(final TypeAccess pEx) {
       super(pEx);
-      
     }
     
     @Override

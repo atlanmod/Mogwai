@@ -12,7 +12,7 @@ pattern invisibleMethods(Met) {
 	MethodDeclaration(Met);
 	MethodDeclaration.modifier.visibility(Met,VisibilityKind::protected);
 }
-
+ 
 pattern thrownExceptions(Ex) {
 	Package(Pack); 
 	Package.ownedElements(Pack,Owned);

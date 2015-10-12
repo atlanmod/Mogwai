@@ -22,6 +22,5 @@ public abstract class Grabats09Processor implements IMatchProcessor<Grabats09Mat
   @Override
   public void process(final Grabats09Match match) {
     process(match.getTt());
-    
   }
 }
