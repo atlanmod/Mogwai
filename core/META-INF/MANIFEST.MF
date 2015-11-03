@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Mogwai
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.core
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.ocl.ecore;bundle-version="3.3.100",
+Require-Bundle: org.eclipse.ocl.ecore;bundle-version="3.3.100";visibility:=reexport,
  fr.inria.atlanmod.neoemf.core;bundle-version="0.0.1";visibility:=reexport,
  fr.inria.atlanmod.neoemf.graph.blueprints;bundle-version="0.0.1";visibility:=reexport,
  fr.inria.atlanmod.neoemf.graph.blueprints.neo4j;bundle-version="0.0.1",

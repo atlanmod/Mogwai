@@ -3,9 +3,9 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 import org.junit.Test;
 
 import fr.inria.atlanmod.mogwai.gremlin.CountCall;
-import fr.inria.atlanmod.mogwai.gremlin.IdentityPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.IdentityStep;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 
 public class SizeTest extends MogwaiTranslationTest {
@@ -21,11 +21,11 @@ public class SizeTest extends MogwaiTranslationTest {
 		assert gScript.getInstructions().get(2) instanceof VariableAccess;
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
-		// InEPipe and OutVPipe types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
-		// IdentityPipe type is not checked, it is done in AsSequence test
-		IdentityPipe idPipe = (IdentityPipe)outV.getNextElement();
+		// InEStep and OutVStep types are not checked, it is already done in AllInstances test
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
+		// IdentityStep type is not checked, it is done in AsSequence test
+		IdentityStep idPipe = (IdentityStep)outV.getNextElement();
 		assert idPipe.getNextElement() instanceof CountCall;
 		CountCall count = (CountCall)idPipe.getNextElement();
 		assert count.getNextElement() == null;

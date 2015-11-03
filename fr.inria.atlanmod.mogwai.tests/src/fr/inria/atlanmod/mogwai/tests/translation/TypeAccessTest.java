@@ -6,7 +6,7 @@ import org.junit.Test;
 import fr.inria.atlanmod.mogwai.gremlin.IndexCall;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
 import fr.inria.atlanmod.mogwai.gremlin.NextCall;
-import fr.inria.atlanmod.mogwai.gremlin.StartPipe;
+import fr.inria.atlanmod.mogwai.gremlin.StartStep;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
 
@@ -30,8 +30,8 @@ public class TypeAccessTest extends MogwaiTranslationTest {
 		assert gScriptInstructions.get(0) instanceof VariableDeclaration;
 		VariableDeclaration vd1 = (VariableDeclaration)gScriptInstructions.get(0);
 		assert vd1.getName().equals("metaPackage");
-		assert vd1.getValue() instanceof StartPipe;
-		StartPipe sp1 = (StartPipe)vd1.getValue();
+		assert vd1.getValue() instanceof StartStep;
+		StartStep sp1 = (StartStep)vd1.getValue();
 		assert sp1.getNextElement() instanceof IndexCall;
 		IndexCall idxCall1 = (IndexCall)sp1.getNextElement();
 		assert idxCall1.getIndexName().equals("metaclasses");

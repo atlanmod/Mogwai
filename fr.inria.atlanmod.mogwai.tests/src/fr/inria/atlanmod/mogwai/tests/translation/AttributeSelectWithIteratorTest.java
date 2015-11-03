@@ -5,10 +5,10 @@ import org.junit.Test;
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
 import fr.inria.atlanmod.mogwai.gremlin.EqualityExpression;
-import fr.inria.atlanmod.mogwai.gremlin.FilterPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
-import fr.inria.atlanmod.mogwai.gremlin.PropertyPipe;
+import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
+import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
 import fr.inria.atlanmod.mogwai.gremlin.StringLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
@@ -29,16 +29,16 @@ public class AttributeSelectWithIteratorTest extends MogwaiTranslationTest {
 		assert gScript.getInstructions().get(2) instanceof VariableAccess;
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
-		// InEPipe and OutVPipe types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
+		// InEStep and OutVStep types are not checked, it is already done in AllInstances test
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
 		// Check the filter pipe associated to the select() call
-		assert outV.getNextElement() instanceof FilterPipe;
-		FilterPipe filterPipe = (FilterPipe)outV.getNextElement();
+		assert outV.getNextElement() instanceof FilterStep;
+		FilterStep FilterStep = (FilterStep)outV.getNextElement();
 		// Check the filter closure
-		assert filterPipe.getClosure() instanceof Closure;
+		assert FilterStep.getClosure() instanceof Closure;
 		// Check the content of the closure
-		Closure filterClosure = (Closure)filterPipe.getClosure();
+		Closure filterClosure = (Closure)FilterStep.getClosure();
 		assert filterClosure.getInstructions().size() == 2;
 		// Check the local iterator declaration
 		assert filterClosure.getInstructions().get(0) instanceof VariableDeclaration;
@@ -55,8 +55,8 @@ public class AttributeSelectWithIteratorTest extends MogwaiTranslationTest {
 		VariableAccess vaEqLeft = (VariableAccess)closureEq.getLeft();
 		assert vaEqLeft.getName().equals("each");
 		// Attribute access in left part
-		assert vaEqLeft.getNextElement() instanceof PropertyPipe;
-		PropertyPipe propertyEqLeft = (PropertyPipe)vaEqLeft.getNextElement();
+		assert vaEqLeft.getNextElement() instanceof PropertyStep;
+		PropertyStep propertyEqLeft = (PropertyStep)vaEqLeft.getNextElement();
 		assert propertyEqLeft.getName().equals("name");
 		assert propertyEqLeft.getNextElement() == null;
 		// Check equality right part
@@ -64,7 +64,7 @@ public class AttributeSelectWithIteratorTest extends MogwaiTranslationTest {
 		StringLiteral stringLitEqRight = (StringLiteral)closureEq.getRight();
 		assert stringLitEqRight.getValue().equals("org");
 		// Check there is nothing generated after the filter pipe
-		assert filterPipe.getNextElement() == null;
+		assert FilterStep.getNextElement() == null;
 	}
 
 }

@@ -5,11 +5,11 @@ import org.junit.Test;
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
 import fr.inria.atlanmod.mogwai.gremlin.EqualityExpression;
-import fr.inria.atlanmod.mogwai.gremlin.FilterPipe;
+import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
 import fr.inria.atlanmod.mogwai.gremlin.HasNextCall;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
-import fr.inria.atlanmod.mogwai.gremlin.PropertyPipe;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
+import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
 import fr.inria.atlanmod.mogwai.gremlin.StringLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
@@ -29,11 +29,11 @@ public class AttributeExistsWithoutIteratorTest extends MogwaiTranslationTest {
 		assert gScript.getInstructions().get(2) instanceof VariableAccess;
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
-		// InEPipe and OutVPipe types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
-		assert outV.getNextElement() instanceof FilterPipe;
-		FilterPipe tran = (FilterPipe)outV.getNextElement();
+		// InEStep and OutVStep types are not checked, it is already done in AllInstances test
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
+		assert outV.getNextElement() instanceof FilterStep;
+		FilterStep tran = (FilterStep)outV.getNextElement();
 		assert tran.getClosure() instanceof Closure;
 		// Check the content of the closure
 		Closure cl = (Closure)tran.getClosure();
@@ -52,8 +52,8 @@ public class AttributeExistsWithoutIteratorTest extends MogwaiTranslationTest {
 		assert eq1.getLeft() instanceof VariableAccess;
 		VariableAccess va2Left = (VariableAccess)eq1.getLeft();
 		assert va2Left.getName().equals("temp1");
-		assert va2Left.getNextElement() instanceof PropertyPipe;
-		PropertyPipe pPipe2Left = (PropertyPipe)va2Left.getNextElement();
+		assert va2Left.getNextElement() instanceof PropertyStep;
+		PropertyStep pPipe2Left = (PropertyStep)va2Left.getNextElement();
 		assert pPipe2Left.getName().equals("name");
 		assert pPipe2Left.getNextElement() == null;
 		// Check equality right part

@@ -4,13 +4,13 @@ import org.junit.Test;
 
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
-import fr.inria.atlanmod.mogwai.gremlin.FilterPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.InVStep;
 import fr.inria.atlanmod.mogwai.gremlin.IsEmptyCall;
 import fr.inria.atlanmod.mogwai.gremlin.NotExpression;
-import fr.inria.atlanmod.mogwai.gremlin.OutEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.ToListCall;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
@@ -31,16 +31,16 @@ public class ReferenceRejectWithoutIteratorTest extends MogwaiTranslationTest {
 		assert gScript.getInstructions().get(2) instanceof VariableAccess;
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
-		// InEPipe and OutVPipe types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
+		// InEStep and OutVStep types are not checked, it is already done in AllInstances test
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
 		// Check the filter pipe associated to the select() call
-		assert outV.getNextElement() instanceof FilterPipe;
-		FilterPipe filterPipe = (FilterPipe)outV.getNextElement();
+		assert outV.getNextElement() instanceof FilterStep;
+		FilterStep FilterStep = (FilterStep)outV.getNextElement();
 		// Check the filter closure
-		assert filterPipe.getClosure() instanceof Closure;
+		assert FilterStep.getClosure() instanceof Closure;
 		// Check the content of the closure
-		Closure filterClosure = (Closure)filterPipe.getClosure();
+		Closure filterClosure = (Closure)FilterStep.getClosure();
 		assert filterClosure.getInstructions().size() == 2;
 		// Check the local iterator declaration
 		assert filterClosure.getInstructions().get(0) instanceof VariableDeclaration;
@@ -57,12 +57,12 @@ public class ReferenceRejectWithoutIteratorTest extends MogwaiTranslationTest {
 		VariableAccess vaBoolExp = (VariableAccess)closureNot.getExp();
 		assert vaBoolExp.getName().equals("temp1");
 		// Relationship access in boolean expression
-		assert vaBoolExp.getNextElement() instanceof OutEPipe;
-		OutEPipe outEBoolExp= (OutEPipe)vaBoolExp.getNextElement();
+		assert vaBoolExp.getNextElement() instanceof OutEStep;
+		OutEStep outEBoolExp= (OutEStep)vaBoolExp.getNextElement();
 		assert outEBoolExp.getRelationshipName().equals("ownedElements");
-		assert outEBoolExp.getNextElement() instanceof InVPipe;
+		assert outEBoolExp.getNextElement() instanceof InVStep;
 		// Referred vertices access in boolean expression
-		InVPipe inVBoolExp = (InVPipe)outEBoolExp.getNextElement();
+		InVStep inVBoolExp = (InVStep)outEBoolExp.getNextElement();
 		// IsEmpty translation
 		assert inVBoolExp.getNextElement() instanceof ToListCall;
 		ToListCall toListBoolExp = (ToListCall)inVBoolExp.getNextElement();
@@ -70,7 +70,7 @@ public class ReferenceRejectWithoutIteratorTest extends MogwaiTranslationTest {
 		IsEmptyCall isEmptyBoolExp = (IsEmptyCall)toListBoolExp.getNextElement();
 		assert isEmptyBoolExp.getNextElement() == null;
 		// Check there is nothing generated after the filter pipe
-		assert filterPipe.getNextElement() == null;
+		assert FilterStep.getNextElement() == null;
 	}
 
 }

@@ -2,11 +2,11 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.IdentityPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InVPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.IdentityStep;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.InVStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 
 public class ExplicitReferenceCollectWithoutIteratorTest extends MogwaiTranslationTest {
@@ -26,21 +26,21 @@ public class ExplicitReferenceCollectWithoutIteratorTest extends MogwaiTranslati
 		assert gScript.getInstructions().get(2) instanceof VariableAccess;
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
-		// InEPipe and OutVPipe types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
-		// Collect iterators are mapped to IdentityPipes
-		assert outV.getNextElement() instanceof IdentityPipe;
-		IdentityPipe varIdPipe = (IdentityPipe)outV.getNextElement();
+		// InEStep and OutVStep types are not checked, it is already done in AllInstances test
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
+		// Collect iterators are mapped to IdentitySteps
+		assert outV.getNextElement() instanceof IdentityStep;
+		IdentityStep varIdPipe = (IdentityStep)outV.getNextElement();
 		// The collect reference access
-		assert varIdPipe.getNextElement() instanceof OutEPipe;
-		OutEPipe collectOutE = (OutEPipe)varIdPipe.getNextElement();
+		assert varIdPipe.getNextElement() instanceof OutEStep;
+		OutEStep collectOutE = (OutEStep)varIdPipe.getNextElement();
 		assert collectOutE.getRelationshipName().equals("ownedElements");
-		assert collectOutE.getNextElement() instanceof InVPipe;
-		InVPipe collectInV = (InVPipe)collectOutE.getNextElement();
+		assert collectOutE.getNextElement() instanceof InVStep;
+		InVStep collectInV = (InVStep)collectOutE.getNextElement();
 		// The collect Identity pipe
-		assert collectInV.getNextElement() instanceof IdentityPipe;
-		IdentityPipe collectIdPipe = (IdentityPipe)collectInV.getNextElement();
+		assert collectInV.getNextElement() instanceof IdentityStep;
+		IdentityStep collectIdPipe = (IdentityStep)collectInV.getNextElement();
 		assert collectIdPipe.getNextElement() == null;
 	}
 

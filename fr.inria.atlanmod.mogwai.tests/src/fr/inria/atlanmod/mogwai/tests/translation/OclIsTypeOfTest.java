@@ -6,13 +6,13 @@ import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
 import fr.inria.atlanmod.mogwai.gremlin.EqualityExpression;
 import fr.inria.atlanmod.mogwai.gremlin.FirstCall;
-import fr.inria.atlanmod.mogwai.gremlin.IdentityPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.IdentityStep;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.InVStep;
 import fr.inria.atlanmod.mogwai.gremlin.NextCall;
-import fr.inria.atlanmod.mogwai.gremlin.OutEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
-import fr.inria.atlanmod.mogwai.gremlin.TransformPipe;
+import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
+import fr.inria.atlanmod.mogwai.gremlin.TransformStep;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 
 public class OclIsTypeOfTest extends MogwaiTranslationTest {
@@ -32,15 +32,15 @@ public class OclIsTypeOfTest extends MogwaiTranslationTest {
 		assert gScript.getInstructions().get(2) instanceof VariableAccess;
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
-		// InEPipe and OutVPipe types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
-		// IdentityPipe type is not checked, it is done in AsSequence test
-		IdentityPipe idPipe = (IdentityPipe)outV.getNextElement();
+		// InEStep and OutVStep types are not checked, it is already done in AllInstances test
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
+		// IdentityStep type is not checked, it is done in AsSequence test
+		IdentityStep idPipe = (IdentityStep)outV.getNextElement();
 		// FirstCall type is not checked, it is done in First test
 		FirstCall first = (FirstCall)idPipe.getNextElement();
-		assert first.getNextElement() instanceof TransformPipe;
-		TransformPipe trPipe = (TransformPipe)first.getNextElement();
+		assert first.getNextElement() instanceof TransformStep;
+		TransformStep trPipe = (TransformStep)first.getNextElement();
 		assert trPipe.getClosure() instanceof Closure;
 		Closure closure = trPipe.getClosure();
 		assert closure.getInstructions().size() == 1;
@@ -49,10 +49,10 @@ public class OclIsTypeOfTest extends MogwaiTranslationTest {
 		// Check left part of equality
 		assert eqExp.getLeft() instanceof ClosureIt;
 		ClosureIt closureIt = (ClosureIt)eqExp.getLeft();
-		assert closureIt.getNextElement() instanceof OutEPipe;
-		OutEPipe trOutE = (OutEPipe)closureIt.getNextElement();
-		assert trOutE.getNextElement() instanceof InVPipe;
-		InVPipe trInV = (InVPipe)trOutE.getNextElement();
+		assert closureIt.getNextElement() instanceof OutEStep;
+		OutEStep trOutE = (OutEStep)closureIt.getNextElement();
+		assert trOutE.getNextElement() instanceof InVStep;
+		InVStep trInV = (InVStep)trOutE.getNextElement();
 		assert trInV.getNextElement() instanceof NextCall;
 		NextCall trLestNext = (NextCall)trInV.getNextElement();
 		assert trLestNext.getNextElement() == null;

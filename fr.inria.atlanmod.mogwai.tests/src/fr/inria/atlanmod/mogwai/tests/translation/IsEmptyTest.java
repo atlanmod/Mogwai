@@ -2,9 +2,9 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
 import fr.inria.atlanmod.mogwai.gremlin.IsEmptyCall;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.ToListCall;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 
@@ -23,8 +23,8 @@ public class IsEmptyTest extends MogwaiTranslationTest {
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
 		// Next element types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
 		assert outV.getNextElement() instanceof ToListCall;
 		ToListCall toList = (ToListCall)outV.getNextElement();
 		assert toList.getNextElement() instanceof IsEmptyCall;

@@ -3,6 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.tests
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: fr.inria.atlanmod.mogwai;bundle-version="1.0.0",
- org.eclipse.gmt.modisco.java.kyanos;bundle-version="1.0.0",
- org.junit
+Require-Bundle: org.junit,
+ fr.inria.atlanmod.neoemf.core;bundle-version="0.0.1",
+ fr.inria.atlanmod.neoemf.graph.blueprints;bundle-version="0.0.1",
+ fr.inria.atlanmod.neoemf.graph.blueprints.neo4j;bundle-version="0.0.1",
+ fr.inria.atlanmod.mogwai.core;bundle-version="1.0.0",
+ fr.inria.atlanmod.mogwai.gremlin;bundle-version="0.0.1",
+ fr.inria.atlanmod.mogwai.transformation;bundle-version="0.0.1",
+ org.eclipse.gmt.modisco.java
+Import-Package: org.eclipse.gmt.modisco.java.neoemf.meta

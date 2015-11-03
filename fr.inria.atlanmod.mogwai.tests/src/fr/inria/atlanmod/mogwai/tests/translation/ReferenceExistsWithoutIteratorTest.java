@@ -4,13 +4,13 @@ import org.junit.Test;
 
 import fr.inria.atlanmod.mogwai.gremlin.Closure;
 import fr.inria.atlanmod.mogwai.gremlin.ClosureIt;
-import fr.inria.atlanmod.mogwai.gremlin.FilterPipe;
+import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
 import fr.inria.atlanmod.mogwai.gremlin.HasNextCall;
-import fr.inria.atlanmod.mogwai.gremlin.InEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.InVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.InVStep;
 import fr.inria.atlanmod.mogwai.gremlin.IsEmptyCall;
-import fr.inria.atlanmod.mogwai.gremlin.OutEPipe;
-import fr.inria.atlanmod.mogwai.gremlin.OutVPipe;
+import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
+import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
 import fr.inria.atlanmod.mogwai.gremlin.ToListCall;
 import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
 import fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration;
@@ -30,11 +30,11 @@ public class ReferenceExistsWithoutIteratorTest extends MogwaiTranslationTest {
 		assert gScript.getInstructions().get(2) instanceof VariableAccess;
 		VariableAccess va = (VariableAccess)gScript.getInstructions().get(2);
 		// Do not check the name of the variable access, it is already done in TypeAccess test
-		// InEPipe and OutVPipe types are not checked, it is already done in AllInstances test
-		InEPipe inE = (InEPipe)va.getNextElement();
-		OutVPipe outV = (OutVPipe)inE.getNextElement();
-		assert outV.getNextElement() instanceof FilterPipe;
-		FilterPipe filter = (FilterPipe)outV.getNextElement();
+		// InEStep and OutVStep types are not checked, it is already done in AllInstances test
+		InEStep inE = (InEStep)va.getNextElement();
+		OutVStep outV = (OutVStep)inE.getNextElement();
+		assert outV.getNextElement() instanceof FilterStep;
+		FilterStep filter = (FilterStep)outV.getNextElement();
 		assert filter.getClosure() instanceof Closure;
 		// Check the content of the closure
 		Closure cl = (Closure)filter.getClosure();
@@ -50,11 +50,11 @@ public class ReferenceExistsWithoutIteratorTest extends MogwaiTranslationTest {
 		assert cl.getInstructions().get(1) instanceof VariableAccess;
 		VariableAccess vaClos = (VariableAccess)cl.getInstructions().get(1);
 		assert vaClos.getName().equals("temp1");
-		assert vaClos.getNextElement() instanceof OutEPipe;
-		OutEPipe outEClos = (OutEPipe)vaClos.getNextElement();
+		assert vaClos.getNextElement() instanceof OutEStep;
+		OutEStep outEClos = (OutEStep)vaClos.getNextElement();
 		assert outEClos.getRelationshipName().equals("bodyDeclarations");
-		assert outEClos.getNextElement() instanceof InVPipe;
-		InVPipe inVClos = (InVPipe)outEClos.getNextElement();
+		assert outEClos.getNextElement() instanceof InVStep;
+		InVStep inVClos = (InVStep)outEClos.getNextElement();
 		assert inVClos.getNextElement() instanceof ToListCall;
 		ToListCall toListClos = (ToListCall)inVClos.getNextElement();
 		assert toListClos.getNextElement() instanceof IsEmptyCall;

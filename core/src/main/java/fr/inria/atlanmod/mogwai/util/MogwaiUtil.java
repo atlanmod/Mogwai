@@ -6,11 +6,20 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.ecore.Constraint;
 
 public class MogwaiUtil {
 
+	public static Constraint parseOCL(URI oclFileURI, EPackage ePackage) {
+		OCLParser parser = new OCLParser(ePackage);
+		System.out.println("Migrating " + oclFileURI.toString());
+		String cleanOCLQuery = removeImports(oclFileURI);
+		Constraint constraint = parser.parseTextualOCL(cleanOCLQuery);
+		return constraint;
+	}
+	
 	public static Constraint parseOCL(URI oclFileURI, Resource resource) {
 		OCLParser oclParser = new OCLParser(resource.getContents().get(0).eClass().getEPackage());
 		System.out.println("Migrating " + oclFileURI.toString());
