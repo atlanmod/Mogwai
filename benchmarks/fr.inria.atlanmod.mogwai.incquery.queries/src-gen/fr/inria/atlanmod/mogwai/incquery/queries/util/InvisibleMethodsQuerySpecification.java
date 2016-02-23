@@ -101,8 +101,8 @@ public final class InvisibleMethodsQuerySpecification extends BaseGeneratedEMFQu
       	));
       	new TypeUnary(body, var__Cl, getClassifierLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "ClassDeclaration"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/ClassDeclaration");
       	new TypeBinary(body, CONTEXT, var__Cl, var_Met, getFeatureLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "AbstractTypeDeclaration", "bodyDeclarations"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/AbstractTypeDeclaration.bodyDeclarations");
-      	new ConstantValue(body, var__virtual_1_, getEnumLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "VisibilityKind", "private").getInstance());
       	new TypeUnary(body, var_Met, getClassifierLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "MethodDeclaration"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/MethodDeclaration");
+      	new ConstantValue(body, var__virtual_1_, getEnumLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "VisibilityKind", "private").getInstance());
       	new TypeBinary(body, CONTEXT, var_Met, var__virtual_2_, getFeatureLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "BodyDeclaration", "modifier"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/BodyDeclaration.modifier");
       	new TypeBinary(body, CONTEXT, var__virtual_2_, var__virtual_1_, getFeatureLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "Modifier", "visibility"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/Modifier.visibility");
       	bodies.add(body);
@@ -118,8 +118,8 @@ public final class InvisibleMethodsQuerySpecification extends BaseGeneratedEMFQu
       	));
       	new TypeUnary(body, var__Cl, getClassifierLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "ClassDeclaration"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/ClassDeclaration");
       	new TypeBinary(body, CONTEXT, var__Cl, var_Met, getFeatureLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "AbstractTypeDeclaration", "bodyDeclarations"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/AbstractTypeDeclaration.bodyDeclarations");
-      	new ConstantValue(body, var__virtual_1_, getEnumLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "VisibilityKind", "protected").getInstance());
       	new TypeUnary(body, var_Met, getClassifierLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "MethodDeclaration"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/MethodDeclaration");
+      	new ConstantValue(body, var__virtual_1_, getEnumLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "VisibilityKind", "protected").getInstance());
       	new TypeBinary(body, CONTEXT, var_Met, var__virtual_2_, getFeatureLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "BodyDeclaration", "modifier"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/BodyDeclaration.modifier");
       	new TypeBinary(body, CONTEXT, var__virtual_2_, var__virtual_1_, getFeatureLiteral("http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf", "Modifier", "visibility"), "http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf/Modifier.visibility");
       	bodies.add(body);

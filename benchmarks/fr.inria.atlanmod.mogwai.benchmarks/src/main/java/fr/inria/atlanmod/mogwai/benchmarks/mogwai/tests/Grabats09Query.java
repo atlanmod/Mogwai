@@ -19,7 +19,7 @@ public class Grabats09Query extends MogwaiQueryTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/FASE/Grabats09.ocl"), resource);
+		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/RCIS/Grabats09.ocl"), resource);
 	}
 	
 	public void tearDown() throws Exception {

@@ -21,10 +21,10 @@ import fr.inria.atlanmod.mogwai.benchmarks.mogwai.tests.ThrownExceptionsQuery;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	InvisibleMethodsQuery.class,
+//	InvisibleMethodsQuery.class,
    	Grabats09Query.class,
-	ThrownExceptionsQuery.class,
-	TextElementInJavadocQuery.class
+//	ThrownExceptionsQuery.class,
+//	TextElementInJavadocQuery.class
 })
 public class MogwaiBenchmark {
 

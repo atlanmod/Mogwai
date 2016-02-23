@@ -50,8 +50,8 @@ import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
 public class AbstractQueryTest {
     
 	private static String[][] parameters = new String[][]{
-		{"src/main/resources/jdt-core.graph"}//,
-//		{"src/main/resources/modisco.graph"}
+//		{"src/main/resources/jdt-core.graph"}//,
+		{"src/main/resources/modisco.graph"}
 		};
 	
     @Parameters
