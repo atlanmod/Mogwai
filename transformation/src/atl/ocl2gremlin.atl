@@ -300,7 +300,8 @@ rule oclAsType2steps {
 		)
 	to
 		ip : Gremlin!IdentityStep(
-			nextElement <- oclAsType.getComposite()
+			nextElement <- oclAsType.getComposite(),
+			needed <- false
 		)
 }
 
@@ -318,7 +319,7 @@ rule varExp2steps {
 	to
 		va : Gremlin!VariableAccess(
 			name <- varExp.referredVariable.name.debug(),
-			nextElement <- varExp.getComposite()
+			nextElement <- varExp.getComposite().debug('test')
 		)
 }
 
@@ -329,7 +330,7 @@ rule varExpInCollect2steps {
 		)
 	to
 		id : Gremlin!IdentityStep(
-			nextElement <- varExp.getComposite()	
+			nextElement <- varExp.getComposite().debug('aaaaaaaaaah')	
 		)
 }
 

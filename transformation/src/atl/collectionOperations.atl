@@ -345,7 +345,7 @@ rule select2steps {
 				)
 				.append(
 					-- Add the transformed body
-					oclSelect.body.getFirstInstruction()
+					oclSelect.body.getFirstInstruction().debug('fi')
 				)	
 		)
 }
@@ -426,12 +426,16 @@ rule excluding2steps {
 		oclExcluding : OCL!OperationCallExp (oclExcluding.getOpName() = 'excluding')
 	to
 		lastColStep : Gremlin!ExceptStep (
-			collection <- gremlinVectorDefinition,
+			collection <- gremlinCollectionDefinition,
 			nextElement <- oclExcluding.getComposite()
 		),
-		gremlinVectorDefinition : Gremlin!VectorDefinition (
-			values <- oclExcluding.argument.first()	
+		gremlinCollectionDefinition : Gremlin!CollectionDefinition(
+			values <- oclExcluding.argument.first(),
+			type <- Gremlin!ListDeclaration
 		)
+		--gremlinVectorDefinition : Gremlin!VectorDefinition (
+		--	values <- oclExcluding.argument.first()	
+		--)
 }
 
 -- Transforms an including operation into equivalent Gremlin transform step.
@@ -632,11 +636,22 @@ rule forAll2steps {
 }
 
 -- Transforms a size operation into equivalent Gremlin count call.
-rule size2steps {
+--rule size2steps {
+--	from
+--		oclSize : OCL!OperationCallExp (oclSize.getOpName() = 'size'
+--			and not (oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)).debug('regular ? '))
+--	to
+--		gremlinCountCall : Gremlin!CountCall ()
+--}
+
+-- TODO update it (quick fix for a specific transfo)
+rule stringSize2steps {
 	from
-		oclSize : OCL!OperationCallExp (oclSize.getOpName() = 'size')
+		oclSize : OCL!OperationCallExp ((oclSize.getOpName() = 'size'))
+		--	and oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)
+		--	and if(oclSize.getComposite() <> OclUndefined) then (oclSize.getComposite().eType.name = 'String') else false endif)
 	to
-		gremlinCountCall : Gremlin!CountCall ()
+		gremlinSizeCall : Gremlin!SizeCall()
 }
 
 -- Transforms an isEmpty operation into equivalent Gremlin method calls.

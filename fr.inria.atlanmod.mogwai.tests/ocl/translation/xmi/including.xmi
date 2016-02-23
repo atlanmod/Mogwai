@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ocl.ecore:Constraint xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore" stereotype="definition">
+  <specification xsi:type="ocl.ecore:ExpressionInOCL">
+    <bodyExpression xsi:type="ocl.ecore:OperationCallExp">
+      <eType xsi:type="ocl.ecore:SetType" href="ocl:///oclenv.ecore#/1/Set(Integer)"/>
+      <source xsi:type="ocl.ecore:CollectionLiteralExp">
+        <eType xsi:type="ocl.ecore:SetType" href="ocl:///oclenv.ecore#/1/Set(Integer)"/>
+        <part xsi:type="ocl.ecore:CollectionItem">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+          <item xsi:type="ocl.ecore:IntegerLiteralExp" integerSymbol="1">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+          </item>
+        </part>
+        <part xsi:type="ocl.ecore:CollectionItem">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+          <item xsi:type="ocl.ecore:IntegerLiteralExp" integerSymbol="2">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+          </item>
+        </part>
+        <part xsi:type="ocl.ecore:CollectionItem">
+          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+          <item xsi:type="ocl.ecore:IntegerLiteralExp" integerSymbol="3">
+            <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+          </item>
+        </part>
+      </source>
+      <argument xsi:type="ocl.ecore:IntegerLiteralExp" integerSymbol="4">
+        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+      </argument>
+      <referredOperation xsi:type="ecore:EOperation" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Set(T)_Class/including"/>
+    </bodyExpression>
+    <contextVariable xsi:type="ocl.ecore:Variable" name="self">
+      <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf#//Package"/>
+    </contextVariable>
+    <resultVariable xsi:type="ocl.ecore:Variable" name="including">
+      <eType xsi:type="ocl.ecore:SetType" href="ocl:///oclenv.ecore#/1/Set(Integer)"/>
+    </resultVariable>
+  </specification>
+  <constrainedElements xsi:type="ecore:EClass" href="http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf#//Package"/>
+</ocl.ecore:Constraint>
