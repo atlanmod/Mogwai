@@ -30,154 +30,154 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class VerticesStepImpl extends StepImpl implements VerticesStep {
 	/**
-     * The default value of the '{@link #getVertexId() <em>Vertex Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getVertexId() <em>Vertex Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getVertexId()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVertexId()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final String VERTEX_ID_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getVertexId() <em>Vertex Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getVertexId() <em>Vertex Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getVertexId()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVertexId()
+	 * @generated
+	 * @ordered
+	 */
 	protected String vertexId = VERTEX_ID_EDEFAULT;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected VerticesStepImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return GremlinPackage.Literals.VERTICES_STEP;
-    }
+		return GremlinPackage.Literals.VERTICES_STEP;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String getVertexId() {
-        return vertexId;
-    }
+		return vertexId;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setVertexId(String newVertexId) {
-        String oldVertexId = vertexId;
-        vertexId = newVertexId;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.VERTICES_STEP__VERTEX_ID, oldVertexId, vertexId));
-    }
+		String oldVertexId = vertexId;
+		vertexId = newVertexId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.VERTICES_STEP__VERTEX_ID, oldVertexId, vertexId));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String toString() {
-        StringBuffer res = new StringBuffer();
-        if(getVertexId() == null) {
-            res.append("V");
-        }
-        else {
-            res.append("v(").append(getVertexId()).append(")");
-        }
-        if(getNextElement() != null) {
-            res.append(".").append(getNextElement().toString());
-        }
-        return res.toString();
-    }
+		StringBuffer res = new StringBuffer();
+		if(getVertexId() == null) {
+			res.append("V");
+		}
+		else {
+			res.append("v(").append(getVertexId()).append(")");
+		}
+		if(getNextElement() != null) {
+			res.append(".").append(getNextElement().toString());
+		}
+		return res.toString();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case GremlinPackage.VERTICES_STEP__VERTEX_ID:
-                return getVertexId();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case GremlinPackage.VERTICES_STEP__VERTEX_ID:
+				return getVertexId();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case GremlinPackage.VERTICES_STEP__VERTEX_ID:
-                setVertexId((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case GremlinPackage.VERTICES_STEP__VERTEX_ID:
+				setVertexId((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case GremlinPackage.VERTICES_STEP__VERTEX_ID:
-                setVertexId(VERTEX_ID_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case GremlinPackage.VERTICES_STEP__VERTEX_ID:
+				setVertexId(VERTEX_ID_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case GremlinPackage.VERTICES_STEP__VERTEX_ID:
-                return VERTEX_ID_EDEFAULT == null ? vertexId != null : !VERTEX_ID_EDEFAULT.equals(vertexId);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case GremlinPackage.VERTICES_STEP__VERTEX_ID:
+				return VERTEX_ID_EDEFAULT == null ? vertexId != null : !VERTEX_ID_EDEFAULT.equals(vertexId);
+		}
+		return super.eIsSet(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-        switch (operationID) {
-            case GremlinPackage.VERTICES_STEP___TO_STRING:
-                return toString();
-        }
-        return super.eInvoke(operationID, arguments);
-    }
+		switch (operationID) {
+			case GremlinPackage.VERTICES_STEP___TO_STRING:
+				return toString();
+		}
+		return super.eInvoke(operationID, arguments);
+	}
 
 } //VerticesStepImpl

@@ -15,11 +15,11 @@ package fr.inria.atlanmod.mogwai.gremlin;
  */
 public interface SetDeclaration extends TypeDeclaration {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return \" Set\";'"
-     * @generated
-     */
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return \" Set\";'"
+	 * @generated
+	 */
 	String toString();
 
 } // SetDeclaration

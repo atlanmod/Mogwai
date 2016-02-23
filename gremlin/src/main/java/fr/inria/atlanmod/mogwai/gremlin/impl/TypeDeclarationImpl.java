@@ -18,22 +18,22 @@ import org.eclipse.emf.ecore.EClass;
  */
 public abstract class TypeDeclarationImpl extends InstructionImpl implements TypeDeclaration {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected TypeDeclarationImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return GremlinPackage.Literals.TYPE_DECLARATION;
-    }
+		return GremlinPackage.Literals.TYPE_DECLARATION;
+	}
 
 } //TypeDeclarationImpl

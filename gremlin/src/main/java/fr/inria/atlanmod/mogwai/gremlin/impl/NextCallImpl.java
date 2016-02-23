@@ -22,50 +22,50 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class NextCallImpl extends MethodCallImpl implements NextCall {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected NextCallImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return GremlinPackage.Literals.NEXT_CALL;
-    }
+		return GremlinPackage.Literals.NEXT_CALL;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String toString() {
-        StringBuffer res = new StringBuffer();
-        res.append("next()");
-        if(getNextElement() != null) {
-            res.append(".").append(getNextElement().toString());
-        }
-        return res.toString();
-    }
+		StringBuffer res = new StringBuffer();
+		res.append("next()");
+		if(getNextElement() != null) {
+			res.append(".").append(getNextElement().toString());
+		}
+		return res.toString();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-        switch (operationID) {
-            case GremlinPackage.NEXT_CALL___TO_STRING:
-                return toString();
-        }
-        return super.eInvoke(operationID, arguments);
-    }
+		switch (operationID) {
+			case GremlinPackage.NEXT_CALL___TO_STRING:
+				return toString();
+		}
+		return super.eInvoke(operationID, arguments);
+	}
 
 } //NextCallImpl

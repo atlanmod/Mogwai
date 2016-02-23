@@ -23,72 +23,72 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class ClosureItImpl extends VariableAccessImpl implements ClosureIt {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected ClosureItImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return GremlinPackage.Literals.CLOSURE_IT;
-    }
+		return GremlinPackage.Literals.CLOSURE_IT;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String toString() {
-        return super.toString();
-    }
+		return super.toString();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String getName() {
-        return "it";
-    }
+		return "it";
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-        if (baseClass == VariableAccess.class) {
-            switch (baseOperationID) {
-                case GremlinPackage.VARIABLE_ACCESS___TO_STRING: return GremlinPackage.CLOSURE_IT___TO_STRING;
-                default: return super.eDerivedOperationID(baseOperationID, baseClass);
-            }
-        }
-        return super.eDerivedOperationID(baseOperationID, baseClass);
-    }
+		if (baseClass == VariableAccess.class) {
+			switch (baseOperationID) {
+				case GremlinPackage.VARIABLE_ACCESS___TO_STRING: return GremlinPackage.CLOSURE_IT___TO_STRING;
+				default: return super.eDerivedOperationID(baseOperationID, baseClass);
+			}
+		}
+		return super.eDerivedOperationID(baseOperationID, baseClass);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-        switch (operationID) {
-            case GremlinPackage.CLOSURE_IT___TO_STRING:
-                return toString();
-            case GremlinPackage.CLOSURE_IT___GET_NAME:
-                return getName();
-        }
-        return super.eInvoke(operationID, arguments);
-    }
+		switch (operationID) {
+			case GremlinPackage.CLOSURE_IT___TO_STRING:
+				return toString();
+			case GremlinPackage.CLOSURE_IT___GET_NAME:
+				return getName();
+		}
+		return super.eInvoke(operationID, arguments);
+	}
 
 } //ClosureItImpl

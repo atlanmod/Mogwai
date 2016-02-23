@@ -41,242 +41,242 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class MethodDeclarationImpl extends InstructionImpl implements MethodDeclaration {
 	/**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
 	protected String name = NAME_EDEFAULT;
 
 	/**
-     * The cached value of the '{@link #getParameters() <em>Parameters</em>}' attribute list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' attribute list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getParameters()
-     * @generated
-     * @ordered
-     */
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
 	protected EList<String> parameters;
 
 	/**
-     * The cached value of the '{@link #getInstructions() <em>Instructions</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getInstructions() <em>Instructions</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getInstructions()
-     * @generated
-     * @ordered
-     */
+	 * @see #getInstructions()
+	 * @generated
+	 * @ordered
+	 */
 	protected EList<Instruction> instructions;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected MethodDeclarationImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return GremlinPackage.Literals.METHOD_DECLARATION;
-    }
+		return GremlinPackage.Literals.METHOD_DECLARATION;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setName(String newName) {
-        String oldName = name;
-        name = newName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.METHOD_DECLARATION__NAME, oldName, name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.METHOD_DECLARATION__NAME, oldName, name));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EList<String> getParameters() {
-        if (parameters == null) {
-            parameters = new EDataTypeUniqueEList<String>(String.class, this, GremlinPackage.METHOD_DECLARATION__PARAMETERS);
-        }
-        return parameters;
-    }
+		if (parameters == null) {
+			parameters = new EDataTypeUniqueEList<String>(String.class, this, GremlinPackage.METHOD_DECLARATION__PARAMETERS);
+		}
+		return parameters;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public EList<Instruction> getInstructions() {
-        if (instructions == null) {
-            instructions = new EObjectContainmentEList<Instruction>(Instruction.class, this, GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS);
-        }
-        return instructions;
-    }
+		if (instructions == null) {
+			instructions = new EObjectContainmentEList<Instruction>(Instruction.class, this, GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS);
+		}
+		return instructions;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String toString() {
-        StringBuffer res = new StringBuffer();
-        res.append("def ");
-        res.append(getName());
-        res.append("(");
-        int gen = 0;
-        for(String s : getParameters()) {
-            res.append(s);
-            gen++;
-            if(gen < getParameters().size()) {
-                res.append(", ");
-            }
-        }
-        res.append(") {");
-        for(Instruction i : getInstructions()) {
-            res.append(i.toString()).append(";");
-        }
-        res.append("}");
-        return res.toString();
-    }
+		StringBuffer res = new StringBuffer();
+		res.append("def ");
+		res.append(getName());
+		res.append("(");
+		int gen = 0;
+		for(String s : getParameters()) {
+			res.append(s);
+			gen++;
+			if(gen < getParameters().size()) {
+				res.append(", ");
+			}
+		}
+		res.append(") {");
+		for(Instruction i : getInstructions()) {
+			res.append(i.toString()).append(";");
+		}
+		res.append("}");
+		return res.toString();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
-                return ((InternalEList<?>)getInstructions()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				return ((InternalEList<?>)getInstructions()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case GremlinPackage.METHOD_DECLARATION__NAME:
-                return getName();
-            case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
-                return getParameters();
-            case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
-                return getInstructions();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case GremlinPackage.METHOD_DECLARATION__NAME:
+				return getName();
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				return getParameters();
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				return getInstructions();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case GremlinPackage.METHOD_DECLARATION__NAME:
-                setName((String)newValue);
-                return;
-            case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
-                getParameters().clear();
-                getParameters().addAll((Collection<? extends String>)newValue);
-                return;
-            case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
-                getInstructions().clear();
-                getInstructions().addAll((Collection<? extends Instruction>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case GremlinPackage.METHOD_DECLARATION__NAME:
+				setName((String)newValue);
+				return;
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends String>)newValue);
+				return;
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				getInstructions().clear();
+				getInstructions().addAll((Collection<? extends Instruction>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case GremlinPackage.METHOD_DECLARATION__NAME:
-                setName(NAME_EDEFAULT);
-                return;
-            case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
-                getParameters().clear();
-                return;
-            case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
-                getInstructions().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case GremlinPackage.METHOD_DECLARATION__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				getParameters().clear();
+				return;
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				getInstructions().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case GremlinPackage.METHOD_DECLARATION__NAME:
-                return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-            case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
-                return parameters != null && !parameters.isEmpty();
-            case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
-                return instructions != null && !instructions.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case GremlinPackage.METHOD_DECLARATION__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case GremlinPackage.METHOD_DECLARATION__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
+			case GremlinPackage.METHOD_DECLARATION__INSTRUCTIONS:
+				return instructions != null && !instructions.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-        switch (operationID) {
-            case GremlinPackage.METHOD_DECLARATION___TO_STRING:
-                return toString();
-        }
-        return super.eInvoke(operationID, arguments);
-    }
+		switch (operationID) {
+			case GremlinPackage.METHOD_DECLARATION___TO_STRING:
+				return toString();
+		}
+		return super.eInvoke(operationID, arguments);
+	}
 
 } //MethodDeclarationImpl

@@ -15,11 +15,11 @@ package fr.inria.atlanmod.mogwai.gremlin;
  */
 public interface NotExpression extends UnaryExpression {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(\" !( \").append(getExp().toString()).append(\")\");\nreturn res.toString();'"
-     * @generated
-     */
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nres.append(\" !( \").append(getExp().toString()).append(\")\");\nreturn res.toString();'"
+	 * @generated
+	 */
 	String toString();
 
 } // NotExpression

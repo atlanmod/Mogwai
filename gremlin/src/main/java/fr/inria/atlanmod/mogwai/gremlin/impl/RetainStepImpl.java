@@ -33,177 +33,177 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class RetainStepImpl extends StepImpl implements RetainStep {
 	/**
-     * The cached value of the '{@link #getCollection() <em>Collection</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getCollection() <em>Collection</em>}' containment reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getCollection()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCollection()
+	 * @generated
+	 * @ordered
+	 */
 	protected ListDeclaration collection;
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected RetainStepImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return GremlinPackage.Literals.RETAIN_STEP;
-    }
+		return GremlinPackage.Literals.RETAIN_STEP;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public ListDeclaration getCollection() {
-        return collection;
-    }
+		return collection;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public NotificationChain basicSetCollection(ListDeclaration newCollection, NotificationChain msgs) {
-        ListDeclaration oldCollection = collection;
-        collection = newCollection;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.RETAIN_STEP__COLLECTION, oldCollection, newCollection);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
-    }
+		ListDeclaration oldCollection = collection;
+		collection = newCollection;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.RETAIN_STEP__COLLECTION, oldCollection, newCollection);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public void setCollection(ListDeclaration newCollection) {
-        if (newCollection != collection) {
-            NotificationChain msgs = null;
-            if (collection != null)
-                msgs = ((InternalEObject)collection).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.RETAIN_STEP__COLLECTION, null, msgs);
-            if (newCollection != null)
-                msgs = ((InternalEObject)newCollection).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.RETAIN_STEP__COLLECTION, null, msgs);
-            msgs = basicSetCollection(newCollection, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.RETAIN_STEP__COLLECTION, newCollection, newCollection));
-    }
+		if (newCollection != collection) {
+			NotificationChain msgs = null;
+			if (collection != null)
+				msgs = ((InternalEObject)collection).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.RETAIN_STEP__COLLECTION, null, msgs);
+			if (newCollection != null)
+				msgs = ((InternalEObject)newCollection).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GremlinPackage.RETAIN_STEP__COLLECTION, null, msgs);
+			msgs = basicSetCollection(newCollection, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.RETAIN_STEP__COLLECTION, newCollection, newCollection));
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public String toString() {
-        StringBuffer res = new StringBuffer();
-        res.append("retain(");
-        res.append(getCollection().toString());
-        res.append(")");
-        if(getNextElement() != null) {
-            res.append(".").append(getNextElement().toString());
-        }
-        return res.toString();
-    }
+		StringBuffer res = new StringBuffer();
+		res.append("retain(");
+		res.append(getCollection().toString());
+		res.append(")");
+		if(getNextElement() != null) {
+			res.append(".").append(getNextElement().toString());
+		}
+		return res.toString();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case GremlinPackage.RETAIN_STEP__COLLECTION:
-                return basicSetCollection(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case GremlinPackage.RETAIN_STEP__COLLECTION:
+				return basicSetCollection(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case GremlinPackage.RETAIN_STEP__COLLECTION:
-                return getCollection();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case GremlinPackage.RETAIN_STEP__COLLECTION:
+				return getCollection();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case GremlinPackage.RETAIN_STEP__COLLECTION:
-                setCollection((ListDeclaration)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case GremlinPackage.RETAIN_STEP__COLLECTION:
+				setCollection((ListDeclaration)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case GremlinPackage.RETAIN_STEP__COLLECTION:
-                setCollection((ListDeclaration)null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case GremlinPackage.RETAIN_STEP__COLLECTION:
+				setCollection((ListDeclaration)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case GremlinPackage.RETAIN_STEP__COLLECTION:
-                return collection != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case GremlinPackage.RETAIN_STEP__COLLECTION:
+				return collection != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-        switch (operationID) {
-            case GremlinPackage.RETAIN_STEP___TO_STRING:
-                return toString();
-        }
-        return super.eInvoke(operationID, arguments);
-    }
+		switch (operationID) {
+			case GremlinPackage.RETAIN_STEP___TO_STRING:
+				return toString();
+		}
+		return super.eInvoke(operationID, arguments);
+	}
 
 } //RetainStepImpl

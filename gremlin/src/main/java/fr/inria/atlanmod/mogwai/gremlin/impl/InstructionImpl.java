@@ -20,22 +20,22 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public abstract class InstructionImpl extends MinimalEObjectImpl.Container implements Instruction {
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	protected InstructionImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	protected EClass eStaticClass() {
-        return GremlinPackage.Literals.INSTRUCTION;
-    }
+		return GremlinPackage.Literals.INSTRUCTION;
+	}
 
 } //InstructionImpl
