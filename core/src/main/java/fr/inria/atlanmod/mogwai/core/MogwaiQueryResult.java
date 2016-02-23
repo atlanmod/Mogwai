@@ -26,9 +26,12 @@ public class MogwaiQueryResult {
 		if(engineResult instanceof GremlinPipeline<?,?>) {
 			collectionResult = new BasicEList<Vertex>();
 			Iterator<Vertex> it = ((GremlinPipeline<?,Vertex>)engineResult).iterator();
+			long begin = System.currentTimeMillis();
 			while(it.hasNext()) {
 				collectionResult.add(it.next());
 			}
+			long end = System.currentTimeMillis();
+			System.out.println("Result computation time : " + (end-begin) + " ms");
 			isRefiable = true;
 		}
 		else {
