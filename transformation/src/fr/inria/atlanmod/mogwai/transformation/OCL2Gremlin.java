@@ -42,8 +42,9 @@ import org.osgi.framework.Bundle;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 
-public class OCL2GremlinRunner {
+public class OCL2Gremlin {
 
+	@SuppressWarnings("restriction")
 	public EObject transform(EPackage packageInOcl, Constraint exp) {
 		try {
 			
@@ -81,12 +82,6 @@ public class OCL2GremlinRunner {
 			transformationLauncher.addOutModel(gModel, "OUT", "Gremlin");
 			
 			List<Object> modules = new ArrayList<Object>();
-//			modules.add(this.getClass().getResourceAsStream("/atl/ocl2gremlin.asm"));
-//			modules.add(this.getClass().getResourceAsStream("/atl/mathExpressions.asm"));
-//			modules.add(this.getClass().getResourceAsStream("/atl/literals.asm"));
-//			modules.add(this.getClass().getResourceAsStream("/atl/common.asm"));
-//			modules.add(this.getClass().getResourceAsStream("/atl/collections.asm"));
-//			modules.add(this.getClass().getResourceAsStream("/atl/collectionOperations.asm"));
 			
 			InputStream o2gIS = this.getClass().getResourceAsStream("/atl/ocl2gremlin.asm");
 			if(o2gIS == null) {
@@ -99,14 +94,6 @@ public class OCL2GremlinRunner {
 				URL collectionsURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/collections.asm");
 				URL collectionOperationURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/collectionOperations.asm");
 
-//				Bundle b = Platform.getBundle("fr.inria.atlanmod.mogwai.transformation");
-//				Path ocl2gremlinPath = new Path("atl/ocl2gremlin.asm");
-//				Path mathExpressionsPath = new Path("atl/mathExpressions.asm");
-//				Path literalsPath = new Path("atl/literals.asm");
-//				Path commonPath = new Path("atl/common.asm");
-//				Path collectionsPath = new Path("atl/collections.asm");
-//				Path collectionOperationsPath = new Path("atl/collectionOperations.asm");
-				
 				modules.add(ocl2gremlinURL.openConnection().getInputStream());
 				modules.add(mathExpressionsURL.openConnection().getInputStream());
 				modules.add(literalsURL.openConnection().getInputStream());
@@ -129,13 +116,7 @@ public class OCL2GremlinRunner {
 				transformationLauncher.addLibrary("common",this.getClass().getResourceAsStream("/atl/common.asm") );
 			}
 			
-//			System.out.println(modules.get(0));
-			
 //			transformationLauncher.addLibrary("common",this.getClass().getResourceAsStream("/atl/common.asm") );
-			
-			
-
-			
 			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.get(0), modules.get(1), modules.get(2), modules.get(4), modules.get(5));
 			
 			ByteArrayOutputStream os = new ByteArrayOutputStream();

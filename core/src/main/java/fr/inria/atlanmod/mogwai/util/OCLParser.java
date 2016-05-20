@@ -26,6 +26,7 @@ class OCLParser {
 	public Constraint parseTextualOCL(String oclQuery) {
 		OCLInput document = new OCLInput(oclQuery);
 		try {
+			@SuppressWarnings("unchecked")
 			List<Constraint> constraints = ocl.parse(document);
 			assert constraints.size() > 0;
 			// TODO Handle multiple constraints at once
@@ -37,25 +38,7 @@ class OCLParser {
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void parseFile(URI input, URI output) {
 	    throw new Error("Not implemented");
-//		try {
-		//	URIHandler uriHandler = new FileURIHandlerImpl();
-		//	InputStream in = uriHandler.createInputStream(input, Collections.EMPTY_MAP);
-		//	OCLInput document = new OCLInput(in);
-		//	ResourceSet resSet = new ResourceSetImpl();
-		//	resSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-		//	Resource res = resSet.createResource(output);
-		//	res.getContents().addAll(ocl.parse(document));
-		//	res.save(Collections.EMPTY_MAP);
-//		} catch(IOException e) {
-//			System.out.println("IOException, please verify input and output file path.");
-//			e.printStackTrace();
-//			// parser exception
-//		} catch(Exception e) {
-//			System.out.println("Parser exception");
-//			e.printStackTrace();
-//		}
 	}
 }

@@ -17,10 +17,12 @@ import fr.inria.atlanmod.neoemf.resources.PersistentResource;
 public class MogwaiQueryResult {
 	
 	private boolean isRefiable = false;
+	@SuppressWarnings("rawtypes")
 	private Collection collectionResult = null;
 	private Object singleResult = null;
 	private BlueprintsPersistenceBackend graph;
 	
+	@SuppressWarnings("unchecked")
 	MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph) {
 		this.graph = graph;
 		if(engineResult instanceof GremlinPipeline<?,?>) {
@@ -71,6 +73,7 @@ public class MogwaiQueryResult {
 	 * @return an EList containing the reified EObjects
 	 * @throws MogwaiException if there is no vertex to reify
 	 */
+	@SuppressWarnings("unchecked")
 	public EList<EObject> reifyResults(PersistentResource resource) throws MogwaiException {
 		if(!isReifiable()) {
 			throw new MogwaiException();
@@ -90,6 +93,7 @@ public class MogwaiQueryResult {
 	 * @return the result of the Mogwai query wrapped in a Collection
 	 * @throws MogwaiException if the result is reifiable (reifiable results should not be accessed directly)
 	 */
+	@SuppressWarnings("unchecked")
 	public Collection<Object> getResults() throws MogwaiException {
 		if(collectionResult == null) {
 			throw new MogwaiException();
@@ -97,6 +101,7 @@ public class MogwaiQueryResult {
 		return collectionResult;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T> T getResult() throws MogwaiException {
 		if(singleResult == null) {
 			throw new MogwaiException();

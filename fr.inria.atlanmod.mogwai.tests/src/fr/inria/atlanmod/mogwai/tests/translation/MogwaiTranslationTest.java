@@ -13,7 +13,7 @@ import org.eclipse.ocl.ecore.Constraint;
 import org.junit.Before;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.mogwai.transformation.OCL2GremlinRunner;
+import fr.inria.atlanmod.mogwai.transformation.OCL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 
 public abstract class MogwaiTranslationTest {
@@ -43,7 +43,7 @@ public abstract class MogwaiTranslationTest {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		OCL2GremlinRunner runner = new OCL2GremlinRunner();
+		OCL2Gremlin runner = new OCL2Gremlin();
 		gScript = (GremlinScript)runner.transform(JavaPackage.eINSTANCE, c);
 		assert gScript != null;
 	}
