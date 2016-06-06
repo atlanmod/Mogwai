@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><plugin>
-  <extension id="fr.inria.atlanmod.mogwai.incquery.queries.Queries" point="org.eclipse.incquery.runtime.queryspecification">
-    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:fr.inria.atlanmod.mogwai.incquery.queries.Queries" id="fr.inria.atlanmod.mogwai.incquery.queries.Queries"/>
-  </extension>
-</plugin>
