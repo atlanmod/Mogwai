@@ -13,7 +13,7 @@ import org.eclipse.ocl.ecore.Constraint;
 import org.junit.Before;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.mogwai.transformation.OCL2Gremlin;
+import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 
 public abstract class MogwaiTranslationTest {

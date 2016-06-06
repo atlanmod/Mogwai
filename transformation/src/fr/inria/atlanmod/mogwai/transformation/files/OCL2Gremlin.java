@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.transformation;
+package fr.inria.atlanmod.mogwai.transformation.files;
 
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +13,6 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -38,7 +37,6 @@ import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
-import org.osgi.framework.Bundle;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 
@@ -48,7 +46,7 @@ public class OCL2Gremlin {
 	public EObject transform(EPackage packageInOcl, Constraint exp) {
 		try {
 			
-			ATLLogger.getLogger().setLevel(Level.OFF);
+			ATLLogger.getLogger().setLevel(Level.ALL);
 			
 			ILauncher transformationLauncher = new EMFVMLauncher();
 			ModelFactory modelFactory = new EMFModelFactory();
@@ -82,42 +80,14 @@ public class OCL2Gremlin {
 			transformationLauncher.addOutModel(gModel, "OUT", "Gremlin");
 			
 			List<Object> modules = new ArrayList<Object>();
-			
-			InputStream o2gIS = this.getClass().getResourceAsStream("/atl/ocl2gremlin.asm");
-			if(o2gIS == null) {
-				System.out.println("using OSGI resolver");
-				try {
-				URL ocl2gremlinURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/ocl2gremlin.asm");
-				URL mathExpressionsURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/mathExpressions.asm");
-				URL literalsURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/literals.asm");
-				URL commonURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/common.asm");
-				URL collectionsURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/collections.asm");
-				URL collectionOperationURL = new URL("platform:/plugin/fr.inria.atlanmod.mogwai.transformation/atl/collectionOperations.asm");
+			modules.add(getFileURL("ocl2gremlin.asm").openStream());
+			modules.add(getFileURL("mathExpressions.asm").openStream());
+			modules.add(getFileURL("literals.asm").openStream());
+			modules.add(getFileURL("collections.asm").openStream());
+			modules.add(getFileURL("collectionOperations.asm").openStream());
+			transformationLauncher.addLibrary("common",getFileURL("common.asm").openStream());
 
-				modules.add(ocl2gremlinURL.openConnection().getInputStream());
-				modules.add(mathExpressionsURL.openConnection().getInputStream());
-				modules.add(literalsURL.openConnection().getInputStream());
-				modules.add(commonURL.openConnection().getInputStream());
-				modules.add(collectionsURL.openConnection().getInputStream());
-				modules.add(collectionOperationURL.openConnection().getInputStream());
-				transformationLauncher.addLibrary("common",commonURL.openConnection().getInputStream());
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-			else {
-				System.out.println("using standard resolver");
-				modules.add(this.getClass().getResourceAsStream("/atl/ocl2gremlin.asm"));
-				modules.add(this.getClass().getResourceAsStream("/atl/mathExpressions.asm"));
-				modules.add(this.getClass().getResourceAsStream("/atl/literals.asm"));
-				modules.add(this.getClass().getResourceAsStream("/atl/common.asm"));
-				modules.add(this.getClass().getResourceAsStream("/atl/collections.asm"));
-				modules.add(this.getClass().getResourceAsStream("/atl/collectionOperations.asm"));
-				transformationLauncher.addLibrary("common",this.getClass().getResourceAsStream("/atl/common.asm") );
-			}
-			
-//			transformationLauncher.addLibrary("common",this.getClass().getResourceAsStream("/atl/common.asm") );
-			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.get(0), modules.get(1), modules.get(2), modules.get(4), modules.get(5));
+			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.toArray());
 			
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			extractor.extract(gModel, os, null);
@@ -138,8 +108,45 @@ public class OCL2Gremlin {
 			return gremlinResource.getContents().get(0);
 		}catch(ATLCoreException e) {
 			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 		return null;
+	}
+	
+	protected static URL getFileURL(String fileName) throws IOException {
+		URL fileURL;
+		if (isEclipseRunning()) {
+			URL resourceURL = OCL2Gremlin.class.getResource(fileName);
+			if (resourceURL != null) {
+				fileURL = FileLocator.toFileURL(resourceURL);
+			} else {
+				fileURL = null;
+			}
+		} else {
+			fileURL = OCL2Gremlin.class.getResource(fileName);
+		}
+		if (fileURL == null) {
+			throw new IOException("'" + fileName + "' not found");
+		} else {
+			return fileURL;
+		}
+	}
+
+	/**
+	 * Tests if eclipse is running.
+	 * 
+	 * @return <code>true</code> if eclipse is running
+	 *
+	 * @generated
+	 */
+	public static boolean isEclipseRunning() {
+		try {
+			return Platform.isRunning();
+		} catch (Throwable exception) {
+			// Assume that we aren't running.
+		}
+		return false;
 	}
 	
 }

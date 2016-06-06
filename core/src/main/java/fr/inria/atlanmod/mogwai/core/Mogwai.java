@@ -16,7 +16,7 @@ import org.eclipse.ocl.ecore.Constraint;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 
-import fr.inria.atlanmod.mogwai.transformation.OCL2Gremlin;
+import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
 

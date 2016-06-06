@@ -1,22 +1,26 @@
 package fr.inria.atlanmod.mogwai.transformation;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+public class Activator extends Plugin {
 
-	private static BundleContext context;
+	private static Activator plugin;
 
-	static BundleContext getContext() {
-		return context;
+	public static final String PLUGIN_ID = "fr.inria.atlanmod.mogwai.transformation";
+	
+	public Activator() {
+		System.out.println("Mogwai Transformation Plugin Activated");
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
+		super.start(bundleContext);
+		System.out.println("Mogwai Transformation Plugin Started");
+		plugin = this;
 	}
 
 	/*
@@ -24,7 +28,13 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
-		Activator.context = null;
+		plugin = null;
+		System.out.println("Mogwai Transformation Plugin Stopped");
+		super.stop(bundleContext);
+	}
+	
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }
