@@ -96,7 +96,7 @@ public class PropertyStepImpl extends StepImpl implements PropertyStep {
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		res.append("getProperty('");
+		res.append("property('");
 		res.append(getName());
 		res.append("')");
 		if(getNextElement() != null) {
