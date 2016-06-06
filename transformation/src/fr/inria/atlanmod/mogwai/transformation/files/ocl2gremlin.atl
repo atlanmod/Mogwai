@@ -434,4 +434,32 @@ rule propertyAttBooleanLastInComparison2steps {
 		)
 }
 
+rule propertyAttIntegerLastInComparison2steps {
+	from
+		prop : OCL!PropertyCallExp(
+			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and 
+			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
+			prop.referredProperty.eType.name = 'EInt' and
+			prop.isLastInComparison()
+		)
+	to
+		pp : Gremlin!PropertyStep(
+			name <- prop.referredProperty.name	
+		)
+}
+
+rule propertyAttStringLastInComparison2steps {
+	from
+		prop : OCL!PropertyCallExp(
+			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and
+			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
+			prop.referredProperty.eType.name = 'EString' and
+			prop.isLastInComparison()
+		)
+	to
+		pp : Gremlin!PropertyStep(
+			name <- prop.referredProperty.name	
+		)
+}
+
 

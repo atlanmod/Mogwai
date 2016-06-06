@@ -54,8 +54,8 @@
 		<constant value="A.__matchpropertyAttCallExp2steps():V"/>
 		<constant value="A.__matchpropertyAttCallExpLastInComparison2steps():V"/>
 		<constant value="A.__matchpropertyAttBooleanLastInComparison2steps():V"/>
-		<constant value="A.__matchpropertyAttStringLastInComparison2steps():V"/>
 		<constant value="A.__matchpropertyAttIntegerLastInComparison2steps():V"/>
+		<constant value="A.__matchpropertyAttStringLastInComparison2steps():V"/>
 		<constant value="__exec__"/>
 		<constant value="constraint2script"/>
 		<constant value="NTransientLinkSet;.getLinksByRule(S):QNTransientLink;"/>
@@ -84,10 +84,10 @@
 		<constant value="A.__applypropertyAttCallExpLastInComparison2steps(NTransientLink;):V"/>
 		<constant value="propertyAttBooleanLastInComparison2steps"/>
 		<constant value="A.__applypropertyAttBooleanLastInComparison2steps(NTransientLink;):V"/>
-		<constant value="propertyAttStringLastInComparison2steps"/>
-		<constant value="A.__applypropertyAttStringLastInComparison2steps(NTransientLink;):V"/>
 		<constant value="propertyAttIntegerLastInComparison2steps"/>
 		<constant value="A.__applypropertyAttIntegerLastInComparison2steps(NTransientLink;):V"/>
+		<constant value="propertyAttStringLastInComparison2steps"/>
+		<constant value="A.__applypropertyAttStringLastInComparison2steps(NTransientLink;):V"/>
 		<constant value="getFirstInstructionCollectionOperation"/>
 		<constant value="MOCL!OCLExpression;"/>
 		<constant value="0"/>
@@ -899,8 +899,8 @@
 		<constant value="433:19-433:23"/>
 		<constant value="433:19-433:38"/>
 		<constant value="433:4-433:38"/>
-		<constant value="__matchpropertyAttStringLastInComparison2steps"/>
-		<constant value="EString"/>
+		<constant value="__matchpropertyAttIntegerLastInComparison2steps"/>
+		<constant value="EInt"/>
 		<constant value="440:4-440:8"/>
 		<constant value="440:4-440:25"/>
 		<constant value="440:38-440:52"/>
@@ -915,23 +915,20 @@
 		<constant value="442:4-442:25"/>
 		<constant value="442:4-442:31"/>
 		<constant value="442:4-442:36"/>
-		<constant value="442:39-442:48"/>
-		<constant value="442:4-442:48"/>
-		<constant value="440:4-442:48"/>
+		<constant value="442:39-442:45"/>
+		<constant value="442:4-442:45"/>
+		<constant value="440:4-442:45"/>
 		<constant value="443:4-443:8"/>
 		<constant value="443:4-443:29"/>
 		<constant value="440:4-443:29"/>
 		<constant value="446:3-448:4"/>
-		<constant value="__applypropertyAttStringLastInComparison2steps"/>
-		<constant value="creating a String property access"/>
+		<constant value="__applypropertyAttIntegerLastInComparison2steps"/>
 		<constant value="447:12-447:16"/>
 		<constant value="447:12-447:33"/>
 		<constant value="447:12-447:38"/>
-		<constant value="447:45-447:80"/>
-		<constant value="447:12-447:81"/>
-		<constant value="447:4-447:81"/>
-		<constant value="__matchpropertyAttIntegerLastInComparison2steps"/>
-		<constant value="EInt"/>
+		<constant value="447:4-447:38"/>
+		<constant value="__matchpropertyAttStringLastInComparison2steps"/>
+		<constant value="EString"/>
 		<constant value="454:4-454:8"/>
 		<constant value="454:4-454:25"/>
 		<constant value="454:38-454:52"/>
@@ -946,21 +943,18 @@
 		<constant value="456:4-456:25"/>
 		<constant value="456:4-456:31"/>
 		<constant value="456:4-456:36"/>
-		<constant value="456:39-456:45"/>
-		<constant value="456:4-456:45"/>
-		<constant value="454:4-456:45"/>
+		<constant value="456:39-456:48"/>
+		<constant value="456:4-456:48"/>
+		<constant value="454:4-456:48"/>
 		<constant value="457:4-457:8"/>
 		<constant value="457:4-457:29"/>
 		<constant value="454:4-457:29"/>
 		<constant value="460:3-462:4"/>
-		<constant value="__applypropertyAttIntegerLastInComparison2steps"/>
-		<constant value="creating an Integer property access"/>
+		<constant value="__applypropertyAttStringLastInComparison2steps"/>
 		<constant value="461:12-461:16"/>
 		<constant value="461:12-461:33"/>
 		<constant value="461:12-461:38"/>
-		<constant value="461:45-461:82"/>
-		<constant value="461:12-461:83"/>
-		<constant value="461:4-461:83"/>
+		<constant value="461:4-461:38"/>
 	</cp>
 	<field name="1" type="2"/>
 	<field name="3" type="4"/>
@@ -4304,29 +4298,25 @@
 			<load arg="29"/>
 			<get arg="738"/>
 			<get arg="38"/>
-			<push arg="922"/>
-			<call arg="705"/>
 			<call arg="30"/>
 			<set arg="38"/>
 			<pop/>
 		</code>
 		<linenumbertable>
-			<lne id="923" begin="11" end="11"/>
-			<lne id="924" begin="11" end="12"/>
-			<lne id="925" begin="11" end="13"/>
-			<lne id="926" begin="14" end="14"/>
-			<lne id="927" begin="11" end="15"/>
-			<lne id="928" begin="9" end="17"/>
-			<lne id="920" begin="8" end="18"/>
+			<lne id="922" begin="11" end="11"/>
+			<lne id="923" begin="11" end="12"/>
+			<lne id="924" begin="11" end="13"/>
+			<lne id="925" begin="9" end="15"/>
+			<lne id="920" begin="8" end="16"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="3" name="790" begin="7" end="18"/>
-			<lve slot="2" name="742" begin="3" end="18"/>
-			<lve slot="0" name="17" begin="0" end="18"/>
-			<lve slot="1" name="463" begin="0" end="18"/>
+			<lve slot="3" name="790" begin="7" end="16"/>
+			<lve slot="2" name="742" begin="3" end="16"/>
+			<lve slot="0" name="17" begin="0" end="16"/>
+			<lve slot="1" name="463" begin="0" end="16"/>
 		</localvariabletable>
 	</operation>
-	<operation name="929">
+	<operation name="926">
 		<context type="6"/>
 		<parameters>
 		</parameters>
@@ -4356,7 +4346,7 @@
 			<get arg="738"/>
 			<get arg="810"/>
 			<get arg="38"/>
-			<push arg="930"/>
+			<push arg="927"/>
 			<call arg="158"/>
 			<call arg="717"/>
 			<load arg="19"/>
@@ -4387,34 +4377,34 @@
 			<enditerate/>
 		</code>
 		<linenumbertable>
-			<lne id="931" begin="7" end="7"/>
-			<lne id="932" begin="7" end="8"/>
-			<lne id="933" begin="9" end="11"/>
-			<lne id="934" begin="7" end="12"/>
-			<lne id="935" begin="13" end="13"/>
-			<lne id="936" begin="13" end="14"/>
-			<lne id="937" begin="13" end="15"/>
-			<lne id="938" begin="16" end="18"/>
-			<lne id="939" begin="13" end="19"/>
-			<lne id="940" begin="7" end="20"/>
-			<lne id="941" begin="21" end="21"/>
-			<lne id="942" begin="21" end="22"/>
-			<lne id="943" begin="21" end="23"/>
-			<lne id="944" begin="21" end="24"/>
-			<lne id="945" begin="25" end="25"/>
-			<lne id="946" begin="21" end="26"/>
-			<lne id="947" begin="7" end="27"/>
-			<lne id="948" begin="28" end="28"/>
-			<lne id="949" begin="28" end="29"/>
-			<lne id="950" begin="7" end="30"/>
-			<lne id="951" begin="45" end="50"/>
+			<lne id="928" begin="7" end="7"/>
+			<lne id="929" begin="7" end="8"/>
+			<lne id="930" begin="9" end="11"/>
+			<lne id="931" begin="7" end="12"/>
+			<lne id="932" begin="13" end="13"/>
+			<lne id="933" begin="13" end="14"/>
+			<lne id="934" begin="13" end="15"/>
+			<lne id="935" begin="16" end="18"/>
+			<lne id="936" begin="13" end="19"/>
+			<lne id="937" begin="7" end="20"/>
+			<lne id="938" begin="21" end="21"/>
+			<lne id="939" begin="21" end="22"/>
+			<lne id="940" begin="21" end="23"/>
+			<lne id="941" begin="21" end="24"/>
+			<lne id="942" begin="25" end="25"/>
+			<lne id="943" begin="21" end="26"/>
+			<lne id="944" begin="7" end="27"/>
+			<lne id="945" begin="28" end="28"/>
+			<lne id="946" begin="28" end="29"/>
+			<lne id="947" begin="7" end="30"/>
+			<lne id="948" begin="45" end="50"/>
 		</linenumbertable>
 		<localvariabletable>
 			<lve slot="1" name="742" begin="6" end="52"/>
 			<lve slot="0" name="17" begin="0" end="53"/>
 		</localvariabletable>
 	</operation>
-	<operation name="952">
+	<operation name="949">
 		<context type="6"/>
 		<parameters>
 			<parameter name="19" type="336"/>
@@ -4434,26 +4424,22 @@
 			<load arg="29"/>
 			<get arg="738"/>
 			<get arg="38"/>
-			<push arg="953"/>
-			<call arg="705"/>
 			<call arg="30"/>
 			<set arg="38"/>
 			<pop/>
 		</code>
 		<linenumbertable>
-			<lne id="954" begin="11" end="11"/>
-			<lne id="955" begin="11" end="12"/>
-			<lne id="956" begin="11" end="13"/>
-			<lne id="957" begin="14" end="14"/>
-			<lne id="958" begin="11" end="15"/>
-			<lne id="959" begin="9" end="17"/>
-			<lne id="951" begin="8" end="18"/>
+			<lne id="950" begin="11" end="11"/>
+			<lne id="951" begin="11" end="12"/>
+			<lne id="952" begin="11" end="13"/>
+			<lne id="953" begin="9" end="15"/>
+			<lne id="948" begin="8" end="16"/>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="3" name="790" begin="7" end="18"/>
-			<lve slot="2" name="742" begin="3" end="18"/>
-			<lve slot="0" name="17" begin="0" end="18"/>
-			<lve slot="1" name="463" begin="0" end="18"/>
+			<lve slot="3" name="790" begin="7" end="16"/>
+			<lve slot="2" name="742" begin="3" end="16"/>
+			<lve slot="0" name="17" begin="0" end="16"/>
+			<lve slot="1" name="463" begin="0" end="16"/>
 		</localvariabletable>
 	</operation>
 </asm>
