@@ -58,6 +58,10 @@ public class MogwaiQueryResult {
 			return 1;
 		}
 	}
+
+	public boolean isSingleResult() {
+		return singleResult != null;
+	}
 	
 	/**
 	 * 

@@ -18,11 +18,11 @@ import fr.inria.atlanmod.neoemf.resources.PersistentResource;
 
 public interface MogwaiResource extends PersistentResource {
     
-    public MogwaiQueryResult query(URI oclFileURI, Object obj);
+    MogwaiQueryResult query(URI oclFileURI, Object obj);
     
-    public MogwaiQueryResult query(Constraint exp, Object obj);
+    MogwaiQueryResult query(Constraint exp, Object obj);
     
-    public MogwaiQueryResult query(URI oclFileURI);    
+    MogwaiQueryResult query(URI oclFileURI);
 
-    public MogwaiQueryResult query(Constraint exp);    
+    MogwaiQueryResult query(Constraint exp);
 }
