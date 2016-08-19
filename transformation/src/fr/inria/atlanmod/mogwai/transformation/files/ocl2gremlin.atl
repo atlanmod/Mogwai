@@ -404,7 +404,7 @@ rule propertyAttBooleanLastInComparison2steps {
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and
 			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
-			prop.referredProperty.eType.name = 'EBoolean'and
+			prop.referredProperty.eType.instanceClassName = 'java.lang.Boolean' and
 			prop.isLastInComparison()
 		)
 	to
@@ -439,7 +439,7 @@ rule propertyAttIntegerLastInComparison2steps {
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and 
 			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
-			prop.referredProperty.eType.name = 'EInt' and
+			prop.referredProperty.eType.instanceClassName = 'java.lang.Integer' and
 			prop.isLastInComparison()
 		)
 	to
@@ -453,7 +453,7 @@ rule propertyAttStringLastInComparison2steps {
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and
 			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
-			prop.referredProperty.eType.name = 'EString' and
+			prop.referredProperty.eType.instanceClassName = 'java.lang.String' and
 			prop.isLastInComparison()
 		)
 	to
