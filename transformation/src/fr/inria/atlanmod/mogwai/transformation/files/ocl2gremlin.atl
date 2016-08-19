@@ -461,5 +461,3 @@ rule propertyAttStringLastInComparison2steps {
 			name <- prop.referredProperty.name	
 		)
 }
-
-
