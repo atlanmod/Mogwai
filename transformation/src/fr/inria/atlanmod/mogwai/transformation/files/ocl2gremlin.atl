@@ -550,7 +550,11 @@ rule propertyAttIntegerLastInComparison2steps {
 		)
 	to
 		pp : Gremlin!PropertyStep(
-			name <- prop.referredProperty.name	
+			name <- prop.referredProperty.name,
+			nextElement <- nextCall
+		),
+		nextCall : Gremlin!NextCall(
+			nextElement <- prop.getComposite()
 		)
 }
 
@@ -565,7 +569,11 @@ rule propertyAttStringLastInComparison2steps {
 		)
 	to
 		pp : Gremlin!PropertyStep(
-			name <- prop.referredProperty.name	
+			name <- prop.referredProperty.name,
+			nextElement <- nextCall
+		),
+		nextCall : Gremlin!NextCall(
+			nextElement <- prop.getComposite()
 		)
 }
 
