@@ -3695,7 +3695,6 @@ public interface GremlinPackage extends EPackage {
 	 */
 	int BOOLEAN_LITERAL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 1;
 
-
 	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.NullLiteralImpl <em>Null Literal</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3732,6 +3731,61 @@ public interface GremlinPackage extends EPackage {
 	 * @ordered
 	 */
 	int NULL_LITERAL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ToIntegerCallImpl <em>To Integer Call</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ToIntegerCallImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getToIntegerCall()
+	 * @generated
+	 */
+	int TO_INTEGER_CALL = 66;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TO_INTEGER_CALL__NEXT_ELEMENT = METHOD_CALL__NEXT_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Previous Element</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TO_INTEGER_CALL__PREVIOUS_ELEMENT = METHOD_CALL__PREVIOUS_ELEMENT;
+
+	/**
+	 * The number of structural features of the '<em>To Integer Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TO_INTEGER_CALL_FEATURE_COUNT = METHOD_CALL_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TO_INTEGER_CALL___TO_STRING = METHOD_CALL_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>To Integer Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TO_INTEGER_CALL_OPERATION_COUNT = METHOD_CALL_OPERATION_COUNT + 1;
 
 
 	/**
@@ -5525,6 +5579,26 @@ public interface GremlinPackage extends EPackage {
 	EOperation getNullLiteral__ToString();
 
 	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.ToIntegerCall <em>To Integer Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>To Integer Call</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ToIntegerCall
+	 * @generated
+	 */
+	EClass getToIntegerCall();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.ToIntegerCall#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ToIntegerCall#toString()
+	 * @generated
+	 */
+	EOperation getToIntegerCall__ToString();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7070,6 +7144,24 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation NULL_LITERAL___TO_STRING = eINSTANCE.getNullLiteral__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.ToIntegerCallImpl <em>To Integer Call</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.ToIntegerCallImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getToIntegerCall()
+		 * @generated
+		 */
+		EClass TO_INTEGER_CALL = eINSTANCE.getToIntegerCall();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation TO_INTEGER_CALL___TO_STRING = eINSTANCE.getToIntegerCall__ToString();
 
 	}
 

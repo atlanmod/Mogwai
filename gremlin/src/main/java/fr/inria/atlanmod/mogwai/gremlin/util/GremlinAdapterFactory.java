@@ -332,6 +332,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createNullLiteralAdapter();
 			}
 			@Override
+			public Adapter caseToIntegerCall(ToIntegerCall object) {
+				return createToIntegerCallAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -1272,6 +1276,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createNullLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ToIntegerCall <em>To Integer Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ToIntegerCall
+	 * @generated
+	 */
+	public Adapter createToIntegerCallAdapter() {
 		return null;
 	}
 

@@ -571,6 +571,15 @@ public interface GremlinFactory extends EFactory {
 	NullLiteral createNullLiteral();
 
 	/**
+	 * Returns a new object of class '<em>To Integer Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>To Integer Call</em>'.
+	 * @generated
+	 */
+	ToIntegerCall createToIntegerCall();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

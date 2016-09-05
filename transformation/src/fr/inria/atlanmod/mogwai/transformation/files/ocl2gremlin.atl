@@ -554,6 +554,9 @@ rule propertyAttIntegerLastInComparison2steps {
 			nextElement <- nextCall
 		),
 		nextCall : Gremlin!NextCall(
+			nextElement <- toInt
+		),
+		toInt : Gremlin!ToIntegerCall(
 			nextElement <- prop.getComposite()
 		)
 }
