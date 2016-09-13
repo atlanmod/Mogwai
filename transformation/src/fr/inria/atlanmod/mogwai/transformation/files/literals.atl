@@ -112,3 +112,12 @@ rule oclBoolean2gremlinBoolean {
 			value <- oclBoolean.booleanSymbol	
 		)
 }
+
+rule enumLiteral2gremlinString {
+	from
+		oclEnumLiteral : OCL!EnumLiteralExp
+	to
+		gremlinStringLiteral : Gremlin!StringLiteral(
+			value <- oclEnumLiteral.referredEnumLiteral.toString()
+		)
+}
