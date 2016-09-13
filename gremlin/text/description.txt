@@ -9,6 +9,7 @@ Package gremlin <fr.inria.atlanmod.ocl2query.gremlin>
 
   Class GremlinScript
     Reference instructions : Instruction<<0..*>>
+    Attribute name : EString
     Operation toString() : EString
 
   Class Instruction

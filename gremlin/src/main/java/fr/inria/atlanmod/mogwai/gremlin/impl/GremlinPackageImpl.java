@@ -608,6 +608,15 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getGremlinScript_Name() {
+		return (EAttribute)gremlinScriptEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getGremlinScript__ToString() {
 		return gremlinScriptEClass.getEOperations().get(0);
 	}
@@ -2091,6 +2100,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		// Create classes and their features
 		gremlinScriptEClass = createEClass(GREMLIN_SCRIPT);
 		createEReference(gremlinScriptEClass, GREMLIN_SCRIPT__INSTRUCTIONS);
+		createEAttribute(gremlinScriptEClass, GREMLIN_SCRIPT__NAME);
 		createEOperation(gremlinScriptEClass, GREMLIN_SCRIPT___TO_STRING);
 
 		instructionEClass = createEClass(INSTRUCTION);
@@ -2410,6 +2420,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(gremlinScriptEClass, GremlinScript.class, "GremlinScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getGremlinScript_Instructions(), this.getInstruction(), null, "instructions", null, 0, -1, GremlinScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGremlinScript_Name(), ecorePackage.getEString(), "name", null, 0, 1, GremlinScript.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getGremlinScript__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 

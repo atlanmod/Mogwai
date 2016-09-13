@@ -77,13 +77,22 @@ public interface GremlinPackage extends EPackage {
 	int GREMLIN_SCRIPT__INSTRUCTIONS = 0;
 
 	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GREMLIN_SCRIPT__NAME = 1;
+
+	/**
 	 * The number of structural features of the '<em>Script</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GREMLIN_SCRIPT_FEATURE_COUNT = 1;
+	int GREMLIN_SCRIPT_FEATURE_COUNT = 2;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -3590,6 +3599,17 @@ public interface GremlinPackage extends EPackage {
 	EReference getGremlinScript_Instructions();
 
 	/**
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.GremlinScript#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinScript#getName()
+	 * @see #getGremlinScript()
+	 * @generated
+	 */
+	EAttribute getGremlinScript_Name();
+
+	/**
 	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.GremlinScript#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5294,6 +5314,14 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EReference GREMLIN_SCRIPT__INSTRUCTIONS = eINSTANCE.getGremlinScript_Instructions();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute GREMLIN_SCRIPT__NAME = eINSTANCE.getGremlinScript_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.

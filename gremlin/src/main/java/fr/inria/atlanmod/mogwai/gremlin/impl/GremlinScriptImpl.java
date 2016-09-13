@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -17,6 +18,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -30,6 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.GremlinScriptImpl#getInstructions <em>Instructions</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.GremlinScriptImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -45,6 +48,25 @@ public class GremlinScriptImpl extends MinimalEObjectImpl.Container implements G
 	 * @ordered
 	 */
 	protected EList<Instruction> instructions;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -75,6 +97,27 @@ public class GremlinScriptImpl extends MinimalEObjectImpl.Container implements G
 			instructions = new EObjectContainmentEList<Instruction>(Instruction.class, this, GremlinPackage.GREMLIN_SCRIPT__INSTRUCTIONS);
 		}
 		return instructions;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.GREMLIN_SCRIPT__NAME, oldName, name));
 	}
 
 	/**
@@ -114,6 +157,8 @@ public class GremlinScriptImpl extends MinimalEObjectImpl.Container implements G
 		switch (featureID) {
 			case GremlinPackage.GREMLIN_SCRIPT__INSTRUCTIONS:
 				return getInstructions();
+			case GremlinPackage.GREMLIN_SCRIPT__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -131,6 +176,9 @@ public class GremlinScriptImpl extends MinimalEObjectImpl.Container implements G
 				getInstructions().clear();
 				getInstructions().addAll((Collection<? extends Instruction>)newValue);
 				return;
+			case GremlinPackage.GREMLIN_SCRIPT__NAME:
+				setName((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -146,6 +194,9 @@ public class GremlinScriptImpl extends MinimalEObjectImpl.Container implements G
 			case GremlinPackage.GREMLIN_SCRIPT__INSTRUCTIONS:
 				getInstructions().clear();
 				return;
+			case GremlinPackage.GREMLIN_SCRIPT__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -160,6 +211,8 @@ public class GremlinScriptImpl extends MinimalEObjectImpl.Container implements G
 		switch (featureID) {
 			case GremlinPackage.GREMLIN_SCRIPT__INSTRUCTIONS:
 				return instructions != null && !instructions.isEmpty();
+			case GremlinPackage.GREMLIN_SCRIPT__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}

@@ -18,4 +18,6 @@ public interface GremlinScriptValidator {
 	boolean validate();
 
 	boolean validateInstructions(EList<Instruction> value);
+
+	boolean validateName(String value);
 }

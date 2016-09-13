@@ -9,6 +9,7 @@
       ecorePackage="gremlin.ecore#/">
     <genClasses ecoreClass="gremlin.ecore#//GremlinScript">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//GremlinScript/instructions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//GremlinScript/name"/>
       <genOperations ecoreOperation="gremlin.ecore#//GremlinScript/toString"/>
     </genClasses>
     <genClasses image="false" ecoreClass="gremlin.ecore#//Instruction"/>
