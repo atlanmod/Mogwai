@@ -110,6 +110,7 @@ rule constraint2script {
 		cc : OCL!Constraint
 	to
 		gg : Gremlin!GremlinScript (
+			name <- cc.name,
 			instructions <- cc.specification.bodyExpression.getUsedTypes()
 				->collect(e | thisModule.typeExp2meta(e)).union(
 					cc.specification.bodyExpression.getUsedTypes()
@@ -461,5 +462,4 @@ rule propertyAttStringLastInComparison2steps {
 			name <- prop.referredProperty.name	
 		)
 }
-
 
