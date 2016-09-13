@@ -31,6 +31,7 @@ import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.gremlin.HasNextCall;
 import fr.inria.atlanmod.mogwai.gremlin.IdentityStep;
 import fr.inria.atlanmod.mogwai.gremlin.InEStep;
+import fr.inria.atlanmod.mogwai.gremlin.InExpression;
 import fr.inria.atlanmod.mogwai.gremlin.InVStep;
 import fr.inria.atlanmod.mogwai.gremlin.IndexCall;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
@@ -45,6 +46,7 @@ import fr.inria.atlanmod.mogwai.gremlin.MethodCall;
 import fr.inria.atlanmod.mogwai.gremlin.MethodDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.NextCall;
 import fr.inria.atlanmod.mogwai.gremlin.NotExpression;
+import fr.inria.atlanmod.mogwai.gremlin.NullLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.OrExpression;
 import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
 import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
@@ -58,6 +60,7 @@ import fr.inria.atlanmod.mogwai.gremlin.SortedSetDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.StartStep;
 import fr.inria.atlanmod.mogwai.gremlin.Step;
 import fr.inria.atlanmod.mogwai.gremlin.StringLiteral;
+import fr.inria.atlanmod.mogwai.gremlin.TernaryOperator;
 import fr.inria.atlanmod.mogwai.gremlin.ToListCall;
 import fr.inria.atlanmod.mogwai.gremlin.TransformStep;
 import fr.inria.atlanmod.mogwai.gremlin.TraversalElement;
@@ -438,6 +441,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass inExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass differenceExpressionEClass = null;
 
 	/**
@@ -501,6 +511,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass ternaryOperatorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass stringLiteralEClass = null;
 
 	/**
@@ -523,6 +540,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass booleanLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass nullLiteralEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -1805,6 +1829,24 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getInExpression() {
+		return inExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getInExpression__ToString() {
+		return inExpressionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getDifferenceExpression() {
 		return differenceExpressionEClass;
 	}
@@ -1967,6 +2009,51 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTernaryOperator() {
+		return ternaryOperatorEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTernaryOperator_Condition() {
+		return (EReference)ternaryOperatorEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTernaryOperator_IfTrue() {
+		return (EReference)ternaryOperatorEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTernaryOperator_IfFalse() {
+		return (EReference)ternaryOperatorEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getTernaryOperator__ToString() {
+		return ternaryOperatorEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getStringLiteral() {
 		return stringLiteralEClass;
 	}
@@ -2068,6 +2155,24 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EOperation getBooleanLiteral__ToString() {
 		return booleanLiteralEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getNullLiteral() {
+		return nullLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getNullLiteral__ToString() {
+		return nullLiteralEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -2283,6 +2388,9 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		equalityExpressionEClass = createEClass(EQUALITY_EXPRESSION);
 		createEOperation(equalityExpressionEClass, EQUALITY_EXPRESSION___TO_STRING);
 
+		inExpressionEClass = createEClass(IN_EXPRESSION);
+		createEOperation(inExpressionEClass, IN_EXPRESSION___TO_STRING);
+
 		differenceExpressionEClass = createEClass(DIFFERENCE_EXPRESSION);
 		createEOperation(differenceExpressionEClass, DIFFERENCE_EXPRESSION___TO_STRING);
 
@@ -2310,6 +2418,12 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		leftShiftExpressionEClass = createEClass(LEFT_SHIFT_EXPRESSION);
 		createEOperation(leftShiftExpressionEClass, LEFT_SHIFT_EXPRESSION___TO_STRING);
 
+		ternaryOperatorEClass = createEClass(TERNARY_OPERATOR);
+		createEReference(ternaryOperatorEClass, TERNARY_OPERATOR__CONDITION);
+		createEReference(ternaryOperatorEClass, TERNARY_OPERATOR__IF_TRUE);
+		createEReference(ternaryOperatorEClass, TERNARY_OPERATOR__IF_FALSE);
+		createEOperation(ternaryOperatorEClass, TERNARY_OPERATOR___TO_STRING);
+
 		stringLiteralEClass = createEClass(STRING_LITERAL);
 		createEAttribute(stringLiteralEClass, STRING_LITERAL__VALUE);
 		createEOperation(stringLiteralEClass, STRING_LITERAL___TO_STRING);
@@ -2325,6 +2439,9 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		booleanLiteralEClass = createEClass(BOOLEAN_LITERAL);
 		createEAttribute(booleanLiteralEClass, BOOLEAN_LITERAL__VALUE);
 		createEOperation(booleanLiteralEClass, BOOLEAN_LITERAL___TO_STRING);
+
+		nullLiteralEClass = createEClass(NULL_LITERAL);
+		createEOperation(nullLiteralEClass, NULL_LITERAL___TO_STRING);
 	}
 
 	/**
@@ -2403,6 +2520,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		notExpressionEClass.getESuperTypes().add(this.getUnaryExpression());
 		binaryExpressionEClass.getESuperTypes().add(this.getExpression());
 		equalityExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
+		inExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		differenceExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		orExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		andExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
@@ -2412,10 +2530,12 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		lessOrEqualExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		affectationExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 		leftShiftExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
+		ternaryOperatorEClass.getESuperTypes().add(this.getExpression());
 		stringLiteralEClass.getESuperTypes().add(this.getExpression());
 		integerLiteralEClass.getESuperTypes().add(this.getExpression());
 		doubleLiteralEClass.getESuperTypes().add(this.getExpression());
 		booleanLiteralEClass.getESuperTypes().add(this.getExpression());
+		nullLiteralEClass.getESuperTypes().add(this.getExpression());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(gremlinScriptEClass, GremlinScript.class, "GremlinScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2645,6 +2765,10 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEOperation(getEqualityExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		initEClass(inExpressionEClass, InExpression.class, "InExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getInExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(differenceExpressionEClass, DifferenceExpression.class, "DifferenceExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getDifferenceExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -2681,6 +2805,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEOperation(getLeftShiftExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		initEClass(ternaryOperatorEClass, TernaryOperator.class, "TernaryOperator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTernaryOperator_Condition(), this.getInstruction(), null, "condition", null, 0, 1, TernaryOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTernaryOperator_IfTrue(), this.getInstruction(), null, "ifTrue", null, 1, 1, TernaryOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTernaryOperator_IfFalse(), this.getInstruction(), null, "ifFalse", null, 1, 1, TernaryOperator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getTernaryOperator__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(stringLiteralEClass, StringLiteral.class, "StringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStringLiteral_Value(), ecorePackage.getEString(), "value", null, 1, 1, StringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2700,6 +2831,10 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEAttribute(getBooleanLiteral_Value(), ecorePackage.getEBoolean(), "value", null, 1, 1, BooleanLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getBooleanLiteral__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(nullLiteralEClass, NullLiteral.class, "NullLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getNullLiteral__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

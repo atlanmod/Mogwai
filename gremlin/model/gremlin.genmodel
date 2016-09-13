@@ -187,6 +187,9 @@
     <genClasses ecoreClass="gremlin.ecore#//EqualityExpression">
       <genOperations ecoreOperation="gremlin.ecore#//EqualityExpression/toString"/>
     </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//InExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//InExpression/toString"/>
+    </genClasses>
     <genClasses ecoreClass="gremlin.ecore#//DifferenceExpression">
       <genOperations ecoreOperation="gremlin.ecore#//DifferenceExpression/toString"/>
     </genClasses>
@@ -214,6 +217,12 @@
     <genClasses ecoreClass="gremlin.ecore#//LeftShiftExpression">
       <genOperations ecoreOperation="gremlin.ecore#//LeftShiftExpression/toString"/>
     </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//TernaryOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//TernaryOperator/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//TernaryOperator/ifTrue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//TernaryOperator/ifFalse"/>
+      <genOperations ecoreOperation="gremlin.ecore#//TernaryOperator/toString"/>
+    </genClasses>
     <genClasses ecoreClass="gremlin.ecore#//StringLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//StringLiteral/value"/>
       <genOperations ecoreOperation="gremlin.ecore#//StringLiteral/toString"/>
@@ -229,6 +238,9 @@
     <genClasses ecoreClass="gremlin.ecore#//BooleanLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//BooleanLiteral/value"/>
       <genOperations ecoreOperation="gremlin.ecore#//BooleanLiteral/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//NullLiteral">
+      <genOperations ecoreOperation="gremlin.ecore#//NullLiteral/toString"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -192,6 +192,9 @@ Package gremlin <fr.inria.atlanmod.ocl2query.gremlin>
   Class EqualityExpression -> BinaryExpression
     Operation toString() : EString
 
+  Class InExpression -> BinaryExpression
+    Operation toString() : EString
+
   Class DifferenceExpression -> BinaryExpression
     Operation toString() : EString
 
@@ -219,6 +222,12 @@ Package gremlin <fr.inria.atlanmod.ocl2query.gremlin>
   Class LeftShiftExpression -> BinaryExpression
     Operation toString() : EString
 
+  Class TernaryOperator -> Expression
+    Reference condition : Instruction
+    Reference ifTrue : Instruction<<1..1>>
+    Reference ifFalse : Instruction<<1..1>>
+    Operation toString() : EString
+
   Class StringLiteral -> Expression
     Attribute value : EString<<1..1>>
     Operation toString() : EString
@@ -233,4 +242,7 @@ Package gremlin <fr.inria.atlanmod.ocl2query.gremlin>
 
   Class BooleanLiteral -> Expression
     Attribute value : EBoolean<<1..1>>
+    Operation toString() : EString
+
+  Class NullLiteral -> Expression
     Operation toString() : EString

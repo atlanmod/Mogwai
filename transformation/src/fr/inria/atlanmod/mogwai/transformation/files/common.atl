@@ -175,10 +175,28 @@ helper context OCL!OperationCallExp def : isComplexCollectionOperation() : Boole
 
 -- Returns all the accessed TypeExps in a Set with no duplicates.
 helper context OCL!OCLExpression def : getUsedTypes() : OrderedSet(OCL!TypeExp) =
-	OCL!TypeExp.allInstances()->iterate(each; res : OrderedSet(OCL!TypeExp) = OrderedSet{} | 
-		if(res->collect(e | e.referredType.name)->includes(each.referredType.name)) then
-			res
-		else
-			res.append(each)
-		endif)
+	let kindOfTypes : OrderedSet(OCL!EClass) = self.getKindOfEClasses()->collect(c | c.name) in
+		OCL!TypeExp.allInstances()->iterate(each; res : OrderedSet(OCL!TypeExp) = OrderedSet{} | 
+			if(res->collect(e | e.referredType.name)->includes(each.referredType.name)) then
+				res
+			else
+				if kindOfTypes->includes(each.referredType.name) then
+					res
+				else
+					res.append(each)
+				endif
+			endif)
 	;
+
+helper context OCL!TypeExp def : getSubclasses() : Sequence(OCL!EClass) =
+	let eClass : OCL!EClass = self.referredType in
+		eClass.ePackage.eClassifiers->select(a | a.oclIsTypeOf(OCL!EClass))->select(e | e.eAllSuperTypes->includes(eClass))->asSequence()
+		->append(eClass)
+	;
+
+helper context OCL!OCLExpression def : getKindOfEClasses() : OrderedSet(OCL!EClass) =
+	OCL!OperationCallExp->allInstances()->select(op | op.getOpName() = 'oclIsKindOf')
+		->iterate(each; res : OrderedSet(OCL!EClass) = OrderedSet{} |
+			res->union(each.argument.first().getSubclasses())
+		)
+		;

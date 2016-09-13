@@ -146,7 +146,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="PropertyStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;getProperty('&quot;);&#xA;res.append(getName());&#xA;res.append(&quot;')&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;property('&quot;);&#xA;res.append(getName());&#xA;res.append(&quot;')&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -383,6 +383,13 @@
       </eAnnotations>
     </eOperations>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InExpression" eSuperTypes="#//BinaryExpression">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(getLeft().toString()).append(&quot; in &quot;).append(getRight().toString());&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DifferenceExpression" eSuperTypes="#//BinaryExpression">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -446,6 +453,19 @@
       </eAnnotations>
     </eOperations>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TernaryOperator" eSuperTypes="#//Expression">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;(&quot;);&#xA;res.append(getCondition().toString())&#xA;.append(&quot; ? &quot;).append(getIfTrue().toString()).append(&quot; : &quot;).&#xA;append(getIfFalse().toString()).append(&quot;)&quot;);&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Instruction"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ifTrue" lowerBound="1"
+        eType="#//Instruction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ifFalse" lowerBound="1"
+        eType="#//Instruction" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StringLiteral" eSuperTypes="#//Expression">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -477,5 +497,12 @@
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NullLiteral" eSuperTypes="#//Expression">
+    <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;null&quot;);&#xA;return res.toString();"/>
+      </eAnnotations>
+    </eOperations>
   </eClassifiers>
 </ecore:EPackage>

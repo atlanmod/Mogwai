@@ -101,6 +101,7 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.NOT_EXPRESSION: return createNotExpression();
 			case GremlinPackage.BINARY_EXPRESSION: return createBinaryExpression();
 			case GremlinPackage.EQUALITY_EXPRESSION: return createEqualityExpression();
+			case GremlinPackage.IN_EXPRESSION: return createInExpression();
 			case GremlinPackage.DIFFERENCE_EXPRESSION: return createDifferenceExpression();
 			case GremlinPackage.OR_EXPRESSION: return createOrExpression();
 			case GremlinPackage.AND_EXPRESSION: return createAndExpression();
@@ -110,10 +111,12 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.LESS_OR_EQUAL_EXPRESSION: return createLessOrEqualExpression();
 			case GremlinPackage.AFFECTATION_EXPRESSION: return createAffectationExpression();
 			case GremlinPackage.LEFT_SHIFT_EXPRESSION: return createLeftShiftExpression();
+			case GremlinPackage.TERNARY_OPERATOR: return createTernaryOperator();
 			case GremlinPackage.STRING_LITERAL: return createStringLiteral();
 			case GremlinPackage.INTEGER_LITERAL: return createIntegerLiteral();
 			case GremlinPackage.DOUBLE_LITERAL: return createDoubleLiteral();
 			case GremlinPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
+			case GremlinPackage.NULL_LITERAL: return createNullLiteral();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -574,6 +577,16 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public InExpression createInExpression() {
+		InExpressionImpl inExpression = new InExpressionImpl();
+		return inExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public DifferenceExpression createDifferenceExpression() {
 		DifferenceExpressionImpl differenceExpression = new DifferenceExpressionImpl();
 		return differenceExpression;
@@ -664,6 +677,16 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public TernaryOperator createTernaryOperator() {
+		TernaryOperatorImpl ternaryOperator = new TernaryOperatorImpl();
+		return ternaryOperator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public StringLiteral createStringLiteral() {
 		StringLiteralImpl stringLiteral = new StringLiteralImpl();
 		return stringLiteral;
@@ -697,6 +720,16 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public BooleanLiteral createBooleanLiteral() {
 		BooleanLiteralImpl booleanLiteral = new BooleanLiteralImpl();
 		return booleanLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NullLiteral createNullLiteral() {
+		NullLiteralImpl nullLiteral = new NullLiteralImpl();
+		return nullLiteral;
 	}
 
 	/**

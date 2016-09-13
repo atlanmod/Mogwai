@@ -268,6 +268,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createEqualityExpressionAdapter();
 			}
 			@Override
+			public Adapter caseInExpression(InExpression object) {
+				return createInExpressionAdapter();
+			}
+			@Override
 			public Adapter caseDifferenceExpression(DifferenceExpression object) {
 				return createDifferenceExpressionAdapter();
 			}
@@ -304,6 +308,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createLeftShiftExpressionAdapter();
 			}
 			@Override
+			public Adapter caseTernaryOperator(TernaryOperator object) {
+				return createTernaryOperatorAdapter();
+			}
+			@Override
 			public Adapter caseStringLiteral(StringLiteral object) {
 				return createStringLiteralAdapter();
 			}
@@ -318,6 +326,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseBooleanLiteral(BooleanLiteral object) {
 				return createBooleanLiteralAdapter();
+			}
+			@Override
+			public Adapter caseNullLiteral(NullLiteral object) {
+				return createNullLiteralAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -1040,6 +1052,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.InExpression <em>In Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InExpression
+	 * @generated
+	 */
+	public Adapter createInExpressionAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.DifferenceExpression <em>Difference Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1166,6 +1192,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.TernaryOperator <em>Ternary Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TernaryOperator
+	 * @generated
+	 */
+	public Adapter createTernaryOperatorAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.StringLiteral <em>String Literal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1218,6 +1258,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBooleanLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.NullLiteral <em>Null Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.NullLiteral
+	 * @generated
+	 */
+	public Adapter createNullLiteralAdapter() {
 		return null;
 	}
 

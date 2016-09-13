@@ -427,6 +427,15 @@ public interface GremlinFactory extends EFactory {
 	EqualityExpression createEqualityExpression();
 
 	/**
+	 * Returns a new object of class '<em>In Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>In Expression</em>'.
+	 * @generated
+	 */
+	InExpression createInExpression();
+
+	/**
 	 * Returns a new object of class '<em>Difference Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -508,6 +517,15 @@ public interface GremlinFactory extends EFactory {
 	LeftShiftExpression createLeftShiftExpression();
 
 	/**
+	 * Returns a new object of class '<em>Ternary Operator</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Ternary Operator</em>'.
+	 * @generated
+	 */
+	TernaryOperator createTernaryOperator();
+
+	/**
 	 * Returns a new object of class '<em>String Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -542,6 +560,15 @@ public interface GremlinFactory extends EFactory {
 	 * @generated
 	 */
 	BooleanLiteral createBooleanLiteral();
+
+	/**
+	 * Returns a new object of class '<em>Null Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Null Literal</em>'.
+	 * @generated
+	 */
+	NullLiteral createNullLiteral();
 
 	/**
 	 * Returns the package supported by this factory.

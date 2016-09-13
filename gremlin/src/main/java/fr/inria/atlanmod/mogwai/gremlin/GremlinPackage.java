@@ -2898,6 +2898,61 @@ public interface GremlinPackage extends EPackage {
 	int EQUALITY_EXPRESSION_OPERATION_COUNT = BINARY_EXPRESSION_OPERATION_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InExpressionImpl <em>In Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InExpressionImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInExpression()
+	 * @generated
+	 */
+	int IN_EXPRESSION = 50;
+
+	/**
+	 * The feature id for the '<em><b>Left</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_EXPRESSION__LEFT = BINARY_EXPRESSION__LEFT;
+
+	/**
+	 * The feature id for the '<em><b>Right</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_EXPRESSION__RIGHT = BINARY_EXPRESSION__RIGHT;
+
+	/**
+	 * The number of structural features of the '<em>In Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_EXPRESSION_FEATURE_COUNT = BINARY_EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_EXPRESSION___TO_STRING = BINARY_EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>In Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IN_EXPRESSION_OPERATION_COUNT = BINARY_EXPRESSION_OPERATION_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.DifferenceExpressionImpl <em>Difference Expression</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2905,7 +2960,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getDifferenceExpression()
 	 * @generated
 	 */
-	int DIFFERENCE_EXPRESSION = 50;
+	int DIFFERENCE_EXPRESSION = 51;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2960,7 +3015,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getOrExpression()
 	 * @generated
 	 */
-	int OR_EXPRESSION = 51;
+	int OR_EXPRESSION = 52;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3015,7 +3070,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getAndExpression()
 	 * @generated
 	 */
-	int AND_EXPRESSION = 52;
+	int AND_EXPRESSION = 53;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3070,7 +3125,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getGreaterExpression()
 	 * @generated
 	 */
-	int GREATER_EXPRESSION = 53;
+	int GREATER_EXPRESSION = 54;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3125,7 +3180,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getGreaterOrEqualExpression()
 	 * @generated
 	 */
-	int GREATER_OR_EQUAL_EXPRESSION = 54;
+	int GREATER_OR_EQUAL_EXPRESSION = 55;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3180,7 +3235,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getLessExpression()
 	 * @generated
 	 */
-	int LESS_EXPRESSION = 55;
+	int LESS_EXPRESSION = 56;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3235,7 +3290,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getLessOrEqualExpression()
 	 * @generated
 	 */
-	int LESS_OR_EQUAL_EXPRESSION = 56;
+	int LESS_OR_EQUAL_EXPRESSION = 57;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3290,7 +3345,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getAffectationExpression()
 	 * @generated
 	 */
-	int AFFECTATION_EXPRESSION = 57;
+	int AFFECTATION_EXPRESSION = 58;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3345,7 +3400,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getLeftShiftExpression()
 	 * @generated
 	 */
-	int LEFT_SHIFT_EXPRESSION = 58;
+	int LEFT_SHIFT_EXPRESSION = 59;
 
 	/**
 	 * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -3393,6 +3448,70 @@ public interface GremlinPackage extends EPackage {
 	int LEFT_SHIFT_EXPRESSION_OPERATION_COUNT = BINARY_EXPRESSION_OPERATION_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TernaryOperatorImpl <em>Ternary Operator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TernaryOperatorImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTernaryOperator()
+	 * @generated
+	 */
+	int TERNARY_OPERATOR = 60;
+
+	/**
+	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TERNARY_OPERATOR__CONDITION = EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>If True</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TERNARY_OPERATOR__IF_TRUE = EXPRESSION_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>If False</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TERNARY_OPERATOR__IF_FALSE = EXPRESSION_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Ternary Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TERNARY_OPERATOR_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TERNARY_OPERATOR___TO_STRING = EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Ternary Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TERNARY_OPERATOR_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StringLiteralImpl <em>String Literal</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3400,7 +3519,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getStringLiteral()
 	 * @generated
 	 */
-	int STRING_LITERAL = 59;
+	int STRING_LITERAL = 61;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3446,7 +3565,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getIntegerLiteral()
 	 * @generated
 	 */
-	int INTEGER_LITERAL = 60;
+	int INTEGER_LITERAL = 62;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3492,7 +3611,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getDoubleLiteral()
 	 * @generated
 	 */
-	int DOUBLE_LITERAL = 61;
+	int DOUBLE_LITERAL = 63;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3538,7 +3657,7 @@ public interface GremlinPackage extends EPackage {
 	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getBooleanLiteral()
 	 * @generated
 	 */
-	int BOOLEAN_LITERAL = 62;
+	int BOOLEAN_LITERAL = 64;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -3575,6 +3694,44 @@ public interface GremlinPackage extends EPackage {
 	 * @ordered
 	 */
 	int BOOLEAN_LITERAL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 1;
+
+
+	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.NullLiteralImpl <em>Null Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.NullLiteralImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getNullLiteral()
+	 * @generated
+	 */
+	int NULL_LITERAL = 65;
+
+	/**
+	 * The number of structural features of the '<em>Null Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NULL_LITERAL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NULL_LITERAL___TO_STRING = EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Null Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NULL_LITERAL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 1;
 
 
 	/**
@@ -4971,6 +5128,26 @@ public interface GremlinPackage extends EPackage {
 	EOperation getEqualityExpression__ToString();
 
 	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.InExpression <em>In Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>In Expression</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InExpression
+	 * @generated
+	 */
+	EClass getInExpression();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.InExpression#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.InExpression#toString()
+	 * @generated
+	 */
+	EOperation getInExpression__ToString();
+
+	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.DifferenceExpression <em>Difference Expression</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5151,6 +5328,59 @@ public interface GremlinPackage extends EPackage {
 	EOperation getLeftShiftExpression__ToString();
 
 	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.TernaryOperator <em>Ternary Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Ternary Operator</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TernaryOperator
+	 * @generated
+	 */
+	EClass getTernaryOperator();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#getCondition <em>Condition</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Condition</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#getCondition()
+	 * @see #getTernaryOperator()
+	 * @generated
+	 */
+	EReference getTernaryOperator_Condition();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#getIfTrue <em>If True</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>If True</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#getIfTrue()
+	 * @see #getTernaryOperator()
+	 * @generated
+	 */
+	EReference getTernaryOperator_IfTrue();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#getIfFalse <em>If False</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>If False</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#getIfFalse()
+	 * @see #getTernaryOperator()
+	 * @generated
+	 */
+	EReference getTernaryOperator_IfFalse();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.TernaryOperator#toString()
+	 * @generated
+	 */
+	EOperation getTernaryOperator__ToString();
+
+	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.StringLiteral <em>String Literal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5273,6 +5503,26 @@ public interface GremlinPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getBooleanLiteral__ToString();
+
+	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.NullLiteral <em>Null Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Null Literal</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.NullLiteral
+	 * @generated
+	 */
+	EClass getNullLiteral();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.NullLiteral#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.NullLiteral#toString()
+	 * @generated
+	 */
+	EOperation getNullLiteral__ToString();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -6478,6 +6728,24 @@ public interface GremlinPackage extends EPackage {
 		EOperation EQUALITY_EXPRESSION___TO_STRING = eINSTANCE.getEqualityExpression__ToString();
 
 		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.InExpressionImpl <em>In Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.InExpressionImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getInExpression()
+		 * @generated
+		 */
+		EClass IN_EXPRESSION = eINSTANCE.getInExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation IN_EXPRESSION___TO_STRING = eINSTANCE.getInExpression__ToString();
+
+		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.DifferenceExpressionImpl <em>Difference Expression</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6640,6 +6908,48 @@ public interface GremlinPackage extends EPackage {
 		EOperation LEFT_SHIFT_EXPRESSION___TO_STRING = eINSTANCE.getLeftShiftExpression__ToString();
 
 		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.TernaryOperatorImpl <em>Ternary Operator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.TernaryOperatorImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getTernaryOperator()
+		 * @generated
+		 */
+		EClass TERNARY_OPERATOR = eINSTANCE.getTernaryOperator();
+
+		/**
+		 * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TERNARY_OPERATOR__CONDITION = eINSTANCE.getTernaryOperator_Condition();
+
+		/**
+		 * The meta object literal for the '<em><b>If True</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TERNARY_OPERATOR__IF_TRUE = eINSTANCE.getTernaryOperator_IfTrue();
+
+		/**
+		 * The meta object literal for the '<em><b>If False</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TERNARY_OPERATOR__IF_FALSE = eINSTANCE.getTernaryOperator_IfFalse();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation TERNARY_OPERATOR___TO_STRING = eINSTANCE.getTernaryOperator__ToString();
+
+		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.StringLiteralImpl <em>String Literal</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6742,6 +7052,24 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation BOOLEAN_LITERAL___TO_STRING = eINSTANCE.getBooleanLiteral__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.NullLiteralImpl <em>Null Literal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.NullLiteralImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getNullLiteral()
+		 * @generated
+		 */
+		EClass NULL_LITERAL = eINSTANCE.getNullLiteral();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation NULL_LITERAL___TO_STRING = eINSTANCE.getNullLiteral__ToString();
 
 	}
 

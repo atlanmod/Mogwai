@@ -97,7 +97,6 @@ helper def : getCollectionOperationIndex(op : OCL!OperationCallExp) : Integer =
 	endif
 	;
 
-
 	
 -- Creates the Gremlin container (GremlinScript) from
 -- the OCL container (Constraint)
@@ -111,8 +110,13 @@ rule constraint2script {
 	to
 		gg : Gremlin!GremlinScript (
 			name <- cc.name,
-			instructions <- cc.specification.bodyExpression.getUsedTypes()
-				->collect(e | thisModule.typeExp2meta(e)).union(
+			instructions <- cc.specification.bodyExpression.getKindOfEClasses()
+			->collect(e | thisModule.eClass2meta(e)).union(
+				cc.specification.bodyExpression.getKindOfEClasses()
+					->collect(e | thisModule.eClass2metaNodes(e))
+			).union(
+			cc.specification.bodyExpression.getUsedTypes()
+				->collect(e | thisModule.typeExp2meta(e))).union(
 					cc.specification.bodyExpression.getUsedTypes()
 				->collect(e | thisModule.typeExp2metaNodes(e))).union(
 					let collectionOperations : Sequence(OCL!OperationCallExp) = OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName())) in
@@ -170,6 +174,24 @@ lazy rule typeExp2meta {
 		)
 }
 
+lazy rule eClass2meta {
+	from
+		eClass : OCL!EClass
+	to
+		metaVar : Gremlin!VariableDeclaration (
+			name <- 'meta'+eClass.name,
+			value <- metaStartStep
+		),
+		metaStartStep : Gremlin!StartStep (
+			nextElement <- idxCall	
+		),
+		idxCall : Gremlin!IndexCall (
+			indexName <- 'metaclasses',
+			indexProperty  <- 'name',
+			indexQuery <- eClass.name
+		)
+}
+
 -- Creates variables associated to oclIsTypeOf calls to avoid multiple index
 -- accesses in the same step.
 -- @see oclIsTypeOf2steps for generated steps.
@@ -179,25 +201,57 @@ lazy rule typeExp2metaNodes {
 	to
 		metaVar : Gremlin!VariableDeclaration(
 			name <- 'meta'+typeExp.referredType.name+'Node',
-			value <- metaVarAccess
+			value <- tern
 		),
-		metaVarAccess : Gremlin!VariableAccess(
+		tern : Gremlin!TernaryOperator(
+			condition <- checkVarAccess,
+			ifTrue <- okVarAccess,
+			ifFalse <- nullLiteral
+		),
+		checkVarAccess : Gremlin!VariableAccess(
+			name <- 'meta' + typeExp.referredType.name,
+			nextElement <- checkHasNext
+		),
+		checkHasNext : Gremlin!HasNextCall(
+				
+		),
+		okVarAccess : Gremlin!VariableAccess(
 			name <- 'meta'+typeExp.referredType.name,
 			nextElement <- nextIt
 		),
-		nextIt : Gremlin!NextCall ()
+		nextIt : Gremlin!NextCall (),
+		nullLiteral : Gremlin!NullLiteral()
 		
 }
 
-
-
-
-
-
-
-
-
-
+lazy rule eClass2metaNodes {
+	from
+		eClass : OCL!EClass
+	to
+		metaVar : Gremlin!VariableDeclaration(
+			name <- 'meta'+eClass.name+'Node',
+			value <- tern
+		),
+		tern : Gremlin!TernaryOperator(
+			condition <- checkVarAccess,
+			ifTrue <- okVarAccess,
+			ifFalse <- nullLiteral
+		),
+		checkVarAccess : Gremlin!VariableAccess(
+			name <- 'meta' + eClass.name,
+			nextElement <- checkHasNext
+		),
+		checkHasNext : Gremlin!HasNextCall(
+				
+		),
+		okVarAccess : Gremlin!VariableAccess(
+			name <- 'meta'+eClass.name,
+			nextElement <- nextIt
+		),
+		nextIt : Gremlin!NextCall (),
+		nullLiteral : Gremlin!NullLiteral()
+		
+}
 
 -- Transforms 'allInstances' expressions into kyanosInstanceOf edge step
 -- and vertex step.
@@ -228,6 +282,17 @@ rule typeExp2steps {
 		vap : Gremlin!VariableAccess(
 			name <- 'meta'+	typeExp.referredType.name+'Node',
 			nextElement <- typeExp.getComposite()
+		)
+}
+
+lazy rule eClass2steps {
+	from
+		eClass : OCL!EClass
+	to
+		vap : Gremlin!VariableAccess(
+			name <- 'meta' + eClass.name.debug('pouet') + 'Node'
+			-- for now nextElement is not supported because the EClass is not in the containment 
+			-- tree of the OCL query
 		)
 }
 
@@ -280,6 +345,44 @@ rule oclIsTypeOf2steps {
 		eq : Gremlin!EqualityExpression(
 			left <- it,
 			right <- oclIsTypeOf.argument.first()
+		),
+		it : Gremlin!ClosureIt(
+			nextElement <- outE	
+		),
+		outE : Gremlin!OutEStep(
+			relationshipName <- 'kyanosInstanceOf',
+			nextElement <- inV
+		),
+		inV : Gremlin!InVStep(
+			nextElement <- next	
+		),
+		next : Gremlin!NextCall()
+}
+
+	
+rule oclIsKindOf2steps {
+	from
+		oclIsKindOf : OCL!OperationCallExp (
+			oclIsKindOf.getOpName() = 'oclIsKindOf'	
+		)
+	to
+		tran : Gremlin!TransformStep(
+			closure <- cl,
+			nextElement <- clNext
+		),
+		clNext : Gremlin!NextCall(
+			nextElement <- oclIsKindOf.getComposite()			
+		),
+		cl : Gremlin!Closure(
+			instructions <- eq	
+		),
+		eq : Gremlin!InExpression(
+			left <- it,
+			right <- col
+		),
+		col : Gremlin!CollectionDefinition(
+			values <- oclIsKindOf.argument.first().getSubclasses()->collect(sc | thisModule.eClass2steps(sc))
+			
 		),
 		it : Gremlin!ClosureIt(
 			nextElement <- outE	
@@ -405,7 +508,9 @@ rule propertyAttBooleanLastInComparison2steps {
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and
 			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
-			prop.referredProperty.eType.instanceClassName = 'java.lang.Boolean' and
+			(prop.referredProperty.eType.instanceClassName = 'java.lang.Boolean' or
+			prop.referredProperty.eType.instanceClassName = 'boolean')
+			and
 			prop.isLastInComparison()
 		)
 	to
@@ -440,7 +545,10 @@ rule propertyAttIntegerLastInComparison2steps {
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and 
 			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
-			prop.referredProperty.eType.instanceClassName = 'java.lang.Integer' and
+			(prop.referredProperty.eType.instanceClassName = 'java.lang.Integer' or
+			prop.referredProperty.eType.instanceClassName = 'int')
+				
+			and
 			prop.isLastInComparison()
 		)
 	to
@@ -454,7 +562,8 @@ rule propertyAttStringLastInComparison2steps {
 		prop : OCL!PropertyCallExp(
 			prop.referredProperty.oclIsTypeOf(OCL!EAttribute) and
 			prop.referredProperty.eType.oclIsTypeOf(OCL!EDataType) and
-			prop.referredProperty.eType.instanceClassName = 'java.lang.String' and
+			prop.referredProperty.eType.instanceClassName = 'java.lang.String' 
+			and
 			prop.isLastInComparison()
 		)
 	to

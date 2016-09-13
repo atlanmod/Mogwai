@@ -489,6 +489,15 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.IN_EXPRESSION: {
+				InExpression inExpression = (InExpression)theEObject;
+				T result = caseInExpression(inExpression);
+				if (result == null) result = caseBinaryExpression(inExpression);
+				if (result == null) result = caseExpression(inExpression);
+				if (result == null) result = caseInstruction(inExpression);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GremlinPackage.DIFFERENCE_EXPRESSION: {
 				DifferenceExpression differenceExpression = (DifferenceExpression)theEObject;
 				T result = caseDifferenceExpression(differenceExpression);
@@ -570,6 +579,14 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.TERNARY_OPERATOR: {
+				TernaryOperator ternaryOperator = (TernaryOperator)theEObject;
+				T result = caseTernaryOperator(ternaryOperator);
+				if (result == null) result = caseExpression(ternaryOperator);
+				if (result == null) result = caseInstruction(ternaryOperator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GremlinPackage.STRING_LITERAL: {
 				StringLiteral stringLiteral = (StringLiteral)theEObject;
 				T result = caseStringLiteral(stringLiteral);
@@ -599,6 +616,14 @@ public class GremlinSwitch<T> extends Switch<T> {
 				T result = caseBooleanLiteral(booleanLiteral);
 				if (result == null) result = caseExpression(booleanLiteral);
 				if (result == null) result = caseInstruction(booleanLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.NULL_LITERAL: {
+				NullLiteral nullLiteral = (NullLiteral)theEObject;
+				T result = caseNullLiteral(nullLiteral);
+				if (result == null) result = caseExpression(nullLiteral);
+				if (result == null) result = caseInstruction(nullLiteral);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1357,6 +1382,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>In Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>In Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseInExpression(InExpression object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Difference Expression</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1492,6 +1532,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Ternary Operator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Ternary Operator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTernaryOperator(TernaryOperator object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>String Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1548,6 +1603,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseBooleanLiteral(BooleanLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Null Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Null Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNullLiteral(NullLiteral object) {
 		return null;
 	}
 
