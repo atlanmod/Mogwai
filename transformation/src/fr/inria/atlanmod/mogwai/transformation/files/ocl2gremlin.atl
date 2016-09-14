@@ -141,7 +141,7 @@ rule constraint2script {
 						)
 					endif).
 				append(
-					cc.specification.bodyExpression.getFirstInstruction().debug()
+					cc.specification.bodyExpression.getFirstInstruction()
 				).
 				union(
 					cc.specification.bodyExpression.getFirstInstructionInCollectionOperations()
@@ -290,7 +290,7 @@ lazy rule eClass2steps {
 		eClass : OCL!EClass
 	to
 		vap : Gremlin!VariableAccess(
-			name <- 'meta' + eClass.name.debug('pouet') + 'Node'
+			name <- 'meta' + eClass.name + 'Node'
 			-- for now nextElement is not supported because the EClass is not in the containment 
 			-- tree of the OCL query
 		)
@@ -422,8 +422,8 @@ rule varExp2steps {
 		)
 	to
 		va : Gremlin!VariableAccess(
-			name <- varExp.referredVariable.name.debug(),
-			nextElement <- varExp.getComposite().debug('test')
+			name <- varExp.referredVariable.name,
+			nextElement <- varExp.getComposite()
 		)
 }
 
@@ -434,7 +434,7 @@ rule varExpInCollect2steps {
 		)
 	to
 		id : Gremlin!IdentityStep(
-			nextElement <- varExp.getComposite().debug('aaaaaaaaaah')	
+			nextElement <- varExp.getComposite()
 		)
 }
 

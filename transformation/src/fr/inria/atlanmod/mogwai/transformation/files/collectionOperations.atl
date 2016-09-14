@@ -345,7 +345,7 @@ rule select2steps {
 				)
 				.append(
 					-- Add the transformed body
-					oclSelect.body.getFirstInstruction().debug('fi')
+					oclSelect.body.getFirstInstruction()
 				)	
 		)
 }
@@ -639,7 +639,7 @@ rule forAll2steps {
 --rule size2steps {
 --	from
 --		oclSize : OCL!OperationCallExp (oclSize.getOpName() = 'size'
---			and not (oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)).debug('regular ? '))
+--			and not (oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)))
 --	to
 --		gremlinCountCall : Gremlin!CountCall ()
 --}
