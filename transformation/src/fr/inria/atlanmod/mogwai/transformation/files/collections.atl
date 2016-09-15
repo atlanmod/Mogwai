@@ -20,7 +20,8 @@ uses common;
 rule set2steps {
 	from
 		oclSet : OCL!CollectionLiteralExp (
-			oclSet.eType.oclIsTypeOf(OCL!SetType)
+			oclSet.eType.oclIsTypeOf(OCL!SetType) and
+			oclSet.getComposite() = OclUndefined
 			-- Undefined composite (otherwise it is handled in subrule @see{setInChains2steps})
 		)
 	to
@@ -49,6 +50,22 @@ rule setInChain2steps extends set2steps{
 		),
 		gremlinIdentityStep : Gremlin!IdentityStep(
 			nextElement <- oclSet.getComposite()
+		)
+}
+
+-- Transforms a Set Collection Literal inside a collect() into an identity step
+-- @Note this rule is needed to handle CollectionLiteralExp created by the OCL parser
+-- when a query contains nested collect() on multi-valued collections
+rule setInCollect2steps {
+	from
+		oclSet : OCL!CollectionLiteralExp (
+		--	oclSet.eType.oclIsTypeOf(OCL!SetType) and
+			oclSet.getComposite() <> OclUndefined and
+			oclSet.isInCollect()
+		)
+	to
+		lastColStep : Gremlin!IdentityStep (
+			nextElement <- oclSet.part->first().item
 		)
 }
 
