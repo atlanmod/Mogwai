@@ -58,6 +58,14 @@ public class MogwaiQueryResult {
 			return 1;
 		}
 	}
+
+	/**
+	 * 
+	 * @return true if the query result is a single value
+	 */
+	public boolean isSingleResult() {
+		return singleResult != null;
+	}
 	
 	/**
 	 * 
