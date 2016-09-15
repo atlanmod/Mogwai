@@ -16,7 +16,7 @@ import fr.inria.atlanmod.neoemf.resources.PersistentResource;
 
 public class MogwaiQueryResult {
 	
-	private boolean isRefiable = false;
+	private boolean isReifiable = false;
 	@SuppressWarnings("rawtypes")
 	private Collection collectionResult = null;
 	private Object singleResult = null;
@@ -26,15 +26,19 @@ public class MogwaiQueryResult {
 	MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph) {
 		this.graph = graph;
 		if(engineResult instanceof GremlinPipeline<?,?>) {
-			collectionResult = new BasicEList<Vertex>();
-			Iterator<Vertex> it = ((GremlinPipeline<?,Vertex>)engineResult).iterator();
+			collectionResult = new BasicEList<Object>();
+			Iterator<Object> it = ((GremlinPipeline<?,Object>) engineResult).iterator();
+
+			// isReifiable is true only if all results were Vertex instances
 			long begin = System.currentTimeMillis();
+			isReifiable = true;
 			while(it.hasNext()) {
-				collectionResult.add(it.next());
+				final Object next = it.next();
+				isReifiable = isReifiable && next instanceof Vertex;
+				collectionResult.add(next);
 			}
 			long end = System.currentTimeMillis();
 			System.out.println("Result computation time : " + (end-begin) + " ms");
-			isRefiable = true;
 		}
 		else {
 			if(engineResult instanceof Collection<?>) {
@@ -72,7 +76,7 @@ public class MogwaiQueryResult {
 	 * @return true if the query result is reifiable to EObjects
 	 */
 	public boolean isReifiable() {
-		return isRefiable;
+		return isReifiable;
 	}
 	
 	/**
