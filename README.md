@@ -8,7 +8,7 @@ Generated Gremlin traversals are computed on the database side, bypassing limita
 Mogwaï is fully integrated in NeoEMF, and provides its own [PersistentResource](https://github.com/atlanmod/NeoEMF/blob/master/core/src/main/java/fr/inria/atlanmod/neoemf/resources/PersistentResource.java) extension which augment the default one with a [basic query API](https://github.com/atlanmod/Mogwai/blob/master/core/src/main/java/fr/inria/atlanmod/mogwai/resources/MogwaiResource.java). This API can be used to provide OCL queries (both inline or file-based) to Mogwaï, that will translate them into the appropriate Gremlin expression(s) and return results reified into navigable EObjects if needed.
 
 ## Installation
-  You can download the last version of the update site [here](). NeoEMF (v0.0.0), ATL (v3.5.0), and OCL.ecore (v3.3.100) have to be installed in your Eclipse environment to run Mogwaï.
+  You can download the last version of the update site [here](). NeoEMF (v0.0.1), ATL (v3.5.0), and OCL.ecore (v3.3.100) have to be installed in your Eclipse environment to run Mogwaï.
   
   Alternatively, you can get a copy of Mogwaï into your Eclipse workspace by following these instructions:
   * Clone the repository
