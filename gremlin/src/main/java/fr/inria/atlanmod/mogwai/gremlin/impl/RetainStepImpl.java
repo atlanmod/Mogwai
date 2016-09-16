@@ -2,20 +2,15 @@
  */
 package fr.inria.atlanmod.mogwai.gremlin.impl;
 
+import fr.inria.atlanmod.mogwai.gremlin.CollectionDefinition;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.ListDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
-
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -40,7 +35,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * @generated
 	 * @ordered
 	 */
-	protected ListDeclaration collection;
+	protected CollectionDefinition collection;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -66,7 +61,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ListDeclaration getCollection() {
+	public CollectionDefinition getCollection() {
 		return collection;
 	}
 
@@ -75,8 +70,8 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCollection(ListDeclaration newCollection, NotificationChain msgs) {
-		ListDeclaration oldCollection = collection;
+	public NotificationChain basicSetCollection(CollectionDefinition newCollection, NotificationChain msgs) {
+		CollectionDefinition oldCollection = collection;
 		collection = newCollection;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GremlinPackage.RETAIN_STEP__COLLECTION, oldCollection, newCollection);
@@ -90,7 +85,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCollection(ListDeclaration newCollection) {
+	public void setCollection(CollectionDefinition newCollection) {
 		if (newCollection != collection) {
 			NotificationChain msgs = null;
 			if (collection != null)
@@ -157,7 +152,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case GremlinPackage.RETAIN_STEP__COLLECTION:
-				setCollection((ListDeclaration)newValue);
+				setCollection((CollectionDefinition)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -172,7 +167,7 @@ public class RetainStepImpl extends StepImpl implements RetainStep {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case GremlinPackage.RETAIN_STEP__COLLECTION:
-				setCollection((ListDeclaration)null);
+				setCollection((CollectionDefinition)null);
 				return;
 		}
 		super.eUnset(featureID);

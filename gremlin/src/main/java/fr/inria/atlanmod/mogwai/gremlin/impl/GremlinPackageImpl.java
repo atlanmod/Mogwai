@@ -2654,7 +2654,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEOperation(getFilterStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(retainStepEClass, RetainStep.class, "RetainStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getRetainStep_Collection(), this.getListDeclaration(), null, "collection", null, 1, 1, RetainStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRetainStep_Collection(), this.getCollectionDefinition(), null, "collection", null, 1, 1, RetainStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getRetainStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 

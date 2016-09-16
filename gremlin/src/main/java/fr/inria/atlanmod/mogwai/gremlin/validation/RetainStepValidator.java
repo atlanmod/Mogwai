@@ -4,6 +4,7 @@
  */
 package fr.inria.atlanmod.mogwai.gremlin.validation;
 
+import fr.inria.atlanmod.mogwai.gremlin.CollectionDefinition;
 import fr.inria.atlanmod.mogwai.gremlin.ListDeclaration;
 
 /**
@@ -14,6 +15,8 @@ import fr.inria.atlanmod.mogwai.gremlin.ListDeclaration;
  */
 public interface RetainStepValidator {
 	boolean validate();
+
+	boolean validateCollection(CollectionDefinition value);
 
 	boolean validateCollection(ListDeclaration value);
 }

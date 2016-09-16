@@ -429,12 +429,9 @@ rule collect2steps {
 				)
 				.append(
 					-- Add the transformed body
-					oclCollect.body.getFirstInstruction().debug('closure first instruction')
+					oclCollect.body.getFirstInstruction()
 				)
 		)
---		lastColStep : Gremlin!IdentityStep(
---			nextElement <- oclCollect.getComposite().debug('collect composite ')
---		)
 }
 
 -- Transforms an excluding operation into equivalent Gremlin except step.
@@ -449,11 +446,9 @@ rule excluding2steps {
 		),
 		gremlinCollectionDefinition : Gremlin!CollectionDefinition(
 			values <- oclExcluding.argument.first(),
-			type <- Gremlin!ListDeclaration
-		)
-		--gremlinVectorDefinition : Gremlin!VectorDefinition (
-		--	values <- oclExcluding.argument.first()	
-		--)
+			type <- gremlinListDeclaration
+		),
+		gremlinListDeclaration : Gremlin!ListDeclaration()
 }
 
 -- Transforms an including operation into equivalent Gremlin transform step.
@@ -500,7 +495,7 @@ rule excludes2steps {
 		oclExcludes : OCL!OperationCallExp (oclExcludes.getOpName() = 'excludes')
 	to
 		gremlinRetain : Gremlin!RetainStep(
-			collection <- gremlinVectorType,
+			collection <- gremlinCollectionDefinition,
 			nextElement <- gremlinToListCall	
 		),
 		gremlinToListCall : Gremlin!ToListCall(
@@ -508,10 +503,13 @@ rule excludes2steps {
 		),
 		gremlinIsEmptyCall : Gremlin!IsEmptyCall(
 		),
-		gremlinVectorType : Gremlin!VectorType(
-			values <- oclExcludes.argument.first()	
-		)
+		gremlinCollectionDefinition : Gremlin!CollectionDefinition(
+			values <- oclExcludes.argument.first(),
+			type <- gremlinListDeclaration
+		),
+		gremlinListDeclaration : Gremlin!ListDeclaration()
 }
+
 
 -- Transforms an excludesAll operation into equivalent Gremlin retain step.
 -- Retained values are transformed from the exludesAll argument (expression or literal).

@@ -67,7 +67,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="CollectionDefinition" eSuperTypes="#//TraversalElement">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getType() != null) {&#xA;&#x9;res.append(&quot;(&quot;);&#xA;}&#xA;if(getValues().size() == 1 &amp;&amp; getValues().get(0) instanceof fr.inria.atlanmod.mogwai.gremlin.VariableAccess) {&#xA;&#x9;res.append(((fr.inria.atlanmod.mogwai.gremlin.VariableAccess)getValues().get(0)).getName());&#xA;} else {&#xA;res.append(&quot;[&quot;);&#xA;int gen = 0;&#xA;for(Instruction i : getValues()) {&#xA;&#x9;res.append(i.toString());&#xA;&#x9;gen++;&#xA;&#x9;if(gen &lt; getValues().size()) {&#xA;&#x9;&#x9;res.append(&quot;,&quot;);&#xA;&#x9;}&#xA;}&#xA;res.append(&quot;]&quot;);&#xA;}&#xA;if(getType() != null) {&#xA;&#x9;res.append(&quot; as &quot;);&#xA;&#x9;res.append(getType().toString());&#xA;&#x9;res.append(&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;if(getType() != null) {&#xA;&#x9;res.append(&quot;(&quot;);&#xA;}&#xA;// if(getValues().size() == 1 &amp;&amp; getValues().get(0) instanceof fr.inria.atlanmod.mogwai.gremlin.VariableAccess) {&#xA;//&#x9;res.append(((fr.inria.atlanmod.mogwai.gremlin.VariableAccess)getValues().get(0)).getName());&#xA;// } else {&#xA;res.append(&quot;[&quot;);&#xA;int gen = 0;&#xA;for(Instruction i : getValues()) {&#xA;&#x9;res.append(i.toString());&#xA;&#x9;gen++;&#xA;&#x9;if(gen &lt; getValues().size()) {&#xA;&#x9;&#x9;res.append(&quot;,&quot;);&#xA;&#x9;}&#xA;// }&#xA;res.append(&quot;]&quot;);&#xA;}&#xA;if(getType() != null) {&#xA;&#x9;res.append(&quot; as &quot;);&#xA;&#x9;res.append(getType().toString());&#xA;&#x9;res.append(&quot;)&quot;);&#xA;}&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="values" upperBound="-1"
@@ -197,7 +197,7 @@
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="collection" lowerBound="1"
-        eType="#//ListDeclaration" containment="true"/>
+        eType="#//CollectionDefinition" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExceptStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">

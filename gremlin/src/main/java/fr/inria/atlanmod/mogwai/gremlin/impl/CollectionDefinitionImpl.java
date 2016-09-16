@@ -143,9 +143,9 @@ public class CollectionDefinitionImpl extends TraversalElementImpl implements Co
 		if(getType() != null) {
 			res.append("(");
 		}
-		if(getValues().size() == 1 && getValues().get(0) instanceof fr.inria.atlanmod.mogwai.gremlin.VariableAccess) {
-			res.append(((fr.inria.atlanmod.mogwai.gremlin.VariableAccess)getValues().get(0)).getName());
-		} else {
+		// if(getValues().size() == 1 && getValues().get(0) instanceof fr.inria.atlanmod.mogwai.gremlin.VariableAccess) {
+		//	res.append(((fr.inria.atlanmod.mogwai.gremlin.VariableAccess)getValues().get(0)).getName());
+		// } else {
 		res.append("[");
 		int gen = 0;
 		for(Instruction i : getValues()) {
@@ -154,7 +154,7 @@ public class CollectionDefinitionImpl extends TraversalElementImpl implements Co
 			if(gen < getValues().size()) {
 				res.append(",");
 			}
-		}
+		// }
 		res.append("]");
 		}
 		if(getType() != null) {
