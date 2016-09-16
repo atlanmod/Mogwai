@@ -414,9 +414,27 @@ rule collect2steps {
 	from 
 		oclCollect : OCL!IteratorExp (oclCollect.getOpName() = 'collect')
 	to
-		lastColStep : Gremlin!IdentityStep(
-			nextElement <- oclCollect.getComposite()
+		transformStep : Gremlin!TransformStep(
+			closure <- closure,
+			nextElement <- lastColStep
+		),
+		lastColStep : Gremlin!ScatterStep(
+			nextElement <- oclCollect.getComposite()	
+		),
+		closure : Gremlin!Closure(
+			instructions <- OrderedSet{}
+				.append(
+					-- Transform the iterator into a variable definition
+					thisModule.varIterator2def(oclCollect.iterator.first())
+				)
+				.append(
+					-- Add the transformed body
+					oclCollect.body.getFirstInstruction().debug('closure first instruction')
+				)
 		)
+--		lastColStep : Gremlin!IdentityStep(
+--			nextElement <- oclCollect.getComposite().debug('collect composite ')
+--		)
 }
 
 -- Transforms an excluding operation into equivalent Gremlin except step.

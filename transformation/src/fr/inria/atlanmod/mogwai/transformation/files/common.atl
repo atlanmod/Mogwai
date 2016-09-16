@@ -36,7 +36,28 @@ helper context OCL!OCLExpression def : getFirstInstruction() : OCL!OCLExpression
 				self.oclIsKindOf(OCL!LiteralExp) or
 				self.oclIsTypeOf(OCL!TypeExp) or
 				self.oclIsKindOf(OCL!BooleanLiteralExp) then
-				self
+				if self.oclIsTypeOf(OCL!CollectionLiteralExp) then
+					if self.isInCollect() then
+						if self.part->first() <> OclUndefined then
+							-- Handle the case where a CollectionLiteralExp is created by the parser
+							-- when multi-valued references are collected in nested collect() operations
+							-- TODO find precisely why this happen to have a more accurate translation
+							-- (for now it is possible to break the transformation of collect declaring their 
+							-- own CollectionLiteralExp in their body)
+							if self.part->first().item.oclIsTypeOf(OCL!PropertyCallExp) then
+								self.part->first().item.getFirstInstruction()
+							else
+								self
+							endif
+						else
+							self
+						endif
+					else
+						self
+					endif
+				else
+					self
+				endif
 			else
 				self.source.getFirstInstruction()
 			endif
@@ -61,16 +82,16 @@ helper context OclAny def : getComposite() : OclAny =
 	else
 		-- Collect flattening
 		if composite.oclIsTypeOf(OCL!IteratorExp) then
-			if composite.getOpName() = 'collect' then
+			if (composite.getOpName() = 'collect') then
 				if composite.hasInBody(self) then
 					-- If self is the last element in the collect expression returns
 					-- the collect operation to handle unions
-					composite
+					OclUndefined
 				else
 					-- If self is not in the collect expression returns the content
 					-- of the expression (it flatten collect and delegate its translation
 					-- at the end of its inner expression)
-					composite.body.getFirstInstruction()
+					composite
 				endif
 			else 
 				if Set{'select','reject','exists','forAll'}->includes(composite.getOpName()) then
@@ -116,12 +137,13 @@ helper context OclAny def : getComposite() : OclAny =
 							if theCollect.hasInBody(self) then
 							-- If self is the last element in the collect expression returns
 							-- the collect operation to handle unions
-							theCollect
+							--theCollect
+							OclUndefined
 						else
 							-- If self is not in the collect expression returns the content
 							-- of the expression (it flatten collect and delegate its translation
 							-- at the end of its inner expression)
-							theCollect.body.getFirstInstruction()
+							theCollect
 						endif
 					else
 						composite

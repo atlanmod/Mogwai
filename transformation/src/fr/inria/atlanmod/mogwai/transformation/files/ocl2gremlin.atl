@@ -417,23 +417,12 @@ rule oclAsType2steps {
 -- TODO : handle non-iterator variables
 rule varExp2steps {
 	from
-		varExp : OCL!VariableExp(
-			not(varExp.isInCollect()) or varExp.referredVariable.name='self'
-		)
+		varExp : OCL!VariableExp--(
+--			not(varExp.isInCollect()) or varExp.referredVariable.name='self'
+--		)
 	to
 		va : Gremlin!VariableAccess(
 			name <- varExp.referredVariable.name,
-			nextElement <- varExp.getComposite()
-		)
-}
-
-rule varExpInCollect2steps {
-	from
-		varExp : OCL!VariableExp (
-			varExp.isInCollect() and not(varExp.referredVariable.name='self')	
-		)
-	to
-		id : Gremlin!IdentityStep(
 			nextElement <- varExp.getComposite()
 		)
 }

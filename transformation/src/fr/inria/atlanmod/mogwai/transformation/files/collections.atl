@@ -53,22 +53,6 @@ rule setInChain2steps extends set2steps{
 		)
 }
 
--- Transforms a Set Collection Literal inside a collect() into an identity step
--- @Note this rule is needed to handle CollectionLiteralExp created by the OCL parser
--- when a query contains nested collect() on multi-valued collections
-rule setInCollect2steps {
-	from
-		oclSet : OCL!CollectionLiteralExp (
-		--	oclSet.eType.oclIsTypeOf(OCL!SetType) and
-			oclSet.getComposite() <> OclUndefined and
-			oclSet.isInCollect()
-		)
-	to
-		lastColStep : Gremlin!IdentityStep (
-			nextElement <- oclSet.part->first().item
-		)
-}
-
 -- Transforms an OrderedSet Collection Literal into equivalent Gremlin collection definition.
 -- Generates a simple collection definition if the collection is not a part of an instruction chain
 -- and does not have to be the input of a Gremlin step.
