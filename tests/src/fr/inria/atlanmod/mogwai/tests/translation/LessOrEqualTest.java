@@ -2,9 +2,6 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.IntegerLiteral;
-import fr.inria.atlanmod.mogwai.gremlin.LessOrEqualExpression;
-
 public class LessOrEqualTest extends MogwaiTranslationTest {
 	
 	/**
@@ -15,12 +12,6 @@ public class LessOrEqualTest extends MogwaiTranslationTest {
 	 */
 	@Test
 	public void test() {
-		assert gScript.getInstructions().size() == 1;
-		assert gScript.getInstructions().get(0) instanceof LessOrEqualExpression;
-		LessOrEqualExpression leExp = (LessOrEqualExpression)gScript.getInstructions().get(0);
-		assert leExp.getLeft() instanceof IntegerLiteral;
-		assert leExp.getRight() instanceof IntegerLiteral;
-		// Inner Expressions test are not important here (it is part of chaining tests)
 	}
 
 }

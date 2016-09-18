@@ -2,10 +2,6 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.InEStep;
-import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
-import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
-
 public class EnumTest extends MogwaiTranslationTest {
 
 	/**
@@ -15,7 +11,6 @@ public class EnumTest extends MogwaiTranslationTest {
 	 */
 	@Test
 	public void test() {
-		System.out.println(gScript.toString());
 	}
 
 }

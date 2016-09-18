@@ -4,7 +4,7 @@ import ecore : 'http://www.eclipse.org/emf/2002/Ecore#/'
 package java
 
 context Package
-
-def: sampleSelect(pouet : Package): Set(Package) = 
-	Package.allInstances()->including(pouet)->select(e | e.ownedElements->isEmpty())
+	
+def: nestedEquality : Boolean =
+	true and true and false
 endpackage

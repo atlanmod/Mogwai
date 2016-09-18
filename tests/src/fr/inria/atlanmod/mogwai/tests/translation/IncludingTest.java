@@ -2,10 +2,6 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.InEStep;
-import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
-import fr.inria.atlanmod.mogwai.gremlin.VariableAccess;
-
 public class IncludingTest extends MogwaiTranslationTest {
 
 	/**
@@ -15,8 +11,6 @@ public class IncludingTest extends MogwaiTranslationTest {
 	 */
 	@Test
 	public void test() {
-		System.out.println("Including Test");
-		System.out.println(gScript.toString());
 	}
 
 }

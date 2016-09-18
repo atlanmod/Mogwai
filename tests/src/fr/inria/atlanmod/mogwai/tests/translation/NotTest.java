@@ -2,9 +2,6 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.BooleanLiteral;
-import fr.inria.atlanmod.mogwai.gremlin.NotExpression;
-
 public class NotTest extends MogwaiTranslationTest {
 	
 	/**
@@ -15,11 +12,6 @@ public class NotTest extends MogwaiTranslationTest {
 	 */
 	@Test
 	public void test() {
-		assert gScript.getInstructions().size() == 1;
-		assert gScript.getInstructions().get(0) instanceof NotExpression;
-		NotExpression notExp = (NotExpression)gScript.getInstructions().get(0);
-		assert notExp.getExp() instanceof BooleanLiteral;
-		// Inner Expression test is not important here (it is part of chaining tests)
 	}
 
 }

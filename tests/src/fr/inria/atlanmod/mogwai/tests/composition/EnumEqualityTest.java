@@ -2,9 +2,6 @@ package fr.inria.atlanmod.mogwai.tests.composition;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.EqualityExpression;
-import fr.inria.atlanmod.mogwai.gremlin.IntegerLiteral;
-
 public class EnumEqualityTest extends MogwaiCompositionTest {
 	
 	/**
@@ -14,8 +11,6 @@ public class EnumEqualityTest extends MogwaiCompositionTest {
 	 */
 	@Test
 	public void test() {
-		System.out.println(gScript.getName());
-		System.out.println(gScript.toString());
 	}
 
 }

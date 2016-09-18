@@ -2,8 +2,14 @@ package fr.inria.atlanmod.mogwai.tests.composition;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.Comparison;
+import org.eclipse.emf.compare.Diff;
+import org.eclipse.emf.compare.EMFCompare;
+import org.eclipse.emf.compare.scope.DefaultComparisonScope;
+import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -21,31 +27,42 @@ public abstract class MogwaiCompositionTest {
 	protected GremlinScript gScript;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
 		String className = this.getClass().getSimpleName();
 		String oclFileName = className.substring(0, className.length()-4);
 		oclFileName = Character.toLowerCase(oclFileName.charAt(0))+oclFileName.substring(1);
 		Constraint c = null;
-		// Debug
-//		ResourceSet rSet = new ResourceSetImpl();
-//		rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-//		Resource r = rSet.createResource(URI.createURI("ocl/composition/xmi/"+oclFileName+".xmi"));
 		try {
 			c = MogwaiUtil.parseOCL(URI.createURI("ocl/composition/"+oclFileName+".ocl"), JavaPackage.eINSTANCE);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		// Debug
-//		r.getContents().add(c);
-//		try {
-//			r.save(Collections.EMPTY_MAP);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		System.out.println("Input OCL: " + c.toString());
+		
+		ResourceSet rSet = new ResourceSetImpl();
+		rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+		Resource oclResource = rSet.createResource(URI.createURI("xmi/composition/ocl/" + oclFileName + ".xmi"));
+		oclResource.getContents().add(c);
+		oclResource.save(Collections.emptyMap());
+		
 		OCL2Gremlin runner = new OCL2Gremlin();
 		gScript = (GremlinScript)runner.transform(JavaPackage.eINSTANCE, c);
 		assert gScript != null;
+		
+		Resource gremlinResource = rSet.createResource(URI.createURI("xmi/composition/gremlin/" + oclFileName + "_gremlin.xmi"));
+		gremlinResource.getContents().add(gScript);
+		gremlinResource.save(Collections.emptyMap());
+		
+		System.out.println("Translated Expression: " + gScript.toString());
+		
+		Resource expectedResource = rSet.createResource(URI.createURI("expected/composition/" + oclFileName + "_gremlin.xmi"));
+		expectedResource.load(Collections.emptyMap());
+		
+		IComparisonScope scope = new DefaultComparisonScope(gremlinResource, expectedResource, null);
+		Comparison comparison = EMFCompare.builder().build().compare(scope);
+		
+		List<Diff> differences = comparison.getDifferences();
+		assert differences.size() == 0 : "Comparison with expected translation created " + differences.size() + " diffs";
 	}
 	
 }

@@ -2,8 +2,6 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.IntegerLiteral;
-
 public class NegativeIntegerLiteralTest extends MogwaiTranslationTest {
 	
 	/**
@@ -13,10 +11,6 @@ public class NegativeIntegerLiteralTest extends MogwaiTranslationTest {
 	 */
 	@Test
 	public void test() {
-		assert gScript.getInstructions().size() == 1;
-		assert gScript.getInstructions().get(0) instanceof IntegerLiteral;
-		IntegerLiteral intLit = (IntegerLiteral)gScript.getInstructions().get(0);
-		assert intLit.getValue() == -42;
 	}
 
 }

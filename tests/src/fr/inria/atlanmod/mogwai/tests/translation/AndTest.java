@@ -2,9 +2,6 @@ package fr.inria.atlanmod.mogwai.tests.translation;
 
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.gremlin.AndExpression;
-import fr.inria.atlanmod.mogwai.gremlin.BooleanLiteral;
-
 public class AndTest extends MogwaiTranslationTest {
 	
 	/**
@@ -15,12 +12,6 @@ public class AndTest extends MogwaiTranslationTest {
 	 */
 	@Test
 	public void test() {
-		assert gScript.getInstructions().size() == 1;
-		assert gScript.getInstructions().get(0) instanceof AndExpression;
-		AndExpression andExp = (AndExpression)gScript.getInstructions().get(0);
-		assert andExp.getLeft() instanceof BooleanLiteral;
-		assert andExp.getRight() instanceof BooleanLiteral;
-		// Inner Expressions test are not important here (it is part of chaining tests)
 	}
 
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gremlin:GremlinScript xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gremlin="fr.inria.atlanmod.ocl2query.gremlin">
+  <instructions xsi:type="gremlin:EqualityExpression">
+    <left xsi:type="gremlin:StringLiteral" value="protected"/>
+    <right xsi:type="gremlin:StringLiteral" value="private"/>
+  </instructions>
+</gremlin:GremlinScript>
