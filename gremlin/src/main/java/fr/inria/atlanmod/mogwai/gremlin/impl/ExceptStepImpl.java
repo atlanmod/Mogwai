@@ -5,12 +5,17 @@ package fr.inria.atlanmod.mogwai.gremlin.impl;
 import fr.inria.atlanmod.mogwai.gremlin.CollectionDefinition;
 import fr.inria.atlanmod.mogwai.gremlin.ExceptStep;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -19,10 +24,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.ExceptStepImpl#getCollection <em>Collection</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
