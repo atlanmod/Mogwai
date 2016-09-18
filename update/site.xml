@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/fr.inria.atlanmod.mogwai_1.0.0.201609151337.jar" id="fr.inria.atlanmod.mogwai" version="1.0.0.201609151337">
+   <feature url="features/fr.inria.atlanmod.mogwai_1.0.0.201609190018.jar" id="fr.inria.atlanmod.mogwai" version="1.0.0.201609190018">
       <category name="Mogwai"/>
    </feature>
    <category-def name="Mogwai" label="Mogwai">
