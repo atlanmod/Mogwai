@@ -37,7 +37,6 @@ helper context OCL!OCLExpression def : getFirstInstruction() : OCL!OCLExpression
 				self.oclIsTypeOf(OCL!TypeExp) or
 				self.oclIsKindOf(OCL!BooleanLiteralExp) then
 				if self.oclIsTypeOf(OCL!CollectionLiteralExp) then
-					if self.isInCollect() then
 						if self.part->first() <> OclUndefined then
 							-- Handle the case where a CollectionLiteralExp is created by the parser
 							-- when multi-valued references are collected in nested collect() operations
@@ -52,9 +51,6 @@ helper context OCL!OCLExpression def : getFirstInstruction() : OCL!OCLExpression
 						else
 							self
 						endif
-					else
-						self
-					endif
 				else
 					self
 				endif
@@ -132,22 +128,27 @@ helper context OclAny def : getComposite() : OclAny =
 				-- Handle CollectionItem created by the OCL parser when the query contains nested collect
 				-- on multi-valued EReferences
 				if composite.oclIsTypeOf(OCL!CollectionItem) then
-					if composite.isInCollect() then
-						let theCollect : OclAny = composite.refImmediateComposite().refImmediateComposite() in
-							if theCollect.hasInBody(self) then
-							-- If self is the last element in the collect expression returns
-							-- the collect operation to handle unions
-							--theCollect
-							OclUndefined
-						else
-							-- If self is not in the collect expression returns the content
-							-- of the expression (it flatten collect and delegate its translation
-							-- at the end of its inner expression)
-							theCollect
-						endif
-					else
-						composite
-					endif
+					--if composite.isInCollect() then
+						let parent : OclAny = composite.refImmediateComposite().refImmediateComposite() in
+							if parent.isCollect() then
+								if parent.hasInBody(self) then
+									-- If self is the last element in the collect expression returns
+									-- the collect operation to handle unions
+									--theCollect
+									OclUndefined
+								else
+									-- If self is not in the collect expression returns the content
+									-- of the expression (it flatten collect and delegate its translation
+									-- at the end of its inner expression)
+									parent
+								endif
+							else
+								-- If the parent is not a collect then simply returns it
+								parent
+							endif
+					--else
+					--	composite
+					--endif
 				else
 					-- If the next element is not an IteratorExp or an OperationCallExp, or a CollectionItem
 					-- in a collect returns it
@@ -177,6 +178,15 @@ helper context OCL!OperationCallExp def : recursiveHasInArguments(o : OclAny, e 
 		else
 			self.recursiveHasInArguments(o, e.refImmediateComposite())
 		endif
+	endif
+	;
+
+-- Returns true if self is a collect() iterator
+helper context OclAny def : isCollect() : Boolean = 
+	if self.oclIsTypeOf(OCL!IteratorExp) then
+		self.name = 'collect'
+	else
+		false
 	endif
 	;
 
