@@ -47,7 +47,7 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @parameter ePackage the package in question.
+	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -624,6 +624,15 @@ public class GremlinSwitch<T> extends Switch<T> {
 				T result = caseNullLiteral(nullLiteral);
 				if (result == null) result = caseExpression(nullLiteral);
 				if (result == null) result = caseInstruction(nullLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case GremlinPackage.TO_INTEGER_CALL: {
+				ToIntegerCall toIntegerCall = (ToIntegerCall)theEObject;
+				T result = caseToIntegerCall(toIntegerCall);
+				if (result == null) result = caseMethodCall(toIntegerCall);
+				if (result == null) result = caseTraversalElement(toIntegerCall);
+				if (result == null) result = caseInstruction(toIntegerCall);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1618,6 +1627,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseNullLiteral(NullLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>To Integer Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>To Integer Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseToIntegerCall(ToIntegerCall object) {
 		return null;
 	}
 
