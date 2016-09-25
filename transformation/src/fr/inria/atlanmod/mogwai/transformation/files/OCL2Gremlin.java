@@ -4,7 +4,6 @@ package fr.inria.atlanmod.mogwai.transformation.files;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,40 +32,74 @@ import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.core.emf.EMFModelFactory;
 import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 
 public class OCL2Gremlin {
 
+	private ModelFactory modelFactory;
+	private IReferenceModel inputMetamodel;
+	private IReferenceModel outputMetamodel;
+	private ILauncher transformationLauncher;
+	private EPackage.Registry registry;
+	private EMFInjector injector;
+	private EMFExtractor extractor;
+	private ResourceSet resSet;
+	private List<ASM> modules;
+	private ASM ASMCommon;
+	
+	public OCL2Gremlin() {
+		try {
+			ATLLogger.getLogger().setLevel(Level.ALL);
+			
+			transformationLauncher = new EMFVMLauncher();
+			modelFactory = new EMFModelFactory();
+			injector = new EMFInjector();
+			extractor = new EMFExtractor();
+			
+			inputMetamodel = modelFactory.newReferenceModel();
+			registry = new EPackageRegistryImpl();
+			registry.put("http://www.eclipse.org/emf/2002/Ecore", EcorePackage.eINSTANCE);
+			registry.put("http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore", OCLStandardLibraryImpl.stdlibPackage);
+			registry.put(GremlinPackage.eINSTANCE.getNsURI(), GremlinPackage.eINSTANCE);
+			
+			injector.inject(inputMetamodel, "http://www.eclipse.org/ocl/1.1.0/Ecore");
+			outputMetamodel = modelFactory.newReferenceModel();
+			injector.inject(outputMetamodel, "fr.inria.atlanmod.ocl2query.gremlin");
+			
+			resSet = new ResourceSetImpl();
+			resSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+			
+			transformationLauncher.initialize(new HashMap<String,Object>());
+			modules = new ArrayList<ASM>();
+			modules.add((ASM)transformationLauncher.loadModule(getFileURL("ocl2gremlin.asm").openStream()));
+			modules.add((ASM)transformationLauncher.loadModule(getFileURL("mathExpressions.asm").openStream()));
+			modules.add((ASM)transformationLauncher.loadModule(getFileURL("literals.asm").openStream()));
+			modules.add((ASM)transformationLauncher.loadModule(getFileURL("collections.asm").openStream()));
+			modules.add((ASM)transformationLauncher.loadModule(getFileURL("collectionOperations.asm").openStream()));
+			ASMCommon = (ASM)transformationLauncher.loadModule(getFileURL("common.asm").openStream());
+			transformationLauncher.addLibrary("common",ASMCommon);
+			
+		} catch(ATLCoreException e) {
+			e.printStackTrace();
+		} catch(IOException e1) {
+			e1.printStackTrace();
+		}
+		
+	}
+	
 	@SuppressWarnings("restriction")
 	public EObject transform(EPackage packageInOcl, Constraint exp) {
 		try {
 			
-			ATLLogger.getLogger().setLevel(Level.ALL);
-			
-			ILauncher transformationLauncher = new EMFVMLauncher();
-			ModelFactory modelFactory = new EMFModelFactory();
-			EMFInjector injector = new EMFInjector();
-			EMFExtractor extractor = new EMFExtractor();
-	
-			IReferenceModel inputMetamodel = modelFactory.newReferenceModel();
-			EPackage.Registry registry = new EPackageRegistryImpl();
-			registry.put("http://www.eclipse.org/emf/2002/Ecore", EcorePackage.eINSTANCE);
-			registry.put(GremlinPackage.eINSTANCE.getNsURI(), GremlinPackage.eINSTANCE);
 			registry.put(packageInOcl.getNsURI(), packageInOcl);
-			registry.put(
-				     "http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore",
-				     OCLStandardLibraryImpl.stdlibPackage);
-			injector.inject(inputMetamodel, "http://www.eclipse.org/ocl/1.1.0/Ecore");
-			IReferenceModel outputMetamodel = modelFactory.newReferenceModel();
-			injector.inject(outputMetamodel, "fr.inria.atlanmod.ocl2query.gremlin");
 			
-			ResourceSet resSet = new ResourceSetImpl();
-			resSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 			Resource oclResource = resSet.createResource(URI.createURI("oclInput"));
 			oclResource.getContents().add(exp);
 			
@@ -75,17 +108,12 @@ public class OCL2Gremlin {
 			
 			IModel gModel = modelFactory.newModel(outputMetamodel);
 			
-			transformationLauncher.initialize(new HashMap<String, Object>());
+			transformationLauncher = new EMFVMLauncher();
+			transformationLauncher.initialize(new HashMap<String,Object>());
+			transformationLauncher.addLibrary("common", ASMCommon);
+
 			transformationLauncher.addInModel(inputModel, "IN", "OCL");
 			transformationLauncher.addOutModel(gModel, "OUT", "Gremlin");
-			
-			List<Object> modules = new ArrayList<Object>();
-			modules.add(getFileURL("ocl2gremlin.asm").openStream());
-			modules.add(getFileURL("mathExpressions.asm").openStream());
-			modules.add(getFileURL("literals.asm").openStream());
-			modules.add(getFileURL("collections.asm").openStream());
-			modules.add(getFileURL("collectionOperations.asm").openStream());
-			transformationLauncher.addLibrary("common",getFileURL("common.asm").openStream());
 
 			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.toArray());
 			
@@ -103,15 +131,19 @@ public class OCL2Gremlin {
 			EMFModelFactory emfModelFactory = (EMFModelFactory)modelFactory;
 			emfModelFactory.unload((EMFModel)gModel);
 			emfModelFactory.unload((EMFModel)inputModel);
-			emfModelFactory.unload((EMFReferenceModel)inputMetamodel);
-			emfModelFactory.unload((EMFReferenceModel)outputMetamodel);
 			return gremlinResource.getContents().get(0);
 		}catch(ATLCoreException e) {
 			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		EMFModelFactory emfModelFactory = (EMFModelFactory)modelFactory;
+		emfModelFactory.unload((EMFReferenceModel)inputMetamodel);
+		emfModelFactory.unload((EMFReferenceModel)outputMetamodel);
+		super.finalize();
 	}
 	
 	protected static URL getFileURL(String fileName) throws IOException {

@@ -21,9 +21,12 @@ import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
 
 public class MogwaiResourceImpl extends PersistentResourceImpl implements MogwaiResource {
 
+	private Mogwai mogwai;
+	
     public MogwaiResourceImpl(URI uri) {
         super(uri);
         assert this.persistenceBackend instanceof BlueprintsPersistenceBackend;
+        mogwai = new Mogwai();
     }
 
     public MogwaiQueryResult query(URI oclFileURI, Object obj) {
@@ -32,7 +35,6 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
     }
     
     public MogwaiQueryResult query(Constraint exp, Object obj) {
-        Mogwai mogwai = new Mogwai();
         return mogwai.performQuery(exp, obj, this, (BlueprintsPersistenceBackend)persistenceBackend);
     }
     

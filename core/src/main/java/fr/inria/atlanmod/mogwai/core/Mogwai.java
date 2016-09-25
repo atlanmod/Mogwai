@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.script.Bindings;
+import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -19,12 +20,24 @@ import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
+import fr.inria.atlanmod.neoemf.logger.NeoLogger;
 
 public class Mogwai {
 	
+	private OCL2Gremlin runner;
+	private ScriptEngine engine;
+	private Bindings bindings;
+	
+	public Mogwai() {
+		runner = new OCL2Gremlin();
+		ScriptEngineManager manager = new ScriptEngineManager();
+		manager.registerEngineName("gremlin-groovy", new com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngineFactory());
+		engine = manager.getEngineByName("gremlin-groovy");
+		bindings = engine.createBindings();
+	}
+	
 	public MogwaiQueryResult performQuery(Constraint exp, Object obj, Resource resource, BlueprintsPersistenceBackend graph) {
 		EPackage resourcePackage = resource.getContents().get(0).eClass().getEPackage();
-		OCL2Gremlin runner = new OCL2Gremlin();
 		EObject gremlinScript = runner.transform(resourcePackage, exp);
 		MogwaiQueryResult qr = new MogwaiQueryResult(runQuery(gremlinScript.toString(), obj, graph),graph);
 		return qr;
@@ -32,12 +45,7 @@ public class Mogwai {
 	
 	@SuppressWarnings("rawtypes")
 	private Object runQuery(String gremlinScript, Object obj, BlueprintsPersistenceBackend graph) {
-		System.out.println(gremlinScript);
-	    ScriptEngineManager manager = new ScriptEngineManager();
-		manager.registerEngineName("gremlin-groovy", new com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngineFactory()); 
-		ScriptEngine engine = manager.getEngineByName("gremlin-groovy");
-
-		Bindings bindings = engine.createBindings();
+		System.out.println(gremlinScript.toString());
 		bindings.put("g", graph);
 		if(obj != null) {
 			// TODO handle non object arguments
@@ -56,11 +64,13 @@ public class Mogwai {
 		}
 		Object result = null;
 		try {
-				result = ((GremlinGroovyScriptEngine)engine).compile(
-						gremlinScript).eval(bindings);
+			CompiledScript compiled = ((GremlinGroovyScriptEngine)engine).compile(
+					gremlinScript);
+			result = compiled.eval(bindings);
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
+		bindings.clear();
 		return result;
 	}
 }
