@@ -4,6 +4,7 @@ package fr.inria.atlanmod.mogwai.transformation.files;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +40,6 @@ import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
-import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 
 public class OCL2Gremlin {
 
@@ -78,12 +78,28 @@ public class OCL2Gremlin {
 			
 			transformationLauncher.initialize(new HashMap<String,Object>());
 			modules = new ArrayList<ASM>();
-			modules.add((ASM)transformationLauncher.loadModule(getFileURL("ocl2gremlin.asm").openStream()));
-			modules.add((ASM)transformationLauncher.loadModule(getFileURL("mathExpressions.asm").openStream()));
-			modules.add((ASM)transformationLauncher.loadModule(getFileURL("literals.asm").openStream()));
-			modules.add((ASM)transformationLauncher.loadModule(getFileURL("collections.asm").openStream()));
-			modules.add((ASM)transformationLauncher.loadModule(getFileURL("collectionOperations.asm").openStream()));
-			ASMCommon = (ASM)transformationLauncher.loadModule(getFileURL("common.asm").openStream());
+			
+			InputStream ocl2gremlinStream = getFileURL("ocl2gremlin.asm").openStream();
+			InputStream mathExpressionsStream = getFileURL("mathExpressions.asm").openStream();
+			InputStream literalsStream = getFileURL("literals.asm").openStream();
+			InputStream collectionsStream = getFileURL("collections.asm").openStream();
+			InputStream collectionOperationsStream = getFileURL("collectionOperations.asm").openStream();
+			InputStream commonStream = getFileURL("common.asm").openStream();
+			
+			modules.add((ASM)transformationLauncher.loadModule(ocl2gremlinStream));
+			modules.add((ASM)transformationLauncher.loadModule(mathExpressionsStream));
+			modules.add((ASM)transformationLauncher.loadModule(literalsStream));
+			modules.add((ASM)transformationLauncher.loadModule(collectionsStream));
+			modules.add((ASM)transformationLauncher.loadModule(collectionOperationsStream));
+			ASMCommon = (ASM)transformationLauncher.loadModule(commonStream);
+			
+			ocl2gremlinStream.close();
+			mathExpressionsStream.close();
+			literalsStream.close();
+			collectionsStream.close();
+			collectionOperationsStream.close();
+			commonStream.close();
+			
 			transformationLauncher.addLibrary("common",ASMCommon);
 			
 		} catch(ATLCoreException e) {
