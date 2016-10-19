@@ -652,23 +652,23 @@ rule forAll2steps {
 }
 
 -- Transforms a size operation into equivalent Gremlin count call.
---rule size2steps {
---	from
---		oclSize : OCL!OperationCallExp (oclSize.getOpName() = 'size'
---			and not (oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)))
---	to
---		gremlinCountCall : Gremlin!CountCall ()
---}
+rule size2steps {
+	from
+		oclSize : OCL!OperationCallExp (oclSize.getOpName() = 'size'
+			and not (oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)))
+	to
+		gremlinCountCall : Gremlin!CountCall ()
+}
 
 -- TODO update it (quick fix for a specific transfo)
-rule stringSize2steps {
-	from
-		oclSize : OCL!OperationCallExp ((oclSize.getOpName() = 'size'))
-		--	and oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)
-		--	and if(oclSize.getComposite() <> OclUndefined) then (oclSize.getComposite().eType.name = 'String') else false endif)
-	to
-		gremlinSizeCall : Gremlin!SizeCall()
-}
+--rule stringSize2steps {
+--	from
+--		oclSize : OCL!OperationCallExp ((oclSize.getOpName() = 'size'))
+--		--	and oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)
+--		--	and if(oclSize.getComposite() <> OclUndefined) then (oclSize.getComposite().eType.name = 'String') else false endif)
+--	to
+--		gremlinSizeCall : Gremlin!SizeCall()
+--}
 
 -- Transforms an isEmpty operation into equivalent Gremlin method calls.
 -- IsEmpty method is called on the step collection.
