@@ -13,9 +13,19 @@ import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
+import fr.inria.atlanmod.neoemf.graph.blueprints.util.NeoBlueprintsURI;
 
 public class MogwaiUtil {
 
+	/**
+	 * Returns true if an EMF resource can be used by Mogwaï
+	 * @param resource the resource to check
+	 * @return true if the resource can be used by Mogwaï, false otherwise
+	 */
+	public static boolean isMogwaiCompatible(Resource resource) {
+		return (resource instanceof MogwaiResource) || resource.getURI().scheme().equals(NeoBlueprintsURI.NEO_GRAPH_SCHEME);
+	}
 	
 	/**
 	 * Parse the OCL file at the given URI and return the constraints it contains
