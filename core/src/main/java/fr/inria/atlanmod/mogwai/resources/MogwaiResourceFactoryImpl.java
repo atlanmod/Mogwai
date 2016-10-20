@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.mogwai.util.MogwaiURI;
+import fr.inria.atlanmod.neoemf.graph.blueprints.util.NeoBlueprintsURI;
 import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceFactoryImpl;
 
 public class MogwaiResourceFactoryImpl extends PersistentResourceFactoryImpl implements
@@ -21,7 +22,7 @@ public class MogwaiResourceFactoryImpl extends PersistentResourceFactoryImpl imp
 
     @Override
     public Resource createResource(URI uri) {
-        if(uri.scheme().equals(MogwaiURI.MOGWAI_SCHEME)) {
+        if(uri.scheme().equals(MogwaiURI.MOGWAI_SCHEME) || uri.scheme().equals(NeoBlueprintsURI.NEO_GRAPH_SCHEME)) {
             return new MogwaiResourceImpl(uri);
         }
         else {
