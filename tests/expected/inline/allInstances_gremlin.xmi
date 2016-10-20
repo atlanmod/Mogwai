@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gremlin:GremlinScript xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gremlin="fr.inria.atlanmod.ocl2query.gremlin" name="allInstances">
+  <instructions xsi:type="gremlin:VariableDeclaration" name="metaClassDeclaration">
+    <value xsi:type="gremlin:StartStep">
+      <nextElement xsi:type="gremlin:IndexCall" indexName="metaclasses" indexProperty="name" indexQuery="ClassDeclaration"/>
+    </value>
+  </instructions>
+  <instructions xsi:type="gremlin:VariableDeclaration" name="metaClassDeclarationNode">
+    <value xsi:type="gremlin:TernaryOperator">
+      <condition xsi:type="gremlin:VariableAccess" name="metaClassDeclaration">
+        <nextElement xsi:type="gremlin:HasNextCall"/>
+      </condition>
+      <ifTrue xsi:type="gremlin:VariableAccess" name="metaClassDeclaration">
+        <nextElement xsi:type="gremlin:NextCall"/>
+      </ifTrue>
+      <ifFalse xsi:type="gremlin:NullLiteral"/>
+    </value>
+  </instructions>
+  <instructions xsi:type="gremlin:VariableAccess" name="metaClassDeclarationNode">
+    <nextElement xsi:type="gremlin:InEStep" relationshipName="kyanosInstanceOf">
+      <nextElement xsi:type="gremlin:OutVStep"/>
+    </nextElement>
+  </instructions>
+</gremlin:GremlinScript>

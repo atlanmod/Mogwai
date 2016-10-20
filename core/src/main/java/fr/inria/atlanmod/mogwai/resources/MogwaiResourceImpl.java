@@ -10,8 +10,13 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.resources;
 
+import java.util.UUID;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.ocl.ecore.Constraint;
+import org.eclipse.ocl.ecore.EcoreFactory;
+import org.eclipse.ocl.ecore.ExpressionInOCL;
+import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.core.Mogwai;
 import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
@@ -29,6 +34,8 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
 				return new Mogwai();
 			}
 		};
+		
+	private EcoreFactory eFactory = EcoreFactory.eINSTANCE;
 	
     public MogwaiResourceImpl(URI uri) {
         super(uri);
@@ -44,6 +51,23 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
         return mogwai.get().performQuery(exp, obj, this, (BlueprintsPersistenceBackend)persistenceBackend);
     }
     
+    /**
+     * Compute the result of an OCLExpression that is not attached to
+     * a constraint. This typically happens when a textual query is
+     * parsed using {@see OCLHelper#createQuery}.
+     * @param exp the expression to compute
+     * @param obj query parameters
+     * @return a {@see MogwaiQueryResult}
+     */
+    public MogwaiQueryResult query(OCLExpression exp, Object obj) {
+    	Constraint mockConstraint = eFactory.createConstraint();
+    	ExpressionInOCL mockExp = eFactory.createExpressionInOCL();
+    	mockConstraint.setSpecification(mockExp);
+    	mockConstraint.setName(UUID.randomUUID().toString());
+    	mockExp.setBodyExpression(exp);
+    	return query(mockConstraint,obj);
+    }
+    
     public MogwaiQueryResult query(URI oclFileURI) {
         Constraint exp = MogwaiUtil.parseOCL(oclFileURI, this);
         return this.query(exp,null);
@@ -51,6 +75,10 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
     
     public MogwaiQueryResult query(Constraint exp) {
         return this.query(exp,null);
+    }
+    
+    public MogwaiQueryResult query(OCLExpression exp) {
+    	return this.query(exp,null);
     }
 
 }

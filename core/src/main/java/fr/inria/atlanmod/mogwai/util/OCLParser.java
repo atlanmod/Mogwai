@@ -2,25 +2,32 @@ package fr.inria.atlanmod.mogwai.util;
 
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.ocl.OCL;
 import org.eclipse.ocl.OCLInput;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.ecore.OCLExpression;
+import org.eclipse.ocl.helper.OCLHelper;
+
+import fr.inria.atlanmod.mogwai.core.MogwaiException;
 
 
 class OCLParser {
 	
 	@SuppressWarnings("rawtypes")
 	private OCL ocl;
+	@SuppressWarnings("rawtypes")
+	private OCLHelper oclHelper;
 	
 	public OCLParser(EPackage ePackage) {
-		EPackage.Registry registry = new EPackageRegistryImpl();
-		registry.put(ePackage.getNsURI(), ePackage);
+		if(!EPackage.Registry.INSTANCE.containsKey(ePackage.getNsURI())) {
+			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
+		}
 		this.ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+		this.oclHelper = ocl.createOCLHelper();
 	}
 	
 	public Constraint parseTextualOCL(String oclQuery) {
@@ -38,7 +45,14 @@ class OCLParser {
 		return null;
 	}
 	
-	public void parseFile(URI input, URI output) {
-	    throw new Error("Not implemented");
+	@SuppressWarnings("unchecked")
+	public OCLExpression parseInlineOCL(String oclExpression, EClassifier context) throws MogwaiException {
+		oclHelper.setContext(context);
+		try {
+			return (OCLExpression) oclHelper.createQuery(oclExpression);
+		} catch (ParserException e) {
+			throw new MogwaiException(e.getMessage());
+		}
 	}
+	
 }
