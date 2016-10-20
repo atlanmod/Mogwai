@@ -45,7 +45,7 @@ public class MogwaiQueryTest extends AbstractQueryTest{
 
     @Before
     public void setUp() throws Exception {
-        PersistenceBackendFactoryRegistry.getFactories().put(MogwaiURI.MOGWAI_SCHEME, new BlueprintsPersistenceBackendFactory());
+        PersistenceBackendFactoryRegistry.register(MogwaiURI.MOGWAI_SCHEME, BlueprintsPersistenceBackendFactory.getInstance());
         this.registry = new EPackageRegistryImpl();
         this.registry.put(JavaPackage.eINSTANCE.getNsURI(),JavaPackage.eINSTANCE);
         this.rSet = new ResourceSetImpl();

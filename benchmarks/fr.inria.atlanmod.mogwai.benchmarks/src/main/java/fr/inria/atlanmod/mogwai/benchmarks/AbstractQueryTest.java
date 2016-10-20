@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -114,8 +113,8 @@ public class AbstractQueryTest {
     
     @Before
     public void setUp() throws Exception {
-        PersistenceBackendFactoryRegistry.getFactories().put(NeoBlueprintsURI.NEO_GRAPH_SCHEME,
-                new BlueprintsPersistenceBackendFactory());
+        PersistenceBackendFactoryRegistry.register(NeoBlueprintsURI.NEO_GRAPH_SCHEME,
+                BlueprintsPersistenceBackendFactory.getInstance());
         this.registry = new EPackageRegistryImpl();
         this.registry.put(JavaPackage.eINSTANCE.getNsURI(), JavaPackage.eINSTANCE);
         this.rSet = new ResourceSetImpl();
@@ -130,9 +129,7 @@ public class AbstractQueryTest {
         List<StoreOption> storeOptions = new ArrayList<StoreOption>();
         storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.AUTOCOMMIT);
         loadOpts.put(PersistentResourceOptions.STORE_OPTIONS, storeOptions);
-        loadOpts.put(BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_NEO4J_CACHE_TYPE, BlueprintsNeo4jResourceOptions.CACHE_TYPE.WEAK.toString());
-//        loadOpts.put(BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_NEO4J_USE_MEMORY_MAPPED_BUFFERS, BlueprintsNeo4jResourceOptions.USE_MEMORY_MAPPED_BUFFER.FALSE.toString());
-//        loadOpts.put("blueprints.neo4j.conf.cache_type", "weak");
+        loadOpts.put(BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_NEO4J_CACHE_TYPE, BlueprintsNeo4jResourceOptions.CacheType.WEAK.toString());
         this.resource.load(loadOpts);
     }
     
