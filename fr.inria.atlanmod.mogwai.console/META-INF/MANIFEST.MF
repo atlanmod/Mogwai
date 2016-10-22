@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mogwaï Console
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.console;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui.console,
+ org.eclipse.jface,
+ org.eclipse.ui.workbench,
+ org.eclipse.core.runtime,
+ org.eclipse.ocl.examples.interpreter,
+ org.eclipse.jface.text,
+ org.eclipse.emf.ecore,
+ org.eclipse.ocl.ecore,
+ org.eclipse.emf.edit,
+ fr.inria.atlanmod.mogwai.core;bundle-version="1.0.0"
+Bundle-Vendor: AtlanMod
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: fr.inria.atlanmod.mogwai.console,
+ fr.inria.atlanmod.mogwai.console.ui
+Bundle-Activator: fr.inria.atlanmod.mogwai.console.Activator

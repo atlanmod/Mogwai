@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            class="fr.inria.atlanmod.mogwai.console.ui.MogwaiConsoleFactory"
+            icon="icons/mogwai.gif"
+            label="Mogwaï Console">
+      </consoleFactory>
+   </extension>
+   <extension
+         point="org.eclipse.emf.edit.ui.queryDelegateTextViewerFactories">
+      <factory
+            class="org.eclipse.ocl.examples.interpreter.delegate.OCLQueryDelegateTextViewerFactory"
+            uri="http://www.eclipse.org/emf/2002/Ecore/OCL">
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ocl.examples.ui.Menu?after=show">
+         <command
+               commandId="org.eclipse.ocl.examples.interpreter.ShowEcoreConsoleAction"
+               icon="icons/elcl16/oclconsole_co.gif">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.ocl.examples.interpreter.actions.ShowEcoreConsoleHandler"
+            commandId="org.eclipse.ocl.examples.interpreter.ShowEcoreConsoleAction">
+      </handler>
+      <handler
+            class="org.eclipse.ocl.examples.interpreter.actions.ShowUMLConsoleHandler"
+            commandId="org.eclipse.ocl.examples.interpreter.ShowUMLConsoleAction">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="%_UI_ShowOCLConsole_tooltip"
+            id="org.eclipse.ocl.examples.interpreter.ShowEcoreConsoleAction"
+            name="%_UI_ShowOCLConsole_label">
+      </command>
+      <command
+            description="%_UI_ShowOCLConsole_tooltip"
+            id="org.eclipse.ocl.examples.interpreter.ShowUMLConsoleAction"
+            name="%_UI_ShowOCLConsole_label">
+      </command>
+   </extension>
+
+</plugin>
