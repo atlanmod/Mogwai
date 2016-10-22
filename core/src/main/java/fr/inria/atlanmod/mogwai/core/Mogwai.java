@@ -17,10 +17,10 @@ import org.eclipse.ocl.ecore.Constraint;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 
+import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.logger.NeoLogger;
 
 public class Mogwai {
 	
@@ -39,7 +39,8 @@ public class Mogwai {
 	public MogwaiQueryResult performQuery(Constraint exp, Object obj, Resource resource, BlueprintsPersistenceBackend graph) {
 		EPackage resourcePackage = resource.getContents().get(0).eClass().getEPackage();
 		EObject gremlinScript = runner.transform(resourcePackage, exp);
-		MogwaiQueryResult qr = new MogwaiQueryResult(runQuery(gremlinScript.toString(), obj, graph),graph);
+		assert gremlinScript instanceof GremlinScript : "OCL2Gremlin did not create a GremlinScript element";
+		MogwaiQueryResult qr = new MogwaiQueryResult(runQuery(gremlinScript.toString(), obj, graph),graph,(GremlinScript)gremlinScript);
 		return qr;
 	}
 	

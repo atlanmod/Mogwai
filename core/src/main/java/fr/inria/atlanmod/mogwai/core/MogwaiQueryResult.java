@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EObject;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
+import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.neoemf.datastore.InternalPersistentEObject;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resources.PersistentResource;
@@ -21,10 +22,12 @@ public class MogwaiQueryResult {
 	private Collection collectionResult = null;
 	private Object singleResult = null;
 	private BlueprintsPersistenceBackend graph;
+	private GremlinScript gremlinScript;
 	
 	@SuppressWarnings("unchecked")
-	MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph) {
+	MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
 		this.graph = graph;
+		this.gremlinScript = gremlinScript;
 		if(engineResult instanceof GremlinPipeline<?,?>) {
 			collectionResult = new BasicEList<Object>();
 			Iterator<Object> it = ((GremlinPipeline<?,Object>) engineResult).iterator();
@@ -119,6 +122,10 @@ public class MogwaiQueryResult {
 			throw new MogwaiException();
 		}
 		return (T)singleResult;
+	}
+	
+	public GremlinScript getGremlinScript() {
+		return gremlinScript;
 	}
 	
 }
