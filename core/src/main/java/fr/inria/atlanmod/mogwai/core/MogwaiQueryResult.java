@@ -11,7 +11,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.neoemf.datastore.InternalPersistentEObject;
+import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resources.PersistentResource;
 
@@ -95,7 +95,7 @@ public class MogwaiQueryResult {
 		}
 		EList<EObject> eObjects = new BasicEList<EObject>();
 		for(Vertex vv : (Collection<Vertex>)collectionResult) {
-			InternalPersistentEObject reifiedEObject = graph.reifyVertex(vv);
+			PersistentEObject reifiedEObject = graph.reifyVertex(vv);
 			if(reifiedEObject.resource() != resource) {
 				reifiedEObject.resource(resource);
 			}
