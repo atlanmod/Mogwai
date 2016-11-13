@@ -694,3 +694,24 @@ rule first2steps {
 			nextElement <- oclFirst.getComposite()
 		)
 }
+
+rule any2steps {
+	from
+		oclAny : OCL!IteratorExp(oclAny.getOpName() = 'any')
+	to
+		gremlinFilter : Gremlin!FilterStep(
+			nextElement <- firstStep,
+			closure <- gremlinClosure
+		),
+		gremlinClosure : Gremlin!Closure(
+			instructions <- OrderedSet{}
+				.append(
+					thisModule.varIterator2def(oclAny.iterator.first())
+				).append(
+					oclAny.body.getFirstInstruction()
+				)
+		),
+		firstStep : Gremlin!FirstCall( -- first does not have the same semantic as any
+			nextElement <- oclAny.getComposite()
+		)
+}
