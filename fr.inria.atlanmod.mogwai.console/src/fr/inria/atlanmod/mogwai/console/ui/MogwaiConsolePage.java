@@ -72,6 +72,7 @@ import org.eclipse.ui.part.Page;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
+import fr.inria.atlanmod.mogwai.resources.MogwaiResourceDecorator;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactoryImpl;
 import fr.inria.atlanmod.mogwai.util.MogwaiURI;
@@ -280,8 +281,10 @@ private Composite page;
                     EObject adapter = (EObject) ((IAdaptable) selected).getAdapter(EObject.class);
 					context = adapter;
                 }
-                this.resource = context.eResource();
-                document.setOCLContext(context);
+                if(context != null) {
+	                this.resource = context.eResource();
+	                document.setOCLContext(context);
+                }
             }
 	    }
 	}
