@@ -80,5 +80,15 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
     public MogwaiQueryResult query(OCLExpression exp) {
     	return this.query(exp,null);
     }
+    
+    @Override
+	public MogwaiQueryResult gQuery(String gScript) {
+		return mogwai.get().gPerformQuery(gScript, this, (BlueprintsPersistenceBackend)persistenceBackend);
+	}
+	
+	@Override
+	public MogwaiQueryResult gQuery(String gScript, Object context) {
+		return mogwai.get().gPerformQuery(gScript, context, this, (BlueprintsPersistenceBackend)persistenceBackend);
+	}
 
 }

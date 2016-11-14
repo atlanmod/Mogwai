@@ -1,0 +1,5 @@
+-- @atlcompiler atl2006
+-- @path ClassDiagram=/ClassDiagram2Relational/ClassDiagram/ClassDiagram.ecore
+-- @path Relational=/ClassDiagram2Relational/Relational/Relational.ecore
+module Class2Relational;
+create OUT : Relational from IN : ClassDiagram;

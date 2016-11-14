@@ -36,6 +36,15 @@ public class Mogwai {
 		bindings = engine.createBindings();
 	}
 	
+	public MogwaiQueryResult gPerformQuery(String gScript, Resource resource, BlueprintsPersistenceBackend graph) {
+		return this.gPerformQuery(gScript, null, resource, graph);
+	}
+	
+	public MogwaiQueryResult gPerformQuery(String gScript, Object context, Resource resource, BlueprintsPersistenceBackend graph) {
+		MogwaiQueryResult qr = new MogwaiQueryResult(runQuery(gScript, context, graph), graph, null);
+		return qr;
+	}
+	
 	public MogwaiQueryResult performQuery(Constraint exp, Object obj, Resource resource, BlueprintsPersistenceBackend graph) {
 		EPackage resourcePackage = resource.getContents().get(0).eClass().getEPackage();
 		EObject gremlinScript = runner.transform(resourcePackage, exp);

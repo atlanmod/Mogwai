@@ -89,4 +89,14 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 		return this.query(exp, null);
 	}
 	
+	@Override
+	public MogwaiQueryResult gQuery(String gScript) {
+		return mogwai.get().gPerformQuery(gScript, this, persistenceBackend);
+	}
+	
+	@Override
+	public MogwaiQueryResult gQuery(String gScript, Object context) {
+		return mogwai.get().gPerformQuery(gScript, context, this, persistenceBackend);
+	}
+	
 }
