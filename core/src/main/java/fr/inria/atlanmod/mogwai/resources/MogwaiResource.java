@@ -30,4 +30,8 @@ public interface MogwaiResource extends PersistentResource {
     MogwaiQueryResult query(Constraint exp);
     
     MogwaiQueryResult query(OCLExpression exp);
+    
+    public void enableATLDebug();
+    
+    public void disableATLDebug();
 }

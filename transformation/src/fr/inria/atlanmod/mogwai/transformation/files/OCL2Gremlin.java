@@ -56,7 +56,8 @@ public class OCL2Gremlin {
 	
 	public OCL2Gremlin() {
 		try {
-			ATLLogger.getLogger().setLevel(Level.ALL);
+			// Default value
+			ATLLogger.getLogger().setLevel(Level.OFF);
 			
 			transformationLauncher = new EMFVMLauncher();
 			modelFactory = new EMFModelFactory();
@@ -195,6 +196,14 @@ public class OCL2Gremlin {
 			// Assume that we aren't running.
 		}
 		return false;
+	}
+	
+	public void enableATLDebug() {
+		ATLLogger.getLogger().setLevel(Level.ALL);
+	}
+	
+	public void disableATLDebug() {
+		ATLLogger.getLogger().setLevel(Level.OFF);
 	}
 	
 }

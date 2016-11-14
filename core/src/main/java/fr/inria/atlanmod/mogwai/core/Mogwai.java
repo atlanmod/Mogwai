@@ -74,4 +74,12 @@ public class Mogwai {
 		bindings.clear();
 		return result;
 	}
+	
+	public void enableATLDebug() {
+		runner.enableATLDebug();
+	}
+	
+	public void disableATLDebug() {
+		runner.disableATLDebug();
+	}
 }

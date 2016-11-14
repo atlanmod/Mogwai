@@ -81,4 +81,14 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
     	return this.query(exp,null);
     }
 
+    @Override
+    public void enableATLDebug() {
+    	mogwai.get().enableATLDebug();
+    }
+    
+    @Override
+    public void disableATLDebug() {
+    	mogwai.get().disableATLDebug();
+    }
+    
 }

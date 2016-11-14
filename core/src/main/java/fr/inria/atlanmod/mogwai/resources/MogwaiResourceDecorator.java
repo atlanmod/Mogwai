@@ -89,4 +89,13 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 		return this.query(exp, null);
 	}
 	
+	@Override
+	public void enableATLDebug() {
+		mogwai.get().enableATLDebug();
+	}
+	
+	@Override
+	public void disableATLDebug() {
+		mogwai.get().disableATLDebug();
+	}
 }
