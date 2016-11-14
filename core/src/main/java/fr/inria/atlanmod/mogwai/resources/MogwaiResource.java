@@ -34,4 +34,8 @@ public interface MogwaiResource extends PersistentResource {
     MogwaiQueryResult gQuery(String gScript);
     
     MogwaiQueryResult gQuery(String gScript, Object context);
+
+    public void enableATLDebug();
+    
+    public void disableATLDebug();
 }

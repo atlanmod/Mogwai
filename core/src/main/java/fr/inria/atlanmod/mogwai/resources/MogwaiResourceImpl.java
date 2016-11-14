@@ -91,4 +91,14 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
 		return mogwai.get().gPerformQuery(gScript, context, this, (BlueprintsPersistenceBackend)persistenceBackend);
 	}
 
+    @Override
+    public void enableATLDebug() {
+    	mogwai.get().enableATLDebug();
+    }
+    
+    @Override
+    public void disableATLDebug() {
+    	mogwai.get().disableATLDebug();
+    }
+    
 }

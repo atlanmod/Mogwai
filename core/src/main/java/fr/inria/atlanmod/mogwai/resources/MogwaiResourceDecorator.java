@@ -99,4 +99,12 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 		return mogwai.get().gPerformQuery(gScript, context, this, persistenceBackend);
 	}
 	
+	public void enableATLDebug() {
+		mogwai.get().enableATLDebug();
+	}
+	
+	@Override
+	public void disableATLDebug() {
+		mogwai.get().disableATLDebug();
+	}
 }
