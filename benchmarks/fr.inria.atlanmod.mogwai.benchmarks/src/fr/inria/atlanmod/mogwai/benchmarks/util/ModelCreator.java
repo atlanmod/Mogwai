@@ -102,6 +102,7 @@ public class ModelCreator {
 		saveOpts.put(BlueprintsResourceOptions.OPTIONS_BLUEPRINTS_GRAPH_TYPE, BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_TYPE_NEO4J);
 		List<StoreOption> storeOptions = new ArrayList<StoreOption>();
 		storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.AUTOCOMMIT);
+		storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.DIRECT_WRITE);
 		saveOpts.put(BlueprintsResourceOptions.STORE_OPTIONS, storeOptions);
 		targetResource.save(saveOpts);
 

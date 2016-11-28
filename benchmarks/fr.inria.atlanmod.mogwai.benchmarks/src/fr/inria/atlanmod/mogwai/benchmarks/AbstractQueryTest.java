@@ -49,8 +49,8 @@ import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
 public class AbstractQueryTest {
     
 	private static String[][] parameters = new String[][]{
-//		{"src/main/resources/jdt-core.graph"}//,
-		{"src/main/resources/modisco.graph"}
+//		{"resources/jdt-core.graph"}//,
+		{"resources/modisco.graph"}
 		};
 	
     @Parameters
@@ -87,23 +87,23 @@ public class AbstractQueryTest {
     		JavaPackageImpl.init();
     		try {
     			System.out.println("Unzipping XMI models");
-				ModelCreator.unzip("src/main/resources.zip", "src/main/xmi");
+				ModelCreator.unzip("resources/resources.zip", "resources/xmi");
 				System.out.println("Creating modisco.graph");
 				ModelCreator.createNeoEMFModel(
-						new File("src/main/xmi/resources/org.eclipse.gmt.modisco.java.kyanos.xmi"), 
-						new File("src/main/resources/modisco.graph"));
+						new File("resources/xmi/resources/org.eclipse.gmt.modisco.java.kyanos.xmi"), 
+						new File("resources/modisco.graph"));
 				System.out.println("Creating jdt-core.graph");
-				ModelCreator.createNeoEMFModel(
-						new File("src/main/xmi/resources/org.eclipse.jdt.core.xmi"), 
-						new File("src/main/resources/jdt-core.graph"));
+//				ModelCreator.createNeoEMFModel(
+//						new File("resources/xmi/resources/org.eclipse.jdt.core.xmi"), 
+//						new File("resources/jdt-core.graph"));
 				System.out.println("Cleaning temp files");
-				File xmiFolder = new File("src/main/xmi/resources");
+				File xmiFolder = new File("resources/xmi/resources");
 				File[] xmiContents = xmiFolder.listFiles();
 				for(int i = 0; i < xmiContents.length; i++) {
 					xmiContents[i].delete();
 				}
 				xmiFolder.delete();
-				File xmiRoot = new File("src/main.xmi/");
+				File xmiRoot = new File("resources/xmi/");
 				xmiRoot.delete();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -134,7 +134,9 @@ public class AbstractQueryTest {
     }
     
     protected void startTimer() {
-        Runtime.getRuntime().gc();
+    	for(int i = 0; i < 5; i++) {
+    		Runtime.getRuntime().gc();
+    	}
         System.out.println("Starting query");
         initialUsedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         System.out.println("Initial Memory Used : " + initialUsedMemory/(1024*1024) + " MB");
@@ -144,7 +146,9 @@ public class AbstractQueryTest {
     protected void endTimer() {
         endTime = System.currentTimeMillis();
         System.out.println("Query evaluated in " + (endTime - beginTime) + "ms");
-        Runtime.getRuntime().gc();
+        for(int i = 0; i < 5; i++) {
+    		Runtime.getRuntime().gc();
+    	}
         finalUsedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         System.out.println("Final Memory Used : " + finalUsedMemory/(1024*1024) + " MB");
         System.out.println("Memory increase : "

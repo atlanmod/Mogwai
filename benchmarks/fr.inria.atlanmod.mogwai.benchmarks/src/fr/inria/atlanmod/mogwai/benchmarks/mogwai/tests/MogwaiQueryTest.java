@@ -56,6 +56,7 @@ public class MogwaiQueryTest extends AbstractQueryTest{
         Map<String,Object> loadOpts = new HashMap<String,Object>();
         List<StoreOption> storeOptions = new ArrayList<StoreOption>();
         storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.AUTOCOMMIT);
+        storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.DIRECT_WRITE);
         loadOpts.put(PersistentResourceOptions.STORE_OPTIONS, storeOptions);
         loadOpts.put("blueprints.neo4j.conf.cache_type","weak");
         this.resource.load(loadOpts);
