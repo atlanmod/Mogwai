@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="Mogwaï Update Site">
+      Contains the different components provided with the Mogwaï framework.
+   </description>
+   <feature url="features/fr.inria.atlanmod.mogwai.core.feature_0.0.1.201611281358.jar" id="fr.inria.atlanmod.mogwai.core.feature" version="0.0.1.201611281358">
+      <category name="Mogwai Core"/>
+   </feature>
+   <feature url="features/fr.inria.atlanmod.mogwai.console.feature_0.0.1.201611281358.jar" id="fr.inria.atlanmod.mogwai.console.feature" version="0.0.1.201611281358"/>
+   <category-def name="Mogwai Core" label="Mogwai Core">
+      <description>
+         Mogwai core features
+      </description>
+   </category-def>
+   <category-def name="Mogwai UI" label="Mogwai UI">
+      <description>
+         Additional component for UI integration
+      </description>
+   </category-def>
+</site>
