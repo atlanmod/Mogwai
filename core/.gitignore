@@ -1,5 +1,0 @@
-*.asm
-*~
-/target/
-.classpath
-.externalToolBuilders/

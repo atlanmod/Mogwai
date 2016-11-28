@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mogwaï OCL2Gremlin Transformation
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation
+Bundle-Version: 0.0.1.qualifier
+Require-Bundle: org.eclipse.m2m.atl.core;bundle-version="3.5.0";visibility:=reexport,
+ org.eclipse.m2m.atl.engine.emfvm;bundle-version="3.5.0";visibility:=reexport,
+ org.eclipse.ocl.ecore;bundle-version="3.3.100",
+ fr.inria.atlanmod.mogwai.gremlin;bundle-version="0.0.1";visibility:=reexport
+Export-Package: fr.inria.atlanmod.mogwai.transformation,
+ fr.inria.atlanmod.mogwai.transformation.files
+Bundle-Activator: fr.inria.atlanmod.mogwai.transformation.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: AtlanMod

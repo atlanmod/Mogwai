@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="fr.inria.atlanmod.mogwai.console.feature"
+      label="Mogwai Console Component"
+      version="0.0.1.qualifier"
+      provider-name="AtlanMod">
+
+   <description url="http://www.example.com/description">
+      Contains an OCL console that delegates to Mogwaï if the queried
+model is stored in NeoEMF/Graph. This component is optional and only add a new console to Eclipse workbench.
+The console is a lightweight extension of MDT OCL console, and delegates computation to the
+standard OCL interpreter if the model is not stored in a Mogwaï-compatible
+database.
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import feature="fr.inria.atlanmod.mogwai.core.feature" version="0.0.1.qualifier"/>
+   </requires>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.console"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

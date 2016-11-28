@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="fr.inria.atlanmod.mogwai.core.feature"
+      label="Mogwai Core Component"
+      version="0.0.1.qualifier"
+      provider-name="AtlanMod">
+
+   <description url="http://www.example.com/description">
+      Contains the core component of the Mogwaï query framework: the transformation engine responsible of the OCL to Gremlin transformation, the Gremlin metamodel, and utility classes to query a NeoEMF resource and reify results.
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="fr.inria.atlanmod.neoemf.core"/>
+      <import plugin="fr.inria.atlanmod.neoemf.graph.blueprints"/>
+      <import plugin="fr.inria.atlanmod.neoemf.graph.blueprints.neo4j"/>
+   </requires>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.gremlin"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.transformation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

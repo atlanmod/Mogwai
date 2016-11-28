@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mogwaï Gremlin Metamodel
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.gremlin;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: AtlanMod
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;bundle-version="2.10.2";visibility:=reexport
+Export-Package: fr.inria.atlanmod.mogwai.gremlin,
+ fr.inria.atlanmod.mogwai.gremlin.impl,
+ fr.inria.atlanmod.mogwai.gremlin.util
