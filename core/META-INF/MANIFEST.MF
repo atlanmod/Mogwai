@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.ocl.ecore;bundle-version="3.3.100";visibility:=reexp
 Export-Package: fr.inria.atlanmod.mogwai.core,
  fr.inria.atlanmod.mogwai.resources,
  fr.inria.atlanmod.mogwai.util
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 DynamicImport-Package: *
 Bundle-ClassPath: .,
  target/classes/,

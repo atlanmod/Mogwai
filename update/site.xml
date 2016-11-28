@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/fr.inria.atlanmod.mogwai_1.0.0.201611111932.jar" id="fr.inria.atlanmod.mogwai" version="1.0.0.201611111932">
+   <feature url="features/fr.inria.atlanmod.mogwai_1.0.0.201611150039.jar" id="fr.inria.atlanmod.mogwai" version="1.0.0.201611150039">
       <category name="Mogwai"/>
    </feature>
-   <feature url="features/fr.inria.atlanmod.mogwai.console.feature_1.0.0.201611111932.jar" id="fr.inria.atlanmod.mogwai.console.feature" version="1.0.0.201611111932">
+   <feature url="features/fr.inria.atlanmod.mogwai.console.feature_1.0.0.201611150039.jar" id="fr.inria.atlanmod.mogwai.console.feature" version="1.0.0.201611150039">
       <category name="Mogwai UI"/>
    </feature>
    <category-def name="Mogwai" label="Mogwai">

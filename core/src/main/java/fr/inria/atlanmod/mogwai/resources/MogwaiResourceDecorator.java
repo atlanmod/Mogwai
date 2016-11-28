@@ -1,7 +1,12 @@
 package fr.inria.atlanmod.mogwai.resources;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.ocl.ecore.Constraint;
@@ -97,6 +102,40 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	@Override
 	public MogwaiQueryResult gQuery(String gScript, Object context) {
 		return mogwai.get().gPerformQuery(gScript, context, this, persistenceBackend);
+	}
+	
+	@Override
+	public MogwaiQueryResult gQuery(URI gremlinFileURI) throws MogwaiException {
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(gremlinFileURI.toFileString()));
+		} catch (FileNotFoundException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		MogwaiQueryResult result =  this.gQuery(br.lines().collect(Collectors.joining("\n")));
+		try {
+			br.close();
+		} catch (IOException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		return result;
+	}
+	
+	@Override
+	public MogwaiQueryResult gQuery(URI gremlinFileURI, Object context) throws MogwaiException {
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(gremlinFileURI.toFileString()));
+		} catch (FileNotFoundException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		MogwaiQueryResult result =  this.gQuery(br.lines().collect(Collectors.joining("\n")), context);
+		try {
+			br.close();
+		} catch (IOException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		return result;
 	}
 	
 	public void enableATLDebug() {

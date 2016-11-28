@@ -10,7 +10,12 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.resources;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.ocl.ecore.Constraint;
@@ -19,6 +24,7 @@ import org.eclipse.ocl.ecore.ExpressionInOCL;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.core.Mogwai;
+import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
@@ -89,6 +95,40 @@ public class MogwaiResourceImpl extends PersistentResourceImpl implements Mogwai
 	@Override
 	public MogwaiQueryResult gQuery(String gScript, Object context) {
 		return mogwai.get().gPerformQuery(gScript, context, this, (BlueprintsPersistenceBackend)persistenceBackend);
+	}
+	
+	@Override
+	public MogwaiQueryResult gQuery(URI gremlinFileURI) throws MogwaiException {
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(gremlinFileURI.toFileString()));
+		} catch (FileNotFoundException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		MogwaiQueryResult result =  this.gQuery(br.lines().collect(Collectors.joining("\n")));
+		try {
+			br.close();
+		} catch (IOException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		return result;
+	}
+	
+	@Override
+	public MogwaiQueryResult gQuery(URI gremlinFileURI, Object context) throws MogwaiException {
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(gremlinFileURI.toFileString()));
+		} catch (FileNotFoundException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		MogwaiQueryResult result =  this.gQuery(br.lines().collect(Collectors.joining("\n")), context);
+		try {
+			br.close();
+		} catch (IOException e) {
+			throw new MogwaiException(e.getMessage());
+		}
+		return result;
 	}
 
     @Override

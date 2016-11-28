@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCLExpression;
 
+import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
 import fr.inria.atlanmod.neoemf.resources.PersistentResource;
 
@@ -34,6 +35,10 @@ public interface MogwaiResource extends PersistentResource {
     MogwaiQueryResult gQuery(String gScript);
     
     MogwaiQueryResult gQuery(String gScript, Object context);
+    
+    MogwaiQueryResult gQuery(URI gremlinFileURI) throws MogwaiException;
+    
+    MogwaiQueryResult gQuery(URI gremlinFileURI, Object context) throws MogwaiException;
 
     public void enableATLDebug();
     
