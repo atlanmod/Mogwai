@@ -93,9 +93,9 @@ public class AbstractQueryTest {
 						new File("resources/xmi/resources/org.eclipse.gmt.modisco.java.kyanos.xmi"), 
 						new File("resources/modisco.graph"));
 				System.out.println("Creating jdt-core.graph");
-//				ModelCreator.createNeoEMFModel(
-//						new File("resources/xmi/resources/org.eclipse.jdt.core.xmi"), 
-//						new File("resources/jdt-core.graph"));
+				ModelCreator.createNeoEMFModel(
+						new File("resources/xmi/resources/org.eclipse.jdt.core.xmi"), 
+						new File("resources/jdt-core.graph"));
 				System.out.println("Cleaning temp files");
 				File xmiFolder = new File("resources/xmi/resources");
 				File[] xmiContents = xmiFolder.listFiles();
