@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui.console,
  org.eclipse.emf.ecore,
  org.eclipse.ocl.ecore,
  org.eclipse.emf.edit,
- fr.inria.atlanmod.mogwai.core;bundle-version="1.0.0"
+ fr.inria.atlanmod.mogwai.core
 Bundle-Vendor: AtlanMod
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
