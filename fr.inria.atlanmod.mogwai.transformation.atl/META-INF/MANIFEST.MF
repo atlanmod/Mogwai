@@ -9,6 +9,6 @@ Require-Bundle: fr.inria.atlanmod.neoemf.core;bundle-version="0.0.1",
  fr.inria.atlanmod.neoemf.graph.blueprints.neo4j;bundle-version="0.0.1",
  org.eclipse.emf.ecore.xmi;bundle-version="2.10.2",
  ClassDiagram;bundle-version="0.1.0",
- fr.inria.atlanmod.mogwai.core;bundle-version="1.0.0",
+ fr.inria.atlanmod.mogwai.core;bundle-version="0.0.1",
  fr.inria.atlanmod.mogwai.gremlin;bundle-version="0.0.1",
  fr.inria.atlanmod.mogwai.transformation;bundle-version="0.0.1"
