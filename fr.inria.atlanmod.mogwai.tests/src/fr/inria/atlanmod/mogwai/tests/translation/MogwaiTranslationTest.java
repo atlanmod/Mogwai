@@ -31,6 +31,7 @@ public abstract class MogwaiTranslationTest {
 		String className = this.getClass().getSimpleName();
 		String oclFileName = className.substring(0, className.length()-4);
 		oclFileName = Character.toLowerCase(oclFileName.charAt(0))+oclFileName.substring(1);
+		System.out.println("Processing " + oclFileName);
 		Constraint c = null;
 		try {
 			c = MogwaiUtil.parseOCL(URI.createURI("ocl/translation/"+oclFileName+".ocl"), JavaPackage.eINSTANCE);
@@ -62,6 +63,9 @@ public abstract class MogwaiTranslationTest {
 		Comparison comparison = EMFCompare.builder().build().compare(scope);
 		
 		List<Diff> differences = comparison.getDifferences();
+		for(Diff diff : differences) {
+			System.out.println(diff.toString());
+		}
 		assert differences.size() == 0 : "Comparison with expected translation created " + differences.size() + " diffs";
 	}
 	
