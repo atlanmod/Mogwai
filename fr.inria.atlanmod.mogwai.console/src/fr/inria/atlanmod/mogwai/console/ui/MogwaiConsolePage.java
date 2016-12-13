@@ -1,6 +1,5 @@
 package fr.inria.atlanmod.mogwai.console.ui;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -70,16 +69,13 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResourceDecorator;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactoryImpl;
-import fr.inria.atlanmod.mogwai.util.MogwaiURI;
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
-import fr.inria.atlanmod.neoemf.graph.blueprints.util.NeoBlueprintsURI;
-import fr.inria.atlanmod.neoemf.resources.PersistentResource;
-import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public class MogwaiConsolePage extends Page {
 	
@@ -198,8 +194,9 @@ private Composite page;
 					ResourceSet rSet = resource.getResourceSet();
 					URI rURI = resource.getURI();
 					// Decorate the resource to enable Mogwai query API
-					MogwaiResource mr = MogwaiResourceFactory.eINSTANCE.decoratePersistentResource((PersistentResource)resource);
-					MogwaiQueryResult qR = mr.query(parsed, context);
+					MogwaiResource mr = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)resource);
+					MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder().fromOCLExpression(parsed).context(context.eClass()).build();
+					MogwaiQueryResult qR = mr.query(query, context);
 					append("Computing query: ", outputDefault, true);
 					append(qR.getGremlinScript().toString(), outputGremlin, false);
 					append("Results: ", outputDefault, true);
