@@ -1,14 +1,14 @@
 package fr.inria.atlanmod.mogwai.benchmarks.mogwai.tests;
 
-import static org.junit.Assert.fail;
-
 import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
+import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
 public class Grabats09Query extends MogwaiQueryTest {
 
@@ -19,22 +19,21 @@ public class Grabats09Query extends MogwaiQueryTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/RCIS/Grabats09.ocl"), resource);
 	}
 	
 	public void tearDown() throws Exception {
 		super.tearDown();
-		oclConstraint = null;
 	}
 	
 	@Test
 	public void run() {
-		System.out.println(oclConstraint.toString());
+		MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder().fromURI(URI.createURI("ocl/RCIS/Grabats09.ocl")).build();
+		NeoLogger.info("Input Query: {0}" + query.getInput());
         startTimer();
         MogwaiResource mogwaiResource = (MogwaiResource)resource;
-        MogwaiQueryResult result = mogwaiResource.query(oclConstraint);
+        MogwaiQueryResult result = mogwaiResource.query(query);
         endTimer();
-        System.out.println(result.resultSize());
+        NeoLogger.info("Result size: {0}", result.resultSize());
 	}
 
 }

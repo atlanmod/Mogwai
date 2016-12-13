@@ -8,9 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
+import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
 public class TextElementInJavadocQuery extends MogwaiQueryTest {
 
@@ -21,7 +23,6 @@ public class TextElementInJavadocQuery extends MogwaiQueryTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/RCIS/TextElementInJavadoc.ocl"), resource);
 	}
 
 	@After
@@ -31,22 +32,24 @@ public class TextElementInJavadocQuery extends MogwaiQueryTest {
 
 	@Test
 	public void run() {
-		System.out.println(oclConstraint.toString());
-        startTimer();
+		MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder()
+				.fromURI(URI.createURI("ocl/RCIS/TextElementInJavadoc.ocl")).build();
+		NeoLogger.info("Input Query: {0}" + query.getInput());
+		startTimer();
         MogwaiResource mogwaiResource = (MogwaiResource)resource;
-        MogwaiQueryResult result = mogwaiResource.query(oclConstraint,mogwaiResource.getContents().get(0));
+        MogwaiQueryResult result = mogwaiResource.query(query,mogwaiResource.getContents().get(0));
         try {
+        	NeoLogger.info("Reifying results");
         	long begin = System.currentTimeMillis();
 			EList<EObject> res = result.reifyResults((MogwaiResource)resource);
-			System.out.println(res.size());
 			long end = System.currentTimeMillis();
-			System.out.println("reification time: " + (end-begin)+" ms");
+			NeoLogger.info("Reification time: {0}ms", (end-begin));
 		} catch (MogwaiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         endTimer();
-        System.out.println(result.resultSize());
+        NeoLogger.info("Result size: {0}", result.resultSize());
 	}
 
 }

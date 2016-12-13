@@ -12,11 +12,8 @@ package fr.inria.atlanmod.mogwai.benchmarks;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EPackage;
@@ -34,16 +31,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import fr.inria.atlanmod.mogwai.benchmarks.util.ModelCreator;
-import fr.inria.atlanmod.neoemf.datastore.PersistenceBackendFactoryRegistry;
-import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.graph.blueprints.neo4j.resources.BlueprintsNeo4jResourceOptions;
-import fr.inria.atlanmod.neoemf.graph.blueprints.resources.BlueprintsResourceOptions;
-import fr.inria.atlanmod.neoemf.graph.blueprints.util.NeoBlueprintsURI;
-import fr.inria.atlanmod.neoemf.resources.PersistentResource;
-import fr.inria.atlanmod.neoemf.resources.PersistentResourceFactory;
-import fr.inria.atlanmod.neoemf.resources.PersistentResourceOptions;
-import fr.inria.atlanmod.neoemf.resources.PersistentResourceOptions.StoreOption;
-import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
+import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
+import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.logging.NeoLogger;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
+import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 @RunWith(Parameterized.class)
 public class AbstractQueryTest {
@@ -93,10 +87,10 @@ public class AbstractQueryTest {
 						new File("resources/xmi/resources/org.eclipse.gmt.modisco.java.kyanos.xmi"), 
 						new File("resources/modisco.graph"));
 				System.out.println("Creating jdt-core.graph");
-				ModelCreator.createNeoEMFModel(
+				/*ModelCreator.createNeoEMFModel(
 						new File("resources/xmi/resources/org.eclipse.jdt.core.xmi"), 
 						new File("resources/jdt-core.graph"));
-				System.out.println("Cleaning temp files");
+				System.out.println("Cleaning temp files");*/
 				File xmiFolder = new File("resources/xmi/resources");
 				File[] xmiContents = xmiFolder.listFiles();
 				for(int i = 0; i < xmiContents.length; i++) {
@@ -113,23 +107,21 @@ public class AbstractQueryTest {
     
     @Before
     public void setUp() throws Exception {
-        PersistenceBackendFactoryRegistry.register(NeoBlueprintsURI.NEO_GRAPH_SCHEME,
+        PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
                 BlueprintsPersistenceBackendFactory.getInstance());
         this.registry = new EPackageRegistryImpl();
         this.registry.put(JavaPackage.eINSTANCE.getNsURI(), JavaPackage.eINSTANCE);
         this.rSet = new ResourceSetImpl();
         JavaPackageImpl.init();
         this.rSet.getResourceFactoryRegistry().getProtocolToFactoryMap()
-                .put(NeoBlueprintsURI.NEO_GRAPH_SCHEME, PersistentResourceFactory.eINSTANCE);
-        System.out.println("Creating resource " + resourceName);
-        this.resource = rSet.createResource(NeoBlueprintsURI.createNeoGraphURI(new File(
+                .put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
+        NeoLogger.info("Creating resource {0}", resourceName);
+        this.resource = rSet.createResource(BlueprintsURI.createFileURI(new File(
                 resourceName)));
-        Map<String, Object> loadOpts = new HashMap<String, Object>();
-
-        List<StoreOption> storeOptions = new ArrayList<StoreOption>();
-        storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.AUTOCOMMIT);
-        loadOpts.put(PersistentResourceOptions.STORE_OPTIONS, storeOptions);
-        loadOpts.put(BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_NEO4J_CACHE_TYPE, BlueprintsNeo4jResourceOptions.CacheType.WEAK.toString());
+        
+		Map<String, Object> loadOpts = BlueprintsNeo4jOptionsBuilder
+				.newBuilder().autocommit().weakCache().asMap();
+        
         this.resource.load(loadOpts);
     }
     
@@ -137,36 +129,36 @@ public class AbstractQueryTest {
     	for(int i = 0; i < 5; i++) {
     		Runtime.getRuntime().gc();
     	}
-        System.out.println("Starting query");
+        NeoLogger.info("Starting query");
         initialUsedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        System.out.println("Initial Memory Used : " + initialUsedMemory/(1024*1024) + " MB");
+        NeoLogger.info("Initial Memory Used : {0} MB", initialUsedMemory/(1024*1024));
         beginTime = System.currentTimeMillis();
     }
 
     protected void endTimer() {
         endTime = System.currentTimeMillis();
-        System.out.println("Query evaluated in " + (endTime - beginTime) + "ms");
+        NeoLogger.info("Query evaluated in {0}ms", (endTime - beginTime));
         for(int i = 0; i < 5; i++) {
     		Runtime.getRuntime().gc();
     	}
         finalUsedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        System.out.println("Final Memory Used : " + finalUsedMemory/(1024*1024) + " MB");
-        System.out.println("Memory increase : "
-                + ((finalUsedMemory - initialUsedMemory) / (1024 * 1024)) + " MB");
+        NeoLogger.info("Final Memory Used : {0} MB", finalUsedMemory/(1024*1024));
+        NeoLogger.info("Memory increase : {0} MB", ((finalUsedMemory - initialUsedMemory) / (1024 * 1024)));
     }
 
     @After
     public void tearDown() throws Exception {
         registry.clear();
         if (this.resource != null && this.resource instanceof PersistentResource) {
-            PersistentResourceImpl.shutdownWithoutUnload((PersistentResourceImpl) resource);
+        	((PersistentResource)resource).close();
         } else {
             throw new RuntimeException("The resource is not a PersistentResource");
         }
         this.resource = null;
         this.rSet.getResourceFactoryRegistry().getProtocolToFactoryMap().clear();
         this.rSet = null;
-        PersistenceBackendFactoryRegistry.getFactories().clear();
+        PersistenceBackendFactoryRegistry.unregisterAll();
+        Runtime.getRuntime().gc();
     }
 
 }

@@ -2,18 +2,15 @@
  */
 package org.eclipse.gmt.modisco.java.neoemf.impl;
 
-import fr.inria.atlanmod.neoemf.core.impl.PersistentEObjectImpl;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.gmt.modisco.java.ASTNode;
 import org.eclipse.gmt.modisco.java.ClassFile;
 import org.eclipse.gmt.modisco.java.Comment;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
-
 import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
+
+import fr.inria.atlanmod.neoemf.core.DefaultPersistentEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +27,7 @@ import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
  *
  * @generated
  */
-public abstract class ASTNodeImpl extends PersistentEObjectImpl implements ASTNode {
+public abstract class ASTNodeImpl extends DefaultPersistentEObject implements ASTNode {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -1,16 +1,14 @@
 package fr.inria.atlanmod.mogwai.benchmarks.mogwai.tests;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.gmt.modisco.java.TextElement;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.benchmarks.util.JavaQueries;
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
+import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
 public class EmptyTextElementInJavadoc extends MogwaiQueryTest {
 
@@ -21,45 +19,22 @@ public class EmptyTextElementInJavadoc extends MogwaiQueryTest {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		oclConstraint = MogwaiUtil.parseOCL(URI.createURI("ocl/RCIS/EmptyTextElementInJavadoc.ocl"), resource);
 	}
 	
 	public void tearDown() throws Exception {
 		super.tearDown();
-		oclConstraint = null;
 	}
 	
 	@Test
 	public void run() {
-//		try {
-//			synchronized (this) {
-//				
-//			System.out.println("waiting");
-//			wait(20000);
-//			System.out.println("done");
-//			}
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		System.out.println("TextElementInJavadoc Warm");
-		System.out.println(oclConstraint.toString());
+		MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder()
+				.fromURI(URI.createURI("ocl/RCIS/EmptyTextElementInJavadoc.ocl")).build();
+		NeoLogger.info("Input Query: {0}" + query.getInput());
         startTimer();
         MogwaiResource mogwaiResource = (MogwaiResource)resource;
-        MogwaiQueryResult result = mogwaiResource.query(oclConstraint,mogwaiResource.getContents().get(0));
-//        System.out.println("done");
-//        MogwaiQueryResult result2 = mogwaiResource.query(oclConstraint,mogwaiResource.getContents().get(0));
-        
-//        EList<TextElement> warmResult = JavaQueries.textElementInJavadoc(resource);
+        MogwaiQueryResult result = mogwaiResource.query(query, mogwaiResource.getContents().get(0));
         endTimer();
-        System.out.println(result.resultSize());
-//        try {
-//			System.out.println(result.getResults().iterator().next());
-//		} catch (MogwaiException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//        System.out.println(result2.resultSize());
+        NeoLogger.info("Result size: {0}", result.resultSize());
 	}
 
 }
