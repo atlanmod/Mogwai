@@ -4,11 +4,14 @@ Bundle-Name: Mogwai Core
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.core
 Bundle-Version: 0.0.1.qualifier
 Require-Bundle: org.eclipse.ocl.ecore;bundle-version="3.3.100";visibility:=reexport,
- fr.inria.atlanmod.neoemf.core;bundle-version="0.0.1";visibility:=reexport,
- fr.inria.atlanmod.neoemf.graph.blueprints;bundle-version="0.0.1";visibility:=reexport,
- fr.inria.atlanmod.neoemf.graph.blueprints.neo4j;bundle-version="0.0.1",
- fr.inria.atlanmod.mogwai.transformation;bundle-version="0.0.1";visibility:=reexport
+ fr.inria.atlanmod.mogwai.transformation;bundle-version="0.0.1";visibility:=reexport,
+ fr.inria.atlanmod.neoemf.core;bundle-version="1.0.1",
+ fr.inria.atlanmod.neoemf.data.blueprints.core;bundle-version="1.0.1",
+ fr.inria.atlanmod.neoemf.data.blueprints.neo4j;bundle-version="1.0.1"
 Export-Package: fr.inria.atlanmod.mogwai.core,
+ fr.inria.atlanmod.mogwai.processor,
+ fr.inria.atlanmod.mogwai.query,
+ fr.inria.atlanmod.mogwai.query.builder,
  fr.inria.atlanmod.mogwai.resources,
  fr.inria.atlanmod.mogwai.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -10,26 +10,15 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.resources;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.ocl.ecore.Constraint;
-import org.eclipse.ocl.ecore.OCLExpression;
-
-import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
-import fr.inria.atlanmod.neoemf.resources.PersistentResource;
+import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public interface MogwaiResource extends PersistentResource {
     
-    MogwaiQueryResult query(URI oclFileURI, Object obj);
-    
-    MogwaiQueryResult query(Constraint exp, Object obj);
-    
-    MogwaiQueryResult query(OCLExpression exp, Object obj);
-    
-    MogwaiQueryResult query(URI oclFileURI);
-
-    MogwaiQueryResult query(Constraint exp);
-    
-    MogwaiQueryResult query(OCLExpression exp);
+	MogwaiQueryResult query(MogwaiQuery query);
+	
+    MogwaiQueryResult query(MogwaiQuery query, Object arg);
     
     public void enableATLDebug();
     

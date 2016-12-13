@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.core;
+package fr.inria.atlanmod.mogwai.query;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -10,10 +10,12 @@ import org.eclipse.emf.ecore.EObject;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
+import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
-import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.resources.PersistentResource;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
+import fr.inria.atlanmod.neoemf.logging.NeoLogger;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public class MogwaiQueryResult {
 	
@@ -25,7 +27,7 @@ public class MogwaiQueryResult {
 	private GremlinScript gremlinScript;
 	
 	@SuppressWarnings("unchecked")
-	MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
+	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
 		this.graph = graph;
 		this.gremlinScript = gremlinScript;
 		if(engineResult instanceof GremlinPipeline<?,?>) {
@@ -41,7 +43,7 @@ public class MogwaiQueryResult {
 				collectionResult.add(next);
 			}
 			long end = System.currentTimeMillis();
-			System.out.println("Result computation time : " + (end-begin) + " ms");
+			NeoLogger.info("Database computation time: {0}ms", (end-begin));
 		}
 		else {
 			if(engineResult instanceof Collection<?>) {

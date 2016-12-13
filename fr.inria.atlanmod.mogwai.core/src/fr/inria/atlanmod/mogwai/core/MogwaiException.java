@@ -1,6 +1,6 @@
 package fr.inria.atlanmod.mogwai.core;
 
-public class MogwaiException extends Exception {
+public class MogwaiException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
