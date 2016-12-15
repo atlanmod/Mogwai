@@ -52,6 +52,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 			persistenceBackendField.setAccessible(true);
 			persistenceBackend = (BlueprintsPersistenceBackend) persistenceBackendField.get(base);
 			oclProcessor.get().setGraphBackend(persistenceBackend);
+			gremlinProcessor.get().setGraphBackend(persistenceBackend);
 		} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
 			throw new MogwaiException(e.getMessage());
 		}
