@@ -32,18 +32,18 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 	 */
 	public MogwaiOCLQuery(Object input, EClassifier context) {
 		super(input);
-		if(Objects.isNull(this.context)) {
-			// The context has not been set by a parent call
-			this.context = context;
-		}
-		if(Objects.isNull(constraint)) {
-			if(input instanceof Constraint) {
-				fromConstraint((Constraint) input);
-			} else if(input instanceof OCLExpression) {
-				fromOCLExpression((OCLExpression) input);
-			} else {
-				throw new MogwaiQueryException("Unknown input type " + input);
-			}
+		// The context has not been set by a parent call
+		this.context = context;
+		if(input instanceof String) {
+			fromString((String) input);
+		} else if(input instanceof URI) {
+			fromURI((URI) input);
+		} else if(input instanceof Constraint) {
+			fromConstraint((Constraint) input);
+		} else if(input instanceof OCLExpression) {
+			fromOCLExpression((OCLExpression) input);
+		} else {
+			throw new MogwaiQueryException("Unknown input type " + input);
 		}
 	}
 	
@@ -61,13 +61,11 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 		return constraint;
 	}
 
-	@Override
 	protected void fromString(String string) {
 		checkNotNull(context, "Cannot build a String based MogwaiOCLQuery without explicit context");
 		fromOCLExpression(MogwaiUtil.parseInlineOCL(string, context));
 	}
 
-	@Override
 	protected void fromURI(URI uri) {
 		fromConstraint(MogwaiUtil.parseOCL(uri));
 	}
