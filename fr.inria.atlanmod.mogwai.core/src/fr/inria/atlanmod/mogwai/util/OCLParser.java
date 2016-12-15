@@ -30,7 +30,7 @@ class OCLParser {
 	 *            the {@link EPackage} to register
 	 */
 	public OCLParser(EPackage ePackage) {
-		super();
+		this();
 		if(!EPackage.Registry.INSTANCE.containsKey(ePackage.getNsURI())) {
 			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
 		}
