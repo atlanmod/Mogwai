@@ -12,14 +12,12 @@ def metaTableNode = (metaTable.hasNext() ? metaTable.next() : ({
 })());
 println(metaTableNode);
 
-//metaClassNode.inE("kyanosInstanceOf").outV.filter{def temp1 = it;true;}.first().outE("attr").inV.filter{def e = it; !( e.property('multiValued').transform{it == "true";}.next());};
-
-
 metaClassNode.inE("kyanosInstanceOf").outV.transform{
 	def c = it;
 	def out = gr.addVertex();
 	gr.addEdge(out, metaTableNode, "kyanosInstanceOf");
 	gr.addEdge(gr.getVertex('ROOT'), out, "eContents");
+	out.setProperty("name", c.getProperty("name"));
 	println(out);
 	out;
 }
