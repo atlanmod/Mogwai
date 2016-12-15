@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -18,14 +16,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import fr.inria.atlanmod.neoemf.datastore.PersistenceBackendFactoryRegistry;
-import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.graph.blueprints.neo4j.resources.BlueprintsNeo4jResourceOptions;
-import fr.inria.atlanmod.neoemf.graph.blueprints.resources.BlueprintsResourceOptions;
-import fr.inria.atlanmod.neoemf.graph.blueprints.util.NeoBlueprintsURI;
-import fr.inria.atlanmod.neoemf.resources.PersistentResourceFactory;
-import fr.inria.atlanmod.neoemf.resources.PersistentResourceOptions.StoreOption;
-import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceImpl;
+import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
+import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
+import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class ModelCreator {
 
@@ -79,39 +75,34 @@ public class ModelCreator {
     
     
     public static void createNeoEMFModel(File sourceFile, File targetFile) throws IOException {
-    	PersistenceBackendFactoryRegistry.register(NeoBlueprintsURI.NEO_GRAPH_SCHEME, BlueprintsPersistenceBackendFactory.getInstance());
+    	PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME, BlueprintsPersistenceBackendFactory.getInstance());
 		
 		URI sourceURI = URI.createFileURI(sourceFile.getAbsolutePath());
-		URI targetURI = NeoBlueprintsURI.createNeoGraphURI(targetFile);
+		URI targetURI = BlueprintsURI.createFileURI(targetFile);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("zxmi", new XMIResourceFactoryImpl());
-		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put(NeoBlueprintsURI.NEO_GRAPH_SCHEME, PersistentResourceFactory.eINSTANCE);
+		resourceSet.getResourceFactoryRegistry().getProtocolToFactoryMap().put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
 		
 		Resource sourceResource = resourceSet.createResource(sourceURI);
-		Map<String, Object> loadOpts = new HashMap<String, Object>();
 		
-		sourceResource.load(loadOpts);
+		sourceResource.load(Collections.emptyMap());
 		
 		Resource targetResource = resourceSet.createResource(targetURI);
 		
-		Map<String, Object> saveOpts = new HashMap<String, Object>();
+		Map<String, Object> saveOpts = BlueprintsNeo4jOptionsBuilder
+				.newBuilder().autocommit().asMap();
 		
-		saveOpts.put(BlueprintsResourceOptions.OPTIONS_BLUEPRINTS_GRAPH_TYPE, BlueprintsNeo4jResourceOptions.OPTIONS_BLUEPRINTS_TYPE_NEO4J);
-		List<StoreOption> storeOptions = new ArrayList<StoreOption>();
-		storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.AUTOCOMMIT);
-		storeOptions.add(BlueprintsResourceOptions.EStoreGraphOption.DIRECT_WRITE);
-		saveOpts.put(BlueprintsResourceOptions.STORE_OPTIONS, storeOptions);
 		targetResource.save(saveOpts);
 
 		targetResource.getContents().clear();
 		targetResource.getContents().addAll(sourceResource.getContents());
 		targetResource.save(saveOpts);
 		
-		if (targetResource instanceof PersistentResourceImpl) {
-			PersistentResourceImpl.shutdownWithoutUnload((PersistentResourceImpl) targetResource); 
+		if (targetResource instanceof PersistentResource) {
+			((PersistentResource)targetResource).close();
 		} else {
 			targetResource.unload();
 		}

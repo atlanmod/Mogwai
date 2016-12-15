@@ -5,35 +5,33 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
+<<<<<<< HEAD
 import java.util.UUID;
 import java.util.stream.Collectors;
+=======
+>>>>>>> master
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.ocl.ecore.Constraint;
-import org.eclipse.ocl.ecore.EcoreFactory;
-import org.eclipse.ocl.ecore.ExpressionInOCL;
-import org.eclipse.ocl.ecore.OCLExpression;
-
-import fr.inria.atlanmod.mogwai.core.Mogwai;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
+import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
-import fr.inria.atlanmod.neoemf.graph.blueprints.datastore.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.resources.PersistentResource;
-import fr.inria.atlanmod.neoemf.resources.impl.PersistentResourceDecorator;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
+import fr.inria.atlanmod.neoemf.resource.PersistentResourceDecorator;
 
 public class MogwaiResourceDecorator extends PersistentResourceDecorator implements MogwaiResource {
 
-	private static final ThreadLocal<Mogwai> mogwai = 
-		new ThreadLocal<Mogwai>() {
+	private static final ThreadLocal<MogwaiOCLProcessor> oclProcessor = 
+		new ThreadLocal<MogwaiOCLProcessor>() {
 			
 			@Override
-			protected Mogwai initialValue() {
-				return new Mogwai();
+			protected MogwaiOCLProcessor initialValue() {
+				return new MogwaiOCLProcessor();
 			}
 		};
-	private EcoreFactory eFactory = EcoreFactory.eINSTANCE;
-	
+
 	protected BlueprintsPersistenceBackend persistenceBackend;
 	
 	public MogwaiResourceDecorator(PersistentResource resource) throws MogwaiException {
@@ -52,98 +50,32 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 			persistenceBackendField = resource.getClass().getDeclaredField("persistenceBackend");
 			persistenceBackendField.setAccessible(true);
 			persistenceBackend = (BlueprintsPersistenceBackend) persistenceBackendField.get(base);
+			oclProcessor.get().setGraphBackend(persistenceBackend);
 		} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
 			throw new MogwaiException(e.getMessage());
 		}
 	}
-
-	@Override
-	public MogwaiQueryResult query(URI oclFileURI, Object obj) {
-		Constraint exp = MogwaiUtil.parseOCL(oclFileURI, this);
-		return this.query(exp,obj);
-	}
-
-	@Override
-	public MogwaiQueryResult query(Constraint exp, Object obj) {
-		return mogwai.get().performQuery(exp, obj, this, persistenceBackend);
-	}
-
-	@Override
-	public MogwaiQueryResult query(OCLExpression exp, Object obj) {
-		Constraint mockConstraint = eFactory.createConstraint();
-		ExpressionInOCL mockExp = eFactory.createExpressionInOCL();
-		mockConstraint.setSpecification(mockExp);
-		mockConstraint.setName(UUID.randomUUID().toString());
-		mockExp.setBodyExpression(exp);
-		return query(mockConstraint,obj);
-	}
-
-	@Override
-	public MogwaiQueryResult query(URI oclFileURI) {
-		Constraint exp = MogwaiUtil.parseOCL(oclFileURI, this);
-		return this.query(exp,null);
-	}
-
-	@Override
-	public MogwaiQueryResult query(Constraint exp) {
-		return this.query(exp, null);
-	}
-
-	@Override
-	public MogwaiQueryResult query(OCLExpression exp) {
-		return this.query(exp, null);
-	}
 	
 	@Override
-	public MogwaiQueryResult gQuery(String gScript) {
-		return mogwai.get().gPerformQuery(gScript, this, persistenceBackend);
+	public MogwaiQueryResult query(MogwaiQuery query) {
+		return this.query(query, null);
 	}
-	
+
 	@Override
-	public MogwaiQueryResult gQuery(String gScript, Object context) {
-		return mogwai.get().gPerformQuery(gScript, context, this, persistenceBackend);
-	}
-	
-	@Override
-	public MogwaiQueryResult gQuery(URI gremlinFileURI) throws MogwaiException {
-		BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader(gremlinFileURI.toFileString()));
-		} catch (FileNotFoundException e) {
-			throw new MogwaiException(e.getMessage());
+	public MogwaiQueryResult query(MogwaiQuery query, Object arg) {
+		if(oclProcessor.get().accept(query)) {
+			return query.process(oclProcessor.get(), arg);
 		}
-		MogwaiQueryResult result =  this.gQuery(br.lines().collect(Collectors.joining("\n")));
-		try {
-			br.close();
-		} catch (IOException e) {
-			throw new MogwaiException(e.getMessage());
-		}
-		return result;
+    	throw new MogwaiQueryException("Cannot find a processor for " + query);
 	}
 	
 	@Override
-	public MogwaiQueryResult gQuery(URI gremlinFileURI, Object context) throws MogwaiException {
-		BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader(gremlinFileURI.toFileString()));
-		} catch (FileNotFoundException e) {
-			throw new MogwaiException(e.getMessage());
-		}
-		MogwaiQueryResult result =  this.gQuery(br.lines().collect(Collectors.joining("\n")), context);
-		try {
-			br.close();
-		} catch (IOException e) {
-			throw new MogwaiException(e.getMessage());
-		}
-		return result;
-	}
-	
 	public void enableATLDebug() {
-		mogwai.get().enableATLDebug();
+		oclProcessor.get().enableATLDebug();
 	}
 	
 	@Override
 	public void disableATLDebug() {
-		mogwai.get().disableATLDebug();
+		oclProcessor.get().disableATLDebug();
 	}
 }

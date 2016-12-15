@@ -16,9 +16,9 @@ import java.text.MessageFormat;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.emf.common.util.URI;
 
-import fr.inria.atlanmod.neoemf.util.NeoURI;
+import fr.inria.atlanmod.neoemf.util.PersistenceURI;
 
-public class MogwaiURI extends NeoURI {
+public class MogwaiURI extends PersistenceURI {
 
     public final static String MOGWAI_SCHEME = "mogwai";
     
@@ -27,11 +27,11 @@ public class MogwaiURI extends NeoURI {
     }
     
     public static URI createMogwaiURI(URI uri) {
-        if(NeoURI.FILE_SCHEME.equals(uri.scheme())) {
+        if(PersistenceURI.FILE_SCHEME.equals(uri.scheme())) {
             return createMogwaiURI(FileUtils.getFile(uri.toFileString()));
         }
         else if(MOGWAI_SCHEME.equals(uri.scheme())) {
-            return NeoURI.createNeoURI(uri);
+            return PersistenceURI.createURI(uri);
         }
         else {
             throw new IllegalArgumentException(MessageFormat.format("Can not create NeoGraphURI from the URI scheme {0}",uri.scheme()));
@@ -39,7 +39,7 @@ public class MogwaiURI extends NeoURI {
     }
     
     public static URI createMogwaiURI(File file) {
-        return NeoURI.createNeoURI(file, MOGWAI_SCHEME);
+        return PersistenceURI.createFileURI(file, MOGWAI_SCHEME);
     }
     
 }

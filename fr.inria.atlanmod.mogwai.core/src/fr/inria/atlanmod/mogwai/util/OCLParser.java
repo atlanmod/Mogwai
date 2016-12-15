@@ -22,10 +22,25 @@ class OCLParser {
 	@SuppressWarnings("rawtypes")
 	private OCLHelper oclHelper;
 	
+	/**
+	 * Creates a new OCLParser and registers the given {@link EPackage} to avoid
+	 * OCL parse errors
+	 * 
+	 * @param ePackage
+	 *            the {@link EPackage} to register
+	 */
 	public OCLParser(EPackage ePackage) {
+		super();
 		if(!EPackage.Registry.INSTANCE.containsKey(ePackage.getNsURI())) {
 			EPackage.Registry.INSTANCE.put(ePackage.getNsURI(), ePackage);
 		}
+	}
+
+	/**
+	 * Creates a new OCLParser assuming the accessed {@link EPackage} has been
+	 * previously registered
+	 */
+	public OCLParser() {
 		this.ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
 		this.oclHelper = ocl.createOCLHelper();
 	}

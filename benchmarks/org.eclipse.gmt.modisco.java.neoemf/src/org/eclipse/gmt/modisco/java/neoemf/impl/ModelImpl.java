@@ -2,20 +2,17 @@
  */
 package org.eclipse.gmt.modisco.java.neoemf.impl;
 
-import fr.inria.atlanmod.neoemf.core.impl.PersistentEObjectImpl;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.gmt.modisco.java.Archive;
 import org.eclipse.gmt.modisco.java.ClassFile;
 import org.eclipse.gmt.modisco.java.CompilationUnit;
 import org.eclipse.gmt.modisco.java.Model;
 import org.eclipse.gmt.modisco.java.Type;
 import org.eclipse.gmt.modisco.java.UnresolvedItem;
-
 import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
+
+import fr.inria.atlanmod.neoemf.core.DefaultPersistentEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +33,7 @@ import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
  *
  * @generated
  */
-public class ModelImpl extends PersistentEObjectImpl implements Model {
+public class ModelImpl extends DefaultPersistentEObject implements Model {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

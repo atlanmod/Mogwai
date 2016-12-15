@@ -10,36 +10,16 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.resources;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.ocl.ecore.Constraint;
-import org.eclipse.ocl.ecore.OCLExpression;
-
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.core.MogwaiQueryResult;
-import fr.inria.atlanmod.neoemf.resources.PersistentResource;
+import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
+import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public interface MogwaiResource extends PersistentResource {
     
-    MogwaiQueryResult query(URI oclFileURI, Object obj);
+	MogwaiQueryResult query(MogwaiQuery query);
+	
+    MogwaiQueryResult query(MogwaiQuery query, Object arg);
     
-    MogwaiQueryResult query(Constraint exp, Object obj);
-    
-    MogwaiQueryResult query(OCLExpression exp, Object obj);
-    
-    MogwaiQueryResult query(URI oclFileURI);
-
-    MogwaiQueryResult query(Constraint exp);
-    
-    MogwaiQueryResult query(OCLExpression exp);
-    
-    MogwaiQueryResult gQuery(String gScript);
-    
-    MogwaiQueryResult gQuery(String gScript, Object context);
-    
-    MogwaiQueryResult gQuery(URI gremlinFileURI) throws MogwaiException;
-    
-    MogwaiQueryResult gQuery(URI gremlinFileURI, Object context) throws MogwaiException;
-
     public void enableATLDebug();
     
     public void disableATLDebug();

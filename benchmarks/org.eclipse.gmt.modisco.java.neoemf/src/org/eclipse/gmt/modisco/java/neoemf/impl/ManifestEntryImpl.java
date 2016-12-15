@@ -2,16 +2,13 @@
  */
 package org.eclipse.gmt.modisco.java.neoemf.impl;
 
-import fr.inria.atlanmod.neoemf.core.impl.PersistentEObjectImpl;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.gmt.modisco.java.ManifestAttribute;
 import org.eclipse.gmt.modisco.java.ManifestEntry;
-
 import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
+
+import fr.inria.atlanmod.neoemf.core.DefaultPersistentEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +24,7 @@ import org.eclipse.gmt.modisco.java.neoemf.meta.JavaPackage;
  *
  * @generated
  */
-public class ManifestEntryImpl extends PersistentEObjectImpl implements ManifestEntry {
+public class ManifestEntryImpl extends DefaultPersistentEObject implements ManifestEntry {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
