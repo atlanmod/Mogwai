@@ -46,8 +46,7 @@ public class GremlinScriptRunner {
 	public Object runGremlinScript(String literalQuery, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend) {
 		checkNotNull(graphBackend, "Cannot compute a query without a graph");
 		checkNotNull(literalQuery, "Null is not a valid query");
-		NeoLogger.info("Computing Gremlin Script");
-		NeoLogger.info(literalQuery);
+		NeoLogger.info("Computing Gremlin Script \n{0}", literalQuery);
 		bindings.put("g", graphBackend.getGraph());
 		if(!Objects.isNull(arg)) {
 			// TODO handle other variables than self
