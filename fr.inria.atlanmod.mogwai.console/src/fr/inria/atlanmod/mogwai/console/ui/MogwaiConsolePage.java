@@ -195,6 +195,7 @@ private Composite page;
 					URI rURI = resource.getURI();
 					// Decorate the resource to enable Mogwai query API
 					MogwaiResource mr = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)resource);
+					// See if the eClass access is ok
 					MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder().fromOCLExpression(parsed).context(context.eClass()).build();
 					MogwaiQueryResult qR = mr.query(query, context);
 					append("Computing query: ", outputDefault, true);
