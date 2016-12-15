@@ -34,17 +34,10 @@ public class MogwaiOCLProcessor extends MogwaiProcessor<MogwaiOCLQuery> {
 	private static final String NAME = "OCL Processor";
 
 	private final OCL2Gremlin transformation;
-	private final ScriptEngine engine;
-	private final Bindings bindings;
 	private BlueprintsPersistenceBackend graphBackend;
 
 	public MogwaiOCLProcessor() {
 		transformation = new OCL2Gremlin();
-		ScriptEngineManager scriptManager = new ScriptEngineManager();
-		scriptManager.registerEngineName("gremlin-groovy",
-				new com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngineFactory());
-		engine = scriptManager.getEngineByName("gremlin-groovy");
-		bindings = engine.createBindings();
 	}
 	
 	public MogwaiOCLProcessor(BlueprintsPersistenceBackend graphBackend) {
@@ -75,7 +68,7 @@ public class MogwaiOCLProcessor extends MogwaiProcessor<MogwaiOCLQuery> {
 	public MogwaiQueryResult internalProcess(MogwaiOCLQuery query, @Nullable Object arg) {
 		checkNotNull(graphBackend, "Cannot compute a query without a graph");
 		GremlinScript gScript = createGremlinScript(query);
-		Object result = runGremlinScript(gScript, arg);
+		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, graphBackend);
 		return adaptResult(result, gScript);
 	}
 
@@ -93,37 +86,6 @@ public class MogwaiOCLProcessor extends MogwaiProcessor<MogwaiOCLQuery> {
 			throw new MogwaiException(
 					"An error in the transformation occured, enable ATL debugging for further informations");
 		}
-	}
-	
-	private Object runGremlinScript(GremlinScript gScript, Object arg) {
-		NeoLogger.info("Computing Gremlin Script");
-		NeoLogger.info(gScript.toString());
-		// Cannot be in the constructor, the backend may change between queries
-		bindings.put("g", graphBackend.getGraph());
-		if(!Objects.isNull(arg)) {
-			// TODO handle other variables than self
-			if(arg instanceof PersistentEObject) {
-				bindings.put("self", graphBackend.getVertex(((PersistentEObject) arg).id()));
-			}
-			else if(arg instanceof List) {
-				List<Vertex> selfVertices = new ArrayList<Vertex>();
-			    for(Object a : (List)arg) {
-			        if(a instanceof PersistentEObject) {
-			            selfVertices.add(graphBackend.getVertex(((PersistentEObject) a).id()));
-			        }
-			    }
-			    bindings.put("self", selfVertices);
-			}
-		}
-		Object result = null;
-		try {
-			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(gScript.toString());
-			result = compiled.eval(bindings);
-		} catch (ScriptException e) {
-			e.printStackTrace();
-		}
-		bindings.clear();
-		return result;
 	}
 	
 	private MogwaiQueryResult adaptResult(Object result, GremlinScript gScript) {

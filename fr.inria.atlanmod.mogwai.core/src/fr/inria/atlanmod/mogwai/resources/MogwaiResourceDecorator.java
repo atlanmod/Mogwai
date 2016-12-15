@@ -1,17 +1,9 @@
 package fr.inria.atlanmod.mogwai.resources;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Field;
-<<<<<<< HEAD
-import java.util.UUID;
-import java.util.stream.Collectors;
-=======
->>>>>>> master
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.processor.MogwaiGremlinProcessor;
 import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
@@ -29,6 +21,15 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 			@Override
 			protected MogwaiOCLProcessor initialValue() {
 				return new MogwaiOCLProcessor();
+			}
+		};
+		
+	private static final ThreadLocal<MogwaiGremlinProcessor> gremlinProcessor = 
+		new ThreadLocal<MogwaiGremlinProcessor>() {
+			
+			@Override
+			protected MogwaiGremlinProcessor initialValue() {
+				return new MogwaiGremlinProcessor();
 			}
 		};
 
@@ -65,6 +66,8 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	public MogwaiQueryResult query(MogwaiQuery query, Object arg) {
 		if(oclProcessor.get().accept(query)) {
 			return query.process(oclProcessor.get(), arg);
+		} else if(gremlinProcessor.get().accept(query)) {
+			return query.process(gremlinProcessor.get(), arg);
 		}
     	throw new MogwaiQueryException("Cannot find a processor for " + query);
 	}

@@ -11,8 +11,10 @@
 package fr.inria.atlanmod.mogwai.resources;
 
 import org.eclipse.emf.common.util.URI;
+
 import com.sun.istack.internal.Nullable;
 
+import fr.inria.atlanmod.mogwai.processor.MogwaiGremlinProcessor;
 import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
@@ -31,10 +33,20 @@ public class MogwaiResourceImpl extends DefaultPersistentResource implements Mog
 			}
 		};
 		
+	private static final ThreadLocal<MogwaiGremlinProcessor> gremlinProcessor = 
+		new ThreadLocal<MogwaiGremlinProcessor>() {
+			
+			@Override
+			protected MogwaiGremlinProcessor initialValue() {
+				return new MogwaiGremlinProcessor();
+			}
+		};
+		
     public MogwaiResourceImpl(URI uri) {
         super(uri);
         assert this.persistenceBackend instanceof BlueprintsPersistenceBackend;
         oclProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.persistenceBackend);
+        gremlinProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.persistenceBackend);
     }
     
     public MogwaiQueryResult query(MogwaiQuery query) {
@@ -45,6 +57,8 @@ public class MogwaiResourceImpl extends DefaultPersistentResource implements Mog
     public MogwaiQueryResult query(MogwaiQuery query, @Nullable Object arg) {
     	if(oclProcessor.get().accept(query)) {
     		return query.process(oclProcessor.get(), arg);
+    	} else if(gremlinProcessor.get().accept(query)) {
+    		return query.process(gremlinProcessor.get(), arg);
     	}
     	throw new MogwaiQueryException("Cannot find a processor for " + query);
     }

@@ -24,12 +24,11 @@ public class MogwaiQueryResult {
 	private Collection collectionResult = null;
 	private Object singleResult = null;
 	private BlueprintsPersistenceBackend graph;
-	private GremlinScript gremlinScript;
+	private String gremlinScript;
 	
-	@SuppressWarnings("unchecked")
-	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
+	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, String gremlinQuery) {
 		this.graph = graph;
-		this.gremlinScript = gremlinScript;
+		this.gremlinScript = gremlinQuery;
 		if(engineResult instanceof GremlinPipeline<?,?>) {
 			collectionResult = new BasicEList<Object>();
 			Iterator<Object> it = ((GremlinPipeline<?,Object>) engineResult).iterator();
@@ -53,6 +52,11 @@ public class MogwaiQueryResult {
 				singleResult = engineResult;
 			}
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
+		this(engineResult, graph, gremlinScript.toString());
 	}
 	
 	/**
@@ -126,7 +130,7 @@ public class MogwaiQueryResult {
 		return (T)singleResult;
 	}
 	
-	public GremlinScript getGremlinScript() {
+	public String getExecutedQuery() {
 		return gremlinScript;
 	}
 	

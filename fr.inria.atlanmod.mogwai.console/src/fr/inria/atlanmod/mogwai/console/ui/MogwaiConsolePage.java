@@ -199,7 +199,7 @@ private Composite page;
 					MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder().fromOCLExpression(parsed).context(context.eClass()).build();
 					MogwaiQueryResult qR = mr.query(query, context);
 					append("Computing query: ", outputDefault, true);
-					append(qR.getGremlinScript().toString(), outputGremlin, false);
+					append(qR.getExecutedQuery(), outputGremlin, false);
 					append("Results: ", outputDefault, true);
 					printMogwaiResult(qR, outputResults, false);
 				}
