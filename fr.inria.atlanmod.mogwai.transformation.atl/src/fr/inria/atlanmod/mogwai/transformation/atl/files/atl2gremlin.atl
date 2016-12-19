@@ -1,0 +1,3 @@
+module atl2gremlin;
+
+create OUT: Gremlin from IN: ATL;
