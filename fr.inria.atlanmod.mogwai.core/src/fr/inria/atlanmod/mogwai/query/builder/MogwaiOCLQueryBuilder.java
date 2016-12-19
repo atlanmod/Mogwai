@@ -1,12 +1,10 @@
 package fr.inria.atlanmod.mogwai.query.builder;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.query.MogwaiOCLQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 
 public class MogwaiOCLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiOCLQueryBuilder> {
 	
