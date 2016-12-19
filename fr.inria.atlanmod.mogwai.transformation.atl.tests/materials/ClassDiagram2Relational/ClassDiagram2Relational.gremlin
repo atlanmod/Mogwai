@@ -1,0 +1,23 @@
+final def gr = g;
+def metaClass = g.getIndex("metaclasses",Vertex.class)[[name:"Class"]];
+def metaClassNode = (metaClass.hasNext() ? metaClass.next() : null);
+
+def metaTable = g.getIndex("metaclasses",Vertex.class)[[name:"Table"]];
+def metaTableNode = (metaTable.hasNext() ? metaTable.next() : ({
+	def t = g.addVertex();
+	t.setProperty("name", "Table");
+	t.setProperty("nsURI", "ClassDiagram");
+	g.getIndex("metaclasses",Vertex.class).put("name", "Table", t);
+	t;
+})());
+println(metaTableNode);
+
+metaClassNode.inE("kyanosInstanceOf").outV.transform{
+	def c = it;
+	def out = gr.addVertex();
+	gr.addEdge(out, metaTableNode, "kyanosInstanceOf");
+	gr.addEdge(gr.getVertex('ROOT'), out, "eContents");
+	out.setProperty("name", c.getProperty("name"));
+	println(out);
+	out;
+}

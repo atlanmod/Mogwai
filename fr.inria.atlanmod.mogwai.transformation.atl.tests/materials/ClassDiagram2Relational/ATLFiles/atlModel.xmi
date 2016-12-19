@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL">
+  <atl:Module location="4:1-5:48" name="Class2Relational">
+    <commentsBefore>-- @atlcompiler atl2006</commentsBefore>
+    <commentsBefore>-- @path ClassDiagram=/ClassDiagram2Relational/ClassDiagram/ClassDiagram.ecore</commentsBefore>
+    <commentsBefore>-- @path Relational=/ClassDiagram2Relational/Relational/Relational.ecore</commentsBefore>
+    <inModels location="5:30-5:47" name="IN" metamodel="/2"/>
+    <outModels location="5:8-5:24" name="OUT" metamodel="/1"/>
+  </atl:Module>
+  <ocl:OclModel location="5:14-5:24" name="Relational" model="/0/@outModels.0"/>
+  <ocl:OclModel location="5:35-5:47" name="ClassDiagram" model="/0/@inModels.0"/>
+</xmi:XMI>

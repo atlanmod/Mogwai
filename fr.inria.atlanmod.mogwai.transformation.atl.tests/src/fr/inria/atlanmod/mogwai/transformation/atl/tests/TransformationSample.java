@@ -36,48 +36,7 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 public class TransformationSample {
 
 	public static void main(String[] args) throws IOException, MogwaiException {
-		FileUtils.deleteRecursively(new File("materials/ClassDiagram2Relational/ClassDiagram/sample.graphdb"));
-		
-		PersistenceBackendFactoryRegistry.register(
-				BlueprintsURI.SCHEME,
-				BlueprintsPersistenceBackendFactory.getInstance());
-		
-		
-		
-		ResourceSet rSet = new ResourceSetImpl();
-		
-		rSet.getResourceFactoryRegistry()
-				.getProtocolToFactoryMap()
-				.put(BlueprintsURI.SCHEME,
-						PersistentResourceFactory.getInstance());
-		
-		rSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put("xmi", new XMIResourceFactoryImpl());
-		
-		rSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-			.put("ecore", new XMIResourceFactoryImpl());
-		
-		EPackage.Registry.INSTANCE.put(
-				ClassDiagramPackage.eINSTANCE.getNsURI(),
-				ClassDiagramPackage.eINSTANCE);
-		
-		Resource classModel = rSet.getResource(URI
-				.createURI("materials/ClassDiagram2Relational/ClassDiagram/Sample-ClassDiagram.xmi"), true);
-		
-		Resource neoResource = rSet
-				.createResource(BlueprintsURI
-						.createFileURI(new File(
-								"materials/ClassDiagram2Relational/ClassDiagram/sample.graphdb")));
-		
-		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder().asMap();
-		
-		// Creating new resource
-		neoResource.save(options);
-
-		neoResource.getContents().addAll(EcoreUtil.copyAll(classModel.getContents()));
-		
-		neoResource.save(Collections.emptyMap());
-		MogwaiResource mogResource = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)neoResource);
+		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
 		
 //		NeoLogger.info(mogResource.getContents().get(0).toString());
 		
@@ -105,7 +64,7 @@ public class TransformationSample {
 		showResult(mogResource.query(gremlinQuery2), mogResource);
 
 		
-		neoResource.save(Collections.emptyMap());
+		mogResource.save(Collections.emptyMap());
 
 		// Print Tables
 		MogwaiQuery outQuery = MogwaiOCLQueryBuilder.newBuilder().fromString("Table.allInstances()").context(ClassDiagramPackage.eINSTANCE.getClass_()).build();
