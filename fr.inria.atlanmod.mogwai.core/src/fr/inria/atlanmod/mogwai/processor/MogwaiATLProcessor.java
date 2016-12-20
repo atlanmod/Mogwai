@@ -58,8 +58,9 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 	private GremlinScript createGremlinScript(MogwaiATLQuery query) {
 		Resource gremlinResource = transformation.transform(query.getATLResource());
 		checkArgument(gremlinResource.getContents() != null, "Created resource content is null");
-		checkArgument(gremlinResource.getContents().size() == 1,
-				"Invalid resource content size, expected 1, found {0}", gremlinResource.getContents().size());
+//		Relax that for debugging purposes
+//		checkArgument(gremlinResource.getContents().size() == 1,
+//				"Invalid resource content size, expected 1, found {0}", gremlinResource.getContents().size());
 		checkArgument(gremlinResource.getContents().get(0) instanceof GremlinScript,
 				"Created resource does not contain a GremlinScript element");
 		return (GremlinScript) gremlinResource.getContents().get(0);
