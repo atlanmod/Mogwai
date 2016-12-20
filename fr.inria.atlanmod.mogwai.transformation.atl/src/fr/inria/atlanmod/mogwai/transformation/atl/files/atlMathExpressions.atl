@@ -1,0 +1,158 @@
+-- @path ATL=/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
+-- Mathematic expression transformations from OCL to Gremlin.
+-- Covered features are:
+-- 		Arithmetic operations on Integers and Floats
+--		Comparison operations on Integers and Floats
+--		Boolean operations
+
+-- Author AtlanMod - Inria
+
+module atlMathExpressions;
+
+create OUT: Gremlin from IN: ATL;
+
+uses common;
+
+--
+-- Arithmetic Operations
+--
+
+-- TODO
+
+
+--
+-- Comparison Operations
+--
+
+-- Transforms '>' OperatorCallExp into equivalent Gremlin expression.
+-- First left and right instructions are computed from the roots of the operation body and argument.
+rule greater2steps {
+	from
+		oclGreater : ATL!OperatorCallExp (
+			oclGreater.getOpName() = '>'	
+		)
+	to
+		gremlinGreater : Gremlin!GreaterExpression (
+			left <- oclGreater.source.getFirstInstruction(),
+			right <- oclGreater.arguments.first().getFirstInstruction()
+		)
+}
+
+-- Transforms '>=' OperatorCallExp into equivalent Gremlin expression.
+-- First left and right instructions are computed from the roots of the operation body and argument.
+rule greaterOrEqual2steps {
+	from
+		oclGreaterOrEqual : ATL!OperatorCallExp (
+			oclGreaterOrEqual.getOpName() = '>='	
+		)
+	to
+		gremlinGreaterOrEqual : Gremlin!GreaterOrEqualExpression (
+			left <- oclGreaterOrEqual.source.getFirstInstruction(),
+			right <- oclGreaterOrEqual.arguments.first().getFirstInstruction()
+		)
+}
+
+-- Transforms '<' OperatorCallExp into equivalent Gremlin expression.
+-- First left and right instructions are computed from the roots of the operation body and argument.
+rule less2steps {
+	from
+		oclLess : ATL!OperatorCallExp (
+			oclLess.getOpName() = '<'	
+		)
+	to
+		gremlinLess : Gremlin!LessExpression (
+			left <- oclLess.source.getFirstInstruction(),
+			right <- oclLess.arguments.first().getFirstInstruction()
+		)
+}
+
+-- Transforms '<=' OperatorCallExp into equivalent Gremlin expression.
+-- First left and right instructions are computed from the roots of the operation body and argument.
+rule lessOrEqual2steps {
+	from
+		oclLessOrEqual : ATL!OperatorCallExp (
+			oclLessOrEqual.getOpName() = '<='
+		)
+	to
+		gremlinLessOrEqual : Gremlin!LessOrEqualExpression (
+			left <- oclLessOrEqual.source.getFirstInstruction(),
+			right <- oclLessOrEqual.arguments.first().getFirstInstruction()
+		)
+}
+
+-- Transforms '<>' OperatorCallExp into equivalent Gremlin expression.
+-- First left and right instructions are computed from the roots of the operation body and argument.
+rule different2steps {
+	from
+		oclDifferent : ATL!OperatorCallExp (
+			oclDifferent.getOpName() = '<>'
+		)
+	to
+		gremlinDifferent : Gremlin!DifferenceExpression (
+			left <- oclDifferent.source.getFirstInstruction(),
+			right <- oclDifferent.arguments.first().getFirstInstruction()
+		)
+}
+
+-- Transforms '=' OperatorCallExp into Gremlin EqualityExpression.
+-- First left and right operations are computed to get the correct sub-Step start.
+-- @see equality2steps for equality generation with empty references checking.
+rule equality2steps2 {
+	from
+		oclEquals : ATL!OperatorCallExp(
+			oclEquals.getOpName() = '='
+		)
+	to
+		eqExp : Gremlin!EqualityExpression(
+			left <- oclEquals.source.getFirstInstruction(),
+			right <- oclEquals.arguments.first().getFirstInstruction()
+		)
+}
+
+
+--
+-- Boolean Operations
+--
+
+-- Transforms 'not' OperatorCallExp into equivalent Gremlin expression.
+-- Inner instructions are computed from the root of the operation body.
+rule not2steps {
+	from
+		oclNot : ATL!OperatorCallExp(
+			oclNot.getOpName() = 'not'	
+		)
+	to
+		gremlinNot : Gremlin!NotExpression(
+			exp <- oclNot.source.getFirstInstruction()
+		)
+}
+
+-- Transforms 'or' OperatorCallExp into equivalent Gremlin expression.
+-- First left and right instructions are computed from the roots of the operation body and argument.
+rule or2steps {
+	from
+		oclOr : ATL!OperatorCallExp(
+			oclOr.getOpName() = 'or'
+			)
+	to
+		gremlinOr : Gremlin!OrExpression(
+			left <- oclOr.source.getFirstInstruction(),
+			right <- oclOr.arguments.first().getFirstInstruction()
+		)
+}
+
+-- Transforms 'and' OperatorCallExp into equivalent Gremlin expression.
+-- First left and right instructions are computed from the roots of the operation body and argument.
+rule and2steps {
+	from
+		oclAnd : ATL!OperatorCallExp (
+			oclAnd.getOpName() = 'and'	
+		)
+	to
+		gremlinAnd : Gremlin!AndExpression(
+			left <- oclAnd.source.getFirstInstruction(),
+			right <- oclAnd.arguments.first().getFirstInstruction()
+		)
+}

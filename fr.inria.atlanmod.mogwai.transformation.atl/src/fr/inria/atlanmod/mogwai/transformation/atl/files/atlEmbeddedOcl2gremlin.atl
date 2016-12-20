@@ -1,0 +1,26 @@
+-- @path ATL=/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
+module atlEmbeddedOcl2Gremlin;
+
+create OUT: Gremlin from IN: ATL;
+
+rule varExp2steps {
+	from
+		varExp : ATL!VariableExp
+	to
+		va : Gremlin!VariableAccess(
+			name <- varExp.referredVariable.varName,
+			nextElement <- varExp.getComposite()
+		)
+}
+
+rule navigationOrAttributeCallExp2steps {
+	from
+		nav : ATL!NavigationOrAttributeCallExp
+	to
+		prop : Gremlin!PropertyStep(
+			name <- nav.name, -- here we'll have a problem because we can't know if it's an attribute or a reference
+			nextElement <- nav.getComposite()
+		)
+}

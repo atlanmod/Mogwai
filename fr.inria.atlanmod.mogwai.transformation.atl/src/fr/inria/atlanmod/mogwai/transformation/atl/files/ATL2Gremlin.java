@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -52,13 +53,13 @@ public class ATL2Gremlin {
 	private EMFExtractor extractor;
 	private ResourceSet rSet;
 	private List<ASM> modules;
-	// private ASM ASMCommon;
+	private ASM ASMCommon;
 	
 	
 	public ATL2Gremlin() {
 		try {
 			// Default value
-			ATLLogger.getLogger().setLevel(Level.OFF);
+			ATLLogger.getLogger().setLevel(Level.ALL);
 			
 			transformationLauncher = new EMFVMLauncher();
 			modelFactory = new EMFModelFactory();
@@ -86,10 +87,23 @@ public class ATL2Gremlin {
 			modules = new ArrayList<>();
 			
 			InputStream atl2gremlinStream = getFileURL("atl2gremlin.asm").openStream();
+			InputStream atlEmbeddedOcl2gremlinStream = getFileURL("atlEmbeddedOcl2gremlin.asm").openStream();
+			InputStream atlLiteralsStream = getFileURL("atlLiterals.asm").openStream();
+			InputStream atlMathExpressionsStream = getFileURL("atlMathExpressions.asm").openStream();
+			InputStream commonStream = getFileURL("common.asm").openStream();
 			
 			modules.add((ASM) transformationLauncher.loadModule(atl2gremlinStream));
+			modules.add((ASM) transformationLauncher.loadModule(atlEmbeddedOcl2gremlinStream));
+			modules.add((ASM) transformationLauncher.loadModule(atlLiteralsStream));
+			modules.add((ASM) transformationLauncher.loadModule(atlMathExpressionsStream));
+			
+			ASMCommon = (ASM) transformationLauncher.loadModule(commonStream);
 			
 			atl2gremlinStream.close();
+			atlEmbeddedOcl2gremlinStream.close();
+			atlLiteralsStream.close();
+			atlMathExpressionsStream.close();
+			commonStream.close();
 			
 			
 		} catch(ATLCoreException e) {
@@ -108,6 +122,17 @@ public class ATL2Gremlin {
 	 */
 	public Resource transform(Resource inputResource) {
 		try {
+			
+			// Debug
+			Iterator<EObject> it = inputResource.getAllContents();
+			int i = 0;
+			while(it.hasNext()) {
+				it.next();
+				i++;
+			}
+			System.out.println("Input resource contains " + i + " elements");
+			// /Debug
+			
 			IModel inputModel = modelFactory.newModel(inputMetamodel);
 			injector.inject(inputModel, inputResource);
 			
@@ -115,6 +140,7 @@ public class ATL2Gremlin {
 			
 			transformationLauncher = new EMFVMLauncher();
 			transformationLauncher.initialize(new HashMap<String, Object>());
+			transformationLauncher.addLibrary("common", ASMCommon);
 			
 			transformationLauncher.addInModel(inputModel, "IN", "ATL");
 			transformationLauncher.addOutModel(gModel, "OUT", "Gremlin");
@@ -123,6 +149,7 @@ public class ATL2Gremlin {
 			
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			extractor.extract(gModel, os, null);
+			System.out.println(os.toString());
 			Resource gremlinResource = rSet.createResource(URI.createURI("gremlinOutput"));
 			
 			try {

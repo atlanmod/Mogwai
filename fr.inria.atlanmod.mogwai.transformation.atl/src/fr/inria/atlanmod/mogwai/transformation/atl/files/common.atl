@@ -1,0 +1,268 @@
+-- @path ATL=/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
+
+-- Common helpers to process input ATL model.
+
+-- Author AtlanMod - Inria
+
+library common;
+
+-- Get the operation name of a CallExp element.
+helper context ATL!OperatorCallExp def : getOpName() : String = 
+	self.operationName
+;
+
+-- Get the first instruction in an OCLExpression.
+-- Traverse the source reference chain to get the first element.
+helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression =
+	if self.oclIsTypeOf(ATL!OperatorCallExp) then
+		if self.isComparison() then
+			self
+		else
+			self.source.getFirstInstruction()
+		endif
+	else
+		if self.oclIsTypeOf(ATL!OperationCallExp) then
+			self.source.getFirstInstruction()
+		else
+			if self.oclIsTypeOf(ATL!IteratorExp) then
+				self.source.getFirstInstruction()
+			else
+				if self.oclIsTypeOf(ATL!VariableExp) or
+					self.oclIsKindOf(ATL!PrimitiveExp) or
+					self.oclIsTypeOf(ATL!OclModel) or
+					self.oclIsKindOf(ATL!BooleanExp) then
+					self
+--					if self.oclIsTypeOf(ATL!CollectionLiteralExp) then
+--							if self.part->first() <> OclUndefined then
+--								-- Handle the case where a CollectionLiteralExp is created by the parser
+--								-- when multi-valued references are collected in nested collect() operations
+--								-- TODO find precisely why this happen to have a more accurate translation
+--								-- (for now it is possible to break the transformation of collect declaring their 
+--								-- own CollectionLiteralExp in their body)
+--								if self.part->first().item.oclIsTypeOf(OCL!PropertyCallExp) then
+--									self.part->first().item.getFirstInstruction()
+--								else
+--									self
+--								endif
+--							else
+--								self
+--							endif
+--					else
+--						self
+--					endif
+				else
+					self.source.getFirstInstruction()
+				endif
+			endif
+		endif
+	endif
+	;
+
+-- Returns true if the OperationCallExp is an comparison operation.
+helper context ATL!OperatorCallExp def : isComparison() : Boolean =
+	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())
+	;
+	
+helper context OclAny def : getComposite() : OclAny =
+	let composite : OclAny = self.refImmediateComposite() in
+	if composite.oclIsTypeOf(ATL!OperatorCallExp) then
+		if(composite.isComparison()) then
+			OclUndefined
+		else
+			composite
+		endif
+	else
+		composite
+	endif
+;
+	
+-- Retrieve the next operation to transform from a given OCL expression.
+-- Returns the immediate composite of self if the expression can be translated in a raw, the first expression
+-- of a collect body or OclUndefined if the immediate composite can not be translated using matched rules.
+--helper context OclAny def : getComposite() : OclAny =
+--	let composite : OclAny = self.refImmediateComposite() in
+--	if composite.oclIsTypeOf(OCL!ExpressionInOCL) then
+--		-- ExpressionInOCL is the root element of the query (the "specification" reference
+--		-- of the constraint). Returns OclUndefined to flag the end of the traversal
+--		OclUndefined
+--	else
+--		-- Collect flattening
+--		if composite.oclIsTypeOf(OCL!IteratorExp) then
+--			if (composite.getOpName() = 'collect') then
+--				if composite.hasInBody(self) then
+--					-- If self is the last element in the collect expression returns
+--					-- the collect operation to handle unions
+--					OclUndefined
+--				else
+--					-- If self is not in the collect expression returns the content
+--					-- of the expression (it flatten collect and delegate its translation
+--					-- at the end of its inner expression)
+--					composite
+--				endif
+--			else 
+--				if Set{'select','reject','exists','forAll'}->includes(composite.getOpName()) then
+--					if composite.hasInBody(self) then
+--						-- Do not return OperationCallExp if they are the parent of their argument
+--						-- (they have been transformed before)
+--						OclUndefined
+--					else
+--						composite
+--					endif
+--				else
+--					composite
+--				endif
+--			endif
+--		else
+--			if composite.oclIsTypeOf(OCL!OperationCallExp) then
+--				if composite.isComparison() then
+--					-- If the container is a comparison there is two solutions:
+--					-- (i)  It contains self, and has been handled before
+--					-- (ii) It doesn't, and it is an error (it should have been handeled before)
+--					OclUndefined
+--				else
+--					if Set{'union','intersection'}->includes(composite.getOpName()) then
+--							OclUndefined
+--					else
+--					-- The container is a function call
+--						if composite.hasInArguments(self) then
+--						-- The container contains self in its arguments, it has been handled
+--						-- before
+--							OclUndefined
+--						else
+--						-- The container does not contain self in its argument, simply handle it
+--							composite
+--						endif
+--					endif
+--				endif
+--			else
+--				-- Handle CollectionItem created by the OCL parser when the query contains nested collect
+--				-- on multi-valued EReferences
+--				if composite.oclIsTypeOf(OCL!CollectionItem) then
+--					--if composite.isInCollect() then
+--						let parent : OclAny = composite.refImmediateComposite().refImmediateComposite() in
+--							if parent.isCollect() then
+--								if parent.hasInBody(self) then
+--									-- If self is the last element in the collect expression returns
+--									-- the collect operation to handle unions
+--									--theCollect
+--									OclUndefined
+--								else
+--									-- If self is not in the collect expression returns the content
+--									-- of the expression (it flatten collect and delegate its translation
+--									-- at the end of its inner expression)
+--									parent
+--								endif
+--							else
+--								-- If the parent is not a collect then simply returns it
+--								parent
+--							endif
+--					--else
+--					--	composite
+--					--endif
+--				else
+--					-- If the next element is not an IteratorExp or an OperationCallExp, or a CollectionItem
+--					-- in a collect returns it
+--					composite
+--				endif
+--			endif
+--		endif
+--	endif
+--	;
+
+-- Returns true if o is contained in the argument expression of self.
+--helper context OCL!OperationCallExp def : hasInArguments(o : OclAny) : Boolean =
+--	if self.argument->size() = 0 then
+--		false
+--	else
+--		self.recursiveHasInArguments(o, self.argument.first().getFirstInstruction())
+--	endif
+--	;
+
+-- Recursive search function of hasInArguments helper.
+--helper context OCL!OperationCallExp def : recursiveHasInArguments(o : OclAny, e : OCL!OCLExpression) : Boolean =
+--	if e = self then
+--		false
+--	else
+--		if e = o then
+--			true
+--		else
+--			self.recursiveHasInArguments(o, e.refImmediateComposite())
+--		endif
+--	endif
+--	;
+
+-- Returns true if self is a collect() iterator
+--helper context OclAny def : isCollect() : Boolean = 
+--	if self.oclIsTypeOf(OCL!IteratorExp) then
+--		self.name = 'collect'
+--	else
+--		false
+--	endif
+--	;
+
+-- Returns true if o is contained in the body expression of self.
+--helper context OCL!IteratorExp def : hasInBody(o : OclAny) : Boolean = 
+--	self.recursiveHasInBody(o,self.body.getFirstInstruction())
+--	;
+
+-- Recursive search function of hasInBody helper.
+--helper context OCL!IteratorExp def : recursiveHasInBody(o : OclAny, e : OCL!OCLExpression) : Boolean =
+--	if e = self then
+--		false
+--	else
+--		if e = o then
+--			true
+--		else
+--			self.recursiveHasInBody(o, e.refImmediateComposite())
+--		endif
+--	endif
+--	;
+
+-- Returns true if self is contained in the body expression of a collect OperationCallExp
+--helper context OclAny def : isInCollect() : Boolean = 
+--	if self.refImmediateComposite().oclIsTypeOf(OCL!IteratorExp) then
+--		self.refImmediateComposite().name = 'collect'
+--	else
+--		if (self.refImmediateComposite().oclIsKindOf(OCL!OCLExpression) or
+--			self.refImmediateComposite().oclIsKindOf(OCL!CollectionItem)) then
+--			self.refImmediateComposite().isInCollect()
+--		else
+--			false
+--		endif
+--	endif
+--	;
+
+-- Returns true if self is a complex collection operation (union or intersection).
+--helper context OCL!OperationCallExp def : isComplexCollectionOperation() : Boolean =
+--	Set{'union','intersection'}->includes(self.getOpName())
+--	;
+
+-- Returns all the accessed TypeExps in a Set with no duplicates.
+--helper context OCL!OCLExpression def : getUsedTypes() : OrderedSet(OCL!TypeExp) =
+--	let kindOfTypes : OrderedSet(OCL!EClass) = self.getKindOfEClasses()->collect(c | c.name) in
+--		OCL!TypeExp.allInstances()->iterate(each; res : OrderedSet(OCL!TypeExp) = OrderedSet{} | 
+--			if(res->collect(e | e.referredType.name)->includes(each.referredType.name)) then
+--				res
+--			else
+--				if kindOfTypes->includes(each.referredType.name) then
+--					res
+--				else
+--					res.append(each)
+--				endif
+--			endif)
+--	;
+
+--helper context OCL!TypeExp def : getSubclasses() : Sequence(OCL!EClass) =
+--	let eClass : OCL!EClass = self.referredType in
+--		eClass.ePackage.eClassifiers->select(a | a.oclIsTypeOf(OCL!EClass))->select(e | e.eAllSuperTypes->includes(eClass))->asSequence()
+--		->append(eClass)
+--	;
+
+--helper context OCL!OCLExpression def : getKindOfEClasses() : OrderedSet(OCL!EClass) =
+--	OCL!OperationCallExp->allInstances()->select(op | op.getOpName() = 'oclIsKindOf')
+--		->iterate(each; res : OrderedSet(OCL!EClass) = OrderedSet{} |
+--			res->union(each.argument.first().getSubclasses())
+--		)
+--		;

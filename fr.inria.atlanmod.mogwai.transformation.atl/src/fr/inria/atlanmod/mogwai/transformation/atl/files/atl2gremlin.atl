@@ -1,3 +1,123 @@
+-- @path ATL=/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
 module atl2gremlin;
 
 create OUT: Gremlin from IN: ATL;
+
+helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
+	ATL!MatchedRule.allInstances()->asSequence()
+;
+
+helper context ATL!Module def: getMatchedTypes() : Set(ATL!OclModel) =
+	self.getMatchedRules()
+		->collect(e | e.inPattern)
+		->collect(e | e.elements->first())
+		->collect(e | e.type.model)
+		->asSet()
+;
+
+helper context ATL!MatchedRule def: getMatchedType() : ATL!OclModel =
+	self.inPattern.elements->first().type.model
+;
+
+helper context ATL!MatchedRule def: getOclGuard() : ATL!OclExpression =
+	self.inPattern.filter
+;
+	
+
+rule module2script {
+	from 
+		mm : ATL!Module
+	to
+		gg : Gremlin!GremlinScript(
+			name <- mm.name,
+			instructions <- mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e))
+				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2metaNode(e)))
+				
+				->union(mm.getMatchedRules())
+		)
+}
+
+rule matchedRule2pouet {
+	from
+		mm : ATL!MatchedRule
+	to
+		varAccess : Gremlin!VariableAccess(
+			name <- 'meta' + mm.getMatchedType().name + 'Node',
+			nextElement <- inE
+		),
+		inE : Gremlin!InEStep(
+			relationshipName <- 'kyanosInstanceOf',
+			nextElement <- outV
+		),
+		outV : Gremlin!OutVStep(
+			nextElement <- filter
+		),
+		filter : Gremlin!FilterStep(
+			closure <- clos
+			--nextElement <- // create elements + trace links
+		),
+		clos : Gremlin!Closure(
+			instructions <- Sequence{thisModule.createDefForIt(mm.inPattern.elements->first())}.append(mm.inPattern.filter.getFirstInstruction())
+		)
+		
+}
+
+lazy rule createDefForIt {
+	from
+		ss : ATL!SimpleInPatternElement
+	to
+		dd : Gremlin!VariableDeclaration(
+			name <- ss.varName,
+			value <- closIt
+		),
+		closIt : Gremlin!ClosureIt()
+}
+
+lazy rule oclModel2meta {
+	from
+		mm : ATL!OclModel
+	to
+		metaVar : Gremlin!VariableDeclaration (
+			name <- 'meta'+mm.name,
+			value <- metaStartStep
+		),
+		metaStartStep : Gremlin!StartStep (
+			nextElement <- idxCall	
+		),
+		idxCall : Gremlin!IndexCall (
+			indexName <- 'metaclasses',
+			indexProperty  <- 'name',
+			indexQuery <- mm.name
+		)
+}
+
+lazy rule oclModel2metaNode {
+	from
+		mm : ATL!OclModel
+	to
+		metaVar : Gremlin!VariableDeclaration(
+			name <- 'meta'+mm.name+'Node',
+			value <- tern
+		),
+		tern : Gremlin!TernaryOperator(
+			condition <- checkVarAccess,
+			ifTrue <- okVarAccess,
+			ifFalse <- nullLiteral
+		),
+		checkVarAccess : Gremlin!VariableAccess(
+			name <- 'meta' + mm.name,
+			nextElement <- checkHasNext
+		),
+		checkHasNext : Gremlin!HasNextCall(
+				
+		),
+		okVarAccess : Gremlin!VariableAccess(
+			name <- 'meta'+mm.name,
+			nextElement <- nextIt
+		),
+		nextIt : Gremlin!NextCall (),
+		nullLiteral : Gremlin!NullLiteral()
+		
+}

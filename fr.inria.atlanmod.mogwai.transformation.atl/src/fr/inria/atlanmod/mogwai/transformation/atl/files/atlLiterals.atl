@@ -1,0 +1,123 @@
+-- @path ATL=/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore
+-- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+
+-- Literal transformations from OCL to Gremlin
+-- Covered literals are:
+--		Integer (positive and negative)
+--		Real (positive and negative)
+--		String
+--		Boolean
+-- Note: Collection Literals are handled by the rules in the {collections} module.
+
+-- Author AtlanMod - Inria
+
+module atlLiterals;
+
+create OUT: Gremlin from IN: ATL;
+
+uses common;
+
+-- Transforms a positive integer into equivalent Gremlin integer literal.
+-- A verification is necessary to be sure the literal represents a positive value by checking its containing
+-- operation.
+-- Generated Gremlin integers can handle positive and negative values and does not need a particular processing.
+rule atlPositiveInteger2gremlinInteger {
+	from
+		atlPositiveIntegerLiteral : ATL!IntegerExp (
+			if atlPositiveIntegerLiteral.appliedProperty.oclIsTypeOf(ATL!OperatorCallExp) then
+				not(atlPositiveIntegerLiteral.appliedProperty.getOpName() = '-')
+			else
+				true
+			endif
+		)
+	to
+		gremlinIntegerLiteral : Gremlin!IntegerLiteral(
+			value <-  atlPositiveIntegerLiteral.integerSymbol
+		)
+}
+
+-- Transforms a positive integer into equivalent Gremlin integer literal.
+-- A verification is necessary to be sure the literal represents a negative value by checking its containing
+-- operation.
+-- Generated Gremlin integers can handle positive and negative values and does not need a particular processing.
+rule atlNegativeInteger2gremlinInteger {
+	from
+		atlNegativeIntegerLiteral : ATL!IntegerExp (
+			if atlNegativeIntegerLiteral.appliedProperty.oclIsTypeOf(ATL!OperatorCallExp) then
+				atlNegativeIntegerLiteral.appliedProperty.getOpName() = '-'
+			else
+				false
+			endif	
+		)
+	to
+		gremlinIntegerLiteral : Gremlin!IntegerLiteral(
+			value <- 0-atlNegativeIntegerLiteral.integerSymbol	
+		)
+}
+
+-- Transforms a positive real into equivalent Gremlin double literal.
+-- A verification is necessary to be sure the literal represents a positive value by checking its containing
+-- operation.
+-- Generated Gremlin doubles can handle positive and negative values and does not need a particular processing.
+rule atlPositiveReal2gremlinDouble {
+	from
+		atlPositiveRealLiteral : ATL!RealExp (
+			if atlPositiveRealLiteral.appliedProperty.oclIsTypeOf(ATL!OperatorCallExp) then
+				not(atlPositiveRealLiteral.appliedProperty.getOpName() = '-')
+			else
+				true
+			endif
+		)
+	to
+		gremlinDoubleLiteral : Gremlin!DoubleLiteral(
+			value <- atlPositiveRealLiteral.realSymbol
+		)
+}
+
+-- Transforms a negative real into equivalent Gremlin double literal.
+-- A verification is necessary to be sure the literal represents a negative value by checking its containing
+-- operation.
+-- Generated Gremlin doubles can handle positive and negative values and does not need a particular processing.
+rule atlNegativeReal2gremlinDouble {
+	from
+		atlNegativeRealLiteral : ATL!RealExp (
+			if atlNegativeRealLiteral.appliedProperty.oclIsTypeOf(ATL!OperatorCallExp) then
+				atlNegativeRealLiteral.appliedProperty.getOpName() = '-'
+			else
+				false
+			endif	
+		)
+	to
+		gremlinDoubleLiteral : Gremlin!DoubleLiteral(
+			value <- 0-atlNegativeRealLiteral.realSymbol
+		)
+}
+
+-- Transforms a string literal into equivalent Gremlin string literal.
+rule atlString2gremlinString {
+	from
+		atlStringLiteral : ATL!StringExp
+	to
+		gremlinStringLiteral : Gremlin!StringLiteral(
+			value <- atlStringLiteral.stringSymbol	
+		)
+}
+
+-- Transforms a boolean literal into equivalent Gremlin boolean literal.
+rule atlBoolean2gremlinBoolean {
+	from
+		atlBoolean : ATL!BooleanExp
+	to
+		gremlinBooleanLiteral : Gremlin!BooleanLiteral(
+			value <- atlBoolean.booleanSymbol	
+		)
+}
+
+rule enumLiteral2gremlinString {
+	from
+		oclEnumLiteral : ATL!EnumLiteralExp
+	to
+		gremlinStringLiteral : Gremlin!StringLiteral(
+			value <- oclEnumLiteral.referredEnumLiteral.toString()
+		)
+}
