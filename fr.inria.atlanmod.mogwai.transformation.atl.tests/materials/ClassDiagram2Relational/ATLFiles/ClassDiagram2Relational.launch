@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
-<stringAttribute key="ATL File Name" value="/ClassDiagram2Relational/ATLFiles/ClassDiagram2Relational.atl"/>
+<stringAttribute key="ATL File Name" value="/fr.inria.atlanmod.mogwai.transformation.atl.tests/materials/ClassDiagram2Relational/ATLFiles/Class2Relational.atl"/>
 <stringAttribute key="ATL VM" value="Regular VM"/>
 <stringAttribute key="ATL_COMPILER" value="atl2006"/>
 <booleanAttribute key="AllowInterModelReferences" value="false"/>
 <booleanAttribute key="IS_REFINING" value="false"/>
 <mapAttribute key="Input">
-<mapEntry key="IN" value="ClassDiagram"/>
+<mapEntry key="IN" value="Class"/>
 </mapAttribute>
 <mapAttribute key="Libs"/>
 <booleanAttribute key="Mode Debug" value="false"/>
 <mapAttribute key="Model Handler">
-<mapEntry key="ClassDiagram" value="EMF"/>
+<mapEntry key="Class" value="EMF"/>
 <mapEntry key="Relational" value="EMF"/>
 </mapAttribute>
 <mapAttribute key="ModelType">
-<mapEntry key="ClassDiagram" value="METAMODELINPUT"/>
+<mapEntry key="Class" value="METAMODELINPUT"/>
 <mapEntry key="IN" value="MODELINPUT"/>
 <mapEntry key="OUT" value="MODELOUTPUT"/>
 <mapEntry key="Relational" value="METAMODELOUTPUT"/>
@@ -42,10 +42,10 @@
 <mapEntry key="OUT" value="Relational"/>
 </mapAttribute>
 <mapAttribute key="Path">
-<mapEntry key="ClassDiagram" value="/ClassDiagram2Relational/ClassDiagram/ClassDiagram.ecore"/>
-<mapEntry key="IN" value="/ClassDiagram2Relational/ClassDiagram/Sample-ClassDiagram.xmi"/>
-<mapEntry key="OUT" value="/ClassDiagram2Relational/Relational/Sample-Relational.xmi"/>
-<mapEntry key="Relational" value="/ClassDiagram2Relational/Relational/Relational.ecore"/>
+<mapEntry key="Class" value="/fr.inria.atlanmod.mogwai.transformation.atl.tests/materials/ClassDiagram2Relational/ClassDiagram/ClassDiagram.ecore"/>
+<mapEntry key="IN" value="/fr.inria.atlanmod.mogwai.transformation.atl.tests/materials/ClassDiagram2Relational/ClassDiagram/Sample-ClassDiagram.xmi"/>
+<mapEntry key="OUT" value="/fr.inria.atlanmod.mogwai.transformation.atl.tests/materials/ClassDiagram2Relational/Relational/sample-relational.xmi"/>
+<mapEntry key="Relational" value="/fr.inria.atlanmod.mogwai.transformation.atl.tests/materials/ClassDiagram2Relational/Relational/Relational.ecore"/>
 </mapAttribute>
 <stringAttribute key="Project Name" value="ClassDiagram2Relational"/>
 <listAttribute key="Superimpose"/>

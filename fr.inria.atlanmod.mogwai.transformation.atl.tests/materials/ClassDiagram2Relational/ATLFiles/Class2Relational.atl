@@ -1,0 +1,21 @@
+module Class2Relational;
+create OUT : Relational from IN : Class;
+
+-- inheritance not supported yet
+
+-- issue: choose an object-id Type (Integer, String?).
+-- We choose Integer here, assuming this type is defined in the source model.
+
+-- global variable
+-- context 
+
+rule Class2Table {
+	from
+		c : Class!Class (c.name = 'test')
+	to
+		out : Relational!Table (
+			name <- c.name
+		)
+}
+
+

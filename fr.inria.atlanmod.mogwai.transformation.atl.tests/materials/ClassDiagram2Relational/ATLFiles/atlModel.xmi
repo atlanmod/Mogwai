@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="ASCII"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL">
-  <atl:Module location="4:1-5:48" name="Class2Relational">
-    <commentsBefore>-- @atlcompiler atl2006</commentsBefore>
-    <commentsBefore>-- @path ClassDiagram=/ClassDiagram2Relational/ClassDiagram/ClassDiagram.ecore</commentsBefore>
-    <commentsBefore>-- @path Relational=/ClassDiagram2Relational/Relational/Relational.ecore</commentsBefore>
-    <inModels location="5:30-5:47" name="IN" metamodel="/2"/>
-    <outModels location="5:8-5:24" name="OUT" metamodel="/1"/>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL">
+  <atl:Module location="1:1-19:2" name="Class2Relational">
+    <inModels location="2:30-2:40" name="IN" metamodel="/2"/>
+    <outModels location="2:8-2:24" name="OUT" metamodel="/1"/>
+    <elements xsi:type="atl:MatchedRule" location="12:1-19:2" name="Class2Table">
+      <commentsBefore>-- inheritance not supported yet</commentsBefore>
+      <commentsBefore>-- issue: choose an object-id Type (Integer, String?).</commentsBefore>
+      <commentsBefore>-- We choose Integer here, assuming this type is defined in the source model.</commentsBefore>
+      <commentsBefore>-- global variable</commentsBefore>
+      <commentsBefore>-- context </commentsBefore>
+      <outPattern location="15:2-18:4">
+        <elements xsi:type="atl:SimpleOutPatternElement" location="16:3-18:4" varName="out">
+          <type xsi:type="ocl:OclModelElement" location="16:9-16:25" name="Table" model="/1"/>
+          <bindings location="17:4-17:18" propertyName="name">
+            <value xsi:type="ocl:NavigationOrAttributeCallExp" location="17:12-17:18" name="name">
+              <source xsi:type="ocl:VariableExp" location="17:12-17:13" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
+            </value>
+          </bindings>
+        </elements>
+      </outPattern>
+      <inPattern location="13:2-14:36">
+        <elements xsi:type="atl:SimpleInPatternElement" location="14:3-14:18" varName="c" variableExp="/0/@elements.0/@inPattern/@filter/@source/@source /0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source">
+          <type xsi:type="ocl:OclModelElement" location="14:7-14:18" name="Class" model="/2"/>
+        </elements>
+        <filter xsi:type="ocl:OperatorCallExp" location="14:20-14:35" operationName="=">
+          <source xsi:type="ocl:NavigationOrAttributeCallExp" location="14:20-14:26" name="name">
+            <source xsi:type="ocl:VariableExp" location="14:20-14:21" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
+          </source>
+          <arguments xsi:type="ocl:StringExp" location="14:29-14:35" stringSymbol="test"/>
+        </filter>
+      </inPattern>
+    </elements>
   </atl:Module>
-  <ocl:OclModel location="5:14-5:24" name="Relational" model="/0/@outModels.0"/>
-  <ocl:OclModel location="5:35-5:47" name="ClassDiagram" model="/0/@inModels.0"/>
+  <ocl:OclModel location="2:14-2:24" name="Relational" elements="/0/@elements.0/@outPattern/@elements.0/@type" model="/0/@outModels.0"/>
+  <ocl:OclModel location="2:35-2:40" name="Class" elements="/0/@elements.0/@inPattern/@elements.0/@type" model="/0/@inModels.0"/>
 </xmi:XMI>
