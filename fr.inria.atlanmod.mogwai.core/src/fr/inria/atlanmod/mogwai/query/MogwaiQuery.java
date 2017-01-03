@@ -1,7 +1,5 @@
 package fr.inria.atlanmod.mogwai.query;
 
-import org.eclipse.emf.common.util.URI;
-
 import fr.inria.atlanmod.mogwai.processor.MogwaiProcessor;
 
 public abstract class MogwaiQuery {
@@ -12,6 +10,7 @@ public abstract class MogwaiQuery {
 		this.rawInput = input;
 	}
 	
+	@SuppressWarnings({"rawtypes", "unchecked"}) 
 	public MogwaiQueryResult process(MogwaiProcessor processor, Object arg) throws MogwaiQueryException {
 		if(processor.accept(this)) {
 			return processor.process(this, arg);

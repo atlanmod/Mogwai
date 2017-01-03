@@ -26,6 +26,7 @@ public class MogwaiQueryResult {
 	private BlueprintsPersistenceBackend graph;
 	private String gremlinScript;
 	
+	@SuppressWarnings("unchecked")
 	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, String gremlinQuery) {
 		this.graph = graph;
 		this.gremlinScript = gremlinQuery;
@@ -54,7 +55,6 @@ public class MogwaiQueryResult {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
 		this(engineResult, graph, gremlinScript.toString());
 	}
@@ -89,7 +89,7 @@ public class MogwaiQueryResult {
 	}
 	
 	/**
-	 * Reify result vertices and attach them to the given resource
+	 * Reifies result vertices and attach them to the given resource
 	 * @param resource the resource to attach the reified EObjects to
 	 * @return an EList containing the reified EObjects
 	 * @throws MogwaiException if there is no vertex to reify

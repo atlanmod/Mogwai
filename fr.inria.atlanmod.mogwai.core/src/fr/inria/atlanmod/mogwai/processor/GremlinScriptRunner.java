@@ -67,7 +67,7 @@ public class GremlinScriptRunner {
 			}
 			else if(arg instanceof List) {
 				List<Vertex> selfVertices = new ArrayList<Vertex>();
-			    for(Object a : (List)arg) {
+			    for(Object a : (List<?>)arg) {
 			        if(a instanceof PersistentEObject) {
 			            selfVertices.add(graphBackend.getVertex(((PersistentEObject) a).id()));
 			        }
