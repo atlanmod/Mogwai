@@ -46,6 +46,7 @@ rule module2script {
 			instructions <- mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e))
 				->union(mm.getCreatedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2metaNode(e)))		
+				->union(mm.getCreatedTypes()->collect(e | thisModule.oclCreatedModel2metaNode(e)))
 				->union(mm.getMatchedRules())
 		)
 }
@@ -103,7 +104,7 @@ lazy rule oclModel2meta {
 			indexQuery <- mm.name
 		)
 }
-
+	
 lazy rule oclModel2metaNode {
 	from
 		mm : ATL!OclModel
@@ -131,4 +132,41 @@ lazy rule oclModel2metaNode {
 		nextIt : Gremlin!NextCall (),
 		nullLiteral : Gremlin!NullLiteral()
 		
+}
+
+-- Creates the meta node if needed
+lazy rule oclCreatedModel2metaNode {
+	from
+		mm : ATL!OclModelElement
+	to
+		metaVar : Gremlin!VariableDeclaration (
+			name <- 'meta'+mm.name,
+			value <- tern
+		),
+		tern : Gremlin!TernaryOperator(
+			condition <- checkVarAccess,
+			ifTrue <- okVarAccess,
+			ifFalse <- outHelperAccess
+		),
+		checkVarAccess : Gremlin!VariableAccess (
+			name <- 'meta' + mm.name,
+			nextElement <- checkHasNext
+		),
+		checkHasNext : Gremlin!HasNextCall (
+			
+		),
+		okVarAccess : Gremlin!VariableAccess (
+			name <- 'meta' + mm.name,
+			nextElement <- nextCall
+		),
+		nextCall : Gremlin!NextCall (
+		
+		),
+		outHelperAccess : Gremlin!VariableAccess (
+			name <- 'outHelper',
+			nextElement <- createCall
+		),
+		createCall : Gremlin!CustomMethodCall (
+			name <- 'createMetaclass'
+		)
 }
