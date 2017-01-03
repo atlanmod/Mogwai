@@ -322,6 +322,15 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.CUSTOM_METHOD_CALL: {
+				CustomMethodCall customMethodCall = (CustomMethodCall)theEObject;
+				T result = caseCustomMethodCall(customMethodCall);
+				if (result == null) result = caseMethodCall(customMethodCall);
+				if (result == null) result = caseTraversalElement(customMethodCall);
+				if (result == null) result = caseInstruction(customMethodCall);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case GremlinPackage.NEXT_CALL: {
 				NextCall nextCall = (NextCall)theEObject;
 				T result = caseNextCall(nextCall);
@@ -1102,6 +1111,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMethodCall(MethodCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Custom Method Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Custom Method Call</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCustomMethodCall(CustomMethodCall object) {
 		return null;
 	}
 

@@ -192,6 +192,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createMethodCallAdapter();
 			}
 			@Override
+			public Adapter caseCustomMethodCall(CustomMethodCall object) {
+				return createCustomMethodCallAdapter();
+			}
+			@Override
 			public Adapter caseNextCall(NextCall object) {
 				return createNextCallAdapter();
 			}
@@ -786,6 +790,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMethodCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall <em>Custom Method Call</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall
+	 * @generated
+	 */
+	public Adapter createCustomMethodCallAdapter() {
 		return null;
 	}
 

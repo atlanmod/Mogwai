@@ -118,6 +118,11 @@
       <genOperations ecoreOperation="gremlin.ecore#//ScatterStep/toString"/>
     </genClasses>
     <genClasses image="false" ecoreClass="gremlin.ecore#//MethodCall"/>
+    <genClasses ecoreClass="gremlin.ecore#//CustomMethodCall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//CustomMethodCall/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//CustomMethodCall/params"/>
+      <genOperations ecoreOperation="gremlin.ecore#//CustomMethodCall/toString"/>
+    </genClasses>
     <genClasses ecoreClass="gremlin.ecore#//NextCall">
       <genOperations ecoreOperation="gremlin.ecore#//NextCall/toString"/>
     </genClasses>

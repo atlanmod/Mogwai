@@ -82,6 +82,7 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.TRANSFORM_STEP: return createTransformStep();
 			case GremlinPackage.GATHER_STEP: return createGatherStep();
 			case GremlinPackage.SCATTER_STEP: return createScatterStep();
+			case GremlinPackage.CUSTOM_METHOD_CALL: return createCustomMethodCall();
 			case GremlinPackage.NEXT_CALL: return createNextCall();
 			case GremlinPackage.HAS_NEXT_CALL: return createHasNextCall();
 			case GremlinPackage.INDEX_CALL: return createIndexCall();
@@ -381,6 +382,16 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public ScatterStep createScatterStep() {
 		ScatterStepImpl scatterStep = new ScatterStepImpl();
 		return scatterStep;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CustomMethodCall createCustomMethodCall() {
+		CustomMethodCallImpl customMethodCall = new CustomMethodCallImpl();
+		return customMethodCall;
 	}
 
 	/**

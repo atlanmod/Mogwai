@@ -256,6 +256,15 @@ public interface GremlinFactory extends EFactory {
 	ScatterStep createScatterStep();
 
 	/**
+	 * Returns a new object of class '<em>Custom Method Call</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Custom Method Call</em>'.
+	 * @generated
+	 */
+	CustomMethodCall createCustomMethodCall();
+
+	/**
 	 * Returns a new object of class '<em>Next Call</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

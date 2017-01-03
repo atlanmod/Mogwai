@@ -13,6 +13,7 @@ import fr.inria.atlanmod.mogwai.gremlin.CollectionDefinition;
 import fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.ContainsCall;
 import fr.inria.atlanmod.mogwai.gremlin.CountCall;
+import fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall;
 import fr.inria.atlanmod.mogwai.gremlin.DifferenceExpression;
 import fr.inria.atlanmod.mogwai.gremlin.DoubleLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.EdgesStep;
@@ -303,6 +304,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass methodCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass customMethodCallEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1378,6 +1386,42 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getCustomMethodCall() {
+		return customMethodCallEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCustomMethodCall_Name() {
+		return (EAttribute)customMethodCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCustomMethodCall_Params() {
+		return (EAttribute)customMethodCallEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCustomMethodCall__ToString() {
+		return customMethodCallEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getNextCall() {
 		return nextCallEClass;
 	}
@@ -2344,6 +2388,11 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		methodCallEClass = createEClass(METHOD_CALL);
 
+		customMethodCallEClass = createEClass(CUSTOM_METHOD_CALL);
+		createEAttribute(customMethodCallEClass, CUSTOM_METHOD_CALL__NAME);
+		createEAttribute(customMethodCallEClass, CUSTOM_METHOD_CALL__PARAMS);
+		createEOperation(customMethodCallEClass, CUSTOM_METHOD_CALL___TO_STRING);
+
 		nextCallEClass = createEClass(NEXT_CALL);
 		createEOperation(nextCallEClass, NEXT_CALL___TO_STRING);
 
@@ -2530,6 +2579,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		gatherStepEClass.getESuperTypes().add(this.getStep());
 		scatterStepEClass.getESuperTypes().add(this.getStep());
 		methodCallEClass.getESuperTypes().add(this.getTraversalElement());
+		customMethodCallEClass.getESuperTypes().add(this.getMethodCall());
 		nextCallEClass.getESuperTypes().add(this.getMethodCall());
 		hasNextCallEClass.getESuperTypes().add(this.getMethodCall());
 		indexCallEClass.getESuperTypes().add(this.getMethodCall());
@@ -2708,6 +2758,12 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEOperation(getScatterStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(methodCallEClass, MethodCall.class, "MethodCall", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(customMethodCallEClass, CustomMethodCall.class, "CustomMethodCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCustomMethodCall_Name(), ecorePackage.getEString(), "name", null, 0, 1, CustomMethodCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCustomMethodCall_Params(), ecorePackage.getEString(), "params", null, 0, -1, CustomMethodCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getCustomMethodCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(nextCallEClass, NextCall.class, "NextCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
