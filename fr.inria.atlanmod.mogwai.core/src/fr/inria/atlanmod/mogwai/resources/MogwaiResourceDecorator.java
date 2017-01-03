@@ -74,6 +74,11 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	}
 	
 	@Override
+	public BlueprintsPersistenceBackend getBackend() {
+		return persistenceBackend;
+	}
+	
+	@Override
 	public void enableATLDebug() {
 		oclProcessor.get().enableATLDebug();
 	}

@@ -63,6 +63,11 @@ public class MogwaiResourceImpl extends DefaultPersistentResource implements Mog
     	throw new MogwaiQueryException("Cannot find a processor for " + query);
     }
     
+    @Override
+    public BlueprintsPersistenceBackend getBackend() {
+    	return (BlueprintsPersistenceBackend)persistenceBackend;
+    }
+    
     // TODO check if this should be moved
     @Override
     public void enableATLDebug() {

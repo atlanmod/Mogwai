@@ -12,6 +12,7 @@ package fr.inria.atlanmod.mogwai.resources;
 
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public interface MogwaiResource extends PersistentResource {
@@ -19,6 +20,13 @@ public interface MogwaiResource extends PersistentResource {
 	MogwaiQueryResult query(MogwaiQuery query);
 	
     MogwaiQueryResult query(MogwaiQuery query, Object arg);
+    
+    /**
+     * Convenient method for development purpose, should not be used to modify the underlying
+     * backend directly 
+     * @return the backend held by the {@link MogwaiResource}
+     */
+    public BlueprintsPersistenceBackend getBackend();
     
     public void enableATLDebug();
     
