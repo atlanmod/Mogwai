@@ -25,6 +25,7 @@ import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
+import fr.inria.atlanmod.mogwai.util.GraphHelper;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
@@ -55,9 +56,13 @@ public class TransformationSample {
 //		
 //		showResult(mqr2, mogResource);
 		
+		GraphHelper helper = new GraphHelper(mogResource.getBackend().getGraph());
+		
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
-				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin")).build();
+				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin"))
+				.bind("gHelper", helper)
+				.build();
 		
 		// Print the created Tables since they are returned by the script
 		// Note: returning the updated/created objects is not mandatory

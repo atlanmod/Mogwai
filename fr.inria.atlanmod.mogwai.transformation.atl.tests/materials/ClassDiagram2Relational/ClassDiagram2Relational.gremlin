@@ -1,15 +1,12 @@
 final def gr = g;
+final def helper = gHelper;
+
 def metaClass = g.getIndex("metaclasses",Vertex.class)[[name:"Class"]];
 def metaClassNode = (metaClass.hasNext() ? metaClass.next() : null);
 
 def metaTable = g.getIndex("metaclasses",Vertex.class)[[name:"Table"]];
-def metaTableNode = (metaTable.hasNext() ? metaTable.next() : ({
-	def t = g.addVertex();
-	t.setProperty("name", "Table");
-	t.setProperty("nsURI", "ClassDiagram");
-	g.getIndex("metaclasses",Vertex.class).put("name", "Table", t);
-	t;
-})());
+def metaTableNode = metaTable.hasNext() ? metaTable.next() : helper.createMetaclass("Table", "ClassDiagram");
+
 println(metaTableNode);
 
 metaClassNode.inE("kyanosInstanceOf").outV.transform{
