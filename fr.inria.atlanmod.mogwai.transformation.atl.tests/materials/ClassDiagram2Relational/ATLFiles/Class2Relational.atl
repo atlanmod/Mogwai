@@ -15,6 +15,9 @@ rule Class2Table {
 	to
 		out : RelationalMM!Table (
 			name <- c.name
+		),
+		out2 : RelationalMM!Table (
+			name <- c.name	
 		)
 }
 
