@@ -381,13 +381,22 @@ public interface GremlinPackage extends EPackage {
 	int VARIABLE_DECLARATION__TYPE = INSTRUCTION_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Final</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VARIABLE_DECLARATION__FINAL = INSTRUCTION_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Variable Declaration</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VARIABLE_DECLARATION_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 3;
+	int VARIABLE_DECLARATION_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 4;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -4080,6 +4089,17 @@ public interface GremlinPackage extends EPackage {
 	EReference getVariableDeclaration_Type();
 
 	/**
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#isFinal <em>Final</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Final</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#isFinal()
+	 * @see #getVariableDeclaration()
+	 * @generated
+	 */
+	EAttribute getVariableDeclaration_Final();
+
+	/**
 	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5919,6 +5939,14 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EReference VARIABLE_DECLARATION__TYPE = eINSTANCE.getVariableDeclaration_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Final</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute VARIABLE_DECLARATION__FINAL = eINSTANCE.getVariableDeclaration_Final();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.

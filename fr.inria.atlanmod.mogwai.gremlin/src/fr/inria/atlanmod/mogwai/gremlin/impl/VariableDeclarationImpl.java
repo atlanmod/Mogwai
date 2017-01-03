@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableDeclarationImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableDeclarationImpl#getValue <em>Value</em>}</li>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableDeclarationImpl#getType <em>Type</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.impl.VariableDeclarationImpl#isFinal <em>Final</em>}</li>
  * </ul>
  * </p>
  *
@@ -74,6 +75,26 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 	 * @ordered
 	 */
 	protected TypeDeclaration type;
+
+	/**
+	 * The default value of the '{@link #isFinal() <em>Final</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isFinal()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean FINAL_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isFinal() <em>Final</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isFinal()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean final_ = FINAL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -206,6 +227,27 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isFinal() {
+		return final_;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFinal(boolean newFinal) {
+		boolean oldFinal = final_;
+		final_ = newFinal;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GremlinPackage.VARIABLE_DECLARATION__FINAL, oldFinal, final_));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String toString() {
 		if(getType() != null) {
 			if(getValue() != null) {
@@ -217,6 +259,9 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 		}
 		else {
 			if(getValue() != null) {
+				if(isFinal()) {
+					return "final def " + getName() + " = " + getValue().toString();
+				}
 				return "def " + getName() + " = " + getValue().toString();
 			}
 			else {
@@ -255,6 +300,8 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 				return getValue();
 			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
 				return getType();
+			case GremlinPackage.VARIABLE_DECLARATION__FINAL:
+				return isFinal();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -275,6 +322,9 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 				return;
 			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
 				setType((TypeDeclaration)newValue);
+				return;
+			case GremlinPackage.VARIABLE_DECLARATION__FINAL:
+				setFinal((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -297,6 +347,9 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
 				setType((TypeDeclaration)null);
 				return;
+			case GremlinPackage.VARIABLE_DECLARATION__FINAL:
+				setFinal(FINAL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -315,6 +368,8 @@ public class VariableDeclarationImpl extends InstructionImpl implements Variable
 				return value != null;
 			case GremlinPackage.VARIABLE_DECLARATION__TYPE:
 				return type != null;
+			case GremlinPackage.VARIABLE_DECLARATION__FINAL:
+				return final_ != FINAL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

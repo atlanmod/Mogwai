@@ -819,6 +819,15 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getVariableDeclaration_Final() {
+		return (EAttribute)variableDeclarationEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getVariableDeclaration__ToString() {
 		return variableDeclarationEClass.getEOperations().get(0);
 	}
@@ -2301,6 +2310,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		createEAttribute(variableDeclarationEClass, VARIABLE_DECLARATION__NAME);
 		createEReference(variableDeclarationEClass, VARIABLE_DECLARATION__VALUE);
 		createEReference(variableDeclarationEClass, VARIABLE_DECLARATION__TYPE);
+		createEAttribute(variableDeclarationEClass, VARIABLE_DECLARATION__FINAL);
 		createEOperation(variableDeclarationEClass, VARIABLE_DECLARATION___TO_STRING);
 
 		traversalElementEClass = createEClass(TRAVERSAL_ELEMENT);
@@ -2651,6 +2661,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEAttribute(getVariableDeclaration_Name(), ecorePackage.getEString(), "name", null, 1, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVariableDeclaration_Value(), this.getInstruction(), null, "value", null, 0, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVariableDeclaration_Type(), this.getTypeDeclaration(), null, "type", null, 0, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getVariableDeclaration_Final(), ecorePackage.getEBoolean(), "final", null, 0, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getVariableDeclaration__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 

@@ -14,6 +14,7 @@ package fr.inria.atlanmod.mogwai.gremlin;
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#getName <em>Name</em>}</li>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#getValue <em>Value</em>}</li>
  *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#getType <em>Type</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#isFinal <em>Final</em>}</li>
  * </ul>
  * </p>
  *
@@ -101,9 +102,35 @@ public interface VariableDeclaration extends Instruction {
 	void setType(TypeDeclaration value);
 
 	/**
+	 * Returns the value of the '<em><b>Final</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Final</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Final</em>' attribute.
+	 * @see #setFinal(boolean)
+	 * @see fr.inria.atlanmod.mogwai.gremlin.GremlinPackage#getVariableDeclaration_Final()
+	 * @model
+	 * @generated
+	 */
+	boolean isFinal();
+
+	/**
+	 * Sets the value of the '{@link fr.inria.atlanmod.mogwai.gremlin.VariableDeclaration#isFinal <em>Final</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='if(getType() != null) {\n\tif(getValue() != null) {\n\t\treturn getType().toString() + \" \" + getName() + \" = \" + getValue().toString();\n\t}\n\telse {\n\t\treturn getType().toString() + \" \" + getName();\n\t}\n}\nelse {\n\tif(getValue() != null) {\n\t\treturn \"def \" + getName() + \" = \" + getValue().toString();\n\t}\n\telse {\n\t\treturn \"def \" + getName();\n\t}\n}'"
+	 * @param value the new value of the '<em>Final</em>' attribute.
+	 * @see #isFinal()
+	 * @generated
+	 */
+	void setFinal(boolean value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='if(getType() != null) {\n\tif(getValue() != null) {\n\t\treturn getType().toString() + \" \" + getName() + \" = \" + getValue().toString();\n\t}\n\telse {\n\t\treturn getType().toString() + \" \" + getName();\n\t}\n}\nelse {\n\tif(getValue() != null) {\n\t\tif(isFinal()) {\n\t\t\treturn \"final def \" + getName() + \" = \" + getValue().toString();\n\t\t}\n\t\treturn \"def \" + getName() + \" = \" + getValue().toString();\n\t}\n\telse {\n\t\treturn \"def \" + getName();\n\t}\n}'"
 	 * @generated
 	 */
 	String toString();

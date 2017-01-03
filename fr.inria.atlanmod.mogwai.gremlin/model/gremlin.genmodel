@@ -33,6 +33,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//VariableDeclaration/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//VariableDeclaration/value"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//VariableDeclaration/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//VariableDeclaration/final"/>
       <genOperations ecoreOperation="gremlin.ecore#//VariableDeclaration/toString"/>
     </genClasses>
     <genClasses image="false" ecoreClass="gremlin.ecore#//TraversalElement">
