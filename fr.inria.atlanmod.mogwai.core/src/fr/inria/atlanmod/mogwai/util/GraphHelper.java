@@ -1,8 +1,13 @@
 package fr.inria.atlanmod.mogwai.util;
 
+import java.util.UUID;
+
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
@@ -39,6 +44,18 @@ public class GraphHelper {
 		metaclassVertex.setProperty("nsURI", nsURI);
 		graph.getIndex("metaclasses", Vertex.class).put("name", metaclassName, metaclassVertex);
 		return metaclassVertex;
+	}
+	
+	/**
+	 * Creates a new element {@link Vertex} and connects it to its metaclass
+	 * @param metaclassVertex the {@link Vertex} representing the metaclass
+	 * @return the created {@link Vertex}
+	 */
+	public Vertex createElement(Vertex metaclassVertex) {
+		checkNotNull(metaclassVertex, "Cannot create an element from a null metaclass");
+		Vertex elementVertex = graph.addVertex(EcoreUtil.generateUUID());
+		elementVertex.addEdge("kyanosInstanceOf", metaclassVertex);
+		return elementVertex;
 	}
 
 }

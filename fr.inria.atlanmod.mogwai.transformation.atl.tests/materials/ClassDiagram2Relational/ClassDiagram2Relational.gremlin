@@ -11,8 +11,8 @@ println(metaTableNode);
 
 metaClassNode.inE("kyanosInstanceOf").outV.transform{
 	def c = it;
-	def out = gr.addVertex();
-	gr.addEdge(out, metaTableNode, "kyanosInstanceOf");
+	def out = helper.createElement(metaTableNode);
+	
 	gr.addEdge(gr.getVertex('ROOT'), out, "eContents");
 	out.setProperty("name", c.getProperty("name"));
 	println(out);
