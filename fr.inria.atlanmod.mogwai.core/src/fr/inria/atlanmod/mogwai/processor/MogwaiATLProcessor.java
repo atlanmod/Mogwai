@@ -2,6 +2,8 @@ package fr.inria.atlanmod.mogwai.processor;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -13,6 +15,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
+import fr.inria.atlanmod.mogwai.util.GraphHelper;
 
 public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 
@@ -39,10 +42,11 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 
 	@Override
 	public MogwaiQueryResult internalProcess(MogwaiATLQuery query, @Nullable Object arg) {
+		final Map<String, Object> bindings = createQueryBindings(query);
 		GremlinScript gScript = createGremlinScript(query);
 		// for now only input graph is considered (we assume the input and output are created in the same
 		// resource ~= ATL refine mode)
-//		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, query.getInputGraph());
+//		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, query.getInputGraph(), bindings);
 //		return adaptResult(result, gScript);
 		return adaptResult(query, null, gScript);
 	}
@@ -66,6 +70,13 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 	private MogwaiQueryResult adaptResult(MogwaiATLQuery query, Object result, GremlinScript gScript) {
 		// Adapt the result to ATL2Gremlin
 		return new MogwaiQueryResult(result, query.getInputGraph(), gScript);
+	}
+	
+	private Map<String, Object> createQueryBindings(MogwaiATLQuery query) {
+		Map<String, Object> bindings = new HashMap<>();
+		bindings.put("inHelper", new GraphHelper(query.getInputGraph().getGraph()));
+		bindings.put("outHelper", new GraphHelper(query.getOutputGraph().getGraph()));
+		return bindings;
 	}
 
 }
