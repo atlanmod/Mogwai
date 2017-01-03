@@ -1,5 +1,5 @@
 module Class2Relational;
-create OUT : Relational from IN : Class;
+create OUT : RelationalMM from IN : ClassMM;
 
 -- inheritance not supported yet
 
@@ -11,9 +11,9 @@ create OUT : Relational from IN : Class;
 
 rule Class2Table {
 	from
-		c : Class!Class (c.name = 'test')
+		c : ClassMM!Class (c.name = 'test')
 	to
-		out : Relational!Table (
+		out : RelationalMM!Table (
 			name <- c.name
 		)
 }

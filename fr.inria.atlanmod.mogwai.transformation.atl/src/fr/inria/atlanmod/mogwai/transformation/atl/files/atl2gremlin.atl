@@ -9,11 +9,14 @@ helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
 	ATL!MatchedRule.allInstances()->asSequence()
 ;
 
-helper context ATL!Module def: getMatchedTypes() : Set(ATL!OclModel) =
+-- Get all the types matched by the transformation
+-- Note that for now rules matching type tuples are not supported
+-- @TODO support rules matching type tuples
+helper context ATL!Module def: getMatchedTypes() : Set(ATL!OclModelElement) =
 	self.getMatchedRules()
 		->collect(e | e.inPattern)
 		->collect(e | e.elements->first())
-		->collect(e | e.type.model)
+		->collect(e | e.type)
 		->asSet()
 ;
 
@@ -77,7 +80,7 @@ lazy rule createDefForIt {
 
 lazy rule oclModel2meta {
 	from
-		mm : ATL!OclModel
+		mm : ATL!OclModelElement
 	to
 		metaVar : Gremlin!VariableDeclaration (
 			name <- 'meta'+mm.name,

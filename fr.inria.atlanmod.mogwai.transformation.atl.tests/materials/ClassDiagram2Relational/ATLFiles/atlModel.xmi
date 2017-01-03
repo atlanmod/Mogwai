@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL">
   <atl:Module location="1:1-19:2" name="Class2Relational">
-    <inModels location="2:30-2:40" name="IN" metamodel="/2"/>
-    <outModels location="2:8-2:24" name="OUT" metamodel="/1"/>
+    <inModels location="2:32-2:44" name="IN" metamodel="/2"/>
+    <outModels location="2:8-2:26" name="OUT" metamodel="/1"/>
     <elements xsi:type="atl:MatchedRule" location="12:1-19:2" name="Class2Table">
       <commentsBefore>-- inheritance not supported yet</commentsBefore>
       <commentsBefore>-- issue: choose an object-id Type (Integer, String?).</commentsBefore>
@@ -11,7 +11,7 @@
       <commentsBefore>-- context </commentsBefore>
       <outPattern location="15:2-18:4">
         <elements xsi:type="atl:SimpleOutPatternElement" location="16:3-18:4" varName="out">
-          <type xsi:type="ocl:OclModelElement" location="16:9-16:25" name="Table" model="/1"/>
+          <type xsi:type="ocl:OclModelElement" location="16:9-16:27" name="Table" model="/1"/>
           <bindings location="17:4-17:18" propertyName="name">
             <value xsi:type="ocl:NavigationOrAttributeCallExp" location="17:12-17:18" name="name">
               <source xsi:type="ocl:VariableExp" location="17:12-17:13" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
@@ -19,19 +19,19 @@
           </bindings>
         </elements>
       </outPattern>
-      <inPattern location="13:2-14:36">
-        <elements xsi:type="atl:SimpleInPatternElement" location="14:3-14:18" varName="c" variableExp="/0/@elements.0/@inPattern/@filter/@source/@source /0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source">
-          <type xsi:type="ocl:OclModelElement" location="14:7-14:18" name="Class" model="/2"/>
+      <inPattern location="13:2-14:38">
+        <elements xsi:type="atl:SimpleInPatternElement" location="14:3-14:20" varName="c" variableExp="/0/@elements.0/@inPattern/@filter/@source/@source /0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source">
+          <type xsi:type="ocl:OclModelElement" location="14:7-14:20" name="Class" model="/2"/>
         </elements>
-        <filter xsi:type="ocl:OperatorCallExp" location="14:20-14:35" operationName="=">
-          <source xsi:type="ocl:NavigationOrAttributeCallExp" location="14:20-14:26" name="name">
-            <source xsi:type="ocl:VariableExp" location="14:20-14:21" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
+        <filter xsi:type="ocl:OperatorCallExp" location="14:22-14:37" operationName="=">
+          <source xsi:type="ocl:NavigationOrAttributeCallExp" location="14:22-14:28" name="name">
+            <source xsi:type="ocl:VariableExp" location="14:22-14:23" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
           </source>
-          <arguments xsi:type="ocl:StringExp" location="14:29-14:35" stringSymbol="test"/>
+          <arguments xsi:type="ocl:StringExp" location="14:31-14:37" stringSymbol="test"/>
         </filter>
       </inPattern>
     </elements>
   </atl:Module>
-  <ocl:OclModel location="2:14-2:24" name="Relational" elements="/0/@elements.0/@outPattern/@elements.0/@type" model="/0/@outModels.0"/>
-  <ocl:OclModel location="2:35-2:40" name="Class" elements="/0/@elements.0/@inPattern/@elements.0/@type" model="/0/@inModels.0"/>
+  <ocl:OclModel location="2:14-2:26" name="RelationalMM" elements="/0/@elements.0/@outPattern/@elements.0/@type" model="/0/@outModels.0"/>
+  <ocl:OclModel location="2:37-2:44" name="ClassMM" elements="/0/@elements.0/@inPattern/@elements.0/@type" model="/0/@inModels.0"/>
 </xmi:XMI>
