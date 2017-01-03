@@ -13,20 +13,33 @@ helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
 -- Note that for now rules matching type tuples are not supported
 -- @TODO support rules matching type tuples
 helper context ATL!Module def: getMatchedTypes() : Set(ATL!OclModelElement) =
-	self.getMatchedRules()
-		->collect(e | e.inPattern)
-		->collect(e | e.elements->first())
-		->collect(e | e.type)
-		->asSet()
+	thisModule.removeDuplicates(
+		self.getMatchedRules()
+			->collect(e | e.inPattern)
+			->collect(e | e.elements->first())
+			->collect(e | e.type)
+	)
 ;
 
 -- Get all the types created by the transformation
 helper context ATL!Module def: getCreatedTypes() : Set(ATL!OclModelElement) = 
-	self.getMatchedRules()
-		->collect(e | e.outPattern.elements)->flatten()
-		->collect(e | e.type)
-		->asSet().debug()
+	thisModule.removeDuplicates(
+		self.getMatchedRules()
+			->collect(e | e.outPattern.elements)->flatten()
+			->collect(e | e.type)
+	)
 ;
+
+helper def : removeDuplicates(col : Sequence(ATL!OclModelElement)) : Set(ATL!OclModelElement) =
+	col->iterate(e; res: Sequence(ATL!OclModelElement) = Sequence{} |
+		if(not(res->collect(x | x.name)->includes(e.name))) then
+			res->append(e)
+		else
+			res
+		endif
+	)->asSet()
+;
+	
 
 helper context ATL!MatchedRule def: getMatchedType() : ATL!OclModel =
 	self.inPattern.elements->first().type
@@ -200,7 +213,7 @@ lazy rule oclCreatedModel2metaNode {
 		mm : ATL!OclModelElement
 	to
 		metaVar : Gremlin!VariableDeclaration (
-			name <- 'meta'+mm.name,
+			name <- 'meta'+mm.name + 'Node',
 			value <- tern
 		),
 		tern : Gremlin!TernaryOperator(
