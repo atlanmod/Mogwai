@@ -1,7 +1,10 @@
 package fr.inria.atlanmod.mogwai.processor;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.script.Bindings;
@@ -18,7 +21,6 @@ import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.logging.NeoLogger;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Utility class that runs a Gremlin script on a given database. This feature is in a dedicated class because it
@@ -43,7 +45,17 @@ public class GremlinScriptRunner {
 		bindings = engine.createBindings();
 	}
 	
-	public Object runGremlinScript(String literalQuery, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend) {
+	/**
+	 * 
+	 * Run the provided query on the given backend using a dedicated Gremlin script engine.
+	 * 
+	 * @param literalQuery the query to execute
+	 * @param arg an argument representing the current element if relevant (can be null for global queries)
+	 * @param graphBackend the database to compute the query against
+	 * @param customBindings additional bindings needed by the query (usually provided by the calling {@link MogwaiProcessor}
+	 * @return a raw object representing the query result
+	 */
+	public Object runGremlinScript(String literalQuery, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend, @Nullable Map<String, Object> customBindings) {
 		checkNotNull(graphBackend, "Cannot compute a query without a graph");
 		checkNotNull(literalQuery, "Null is not a valid query");
 		NeoLogger.info("Computing Gremlin Script \n{0}", literalQuery);
@@ -63,6 +75,9 @@ public class GremlinScriptRunner {
 			    bindings.put("self", selfVertices);
 			}
 		}
+		if(customBindings != null) {
+			bindings.putAll(customBindings);
+		}
 		Object result = null;
 		try {
 			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(literalQuery);
@@ -74,9 +89,9 @@ public class GremlinScriptRunner {
 		return result;
 	}
 	
-	public Object runGremlinScript(GremlinScript gScript, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend) {
+	public Object runGremlinScript(GremlinScript gScript, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend, @Nullable Map<String, Object> customBindings) {
 		checkNotNull(gScript, "Null is not a valid query");
-		return runGremlinScript(gScript.toString(), arg, graphBackend);
+		return runGremlinScript(gScript.toString(), arg, graphBackend, customBindings);
 	}
 	
 	private static class Holder {

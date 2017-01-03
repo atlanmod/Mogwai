@@ -1,6 +1,5 @@
 package fr.inria.atlanmod.mogwai.processor;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Objects;
@@ -9,13 +8,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import com.sun.istack.internal.Nullable;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
 public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 

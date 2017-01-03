@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
@@ -12,9 +13,11 @@ import org.eclipse.emf.common.util.URI;
 public class MogwaiGremlinQuery extends MogwaiQuery {
 
 	private String literalQuery;
+	private Map<String, Object> bindings;
 	
-	public MogwaiGremlinQuery(Object input) throws MogwaiQueryException {
+	public MogwaiGremlinQuery(Object input, Map<String, Object> bindings) throws MogwaiQueryException {
 		super(input);
+		this.bindings = bindings;
 		if(input instanceof String) {
 			fromString((String) input);
 		} else if(input instanceof URI) {
@@ -55,6 +58,10 @@ public class MogwaiGremlinQuery extends MogwaiQuery {
 	
 	public String getGremlinScript() {
 		return literalQuery;
+	}
+	
+	public Map<String, Object> getBindings() {
+		return bindings;
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public class MogwaiOCLProcessor extends MogwaiProcessor<MogwaiOCLQuery> {
 	public MogwaiQueryResult internalProcess(MogwaiOCLQuery query, @Nullable Object arg) {
 		checkNotNull(graphBackend, "Cannot compute a query without a graph");
 		GremlinScript gScript = createGremlinScript(query);
-		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, graphBackend);
+		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, graphBackend, null);
 		return adaptResult(result, gScript);
 	}
 

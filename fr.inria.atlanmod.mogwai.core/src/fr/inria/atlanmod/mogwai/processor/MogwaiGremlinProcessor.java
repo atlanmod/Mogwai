@@ -4,9 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Objects;
 
-import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiOCLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
@@ -39,7 +37,7 @@ public class MogwaiGremlinProcessor extends MogwaiProcessor<MogwaiGremlinQuery> 
 	@Override
 	public MogwaiQueryResult internalProcess(MogwaiGremlinQuery query, Object arg) {
 		checkNotNull(graphBackend, "Cannot compute a query without a graph");
-		Object result = GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), arg, graphBackend);
+		Object result = GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), arg, graphBackend, query.getBindings());
 		return adaptResult(result, query.getGremlinScript());
 	}
 
