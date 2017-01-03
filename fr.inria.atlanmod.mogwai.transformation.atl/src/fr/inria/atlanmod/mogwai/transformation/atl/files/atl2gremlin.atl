@@ -25,7 +25,7 @@ helper context ATL!Module def: getCreatedTypes() : Set(ATL!OclModelElement) =
 	self.getMatchedRules()
 		->collect(e | e.outPattern.elements)->flatten()
 		->collect(e | e.type)
-		->asSet()
+		->asSet().debug()
 ;
 
 helper context ATL!MatchedRule def: getMatchedType() : ATL!OclModel =
@@ -35,6 +35,10 @@ helper context ATL!MatchedRule def: getMatchedType() : ATL!OclModel =
 helper context ATL!MatchedRule def: getOclGuard() : ATL!OclExpression =
 	self.inPattern.filter
 ;
+
+helper context ATL!MatchedRule def : getOutTypes() : Sequence(ATL!OclModelElement) =
+	self.outPattern.elements->collect(e | e.type)->asSequence()
+;
 	
 
 rule module2script {
@@ -43,11 +47,42 @@ rule module2script {
 	to
 		gg : Gremlin!GremlinScript(
 			name <- mm.name,
-			instructions <- mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e))
+			instructions <- Sequence{thisModule.module2inFinalVar(mm), thisModule.module2outFinalVar(mm)}
+				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getCreatedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2metaNode(e)))		
 				->union(mm.getCreatedTypes()->collect(e | thisModule.oclCreatedModel2metaNode(e)))
 				->union(mm.getMatchedRules())
+		)
+}
+
+-- Creates the final variable containing the input graph helper
+-- This instruction is needed to allow closure instructions to access the helper
+lazy rule module2inFinalVar {
+	from
+		mm : ATL!Module
+	to
+		inVar : Gremlin!VariableDeclaration (
+			name <- 'inH',
+			value <- varAccess,
+			final <- true
+		),
+		varAccess : Gremlin!VariableAccess (
+			name <- 'inHelper'	
+		)
+}
+
+lazy rule module2outFinalVar {
+	from
+		mm : ATL!Module
+	to
+		inVar : Gremlin!VariableDeclaration (
+			name <- 'outH',
+			value <- varAccess,
+			final <- true
+		),
+		varAccess : Gremlin!VariableAccess (
+			name <- 'outHelper'	
 		)
 }
 
@@ -67,13 +102,38 @@ rule matchedRule2transform {
 			nextElement <- filter
 		),
 		filter : Gremlin!FilterStep(
-			closure <- clos
-			--nextElement <- // create elements + trace links
+			closure <- clos,
+			nextElement <- transform
 		),
 		clos : Gremlin!Closure(
 			instructions <- Sequence{thisModule.createDefForIt(mm.inPattern.elements->first())}.append(mm.inPattern.filter.getFirstInstruction())
+		),
+		transform : Gremlin!TransformStep(
+			closure <- transformClos	
+		),
+		transformClos : Gremlin!Closure(
+			-- TODO handle it, multiple instructions etc
+			instructions <- mm.outPattern.elements
 		)
-		
+}
+
+rule outPatternElement2instructions {
+	from
+		pp : ATL!OutPatternElement
+	to
+		var : Gremlin!VariableDeclaration (
+			name <- pp.varName,
+			value <- outHelperAccess
+		),
+		outHelperAccess: Gremlin!VariableAccess (
+			name <- 'outHelper',
+			nextElement <- createCall
+		),
+		createCall : Gremlin!CustomMethodCall (
+			name <- 'createElement',
+			-- TODO multiple out types
+			params <- 'meta' + pp.type.name + 'Node'
+		)
 }
 
 lazy rule createDefForIt {
