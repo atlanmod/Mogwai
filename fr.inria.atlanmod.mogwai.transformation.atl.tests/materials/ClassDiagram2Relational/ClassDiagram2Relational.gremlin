@@ -1,5 +1,5 @@
 final def gr = g;
-final def helper = gHelper;
+final def helper = outHelper;
 
 def metaClass = g.getIndex("metaclasses",Vertex.class)[[name:"Class"]];
 def metaClassNode = (metaClass.hasNext() ? metaClass.next() : null);

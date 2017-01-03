@@ -61,7 +61,7 @@ public class TransformationSample {
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin"))
-				.bind("gHelper", helper)
+				.bind("outHelper", helper)
 				.build();
 		
 		// Print the created Tables since they are returned by the script
