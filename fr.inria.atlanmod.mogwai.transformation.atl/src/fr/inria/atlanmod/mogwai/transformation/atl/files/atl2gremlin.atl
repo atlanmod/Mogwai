@@ -29,7 +29,7 @@ helper context ATL!Module def: getCreatedTypes() : Set(ATL!OclModelElement) =
 ;
 
 helper context ATL!MatchedRule def: getMatchedType() : ATL!OclModel =
-	self.inPattern.elements->first().type.model
+	self.inPattern.elements->first().type
 ;
 
 helper context ATL!MatchedRule def: getOclGuard() : ATL!OclExpression =
