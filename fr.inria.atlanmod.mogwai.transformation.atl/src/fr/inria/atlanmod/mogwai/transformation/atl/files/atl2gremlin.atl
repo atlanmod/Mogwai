@@ -51,7 +51,7 @@ rule module2script {
 		)
 }
 
-rule matchedRule2pouet {
+rule matchedRule2transform {
 	from
 		mm : ATL!MatchedRule
 	to
