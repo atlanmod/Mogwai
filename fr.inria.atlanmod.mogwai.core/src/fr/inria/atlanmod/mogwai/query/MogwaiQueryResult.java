@@ -30,20 +30,18 @@ public class MogwaiQueryResult {
 	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, String gremlinQuery) {
 		this.graph = graph;
 		this.gremlinScript = gremlinQuery;
+		long begin = System.currentTimeMillis();
 		if(engineResult instanceof GremlinPipeline<?,?>) {
 			collectionResult = new BasicEList<Object>();
 			Iterator<Object> it = ((GremlinPipeline<?,Object>) engineResult).iterator();
 
 			// isReifiable is true only if all results were Vertex instances
-			long begin = System.currentTimeMillis();
 			isReifiable = true;
 			while(it.hasNext()) {
 				final Object next = it.next();
 				isReifiable = isReifiable && next instanceof Vertex;
 				collectionResult.add(next);
 			}
-			long end = System.currentTimeMillis();
-			NeoLogger.info("Database computation time: {0}ms", (end-begin));
 		}
 		else {
 			if(engineResult instanceof Collection<?>) {
@@ -53,6 +51,8 @@ public class MogwaiQueryResult {
 				singleResult = engineResult;
 			}
 		}
+		long end = System.currentTimeMillis();
+		NeoLogger.info("Database computation time: {0}ms", (end-begin));
 	}
 	
 	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
