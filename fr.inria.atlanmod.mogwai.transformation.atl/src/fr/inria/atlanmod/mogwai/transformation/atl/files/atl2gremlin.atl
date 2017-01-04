@@ -60,7 +60,7 @@ rule module2script {
 	to
 		gg : Gremlin!GremlinScript(
 			name <- mm.name,
-			instructions <- Sequence{thisModule.module2inFinalVar(mm), thisModule.module2outFinalVar(mm)}
+			instructions <- Sequence{thisModule.module2inFinalVar(mm), thisModule.module2outFinalVar(mm), thisModule.module2tlFinalVar(mm)}
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getCreatedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2metaNode(e)))		
@@ -70,7 +70,7 @@ rule module2script {
 }
 
 -- Creates the final variable containing the input graph helper
--- This instruction is needed to allow closure instructions to access the helper
+-- This instruction is needed to make it visible inside closures
 lazy rule module2inFinalVar {
 	from
 		mm : ATL!Module
@@ -85,17 +85,35 @@ lazy rule module2inFinalVar {
 		)
 }
 
+-- Creates the final variable containing the output graph helper
+-- This instruction is needed to make it visible inside closures
 lazy rule module2outFinalVar {
 	from
 		mm : ATL!Module
 	to
-		inVar : Gremlin!VariableDeclaration (
+		outVar : Gremlin!VariableDeclaration (
 			name <- 'outH',
 			value <- varAccess,
 			final <- true
 		),
 		varAccess : Gremlin!VariableAccess (
 			name <- 'outHelper'	
+		)
+}
+
+-- Creates the final variable containing the trace link manager
+-- This instruction is needed to make it visible inside closures
+lazy rule module2tlFinalVar {
+	from
+		mm : ATL!Module
+	to
+		tlVar : Gremlin!VariableDeclaration (
+			name <- 'tlM',
+			value <- varAccess,
+			final <- true
+		),
+		varAccess : Gremlin!VariableAccess (
+			name <- 'tlManager'	
 		)
 }
 
@@ -126,7 +144,10 @@ rule matchedRule2transform {
 		),
 		transformClos : Gremlin!Closure(
 			-- TODO handle it, multiple instructions etc
-			instructions <- mm.outPattern.elements
+			instructions <- Sequence{}
+				.append(thisModule.createDefForIt(mm.inPattern.elements->first()))
+				.append(thisModule.createTraceLinkInstruction(mm.inPattern.elements->first()))
+				.union(mm.outPattern.elements)
 		)
 }
 
@@ -146,6 +167,24 @@ rule outPatternElement2instructions {
 			name <- 'createElement',
 			-- TODO multiple out types
 			params <- 'meta' + pp.type.name + 'Node'
+		)
+}
+
+lazy rule createTraceLinkInstruction {
+	from
+		ss : ATL!SimpleInPatternElement
+	to
+		tlDecl : Gremlin!VariableDeclaration (
+			name <- 'tl',
+			value <- tlmAccess
+		),
+		tlmAccess : Gremlin!VariableAccess (
+			name <- 'tlM',
+			nextElement <- createCall
+		),
+		createCall : Gremlin!CustomMethodCall (
+			name <- 'createTraceLink',
+			params <- Sequence{ss.varName}
 		)
 }
 
