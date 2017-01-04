@@ -60,7 +60,7 @@ rule module2script {
 	to
 		gg : Gremlin!GremlinScript(
 			name <- mm.name,
-			instructions <- Sequence{thisModule.module2inFinalVar(mm), thisModule.module2outFinalVar(mm), thisModule.module2tlFinalVar(mm)}
+			instructions <- Sequence{thisModule.module2graphFinalVar(mm)}
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getCreatedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2metaNode(e)))		
@@ -69,51 +69,19 @@ rule module2script {
 		)
 }
 
--- Creates the final variable containing the input graph helper
+-- Creates the final variable containing the graph helper
 -- This instruction is needed to make it visible inside closures
-lazy rule module2inFinalVar {
+lazy rule module2graphFinalVar {
 	from
 		mm : ATL!Module
 	to
 		inVar : Gremlin!VariableDeclaration (
-			name <- 'inH',
+			name <- 'gHelper',
 			value <- varAccess,
 			final <- true
 		),
 		varAccess : Gremlin!VariableAccess (
-			name <- 'inHelper'	
-		)
-}
-
--- Creates the final variable containing the output graph helper
--- This instruction is needed to make it visible inside closures
-lazy rule module2outFinalVar {
-	from
-		mm : ATL!Module
-	to
-		outVar : Gremlin!VariableDeclaration (
-			name <- 'outH',
-			value <- varAccess,
-			final <- true
-		),
-		varAccess : Gremlin!VariableAccess (
-			name <- 'outHelper'	
-		)
-}
-
--- Creates the final variable containing the trace link manager
--- This instruction is needed to make it visible inside closures
-lazy rule module2tlFinalVar {
-	from
-		mm : ATL!Module
-	to
-		tlVar : Gremlin!VariableDeclaration (
-			name <- 'tlM',
-			value <- varAccess,
-			final <- true
-		),
-		varAccess : Gremlin!VariableAccess (
-			name <- 'tlManager'	
+			name <- 'graphHelper'	
 		)
 }
 

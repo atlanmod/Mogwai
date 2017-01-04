@@ -61,7 +61,7 @@ public class TransformationSample {
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin"))
-				.bind("outHelper", helper)
+				.bind("graphHelper", helper)
 				.build();
 		
 		// Print the created Tables since they are returned by the script
@@ -80,16 +80,20 @@ public class TransformationSample {
 	}
 	
 	public static void showResult(MogwaiQueryResult mqr, MogwaiResource mogResource) throws MogwaiException {
-		for(EObject e : mqr.reifyResults(mogResource)) {
-			if(e instanceof NamedElement) {
-				NamedElement n = (NamedElement)e;
-				NeoLogger.info("({0}): {1}", e.eClass().getName(), n.getName());
-			} else if(e instanceof Named){
-				Named n = (Named)e;
-				NeoLogger.info("({0}): {1}", e.eClass().getName(), n.getName());
-			} else {
-				NeoLogger.info("({0}): {1}", e.eClass().getName(), e.toString());
+		if(mqr.isReifiable()) {
+			for(EObject e : mqr.reifyResults(mogResource)) {
+				if(e instanceof NamedElement) {
+					NamedElement n = (NamedElement)e;
+					NeoLogger.info("({0}): {1}", e.eClass().getName(), n.getName());
+				} else if(e instanceof Named){
+					Named n = (Named)e;
+					NeoLogger.info("({0}): {1}", e.eClass().getName(), n.getName());
+				} else {
+					NeoLogger.info("({0}): {1}", e.eClass().getName(), e.toString());
+				}
 			}
+		} else {
+			NeoLogger.info("Query Result is not reifiable");
 		}
 	}
 	

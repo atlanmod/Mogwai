@@ -11,13 +11,23 @@ create OUT : RelationalMM from IN : ClassMM;
 
 rule Class2Table {
 	from
-		c : ClassMM!Class (c.name = 'test')
+		c : ClassMM!Class (c.name = 'Person')
 	to
 		out : RelationalMM!Table (
-			name <- c.name
+			name <- c.name,
+			col <- c.attr->first()
 		),
 		out2 : RelationalMM!Table (
 			name <- c.name	
+		)
+}
+
+rule Attribute2Column {
+	from
+		a : ClassMM!Attribute
+	to
+		fKey : RelationalMM!Column (
+			name <- a.name + 'Id'	
 		)
 }
 
