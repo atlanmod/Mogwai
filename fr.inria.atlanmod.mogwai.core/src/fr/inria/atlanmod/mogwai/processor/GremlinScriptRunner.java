@@ -58,6 +58,7 @@ public class GremlinScriptRunner {
 	public Object runGremlinScript(String literalQuery, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend, @Nullable Map<String, Object> customBindings) {
 		checkNotNull(graphBackend, "Cannot compute a query without a graph");
 		checkNotNull(literalQuery, "Null is not a valid query");
+		long begin = System.currentTimeMillis();
 		NeoLogger.info("Computing Gremlin Script \n{0}", literalQuery);
 		bindings.put("g", graphBackend.getGraph());
 		if(!Objects.isNull(arg)) {
@@ -86,6 +87,8 @@ public class GremlinScriptRunner {
 			e.printStackTrace();
 		}
 		bindings.clear();
+		long end = System.currentTimeMillis();
+		NeoLogger.info("Query Computation Time: {0}ms", (end-begin));
 		return result;
 	}
 	
