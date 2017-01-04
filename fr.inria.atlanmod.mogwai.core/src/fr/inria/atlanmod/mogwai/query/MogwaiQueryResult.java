@@ -52,7 +52,7 @@ public class MogwaiQueryResult {
 			}
 		}
 		long end = System.currentTimeMillis();
-		NeoLogger.info("Database computation time: {0}ms", (end-begin));
+		NeoLogger.info("Result Creation Time: {0}ms", (end-begin));
 	}
 	
 	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
