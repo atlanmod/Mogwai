@@ -158,6 +158,9 @@ rule matchedRule2transform {
 			instructions <- Sequence{}
 				.append(thisModule.createDefForIt(mm.inPattern.elements->first()))
 				.union(mm.outPattern.elements)
+				-- only resolve the first one, resolving others is related to resolveTemp, which is not 
+				-- supported yet
+				.append(thisModule.createResolveProxyCall(mm))
 				.union(mm.outPattern.elements->collect(e | e.bindings))
 		)
 }
@@ -233,6 +236,26 @@ lazy rule createDefForIt {
 			value <- closIt
 		),
 		closIt : Gremlin!ClosureIt()
+}
+
+lazy rule createResolveProxyCall {
+	from
+		mm : ATL!MatchedRule
+	to
+		gHelperAccess : Gremlin!VariableAccess (
+			name <- 'gHelper',
+			nextElement <- resProxyCall
+		),
+		resProxyCall : Gremlin!CustomMethodCall (
+			name <- 'resolveProxies',
+			params <- Sequence{sourceVarAccess, targetVarAccess}
+		),
+		sourceVarAccess : Gremlin!VariableAccess (
+			name <- mm.inPattern.elements->first().varName	
+		),
+		targetVarAccess : Gremlin!VariableAccess (
+			name <- mm.outPattern.elements->first().varName
+		)
 }
 
 lazy rule oclModel2meta {
