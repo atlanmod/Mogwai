@@ -79,6 +79,7 @@
     </genClasses>
     <genClasses ecoreClass="gremlin.ecore#//PropertyStep">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//PropertyStep/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//PropertyStep/value"/>
       <genOperations ecoreOperation="gremlin.ecore#//PropertyStep/toString"/>
     </genClasses>
     <genClasses ecoreClass="gremlin.ecore#//OutEStep">

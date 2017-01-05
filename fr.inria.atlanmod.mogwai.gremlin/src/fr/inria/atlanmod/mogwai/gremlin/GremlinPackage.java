@@ -1122,13 +1122,22 @@ public interface GremlinPackage extends EPackage {
 	int PROPERTY_STEP__NAME = STEP_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PROPERTY_STEP__VALUE = STEP_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Property Step</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PROPERTY_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 1;
+	int PROPERTY_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>To String</em>' operation.
@@ -4452,6 +4461,17 @@ public interface GremlinPackage extends EPackage {
 	EAttribute getPropertyStep_Name();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyStep#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Value</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.PropertyStep#getValue()
+	 * @see #getPropertyStep()
+	 * @generated
+	 */
+	EReference getPropertyStep_Value();
+
+	/**
 	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.PropertyStep#toString() <em>To String</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6243,6 +6263,14 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PROPERTY_STEP__NAME = eINSTANCE.getPropertyStep_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PROPERTY_STEP__VALUE = eINSTANCE.getPropertyStep_Value();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.

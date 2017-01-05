@@ -147,10 +147,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="PropertyStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;property('&quot;);&#xA;res.append(getName());&#xA;res.append(&quot;')&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(&quot;property('&quot;);&#xA;res.append(getName());&#xA;if(getValue() != null) {&#xA;&#x9;res.append(&quot;,&quot;);&#xA;&#x9;res.append(getValue().toString());&#xA;}&#xA;res.append(&quot;')&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Instruction"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OutEStep" eSuperTypes="#//Step">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">

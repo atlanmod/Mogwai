@@ -1134,6 +1134,15 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getPropertyStep_Value() {
+		return (EReference)propertyStepEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getPropertyStep__ToString() {
 		return propertyStepEClass.getEOperations().get(0);
 	}
@@ -2357,6 +2366,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		propertyStepEClass = createEClass(PROPERTY_STEP);
 		createEAttribute(propertyStepEClass, PROPERTY_STEP__NAME);
+		createEReference(propertyStepEClass, PROPERTY_STEP__VALUE);
 		createEOperation(propertyStepEClass, PROPERTY_STEP___TO_STRING);
 
 		outEStepEClass = createEClass(OUT_ESTEP);
@@ -2718,6 +2728,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEClass(propertyStepEClass, PropertyStep.class, "PropertyStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPropertyStep_Name(), ecorePackage.getEString(), "name", null, 1, 1, PropertyStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPropertyStep_Value(), this.getInstruction(), null, "value", null, 0, 1, PropertyStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getPropertyStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
