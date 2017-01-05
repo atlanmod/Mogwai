@@ -22,11 +22,8 @@ metaClassNode.inE("kyanosInstanceOf").outV.filter{it.name == "Person"}.transform
 	
 	out.setProperty("name", c.getProperty("name"));
 	
-	if(gHelper.isResolvable(c.outE("attr").inV.first())) {
-		gHelper.link(out, gHelper.resolve(c.outE("attr").inV.first()), "col");
-	} else {
-		gHelper.pLink(out, c.outE("attr").inV.first(), "col");
-	}
+	gHelper.isResolvable(c.outE("attr").inV.first()) ? gHelper.link(out, gHelper.resolve(c.outE("attr").inV.first()), "col") : gHelper.pLink(out, c.outE("attr").inV.first(), "col");
+
 	
 	// Quick fix to allow NeoEMF access of the created elements, need to be fixed
 	gr.addEdge(gr.getVertex('ROOT'), out, "eContents");
