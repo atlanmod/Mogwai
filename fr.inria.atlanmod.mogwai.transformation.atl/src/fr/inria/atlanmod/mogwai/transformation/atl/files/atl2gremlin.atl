@@ -52,7 +52,14 @@ helper context ATL!MatchedRule def: getOclGuard() : ATL!OclExpression =
 helper context ATL!MatchedRule def : getOutTypes() : Sequence(ATL!OclModelElement) =
 	self.outPattern.elements->collect(e | e.type)->asSequence()
 ;
-	
+
+helper context ATL!Binding def : getBindedElement() : String =
+	if self.refImmediateComposite().oclIsKindOf(ATL!OutPatternElement) then
+		self.refImmediateComposite().varName
+	else
+		OclUndefined.debug('Cannot find the binded element for ' + self + ' (parent: ' + self.refImmediateComposite() + ')')
+	endif
+;
 
 rule module2script {
 	from 
@@ -115,6 +122,7 @@ rule matchedRule2transform {
 			instructions <- Sequence{}
 				.append(thisModule.createDefForIt(mm.inPattern.elements->first()))
 				.union(mm.outPattern.elements)
+				.union(mm.outPattern.elements->collect(e | e.bindings))
 		)
 }
 
@@ -134,6 +142,20 @@ rule outPatternElement2instructions {
 			name <- 'createElement',
 			-- TODO multiple out types
 			params <- 'meta' + pp.type.name + 'Node'
+		)
+}
+
+rule binding2instruction {
+	from
+		bb : ATL!Binding
+	to
+		vaAccess : Gremlin!VariableAccess (
+			name <- bb.getBindedElement(),
+			nextElement <- prop
+		),
+		prop : Gremlin!PropertyStep(
+			name <- bb.propertyName,
+			value <- bb.value.getFirstInstruction()
 		)
 }
 
