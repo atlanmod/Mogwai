@@ -87,6 +87,16 @@ helper context ATL!Binding def : isAttributebinding() : Boolean =
 				true
 			endif
 ;
+	
+helper context ATL!Binding def : isReferenceBinding() : Boolean =
+	let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.getBindedElementClass()) in
+		let ref : SourceEcore!EReference = selfClass.eAllReferences->select(rr | rr.name = self.propertyName)->first() in
+			if ref.oclIsUndefined() then
+				false.debug('Cannot find reference ' + self.propertyName + ' in EClass ' + selfClass.name)
+			else
+				true
+			endif
+;
 
 rule module2script {
 	from 
@@ -145,7 +155,6 @@ rule matchedRule2transform {
 			closure <- transformClos	
 		),
 		transformClos : Gremlin!Closure(
-			-- TODO handle it, multiple instructions etc
 			instructions <- Sequence{}
 				.append(thisModule.createDefForIt(mm.inPattern.elements->first()))
 				.union(mm.outPattern.elements)
@@ -168,7 +177,10 @@ rule outPatternElement2instructions {
 		createCall : Gremlin!CustomMethodCall (
 			name <- 'createElement',
 			-- TODO multiple out types
-			params <- 'meta' + pp.type.name + 'Node'
+			params <- metaVarAccess
+		),
+		metaVarAccess : Gremlin!VariableAccess (
+			name <- 'meta' + pp.type.name + 'Node'	
 		)
 }
 
@@ -185,6 +197,32 @@ rule attributeBinding2instruction {
 			value <- bb.value.getFirstInstruction()
 		)
 }
+
+rule referenceBinding2instruction {
+	from
+		bb : ATL!Binding (bb.isReferenceBinding())
+	to
+		-- Generate the ternary operation that creates the link / plink
+		gAccess : Gremlin!VariableAccess (
+			name <- 'gHelper',
+			nextElement <- linkRefCall
+		),
+		linkRefCall : Gremlin!CustomMethodCall (
+			name <- 'linkReference',
+			params <- Sequence{bindedElVarAccess, bb.value.getFirstInstruction(), propSR}
+		),
+		bindedElVarAccess : Gremlin!VariableAccess (
+			name <- bb.getBindedElement()	
+		),
+		propSR : Gremlin!StringLiteral (
+			value <- bb.propertyName	
+		)
+}
+
+helper def : gremlinToString(input : Gremlin!Instruction) : String = 
+	input.oclType().debug()
+;
+
 
 lazy rule createDefForIt {
 	from
