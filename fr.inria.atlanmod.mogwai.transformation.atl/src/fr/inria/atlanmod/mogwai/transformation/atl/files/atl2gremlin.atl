@@ -125,10 +125,10 @@ rule outPatternElement2instructions {
 	to
 		var : Gremlin!VariableDeclaration (
 			name <- pp.varName,
-			value <- outHelperAccess
+			value <- gHelperAccess
 		),
-		outHelperAccess: Gremlin!VariableAccess (
-			name <- 'outHelper',
+		gHelperAccess: Gremlin!VariableAccess (
+			name <- 'gHelper',
 			nextElement <- createCall
 		),
 		createCall : Gremlin!CustomMethodCall (
@@ -226,7 +226,7 @@ lazy rule oclCreatedModel2metaNode {
 		tern : Gremlin!TernaryOperator(
 			condition <- checkVarAccess,
 			ifTrue <- okVarAccess,
-			ifFalse <- outHelperAccess
+			ifFalse <- gHelperAccess
 		),
 		checkVarAccess : Gremlin!VariableAccess (
 			name <- 'meta' + mm.name,
@@ -242,8 +242,8 @@ lazy rule oclCreatedModel2metaNode {
 		nextCall : Gremlin!NextCall (
 		
 		),
-		outHelperAccess : Gremlin!VariableAccess (
-			name <- 'outHelper',
+		gHelperAccess : Gremlin!VariableAccess (
+			name <- 'gHelper',
 			nextElement <- createCall
 		),
 		createCall : Gremlin!CustomMethodCall (
