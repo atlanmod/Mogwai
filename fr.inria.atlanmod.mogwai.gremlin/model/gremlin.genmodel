@@ -122,7 +122,7 @@
     <genClasses image="false" ecoreClass="gremlin.ecore#//MethodCall"/>
     <genClasses ecoreClass="gremlin.ecore#//CustomMethodCall">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//CustomMethodCall/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//CustomMethodCall/params"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference gremlin.ecore#//CustomMethodCall/params"/>
       <genOperations ecoreOperation="gremlin.ecore#//CustomMethodCall/toString"/>
     </genClasses>
     <genClasses ecoreClass="gremlin.ecore#//NextCall">

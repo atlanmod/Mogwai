@@ -1422,8 +1422,8 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCustomMethodCall_Params() {
-		return (EAttribute)customMethodCallEClass.getEStructuralFeatures().get(1);
+	public EReference getCustomMethodCall_Params() {
+		return (EReference)customMethodCallEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -2410,7 +2410,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		customMethodCallEClass = createEClass(CUSTOM_METHOD_CALL);
 		createEAttribute(customMethodCallEClass, CUSTOM_METHOD_CALL__NAME);
-		createEAttribute(customMethodCallEClass, CUSTOM_METHOD_CALL__PARAMS);
+		createEReference(customMethodCallEClass, CUSTOM_METHOD_CALL__PARAMS);
 		createEOperation(customMethodCallEClass, CUSTOM_METHOD_CALL___TO_STRING);
 
 		nextCallEClass = createEClass(NEXT_CALL);
@@ -2783,7 +2783,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		initEClass(customMethodCallEClass, CustomMethodCall.class, "CustomMethodCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCustomMethodCall_Name(), ecorePackage.getEString(), "name", null, 0, 1, CustomMethodCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getCustomMethodCall_Params(), ecorePackage.getEString(), "params", null, 0, -1, CustomMethodCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCustomMethodCall_Params(), ecorePackage.getEObject(), null, "params", null, 0, -1, CustomMethodCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getCustomMethodCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 

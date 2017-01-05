@@ -240,12 +240,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="CustomMethodCall" eSuperTypes="#//MethodCall">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(name);&#xA;res.append(&quot;(&quot;);&#xA;if(params != null) {&#xA;&#x9;String delim = &quot;&quot;;&#xA;&#x9;for(String p : params) {&#xA;&#x9;&#x9;res.append(delim).append(p);&#xA;&#x9;&#x9;delim = &quot;,&quot;;&#xA;&#x9;}&#xA;}&#xA;res.append(&quot;)&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
+        <details key="body" value="StringBuffer res = new StringBuffer();&#xA;res.append(name);&#xA;res.append(&quot;(&quot;);&#xA;if(!getParams().isEmpty()) {&#xA;&#x9;String delim = &quot;&quot;;&#xA;&#x9;for(EObject p : params) {&#xA;&#x9;&#x9;res.append(delim).append(p.toString());&#xA;&#x9;&#x9;delim = &quot;,&quot;;&#xA;&#x9;}&#xA;}&#xA;res.append(&quot;)&quot;);&#xA;if(getNextElement() != null) {&#xA;&#x9;res.append(&quot;.&quot;).append(getNextElement().toString());&#xA;}&#xA;return res.toString();"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="params" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NextCall" eSuperTypes="#//MethodCall">
     <eOperations name="toString" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">

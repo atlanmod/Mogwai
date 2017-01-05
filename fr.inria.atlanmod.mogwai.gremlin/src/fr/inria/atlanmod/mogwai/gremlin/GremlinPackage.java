@@ -1854,7 +1854,7 @@ public interface GremlinPackage extends EPackage {
 	int CUSTOM_METHOD_CALL__NAME = METHOD_CALL_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Params</b></em>' attribute list.
+	 * The feature id for the '<em><b>Params</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -4790,15 +4790,15 @@ public interface GremlinPackage extends EPackage {
 	EAttribute getCustomMethodCall_Name();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall#getParams <em>Params</em>}'.
+	 * Returns the meta object for the containment reference list '{@link fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall#getParams <em>Params</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Params</em>'.
+	 * @return the meta object for the containment reference list '<em>Params</em>'.
 	 * @see fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall#getParams()
 	 * @see #getCustomMethodCall()
 	 * @generated
 	 */
-	EAttribute getCustomMethodCall_Params();
+	EReference getCustomMethodCall_Params();
 
 	/**
 	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall#toString() <em>To String</em>}' operation.
@@ -6545,12 +6545,12 @@ public interface GremlinPackage extends EPackage {
 		EAttribute CUSTOM_METHOD_CALL__NAME = eINSTANCE.getCustomMethodCall_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Params</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CUSTOM_METHOD_CALL__PARAMS = eINSTANCE.getCustomMethodCall_Params();
+		EReference CUSTOM_METHOD_CALL__PARAMS = eINSTANCE.getCustomMethodCall_Params();
 
 		/**
 		 * The meta object literal for the '<em><b>To String</b></em>' operation.
