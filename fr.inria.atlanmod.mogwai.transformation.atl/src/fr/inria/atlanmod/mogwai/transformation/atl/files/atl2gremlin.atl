@@ -1,9 +1,11 @@
 -- @path ATL=/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore
 -- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
+-- @path SourceEcore=/org.eclipse.emf.ecore/model/Ecore.ecore
+-- @path TargetEcore=/org.eclipse.emf.ecore/model.Ecore.ecore
 
 module atl2gremlin;
 
-create OUT: Gremlin from IN: ATL;
+create OUT: Gremlin from IN: ATL, SOURCEMM:SourceEcore, TARGETMM:TargetEcore;
 
 helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
 	ATL!MatchedRule.allInstances()->asSequence()
@@ -59,6 +61,31 @@ helper context ATL!Binding def : getBindedElement() : String =
 	else
 		OclUndefined.debug('Cannot find the binded element for ' + self + ' (parent: ' + self.refImmediateComposite() + ')')
 	endif
+;
+
+helper context ATL!Binding def : getBindedElementClass() : String = 
+	if self.refImmediateComposite().oclIsKindOf(ATL!OutPatternElement) then
+		self.refImmediateComposite().type.name
+	else 
+		OclUndefined.debug('Cannot find the binded class for ' + self + 'parent: ' + self.refImmediateComposite() + ')')
+	endif
+;
+	
+helper def : getSourceEClassFromString(eClass : String) : SourceEcore!EClass = 
+	SourceEcore!EClass.allInstances()->select(cc | cc.name = eClass)->first()
+;
+
+-- Returns true if the binding sets an attribute value, false otherwise
+-- Note: returning false does not mean the binding sets a reference value, it may also mean that
+-- the EStructuralFeature was not found in the source metamodel (it is debugged in that case)
+helper context ATL!Binding def : isAttributebinding() : Boolean = 
+	let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.getBindedElementClass()) in
+		let att : SourceEcore!EAttribute = selfClass.eAllAttributes->select(aa | aa.name = self.propertyName)->first() in
+			if att.oclIsUndefined() then
+				false.debug('Cannot find attribute ' + self.propertyName + ' in EClass ' + selfClass.name)
+			else
+				true
+			endif
 ;
 
 rule module2script {
@@ -145,9 +172,9 @@ rule outPatternElement2instructions {
 		)
 }
 
-rule binding2instruction {
+rule attributeBinding2instruction {
 	from
-		bb : ATL!Binding
+		bb : ATL!Binding (bb.isAttributebinding())
 	to
 		vaAccess : Gremlin!VariableAccess (
 			name <- bb.getBindedElement(),
