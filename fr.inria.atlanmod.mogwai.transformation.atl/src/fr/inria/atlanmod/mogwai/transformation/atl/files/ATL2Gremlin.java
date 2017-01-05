@@ -99,12 +99,14 @@ public class ATL2Gremlin {
 			InputStream atlEmbeddedOcl2gremlinStream = getFileURL("atlEmbeddedOcl2gremlin.asm").openStream();
 			InputStream atlLiteralsStream = getFileURL("atlLiterals.asm").openStream();
 			InputStream atlMathExpressionsStream = getFileURL("atlMathExpressions.asm").openStream();
+			InputStream atlCollectionOperationsStream = getFileURL("atlCollectionOperations.asm").openStream();
 			InputStream commonStream = getFileURL("common.asm").openStream();
 			
 			modules.add((ASM) transformationLauncher.loadModule(atl2gremlinStream));
 			modules.add((ASM) transformationLauncher.loadModule(atlEmbeddedOcl2gremlinStream));
 			modules.add((ASM) transformationLauncher.loadModule(atlLiteralsStream));
 			modules.add((ASM) transformationLauncher.loadModule(atlMathExpressionsStream));
+			modules.add((ASM) transformationLauncher.loadModule(atlCollectionOperationsStream));
 			
 			ASMCommon = (ASM) transformationLauncher.loadModule(commonStream);
 			
@@ -112,6 +114,7 @@ public class ATL2Gremlin {
 			atlEmbeddedOcl2gremlinStream.close();
 			atlLiteralsStream.close();
 			atlMathExpressionsStream.close();
+			atlCollectionOperationsStream.close();
 			commonStream.close();
 			
 			
