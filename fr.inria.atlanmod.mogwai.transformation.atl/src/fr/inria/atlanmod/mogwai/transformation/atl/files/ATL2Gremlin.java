@@ -40,13 +40,16 @@ import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 
+import ClassDiagram.ClassDiagramPackage;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 
 public class ATL2Gremlin {
 
 	private ModelFactory modelFactory;
-	private IReferenceModel inputMetamodel;
-	private IReferenceModel outputMetamodel;
+	private IReferenceModel atlMetamodel;
+	private IReferenceModel sourceMetamodel;
+	private IReferenceModel targetMetamodel;
+	private IReferenceModel gremlinMetamodel;
 	private ILauncher transformationLauncher;
 	private EPackage.Registry registry;
 	private EMFInjector injector;
@@ -66,17 +69,23 @@ public class ATL2Gremlin {
 			injector = new EMFInjector();
 			extractor = new EMFExtractor();
 			
-			inputMetamodel = modelFactory.newReferenceModel();
+			atlMetamodel = modelFactory.newReferenceModel();
+			sourceMetamodel = modelFactory.newReferenceModel();
+			targetMetamodel = modelFactory.newReferenceModel();
+			
 			registry = new EPackageRegistryImpl();
 			registry.put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
 			registry.put(ATLPackage.eINSTANCE.getNsURI(), ATLPackage.eINSTANCE);
 			registry.put(OCLPackage.eINSTANCE.getNsURI(), OCLPackage.eINSTANCE);
 			registry.put(GremlinPackage.eINSTANCE.getNsURI(), GremlinPackage.eINSTANCE);
+			// Dev
+			registry.put(ClassDiagramPackage.eINSTANCE.getNsURI(), ClassDiagramPackage.eINSTANCE);
 			
-			// TODO check this works
-			injector.inject(inputMetamodel, ATLPackage.eINSTANCE.getNsURI());
-			outputMetamodel = modelFactory.newReferenceModel();
-			injector.inject(outputMetamodel, GremlinPackage.eINSTANCE.getNsURI());
+			injector.inject(atlMetamodel, ATLPackage.eINSTANCE.getNsURI());
+			injector.inject(sourceMetamodel, EcorePackage.eINSTANCE.getNsURI());
+			injector.inject(targetMetamodel, EcorePackage.eINSTANCE.getNsURI());
+			gremlinMetamodel = modelFactory.newReferenceModel();
+			injector.inject(gremlinMetamodel, GremlinPackage.eINSTANCE.getNsURI());
 			
 			rSet = new ResourceSetImpl();
 			rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
@@ -133,16 +142,25 @@ public class ATL2Gremlin {
 			System.out.println("Input resource contains " + i + " elements");
 			// /Debug
 			
-			IModel inputModel = modelFactory.newModel(inputMetamodel);
+			IModel inputModel = modelFactory.newModel(atlMetamodel);
 			injector.inject(inputModel, inputResource);
 			
-			IModel gModel = modelFactory.newModel(outputMetamodel);
+			IModel sourceMM = modelFactory.newModel(sourceMetamodel);
+			IModel targetMM = modelFactory.newModel(targetMetamodel);
+			// dev
+			injector.inject(sourceMM, ClassDiagramPackage.eINSTANCE.eResource());
+			injector.inject(targetMM, ClassDiagramPackage.eINSTANCE.eResource());
+			// /dev
+			
+			IModel gModel = modelFactory.newModel(gremlinMetamodel);
 			
 			transformationLauncher = new EMFVMLauncher();
 			transformationLauncher.initialize(new HashMap<String, Object>());
 			transformationLauncher.addLibrary("common", ASMCommon);
 			
 			transformationLauncher.addInModel(inputModel, "IN", "ATL");
+			transformationLauncher.addInModel(sourceMM, "SOURCEMM", "SourceEcore");
+			transformationLauncher.addInModel(targetMM, "TARGETMM", "TargetEcore");
 			transformationLauncher.addOutModel(gModel, "OUT", "Gremlin");
 			
 			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.toArray());
