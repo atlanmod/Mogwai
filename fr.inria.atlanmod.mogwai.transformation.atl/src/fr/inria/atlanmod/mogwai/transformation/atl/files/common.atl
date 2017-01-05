@@ -9,7 +9,7 @@
 library common;
 
 -- Get the operation name of a CallExp element.
-helper context ATL!OperatorCallExp def : getOpName() : String = 
+helper context ATL!OperationCallExp def : getOpName() : String = 
 	self.operationName
 ;
 
