@@ -114,7 +114,6 @@ rule matchedRule2transform {
 			-- TODO handle it, multiple instructions etc
 			instructions <- Sequence{}
 				.append(thisModule.createDefForIt(mm.inPattern.elements->first()))
-				.append(thisModule.createTraceLinkInstruction(mm.inPattern.elements->first()))
 				.union(mm.outPattern.elements)
 		)
 }
@@ -135,24 +134,6 @@ rule outPatternElement2instructions {
 			name <- 'createElement',
 			-- TODO multiple out types
 			params <- 'meta' + pp.type.name + 'Node'
-		)
-}
-
-lazy rule createTraceLinkInstruction {
-	from
-		ss : ATL!SimpleInPatternElement
-	to
-		tlDecl : Gremlin!VariableDeclaration (
-			name <- 'tl',
-			value <- tlmAccess
-		),
-		tlmAccess : Gremlin!VariableAccess (
-			name <- 'tlM',
-			nextElement <- createCall
-		),
-		createCall : Gremlin!CustomMethodCall (
-			name <- 'createTraceLink',
-			params <- Sequence{ss.varName}
 		)
 }
 
