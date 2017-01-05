@@ -22,13 +22,13 @@ rule Class2Table {
 		)
 }
 
-rule Attribute2Column {
-	from
-		a : ClassMM!Attribute
-	to
-		fKey : RelationalMM!Column (
-			name <- a.name + 'Id'	
-		)
-}
+--rule Attribute2Column {
+--	from
+--		a : ClassMM!Attribute
+--	to
+--		fKey : RelationalMM!Column (
+--			name <- a.name + 'Id'	
+--		)
+--}
 
 
