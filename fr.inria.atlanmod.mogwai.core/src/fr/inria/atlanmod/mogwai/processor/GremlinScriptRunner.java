@@ -81,8 +81,13 @@ public class GremlinScriptRunner {
 		}
 		Object result = null;
 		try {
+			long beginCompil = System.currentTimeMillis();
 			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(literalQuery);
+			long endCompil = System.currentTimeMillis();
+			NeoLogger.info("Script Compilation Time: {0}ms", (endCompil - beginCompil));
 			result = compiled.eval(bindings);
+			long endEval = System.currentTimeMillis();
+			NeoLogger.info("Script Evaluation Time: {0}ms", (endEval - endCompil));
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
