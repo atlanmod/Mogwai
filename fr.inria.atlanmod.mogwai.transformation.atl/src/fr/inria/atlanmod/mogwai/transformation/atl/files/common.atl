@@ -73,8 +73,12 @@ helper context OclAny def : getComposite() : OclAny =
 		else
 			composite
 		endif
-	else
-		composite
+	else 
+		if composite.oclIsTypeOf(ATL!Binding) then
+			OclUndefined
+		else
+			composite
+		endif
 	endif
 ;
 	
