@@ -18,7 +18,7 @@
 --		Excluding operations
 --		Including operations
 --	Operation returning a non collection value
---		Excludes operations
+--		Excludes operations				X
 --		ExcludesAll operations
 --		Includes operations				X
 --		IncludesAll operations
@@ -486,29 +486,28 @@ uses common;
 
 
 -- Transforms an excludes operation into equivalent Gremlin retain step.
--- Retained value is transformed from the excludes argument (expression or literal) and
--- put in a vector to match retain step definition.
--- Results of the retain step are transformed into a list and the isEmpty method
--- is called to return the corresponding boolean result.
---rule excludes2steps {
---	from
---		oclExcludes : OCL!OperationCallExp (oclExcludes.getOpName() = 'excludes')
---	to
---		gremlinRetain : Gremlin!RetainStep(
---			collection <- gremlinCollectionDefinition,
---			nextElement <- gremlinToListCall	
---		),
---		gremlinToListCall : Gremlin!ToListCall(
---			nextElement <- gremlinIsEmptyCall	
---		),
---		gremlinIsEmptyCall : Gremlin!IsEmptyCall(
---		),
---		gremlinCollectionDefinition : Gremlin!CollectionDefinition(
---			values <- oclExcludes.argument.first(),
---			type <- gremlinListDeclaration
---		),
---		gremlinListDeclaration : Gremlin!ListDeclaration()
---}
+rule excludes2steps {
+	from
+		oclExcludes : ATL!CollectionOperationCallExp (oclExcludes.getOpName() = 'excludes')
+	to
+		gremlinRetain : Gremlin!RetainStep (
+			collection <- gremlinCollectionDefinition,
+			nextElement <- gremlinToListCall
+		),
+		gremlinToListCall : Gremlin!ToListCall (
+			nextElement <- gremlinIsEmptyCall	
+		),
+		gremlinIsEmptyCall : Gremlin!IsEmptyCall (
+				
+		),
+		gremlinCollectionDefinition : Gremlin!CollectionDefinition (
+			values <- oclExcludes.arguments->first().getFirstInstruction(),
+			type <- gremlinListDeclaration
+		),
+		gremlinListDeclaration : Gremlin!ListDeclaration(
+			
+		)
+}
 
 
 -- Transforms an excludesAll operation into equivalent Gremlin retain step.

@@ -34,7 +34,7 @@
             </value>
           </bindings>
           <bindings location="18:4-18:33" propertyName="col">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:33" operationName="includes">
+            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:33" operationName="excludes">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="18:11-18:17" name="attr">
                 <source xsi:type="ocl:VariableExp" location="18:11-18:12" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
               </source>
