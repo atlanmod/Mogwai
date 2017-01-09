@@ -33,8 +33,8 @@
               <source xsi:type="ocl:VariableExp" location="17:12-17:13" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
             </value>
           </bindings>
-          <bindings location="18:4-18:25" propertyName="col">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:25" operationName="size">
+          <bindings location="18:4-18:28" propertyName="col">
+            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:28" operationName="isEmpty">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="18:11-18:17" name="attr">
                 <source xsi:type="ocl:VariableExp" location="18:11-18:12" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
               </source>

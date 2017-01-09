@@ -672,17 +672,17 @@ rule size2steps {
 
 -- Transforms an isEmpty operation into equivalent Gremlin method calls.
 -- IsEmpty method is called on the step collection.
---rule isEmpty2steps {
---	from
---		oclIsEmpty : OCL!OperationCallExp (oclIsEmpty.getOpName() = 'isEmpty')
---	to
---		gremlinToListCall : Gremlin!ToListCall(
---			nextElement <- gremlinIsEmptyCall
---		),
---		gremlinIsEmptyCall : Gremlin!IsEmptyCall(
---			nextElement <- oclIsEmpty.getComposite()
---		)
---}
+rule isEmpty2steps {
+	from
+		oclIsEmpty : ATL!CollectionOperationCallExp (oclIsEmpty.getOpName() = 'isEmpty')
+	to
+		gremlinToListCall : Gremlin!ToListCall(
+			nextElement <- gremlinIsEmptyCall
+		),
+		gremlinIsEmptyCall : Gremlin!IsEmptyCall(
+			nextElement <- oclIsEmpty.getComposite()
+		)
+}
 
 -- Transforms a first operation into equivalent Gremlin method calls.
 -- First method is called on the step collection.
