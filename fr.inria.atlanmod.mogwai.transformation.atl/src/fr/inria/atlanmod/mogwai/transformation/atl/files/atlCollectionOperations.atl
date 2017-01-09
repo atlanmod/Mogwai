@@ -20,7 +20,7 @@
 --	Operation returning a non collection value
 --		Excludes operations
 --		ExcludesAll operations
---		Includes operations
+--		Includes operations				X
 --		IncludesAll operations
 --		Exists operations				X
 --		ForAll operations				X
@@ -532,32 +532,30 @@ uses common;
 --}
 
 -- Transforms an includes operation into equivalent Gremlin transform step.
--- Boolean result is computed by applying the method contains on the step collection.
--- The resulting step is then processed using the next method to return the boolean value.
---rule includes2steps {
---	from
---		oclIncludes : OCL!OperationCallExp (oclIncludes.getOpName() = 'includes')
---	to
---		gremlinGather : Gremlin!GatherStep(
---			nextElement <- gremlinTransform	
---		),
---		gremlinTransform : Gremlin!TransformStep(
---			closure <- gremlinClosure,
---			nextElement <- gremlinNextCall
---		),
---		gremlinClosure : Gremlin!Closure (
---			instructions <- gremlinIterator
---		),
---		gremlinIterator : Gremlin!ClosureIt(
---			nextElement <- gremlinContainsCall
---		),
---		gremlinContainsCall : Gremlin!ContainsCall(
---			value <- oclIncludes.argument.first()
---		),
---		gremlinNextCall : Gremlin!NextCall(
---			nextElement <- oclIncludes.getComposite()	
---		)
---}
+rule includes2steps {
+	from
+		oclIncludes : ATL!OperationCallExp (oclIncludes.getOpName() = 'includes')
+	to
+		gremlinGather : Gremlin!GatherStep (
+			nextElement <- gremlinTransform	
+		),
+		gremlinTransform : Gremlin!TransformStep (
+			closure <- gremlinClosure,
+			nextElement <- gremlinNextCall
+		),
+		gremlinClosure: Gremlin!Closure (
+			instructions <- gremlinIterator	
+		),
+		gremlinIterator : Gremlin!ClosureIt (
+			nextElement <- gremlinContainsCall	
+		),
+		gremlinContainsCall : Gremlin!ContainsCall (
+			value <- oclIncludes.arguments->first().getFirstInstruction()	
+		),
+		gremlinNextCall : Gremlin!NextCall(
+			
+		)
+}
 
 -- Transforms an includesAll operation into equivalent Gremlin transformation step.
 -- Boolean result is computed by applying the method containsAll on the step collection.
