@@ -15,7 +15,7 @@ rule Class2Table {
 	to
 		out : RelationalMM!Table (
 			name <- c.name,
-			col <- c.attr->isEmpty()
+			col <- c.attr->exists(e | true)
 		),
 		out2 : RelationalMM!Table (
 			name <- c.name	

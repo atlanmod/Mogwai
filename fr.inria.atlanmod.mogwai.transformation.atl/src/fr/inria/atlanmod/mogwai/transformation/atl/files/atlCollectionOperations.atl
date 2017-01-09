@@ -22,10 +22,10 @@
 --		ExcludesAll operations
 --		Includes operations
 --		IncludesAll operations
---		Exists operations
+--		Exists operations				X
 --		ForAll operations
 --		Size operations					X (not for String)
---		IsEmpty operations
+--		IsEmpty operations				X
 --		First operations				X
 
 -- Coding Guidelines
@@ -587,35 +587,49 @@ uses common;
 --		)
 --}
 
--- Transforms an exists operation into equivalent Gremlin filter step.
--- Iterator variable is mapped into a VariableDeclaration to handle nested exists
--- (Groovy closure iterator are accessible through the variable 'it', creating colisions
--- in case of nested closures).
--- Exists body is transformed into a Groovy closure applied on the filter.
--- The boolean result is computed using the hasNext method.
---rule exists2steps {
---	from
---		oclExists : OCL!IteratorExp (oclExists.getOpName() = 'exists')
---	to
---		gremlinFilterStep : Gremlin!FilterStep (
---			closure <-  gremlinClosure,
---			nextElement <- gremlinHasNext
---		),
---		gremlinClosure : Gremlin!Closure (
---			instructions <- OrderedSet{}
---				.append(
---					-- Transform the iterator into a variable definition
---					thisModule.varIterator2def(oclExists.iterator.first())
---				)
---				.append(
---					-- Add the transformed body
---					oclExists.body.getFirstInstruction()
---				)
---		),
---		gremlinHasNext : Gremlin!HasNextCall(
---			
---		)
---}
+-- Transforms a simple exists operation (withtout iterator) into equivalent Gremlin filter step.
+rule simpleExists2steps {
+	from
+		oclExists : ATL!CollectionOperationCallExp (oclExists.getOpName() = 'exists')
+	to
+		gremlinFilterStep : Gremlin!FilterStep (
+			closure <-  gremlinClosure,
+			nextElement <- gremlinHasNext
+		),
+		gremlinClosure : Gremlin!Closure (
+			instructions <- OrderedSet{}
+				.append(
+					-- Add the transformed body
+					oclExists.arguments->first().getFirstInstruction()
+				)
+		),
+		gremlinHasNext : Gremlin!HasNextCall(
+			
+		)
+}
+
+-- Transforms a complex exists operation (with an iterator) into equivalent Gremlin filter step.
+rule complexExists2steps {
+	from
+		oclExists : ATL!IteratorExp (oclExists.getOpName() = 'exists')
+	to
+		gremlinFilterStep : Gremlin!FilterStep (
+			closure <- gremlinClosure,
+			nextElement <- gremlinHasNext
+		),
+		gremlinClosure : Gremlin!Closure (
+			instructions <- OrderedSet{}
+				.append(
+					thisModule.createDefForIt(oclExists.iterators->first())	
+				)
+				.append(
+					oclExists.body.getFirstInstruction()
+				)
+		),
+		gremlinHasNext : Gremlin!HasNextCall (
+				
+		)
+}
 
 -- Transforms a forAll operation into equivalent Gremlin filter step.
 -- Iterator variable is mapped into a VariableDeclaration to handle nested forAll

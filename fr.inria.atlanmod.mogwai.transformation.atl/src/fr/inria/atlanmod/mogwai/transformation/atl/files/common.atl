@@ -9,8 +9,16 @@
 library common;
 
 -- Get the operation name of a CallExp element.
-helper context ATL!OperationCallExp def : getOpName() : String = 
-	self.operationName
+helper context ATL!PropertyCallExp def : getOpName() : String = 
+	if self.oclIsKindOf(ATL!OperationCallExp) then
+		self.operationName
+	else 
+		if self.oclIsKindOf(ATL!IteratorExp) then
+			self.name
+		else
+			OclUndefined.debug('Cannot compute the name of ' + self)
+		endif
+	endif
 ;
 
 -- Get the first instruction in an OCLExpression.
