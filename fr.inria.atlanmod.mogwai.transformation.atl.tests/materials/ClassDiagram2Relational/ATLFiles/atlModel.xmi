@@ -34,7 +34,7 @@
             </value>
           </bindings>
           <bindings location="18:4-18:35" propertyName="col">
-            <value xsi:type="ocl:IteratorExp" location="18:11-18:35" name="exists">
+            <value xsi:type="ocl:IteratorExp" location="18:11-18:35" name="forAll">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="18:11-18:17" name="attr">
                 <source xsi:type="ocl:VariableExp" location="18:11-18:12" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
               </source>

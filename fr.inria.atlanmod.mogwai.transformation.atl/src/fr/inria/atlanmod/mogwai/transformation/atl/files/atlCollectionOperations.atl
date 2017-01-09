@@ -23,7 +23,7 @@
 --		Includes operations
 --		IncludesAll operations
 --		Exists operations				X
---		ForAll operations
+--		ForAll operations				X
 --		Size operations					X (not for String)
 --		IsEmpty operations				X
 --		First operations				X
@@ -631,13 +631,59 @@ rule complexExists2steps {
 		)
 }
 
--- Transforms a forAll operation into equivalent Gremlin filter step.
--- Iterator variable is mapped into a VariableDeclaration to handle nested forAll
--- (Groovy closure iterator are accessible through the variable 'it', creating colisions
--- in case of nested closures).
--- ForAll body is transformed into a Groovy closure applied on the filter. The boolean
--- condition is preceded by a NotExpression and the result is returned using an isEmpty
--- method call.
+-- Transforms a simple forAll operation (without iterator) into equivalent Gremlin filter step.
+rule simpleForAll2steps {
+	from
+		oclForAll : ATL!CollectionOperationCallExp (oclForAll.getOpName() = 'forAll')
+	to
+		gremlinFilter : Gremlin!FilterStep (
+			closure <- gremlinClosure,
+			nextElement <- gremlinToListCall
+		),
+		gremlinClosure : Gremlin!Closure (
+			instructions <- OrderedSet{}
+				.append(gremlinNotExpression)
+		),
+		gremlinNotExpression : Gremlin!NotExpression (
+			exp <- oclForAll.arguments->first().getFirstInstruction()
+		),
+		gremlinToListCall : Gremlin!ToListCall (
+			nextElement <- gremlinIsEmptyCall	
+		),
+		gremlinIsEmptyCall : Gremlin!IsEmptyCall (
+				
+		)
+}
+
+rule complexForAll2steps {
+	from
+		oclForAll : ATL!IteratorExp (oclForAll.getOpName() = 'forAll')
+	to
+		gremlinFilter : Gremlin!FilterStep (
+			closure <- gremlinClosure,
+			nextElement <- gremlinToListCall
+		),
+		gremlinClosure : Gremlin!Closure (
+			instructions <- OrderedSet{}
+				.append(
+					thisModule.createDefForIt(oclForAll.iterators->first())	
+				)
+				.append(
+					gremlinNotExpression
+				)
+		),
+		gremlinNotExpression : Gremlin!NotExpression (
+			exp <- oclForAll.body.getFirstInstruction()
+		),
+		gremlinToListCall : Gremlin!ToListCall (
+			nextElement <- gremlinIsEmptyCall	
+		),
+		gremlinIsEmptyCall : Gremlin!IsEmptyCall (
+				
+		)
+}
+
+
 --rule forAll2steps {
 --	from
 --		oclForAll : OCL!IteratorExp (oclForAll.getOpName() = 'forAll')
