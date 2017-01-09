@@ -24,9 +24,9 @@
 --		IncludesAll operations
 --		Exists operations
 --		ForAll operations
---		Size operations
+--		Size operations					X (not for String)
 --		IsEmpty operations
---		First operations
+--		First operations				X
 
 -- Coding Guidelines
 --		Each operation returning a collection have to be transformed
@@ -652,13 +652,13 @@ uses common;
 --}
 
 -- Transforms a size operation into equivalent Gremlin count call.
---rule size2steps {
---	from
---		oclSize : OCL!OperationCallExp (oclSize.getOpName() = 'size'
---			and not (oclSize.getComposite().oclIsTypeOf(OCL!PropertyCallExp)))
---	to
---		gremlinCountCall : Gremlin!CountCall ()
---}
+-- TODO Handle size on String
+rule size2steps {
+	from
+		oclSize : ATL!CollectionOperationCallExp(oclSize.getOpName() = 'size')
+	to
+		gremlinCountCall : Gremlin!CountCall ()
+}
 
 -- TODO update it (quick fix for a specific transfo)
 --rule stringSize2steps {

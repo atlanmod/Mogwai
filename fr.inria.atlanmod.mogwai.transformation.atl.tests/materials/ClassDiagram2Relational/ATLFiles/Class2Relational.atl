@@ -15,7 +15,7 @@ rule Class2Table {
 	to
 		out : RelationalMM!Table (
 			name <- c.name,
-			col <- c.attr->first()
+			col <- c.attr->size()
 		),
 		out2 : RelationalMM!Table (
 			name <- c.name	
