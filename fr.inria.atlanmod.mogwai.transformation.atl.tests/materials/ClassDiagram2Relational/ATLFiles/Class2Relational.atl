@@ -15,7 +15,7 @@ rule Class2Table {
 	to
 		out : RelationalMM!Table (
 			name <- c.name,
-			col <- c.attr->excludes(true)
+			col <- c.attr->includesAll(Set{true})
 		),
 		out2 : RelationalMM!Table (
 			name <- c.name	

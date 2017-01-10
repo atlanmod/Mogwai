@@ -21,7 +21,7 @@
 --		Excludes operations				X
 --		ExcludesAll operations
 --		Includes operations				X
---		IncludesAll operations
+--		IncludesAll operations			X
 --		Exists operations				X
 --		ForAll operations				X
 --		Size operations					X (not for String)
@@ -557,32 +557,30 @@ rule includes2steps {
 }
 
 -- Transforms an includesAll operation into equivalent Gremlin transformation step.
--- Boolean result is computed by applying the method containsAll on the step collection.
--- The resulting step is then processed using the next method to return the boolean value.
---rule includesAll2steps {
---	from
---		oclIncludesAll : OCL!OperationCallExp (oclIncludesAll.getOpName() = 'includesAll')
---	to
---		gremlinGather : Gremlin!GatherStep(
---			nextElement <- gremlinTransform	
---		),
---		gremlinTransform : Gremlin!TransformStep(
---			closure <- gremlinClosure,
---			nextElement <- gremlinNextCall
---		),
---		gremlinClosure : Gremlin!Closure (
---			instructions <- gremlinIterator
---		),
---		gremlinIterator : Gremlin!ClosureIt(
---			nextElement <- gremlinContainsAllCall	
---		),
---		gremlinContainsAllCall : Gremlin!ContainsAllCall(
---			value <- oclIncludesAll.argument.first()
---		),
---		gremlinNextCall : Gremlin!NextCall(
+rule includesAll2steps {
+	from
+		oclIncludesAll : ATL!CollectionOperationCallExp (oclIncludesAll.getOpName() = 'includesAll')
+	to
+		gremlinGather : Gremlin!GatherStep (
+			nextElement <- gremlinTransform	
+		),
+		gremlinTransform : Gremlin!TransformStep (
+			closure <- gremlinClosure,
+			nextElement <- gremlinNextCall
+		),
+		gremlinClosure : Gremlin!Closure (
+			instructions <- gremlinIterator	
+		),
+		gremlinIterator : Gremlin!ClosureIt (
+			nextElement <- gremlinContainsAllCall	
+		),
+		gremlinContainsAllCall : Gremlin!ContainsAllCall (
+			value <- oclIncludesAll.arguments->first().getFirstInstruction()	
+		),
+		gremlinNextCall : Gremlin!NextCall (
 --			nextElement <- oclIncludesAll.getComposite()	
---		)
---}
+		)
+}
 
 -- Transforms a simple exists operation (withtout iterator) into equivalent Gremlin filter step.
 rule simpleExists2steps {

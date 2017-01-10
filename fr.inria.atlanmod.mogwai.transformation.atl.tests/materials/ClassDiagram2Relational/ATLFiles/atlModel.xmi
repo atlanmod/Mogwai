@@ -33,12 +33,14 @@
               <source xsi:type="ocl:VariableExp" location="17:12-17:13" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
             </value>
           </bindings>
-          <bindings location="18:4-18:33" propertyName="col">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:33" operationName="excludes">
+          <bindings location="18:4-18:41" propertyName="col">
+            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:41" operationName="includesAll">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="18:11-18:17" name="attr">
                 <source xsi:type="ocl:VariableExp" location="18:11-18:12" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
               </source>
-              <arguments xsi:type="ocl:BooleanExp" location="18:28-18:32" booleanSymbol="true"/>
+              <arguments xsi:type="ocl:SetExp" location="18:31-18:40">
+                <elements xsi:type="ocl:BooleanExp" location="18:35-18:39" booleanSymbol="true"/>
+              </arguments>
             </value>
           </bindings>
         </elements>

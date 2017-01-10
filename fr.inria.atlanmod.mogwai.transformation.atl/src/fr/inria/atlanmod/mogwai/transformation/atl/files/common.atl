@@ -40,7 +40,8 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 				if self.oclIsTypeOf(ATL!VariableExp) or
 					self.oclIsKindOf(ATL!PrimitiveExp) or
 					self.oclIsTypeOf(ATL!OclModel) or
-					self.oclIsKindOf(ATL!BooleanExp) then
+					self.oclIsKindOf(ATL!BooleanExp) or
+					self.oclIsKindOf(ATL!CollectionExp) then
 					self
 --					if self.oclIsTypeOf(ATL!CollectionLiteralExp) then
 --							if self.part->first() <> OclUndefined then
@@ -69,17 +70,23 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 	;
 
 -- Returns true if the OperationCallExp is an comparison operation.
-helper context ATL!OperatorCallExp def : isComparison() : Boolean =
+helper context ATL!OperationCallExp def : isComparison() : Boolean =
 	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())
 	;
 	
 helper context OclAny def : getComposite() : OclAny =
 	let composite : OclAny = self.refImmediateComposite() in
-	if composite.oclIsTypeOf(ATL!OperatorCallExp) then
+	if composite.oclIsKindOf(ATL!OperationCallExp) then
 		if(composite.isComparison()) then
 			OclUndefined
 		else
-			composite
+			if(composite.hasInArguments(self)) then
+				-- The container contains self in its arguments, it has been handled
+--				-- before
+				OclUndefined
+			else
+				composite
+			endif
 		endif
 	else 
 		if composite.oclIsTypeOf(ATL!Binding) then
@@ -184,26 +191,26 @@ helper context OclAny def : getComposite() : OclAny =
 --	;
 
 -- Returns true if o is contained in the argument expression of self.
---helper context OCL!OperationCallExp def : hasInArguments(o : OclAny) : Boolean =
---	if self.argument->size() = 0 then
---		false
---	else
---		self.recursiveHasInArguments(o, self.argument.first().getFirstInstruction())
---	endif
---	;
+helper context ATL!OperationCallExp def : hasInArguments(o : OclAny) : Boolean =
+	if self.arguments->size() = 0 then
+		false
+	else
+		self.recursiveHasInArguments(o, self.arguments->first().getFirstInstruction())
+	endif
+	;
 
 -- Recursive search function of hasInArguments helper.
---helper context OCL!OperationCallExp def : recursiveHasInArguments(o : OclAny, e : OCL!OCLExpression) : Boolean =
---	if e = self then
---		false
---	else
---		if e = o then
---			true
---		else
---			self.recursiveHasInArguments(o, e.refImmediateComposite())
---		endif
---	endif
---	;
+helper context ATL!OperationCallExp def : recursiveHasInArguments(o : OclAny, e : OCL!OCLExpression) : Boolean =
+	if e = self then
+		false
+	else
+		if e = o then
+			true
+		else
+			self.recursiveHasInArguments(o, e.refImmediateComposite())
+		endif
+	endif
+	;
 
 -- Returns true if self is a collect() iterator
 --helper context OclAny def : isCollect() : Boolean = 
