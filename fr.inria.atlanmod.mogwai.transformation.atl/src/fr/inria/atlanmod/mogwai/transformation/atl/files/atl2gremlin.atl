@@ -108,8 +108,8 @@ rule module2script {
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getCreatedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2metaNode(e)))		
-				->union(mm.getCreatedTypes()->collect(e | thisModule.oclCreatedModel2metaNode(e))).debug('???????')
-				->union(mm.getMatchedRules()).debug('!!!!')
+				->union(mm.getCreatedTypes()->collect(e | thisModule.oclCreatedModel2metaNode(e)))
+				->union(mm.getMatchedRules())
 		)
 }
 
@@ -197,7 +197,7 @@ rule attributeBinding2instruction {
 		),
 		prop : Gremlin!PropertyStep(
 			name <- bb.propertyName,
-			value <- bb.value.debug('binding value?').getFirstInstruction()
+			value <- bb.value.getFirstInstruction()
 		)
 }
 
@@ -221,10 +221,6 @@ rule referenceBinding2instruction {
 			value <- bb.propertyName	
 		)
 }
-
-helper def : gremlinToString(input : Gremlin!Instruction) : String = 
-	input.oclType().debug()
-;
 
 
 lazy rule createDefForIt {
