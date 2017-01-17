@@ -21,9 +21,18 @@ helper context ATL!PropertyCallExp def : getOpName() : String =
 	endif
 ;
 
+helper context ATL!MatchedRule def : getGuardFirstInstruction() : ATL!OclExpression = 
+	if self.inPattern.filter.oclIsUndefined() then
+		OclUndefined
+	else
+		self.inPattern.filter.getFirstInstruction()
+	endif
+;
+
 -- Get the first instruction in an OCLExpression.
 -- Traverse the source reference chain to get the first element.
 helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression =
+	let x : ATL!OclExpression = self.debug() in
 	if self.oclIsTypeOf(ATL!OperatorCallExp) then
 		if self.isComparison() then
 			self
@@ -42,7 +51,7 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 					self.oclIsTypeOf(ATL!OclModel) or
 					self.oclIsKindOf(ATL!BooleanExp) or
 					self.oclIsKindOf(ATL!CollectionExp) then
-					self
+					self.debug('collection maybe')
 --					if self.oclIsTypeOf(ATL!CollectionLiteralExp) then
 --							if self.part->first() <> OclUndefined then
 --								-- Handle the case where a CollectionLiteralExp is created by the parser

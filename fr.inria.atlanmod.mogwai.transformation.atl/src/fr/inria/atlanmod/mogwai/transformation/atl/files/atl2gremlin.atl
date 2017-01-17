@@ -108,8 +108,8 @@ rule module2script {
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getCreatedTypes()->collect(e | thisModule.oclModel2meta(e)))
 				->union(mm.getMatchedTypes()->collect(e | thisModule.oclModel2metaNode(e)))		
-				->union(mm.getCreatedTypes()->collect(e | thisModule.oclCreatedModel2metaNode(e)))
-				->union(mm.getMatchedRules())
+				->union(mm.getCreatedTypes()->collect(e | thisModule.oclCreatedModel2metaNode(e))).debug('???????')
+				->union(mm.getMatchedRules()).debug('!!!!')
 		)
 }
 
@@ -149,7 +149,7 @@ rule matchedRule2transform {
 			nextElement <- transform
 		),
 		clos : Gremlin!Closure(
-			instructions <- Sequence{thisModule.createDefForIt(mm.inPattern.elements->first())}.append(mm.inPattern.filter.getFirstInstruction())
+			instructions <- Sequence{thisModule.createDefForIt(mm.inPattern.elements->first())}.append(mm.getGuardFirstInstruction())
 		),
 		transform : Gremlin!TransformStep(
 			closure <- transformClos	
@@ -197,7 +197,7 @@ rule attributeBinding2instruction {
 		),
 		prop : Gremlin!PropertyStep(
 			name <- bb.propertyName,
-			value <- bb.value.getFirstInstruction()
+			value <- bb.value.debug('binding value?').getFirstInstruction()
 		)
 }
 
