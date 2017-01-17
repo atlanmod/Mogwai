@@ -2,9 +2,10 @@ package fr.inria.atlanmod.mogwai.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import org.apache.commons.configuration.plist.XMLPropertyListConfiguration.PListNode;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.tinkerpop.blueprints.Direction;
@@ -12,6 +13,7 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
+import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 
 /**
  * A helper used in generated script to manipulate the graph efficiently and
@@ -153,7 +155,7 @@ public class GraphHelper {
 			// Delete the proxy, it is no longer needed
 			pEdge.remove();
 		}
-		System.out.println("[DEBUG] Resolved " + resolvedCount + " proxies for " + source.getId());
+//		System.out.println("[DEBUG] Resolved " + resolvedCount + " proxies for " + source.getId());
 	}
 
 	/**
@@ -201,6 +203,40 @@ public class GraphHelper {
 		} else {
 			return pLink(source, target, label);
 		}
+	}
+
+	/**
+	 * Links all the elements of {@code target} to {@code source} by creating
+	 * edges between the corresponding {@link Vertex}. Note that {@code target}
+	 * are elements in the source model that have to be resolved. If
+	 * {@code target} elements cannot be resolved (because corresponding
+	 * {@link Vertex} have not been created yet) a proxy link {@see
+	 * GraphHelper#pLink(Vertex, Vertex, String)} is created that will be
+	 * resolved later.
+	 * 
+	 * @param source
+	 *            the tail of the links
+	 * @param target
+	 *            a {@see GremlinGroovyPipeline} containing the elements that
+	 *            have to be resolved and set as the head of the created links.
+	 *            If some of them cannot be resolved a proxy link is created
+	 *            instead
+	 * @param label
+	 *            the label of the link
+	 * @return a list containing the created {@link Edge}s
+	 */
+	public List<Edge> linkReference(Vertex source, GremlinGroovyPipeline<?, Vertex> target, String label) {
+		// TODO resolve inside the method to optimize database accesses
+		List<Edge> createdEdges = new ArrayList<>();
+		for(Vertex vv : target) {
+			if(isResolvable(vv)) {
+				createdEdges.add(link(source, resolve(vv), label));
+			}
+			else {
+				createdEdges.add(pLink(source, vv, label));
+			}
+		}
+		return createdEdges;
 	}
 
 }
