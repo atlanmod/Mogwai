@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -14,6 +15,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.neo4j.kernel.impl.util.FileUtils;
 
+import ClassDiagram.Attribute;
+import ClassDiagram.ClassDiagramFactory;
 import ClassDiagram.ClassDiagramPackage;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
@@ -64,6 +67,7 @@ public class ModelUtil {
 				.createResource(BlueprintsURI
 						.createFileURI(new File(
 								"materials/ClassDiagram2Relational/ClassDiagram/sample.graphdb")));
+
 		
 		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder().asMap();
 		
@@ -73,6 +77,66 @@ public class ModelUtil {
 		neoResource.getContents().addAll(EcoreUtil.copyAll(classModel.getContents()));
 		
 		neoResource.save(Collections.emptyMap());
+		
+		PersistentResource pr = (PersistentResource)neoResource;
+		System.out.println("Class count: "+ pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getClass_()).size());
+		System.out.println("Attribute count: "+ pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getAttribute()).size());
+		
+		MogwaiResource mogResource = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)neoResource);
+		
+		return mogResource;
+	}
+	
+	public MogwaiResource createLargeSampleModel() throws IOException {
+		
+		FileUtils.deleteRecursively(new File("materials/ClassDiagram2Relational/ClassDiagram/large.graphdb"));
+		
+		PersistenceBackendFactoryRegistry.register(
+				BlueprintsURI.SCHEME,
+				BlueprintsPersistenceBackendFactory.getInstance());
+		
+		int classCount = 10000;
+		int attributePerClass = 4;
+		
+		ResourceSet rSet = new ResourceSetImpl();
+		
+		rSet.getResourceFactoryRegistry()
+				.getProtocolToFactoryMap()
+				.put(BlueprintsURI.SCHEME,
+						PersistentResourceFactory.getInstance());
+		
+		EPackage.Registry.INSTANCE.put(
+				ClassDiagramPackage.eINSTANCE.getNsURI(),
+				ClassDiagramPackage.eINSTANCE);
+		
+		Resource neoResource = rSet
+				.createResource(BlueprintsURI
+						.createFileURI(new File(
+								"materials/ClassDiagram2Relational/ClassDiagram/large.graphdb")));
+
+		
+		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder().asMap();
+		
+		// Creating new resource
+		neoResource.save(options);
+
+		for(int i = 0; i < classCount; i++) {
+			ClassDiagram.Class c = ClassDiagramFactory.eINSTANCE.createClass();
+			c.setName(UUID.randomUUID().toString());
+			for(int j = 0; j < attributePerClass ; j++) {
+				Attribute att = ClassDiagramFactory.eINSTANCE.createAttribute();
+				att.setName(UUID.randomUUID().toString());
+				c.getAttr().add(att);
+			}
+			neoResource.getContents().add(c);
+		}
+		
+		neoResource.save(Collections.emptyMap());
+		
+		PersistentResource pr = (PersistentResource)neoResource;
+		System.out.println("Class count: "+ pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getClass_()).size());
+		System.out.println("Attribute count: "+ pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getAttribute()).size());
+		
 		MogwaiResource mogResource = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)neoResource);
 		
 		return mogResource;

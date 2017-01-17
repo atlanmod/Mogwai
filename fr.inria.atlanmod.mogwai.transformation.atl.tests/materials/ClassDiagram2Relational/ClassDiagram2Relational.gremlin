@@ -14,7 +14,7 @@ def metaColumn = g.getIndex("metaclasses",Vertex.class)[[name:"Column"]];
 def metaColumnNode = metaColumn.hasNext() ? metaColumn.next() : gHelper.createMetaclass("Column", "ClassDiagram");
 
 
-metaClassNode.inE("kyanosInstanceOf").outV.filter{it.name == "Person"}.transform{
+metaClassNode.inE("kyanosInstanceOf").outV.transform{
 	def c = it;
 	def out = gHelper.createElement(c, "out", metaTableNode);
 	
@@ -22,7 +22,7 @@ metaClassNode.inE("kyanosInstanceOf").outV.filter{it.name == "Person"}.transform
 	
 	out.setProperty("name", c.getProperty("name"));
 	
-	gHelper.linkReference(out, c.outE("attr").inV.first(), "col");
+	gHelper.linkReference(out, c.outE("attr").inV, "col");
 
 	
 	// Quick fix to allow NeoEMF access of the created elements, need to be fixed

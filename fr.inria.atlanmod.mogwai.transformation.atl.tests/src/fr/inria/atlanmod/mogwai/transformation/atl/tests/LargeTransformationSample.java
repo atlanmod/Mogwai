@@ -34,11 +34,13 @@ import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
-public class TransformationSample {
+public class LargeTransformationSample {
 
 	public static void main(String[] args) throws IOException, MogwaiException {
-		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
-		
+		long begin = System.currentTimeMillis();
+		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
+		long end = System.currentTimeMillis();
+		NeoLogger.info("Created large instance in {0}ms", (end-begin));
 //		NeoLogger.info(mogResource.getContents().get(0).toString());
 		
 		// Sample queries
@@ -75,8 +77,8 @@ public class TransformationSample {
 		System.out.println("Column count: "+ mogResource.getAllInstances(ClassDiagramPackage.eINSTANCE.getColumn()).size());
 		
 		// Print Tables
-		MogwaiQuery outQuery = MogwaiOCLQueryBuilder.newBuilder().fromString("Table.allInstances()").context(ClassDiagramPackage.eINSTANCE.getClass_()).build();
-		showResult(mogResource.query(outQuery), mogResource);
+//		MogwaiQuery outQuery = MogwaiOCLQueryBuilder.newBuilder().fromString("Table.allInstances()").context(ClassDiagramPackage.eINSTANCE.getClass_()).build();
+//		showResult(mogResource.query(outQuery), mogResource);
 
 		mogResource.close();
 

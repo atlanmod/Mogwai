@@ -33,14 +33,9 @@
               <source xsi:type="ocl:VariableExp" location="17:12-17:13" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
             </value>
           </bindings>
-          <bindings location="18:4-18:41" propertyName="col">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:41" operationName="includesAll">
-              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="18:11-18:17" name="attr">
-                <source xsi:type="ocl:VariableExp" location="18:11-18:12" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
-              </source>
-              <arguments xsi:type="ocl:SetExp" location="18:31-18:40">
-                <elements xsi:type="ocl:BooleanExp" location="18:35-18:39" booleanSymbol="true"/>
-              </arguments>
+          <bindings location="18:4-18:17" propertyName="col">
+            <value xsi:type="ocl:NavigationOrAttributeCallExp" location="18:11-18:17" name="attr">
+              <source xsi:type="ocl:VariableExp" location="18:11-18:12" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
             </value>
           </bindings>
         </elements>
@@ -54,7 +49,7 @@
         </elements>
       </outPattern>
       <inPattern location="13:2-14:40">
-        <elements xsi:type="atl:SimpleInPatternElement" location="14:3-14:20" varName="c" variableExp="/0/@elements.0/@inPattern/@filter/@source/@source /0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source /0/@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source/@source /0/@elements.0/@outPattern/@elements.1/@bindings.0/@value/@source">
+        <elements xsi:type="atl:SimpleInPatternElement" location="14:3-14:20" varName="c" variableExp="/0/@elements.0/@inPattern/@filter/@source/@source /0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source /0/@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source /0/@elements.0/@outPattern/@elements.1/@bindings.0/@value/@source">
           <type xsi:type="ocl:OclModelElement" location="14:7-14:20" name="Class" model="/2"/>
         </elements>
         <filter xsi:type="ocl:OperatorCallExp" location="14:22-14:39" operationName="=">
