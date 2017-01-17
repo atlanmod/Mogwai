@@ -19,7 +19,7 @@
 --		Including operations
 --	Operation returning a non collection value
 --		Excludes operations				X
---		ExcludesAll operations
+--		ExcludesAll operations			X
 --		Includes operations				X
 --		IncludesAll operations			X
 --		Exists operations				X
@@ -515,20 +515,21 @@ rule excludes2steps {
 -- There is no need to generate a vector since the argument is already a collection.
 -- Results of the retain step are transformed into a list and the isEmpty method
 -- is called to return corresponding the boolean result.
---rule excludesAll2steps {
---	from
---		oclExcludesAll : OCL!OperationCallExp (oclExcludesAll.getOpName() = 'excludesAll')
---	to
---		gremlinRetain : Gremlin!RetainStep(
---			collection <- oclExcludesAll.argument.first(),
---			nextElement <- gremlinToListCall
---		),
---		gremlinToListCall : Gremlin!ToListCall(
---			nextElement <- gremlinIsEmptyCall	
---		),
---		gremlinIsEmptyCall : Gremlin!IsEmptyCall(
---		)
---}
+rule excludesAll2steps {
+	from
+		oclExcludesAll : ATL!OperationCallExp (oclExcludesAll.getOpName() = 'excludesAll')
+	to
+		gremlinRetain : Gremlin!RetainStep (
+			collection <- oclExcludesAll.arguments->first().getFirstInstruction(),
+			nextElement <- gremlinToListCall
+		),
+		gremlinToListCall : Gremlin!ToListCall (
+			nextElement <- gremlinIsEmptyCall	
+		),
+		gremlinIsEmptyCall : Gremlin!IsEmptyCall (
+			
+		)
+}
 
 -- Transforms an includes operation into equivalent Gremlin transform step.
 rule includes2steps {

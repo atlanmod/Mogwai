@@ -15,7 +15,7 @@ rule Class2Table {
 	to
 		out : RelationalMM!Table (
 			name <- c.name,
-			col <- c.attr
+			col <- c.attr->excludesAll(Sequence{1,2,3})
 		)
 }
 
@@ -25,7 +25,7 @@ rule Attribute2Column {
 	to
 		fKey : RelationalMM!Column (
 			name <- a.name + 'Id'	
-		)
+		)	
 }
 
 
