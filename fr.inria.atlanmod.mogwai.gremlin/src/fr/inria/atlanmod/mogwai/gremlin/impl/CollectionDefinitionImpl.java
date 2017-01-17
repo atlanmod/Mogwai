@@ -154,9 +154,8 @@ public class CollectionDefinitionImpl extends TraversalElementImpl implements Co
 			if(gen < getValues().size()) {
 				res.append(",");
 			}
-		// }
-		res.append("]");
 		}
+		res.append("]");
 		if(getType() != null) {
 			res.append(" as ");
 			res.append(getType().toString());
