@@ -34,13 +34,16 @@ public class TestGremlin {
 
 		TransformationHelper helper = new TransformationHelper();
 
-		MogwaiQuery gremlinInit = MogwaiGremlinQueryBuilder.newBuilder().fromFile(new File("materials/init.gremlin"))
-				.bind("transformationHelper", helper).build();
+		MogwaiQuery gremlinInit = MogwaiGremlinQueryBuilder.newBuilder()
+				.fromFile(new File("materials/init.gremlin"))
+				.bind("transformationHelper", helper)
+				.build();
 
 		mogResource.query(gremlinInit);
 		System.out.println("Init done");
 
-		MogwaiQuery gremlinQuery = MogwaiGremlinQueryBuilder.newBuilder().fromFile(new File("materials/test.gremlin"))
+		MogwaiQuery gremlinQuery = MogwaiGremlinQueryBuilder.newBuilder()
+				.fromFile(new File("materials/test.gremlin"))
 				.build();
 
 		MogwaiQueryResult result = mogResource.query(gremlinQuery);
