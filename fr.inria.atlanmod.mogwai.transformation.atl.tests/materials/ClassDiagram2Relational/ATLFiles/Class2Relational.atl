@@ -11,11 +11,11 @@ create OUT : RelationalMM from IN : ClassMM;
 
 rule Class2Table {
 	from
-		c : ClassMM!Class
+		c : ClassMM!Class (c.name = 'test')
 	to
 		out : RelationalMM!Table (
 			name <- c.name,
-			col <- c.attr->excludesAll(Sequence{1,2,3})
+			col <- c.attr->toto()
 		)
 }
 

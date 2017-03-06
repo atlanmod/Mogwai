@@ -18,7 +18,7 @@
             </value>
           </bindings>
           <bindings location="18:4-18:47" propertyName="col">
-            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:47" operationName="includesAll">
+            <value xsi:type="ocl:CollectionOperationCallExp" location="18:11-18:47" operationName="excludesAll">
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="18:11-18:17" name="attr">
                 <source xsi:type="ocl:VariableExp" location="18:11-18:12" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
               </source>
@@ -31,10 +31,16 @@
           </bindings>
         </elements>
       </outPattern>
-      <inPattern location="13:2-14:20">
-        <elements xsi:type="atl:SimpleInPatternElement" location="14:3-14:20" varName="c" variableExp="/0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source /0/@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source/@source">
+      <inPattern location="13:2-14:38">
+        <elements xsi:type="atl:SimpleInPatternElement" location="14:3-14:20" varName="c" variableExp="/0/@elements.0/@inPattern/@filter/@source/@source /0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source /0/@elements.0/@outPattern/@elements.0/@bindings.1/@value/@source/@source">
           <type xsi:type="ocl:OclModelElement" location="14:7-14:20" name="Class" model="/2"/>
         </elements>
+        <filter xsi:type="ocl:OperatorCallExp" location="14:22-14:37" operationName="=">
+          <source xsi:type="ocl:NavigationOrAttributeCallExp" location="14:22-14:28" name="name">
+            <source xsi:type="ocl:VariableExp" location="14:22-14:23" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
+          </source>
+          <arguments xsi:type="ocl:StringExp" location="14:31-14:37" stringSymbol="test"/>
+        </filter>
       </inPattern>
     </elements>
     <elements xsi:type="atl:MatchedRule" location="22:1-29:2" name="Attribute2Column">

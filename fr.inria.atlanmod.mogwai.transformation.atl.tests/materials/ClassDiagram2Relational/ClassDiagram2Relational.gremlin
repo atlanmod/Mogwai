@@ -37,3 +37,20 @@ metaAttributeNode.inE("kyanosInstanceOf").outV.transform{
 	
 	fKey.setProperty("name", a.getProperty("name") + "Id");
 }.iterate();
+
+
+
+final def gHelper = graphHelper;
+def metaClass = g.getIndex("metaclasses",Vertex.class)[[name:"Class"]];
+def metaAttribute = g.getIndex("metaclasses",Vertex.class)[[name:"Attribute"]];
+def metaColumn = g.getIndex("metaclasses",Vertex.class)[[name:"Column"]];
+def metaTable = g.getIndex("metaclasses",Vertex.class)[[name:"Table"]];
+def metaClassNode = (metaClass.hasNext() ? metaClass.next() : null);
+def metaAttributeNode = (metaAttribute.hasNext() ? metaAttribute.next() : null);
+def metaColumnNode = (metaColumn.hasNext() ? metaColumn.next() : gHelper.createMetaclass());
+def metaTableNode = (metaTable.hasNext() ? metaTable.next() : gHelper.createMetaclass());
+
+metaClassNode.inE("kyanosInstanceOf").outV.filter{def c = it;}.transform{
+def c = it;def out = gHelper.createElement(metaTableNode);gHelper.resolveProxies(c,out);out.property('name,c.property('name')');gHelper.linkReference(out,c.outE("attr").inV.retain(([1,2,3] as  List)).toList().isEmpty(),"col");};
+metaAttributeNode.inE("kyanosInstanceOf").outV.filter{def a = it;}.transform{def a = it;def fKey = gHelper.createElement(metaColumnNode);gHelper.resolveProxies(a,fKey);fKey.property('name,a.property('name')');};
+
