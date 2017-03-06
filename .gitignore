@@ -13,3 +13,6 @@ hs_err_pid*
 
 # Eclipse setting directories
 .settings
+
+# Tmp Linux files
+*~
