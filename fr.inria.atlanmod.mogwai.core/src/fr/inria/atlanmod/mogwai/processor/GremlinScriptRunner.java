@@ -25,7 +25,7 @@ import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 /**
  * Utility class that runs a Gremlin script on a given database. This feature is in a dedicated class because it
  * is used by several {@link MogwaiProcessor}.
- * </p>
+ *
  * @author Gwendal DANIEL
  */
 public class GremlinScriptRunner {

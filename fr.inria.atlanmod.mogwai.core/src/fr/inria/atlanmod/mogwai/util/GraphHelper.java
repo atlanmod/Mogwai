@@ -184,7 +184,7 @@ public class GraphHelper {
 	 * {@link Vertex}. Note that {@code target} is an element in the source
 	 * model that has to be resolved. If {@code target} cannot be resolved
 	 * (because the corresponding {@link Vertex} has not been created yet) a
-	 * proxy link {@see GraphHelper#pLink(Vertex, Vertex, String)} is created
+	 * proxy link (see @link{GraphHelper#pLink(Vertex, Vertex, String)}) is created
 	 * that will be resolved later.
 	 * 
 	 * @param source
@@ -210,14 +210,14 @@ public class GraphHelper {
 	 * edges between the corresponding {@link Vertex}. Note that {@code target}
 	 * are elements in the source model that have to be resolved. If
 	 * {@code target} elements cannot be resolved (because corresponding
-	 * {@link Vertex} have not been created yet) a proxy link {@see
+	 * {@link Vertex} have not been created yet) a proxy link {see
 	 * GraphHelper#pLink(Vertex, Vertex, String)} is created that will be
 	 * resolved later.
 	 * 
 	 * @param source
 	 *            the tail of the links
 	 * @param target
-	 *            a {@see GremlinGroovyPipeline} containing the elements that
+	 *            a {@link GremlinGroovyPipeline} containing the elements that
 	 *            have to be resolved and set as the head of the created links.
 	 *            If some of them cannot be resolved a proxy link is created
 	 *            instead
