@@ -1,0 +1,3 @@
+final def tHelper = transformationHelper
+
+Gremlin.defineStep('pouet', [Vertex, Pipe], { tHelper.debug();  _() });
