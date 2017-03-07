@@ -3,6 +3,8 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 import java.io.File;
 import java.io.IOException;
 
+import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import fr.inria.atlanmod.mogwai.mapping.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
@@ -32,11 +34,13 @@ public class TestGremlin {
 	public static void main(String[] args) throws IOException {
 		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
 
-		TransformationHelper helper = new TransformationHelper();
+		EMFtoGraphMapping mapping = new NeoEMFMapping();
+		// Mandatory for now
+		mapping.setGraph(mogResource.getBackend().getGraph());
 
 		MogwaiQuery gremlinInit = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/init.gremlin"))
-				.bind("transformationHelper", helper)
+				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
 				.build();
 
 		mogResource.query(gremlinInit);
@@ -44,25 +48,11 @@ public class TestGremlin {
 
 		MogwaiQuery gremlinQuery = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/test.gremlin"))
+				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
 				.build();
 
 		MogwaiQueryResult result = mogResource.query(gremlinQuery);
-		System.out.println(result.getResult());
-	}
-
-	/**
-	 * A mock class that is defined as an external binding in the gremlin
-	 * script.
-	 * 
-	 * @author Gwendal DANIEL
-	 */
-	private static class TransformationHelper {
-
-		@SuppressWarnings("unused")
-		public void debug() {
-			System.out.println("DEBUG");
-		}
-
+		System.out.println(result.getResults());
 	}
 
 }

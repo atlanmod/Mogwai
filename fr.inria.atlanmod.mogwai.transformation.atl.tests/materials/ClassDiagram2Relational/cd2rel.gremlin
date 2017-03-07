@@ -1,0 +1,30 @@
+final def gr = g;
+final def gHelper = graphHelper;
+
+g.allOfType("Class").transform {
+	
+	def c = it;
+	
+	def out = gHelper.createElement(c, "out", "Table", "ClassDiagram");
+	
+	gHelper.resolveProxies(c, out);
+	
+	out.setAtt("name", c.getAtt("name"));
+	
+	gHelper.linkReference(out, c.getRef("attr"), "col");
+	
+	// Quick fix to allow NeoEMF access of the created elements, 
+	// need to be fixed (+ doesn't use the mapping)
+	gr.addEdge(gr.getVertex('ROOT'), out, "eContents");
+}.iterate();
+
+g.allOfType("Attribute").transform {
+	
+	def a = it;
+	
+	def fKey = gHelper.createElement(a, "fKey", "Column", "ClassDiagram");
+	
+	gHelper.resolveProxies(a, fKey);
+	
+	fKey.setAtt("name", a.getAtt("name") + "Id");
+}.iterate();

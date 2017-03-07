@@ -19,6 +19,8 @@ import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import fr.inria.atlanmod.mogwai.mapping.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
@@ -39,29 +41,25 @@ public class TransformationSample {
 	public static void main(String[] args) throws IOException, MogwaiException {
 		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
 		
-//		NeoLogger.info(mogResource.getContents().get(0).toString());
+		EMFtoGraphMapping mapping = new NeoEMFMapping();
+		mapping.setGraph(mogResource.getBackend().getGraph());
 		
-		// Sample queries
-//		MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder()
-//				.fromString("Class.allInstances()->any(true).attr->select(e | not e.multiValued)")
-//				.context(ClassDiagramPackage.eINSTANCE.getClass_()).build();
-//		MogwaiQueryResult mqr = mogResource.query(query);
-//		showResult(mqr, mogResource);
-//		
-//		MogwaiQuery gremlinQuery = MogwaiGremlinQueryBuilder.newBuilder().fromString("def metaClass = g.getIndex('metaclasses',Vertex.class)[[name:'Class']]; " + 
-//"def metaClassNode = (metaClass.hasNext() ? metaClass.next() : null); " +
-//"metaClassNode.inE('kyanosInstanceOf').outV.filter{def temp1 = it;true;}.first().outE('attr').inV.filter{def e = it; !( e.property('multiValued').transform{it == 'true';}.next());};").build();
-//		
-//		MogwaiQueryResult mqr2 = mogResource.query(gremlinQuery);
-//		
-//		showResult(mqr2, mogResource);
+		MogwaiQuery initQuery = MogwaiGremlinQueryBuilder.newBuilder()
+				.fromFile(new File("materials/init.gremlin"))
+				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
+				.build();
 		
-		GraphHelper helper = new GraphHelper(mogResource.getBackend().getGraph());
+		mogResource.query(initQuery);
+		System.out.println("Initialization performed");
+		
+		GraphHelper helper = new GraphHelper(mogResource.getBackend().getGraph(), mapping);
 		
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
-				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin"))
+//				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin"))
+				.fromFile(new File("materials/ClassDiagram2Relational/cd2rel.gremlin"))
 				.bind("graphHelper", helper)
+				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
 				.build();
 		
 		// Print the created Tables since they are returned by the script
@@ -77,6 +75,13 @@ public class TransformationSample {
 		// Print Tables
 		MogwaiQuery outQuery = MogwaiOCLQueryBuilder.newBuilder().fromString("Table.allInstances()").context(ClassDiagramPackage.eINSTANCE.getClass_()).build();
 		showResult(mogResource.query(outQuery), mogResource);
+		
+		MogwaiQuery attQuery = MogwaiOCLQueryBuilder.newBuilder()
+				.fromString("Column.allInstances().name")
+				.context(ClassDiagramPackage.eINSTANCE.getColumn())
+				.build();
+		
+		showResult(mogResource.query(attQuery), mogResource);
 
 		mogResource.close();
 
@@ -96,7 +101,19 @@ public class TransformationSample {
 				}
 			}
 		} else {
-			NeoLogger.info("Query Result is not reifiable");
+			try {
+				if(mqr.isSingleResult()) {
+					System.out.println(mqr.getResult());
+				}
+				else {
+					for(Object o : mqr.getResults()) {
+						System.out.println(o);
+					}
+				}
+			} catch(MogwaiException e) {
+				// Need a fix, Mogwai-ATL can return null
+				NeoLogger.info("The query didn't return any object");
+			}
 		}
 	}
 	

@@ -1,3 +1,7 @@
+final m = mappingHelper;
 
+println(g.allOfType("Class").count());
 
-g.V.pouet().count()
+for(String s : g.allOfType("Class").getRef("attr").getAtt("name")) {
+	println(s);
+}

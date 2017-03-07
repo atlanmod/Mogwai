@@ -1,3 +1,148 @@
-final def tHelper = transformationHelper
+/**
+ * This script initializes the Mogwai-ATL Gremlin-based engine by adding mapping 
+ * methods to Gremlin metaclasses.
+ * <p>
+ * This script is also responsible of the creation of new Gremlin steps, that can 
+ * be used in the transformation to improve script readability and provide a level 
+ * of abstraction between the transformation engine and the low-level
+ * graph representation.
+ * 
+ * @author Gwendal DANIEL
+ */
 
-Gremlin.defineStep('pouet', [Vertex, Pipe], { println(_()); tHelper.debug();  _() });
+// TODO: this initialization script doesn't take into account the case where different mappings
+// are used for input and output models. To handle this it would be necessary to duplicate all 
+// the created methods to allow in/out calls.
+
+// Put the mapping helper in a final variable to allow its access from closures
+final m = mappingHelper;
+
+/*
+ * Additional Graph methods
+ */
+
+// g.allOfType("myType");
+Graph.metaClass.allOfType = 
+{ 
+	String typeName -> 
+		println("allOfType(" + typeName + ")"); 
+		m.allOfTypePipeline(typeName); 
+}
+
+// g.allOfKind("myType");
+Graph.metaClass.allOfKind = 
+{ 
+	String typeName -> 
+		println("allOfKind(" + typeName + ")"); 
+		m.allOfKindPipeline(typeName);
+}
+
+/*
+ * Additional Vertex methods 
+ */
+
+// v.getAtt("myAtt");
+Vertex.metaClass.getAtt = 
+{ 
+	String attName -> 
+		println("getAtt(" + attName + ")"); 
+		m.getAtt(delegate, attName); 
+}
+
+// v.getRef("myRef");
+Vertex.metaClass.getRef = 
+{ 
+	String refName -> 
+		println("getRef(" + refName + ")"); 
+		m.getRef(delegate, refName); 
+}
+
+// v.setAtt("myAtt", value);
+Vertex.metaClass.setAtt = 
+{ 
+	String attName, Object attValue -> 
+		println("setAtt(" + attName + "," + attValue + ")"); 
+		m.setAtt(delegate, attName, attValue); 
+}
+
+// v.getType();
+Vertex.metaClass.getType = 
+{
+	-> 
+		println("getType()");
+		m.getType(delegate);
+}
+
+// v.isTypeOf("myType");
+Vertex.metaClass.isTypeOf = 
+{ 
+	String type -> 
+		println("isTypeOf(" + type + ")"); 
+		m.isTypeOf(delegate, type); 
+}
+
+// v.isKindOf("myType");
+Vertex.metaClass.isKindOf =
+{
+	String type ->
+		println("isKindOf(" + type + ")");
+		m.isKindOf(delegate, type);
+}
+
+/*
+ * Additional Gremlin steps
+ */
+
+// Pipe.getAtt("myAtt");
+Gremlin.defineStep("getAtt", [Pipe], 
+	{
+		String attName ->
+			println("getAtt(" + attName + ")[Pipe]");
+			m.getAtt(attName);
+	}	
+)
+
+// Pipe.getRef("myRef");
+Gremlin.defineStep("getRef", [Pipe], 
+	{
+		String refName ->
+			println("getRef(" + refName + ")[Pipe]");
+			m.getRef(refName);
+	}	
+)
+
+// Pipe.setAtt("myAtt", value);
+Gremlin.defineStep("setAtt", [Pipe],
+	{
+		String attName, Object attValue ->
+			println("setAtt(" + attName + "," + attValue + ")[Pipe]");
+			m.setAtt(attName, attValue);
+	}	
+)
+
+// Pipe.getType();
+Gremlin.defineStep("getType", [Pipe], 
+	{
+		->
+			println("getType()[Pipe]");
+			m.getType();
+	}	
+)
+
+// Pipe.isTypeOf("myType");
+Gremlin.defineStep("isTypeOf", [Pipe],
+	{
+		String typeName ->
+			println("isTypeOf(" + typeName + ")[Pipe]");
+			m.isTypeOf(typeName);
+	}	
+)
+
+// Pipe.isKindOf("myType");
+Gremlin.defineStep("isKindOf", [Pipe], 
+	{
+		String typeName ->
+			println("isKindOf(" + typeName + ")[Pipe]");
+			m.isKindOf(typeName);
+	}	
+)
