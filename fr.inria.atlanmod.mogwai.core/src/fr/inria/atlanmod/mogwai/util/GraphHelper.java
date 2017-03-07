@@ -216,7 +216,7 @@ public class GraphHelper {
 	 *            the label of the link
 	 * @return a list containing the created {@link Edge}s
 	 */
-	public List<Edge> linkReference(Vertex source, GremlinGroovyPipeline<?, Vertex> target, String label) {
+	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label) {
 		// TODO resolve inside the method to optimize database accesses
 		List<Edge> createdEdges = new ArrayList<>();
 		for(Vertex vv : target) {
