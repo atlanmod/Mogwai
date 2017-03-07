@@ -10,10 +10,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.KeyIndexableGraph;
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
+
+import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
 
 /**
  * A helper used in generated script to manipulate the graph efficiently and
@@ -29,7 +30,8 @@ public class GraphHelper {
 	private final static String TRACE_LINK_LABEL = "#trace";
 	private final static String TRACE_LINK_TARGET_KEY = "target";
 
-	private IdGraph<KeyIndexableGraph> graph;
+	private Graph graph;
+	private EMFtoGraphMapping mapping;
 
 	/**
 	 * Creates a new {@link GraphHelper} wrapping the given graph
@@ -37,8 +39,9 @@ public class GraphHelper {
 	 * @param baseGraph
 	 *            the graph to manipulate using the helper
 	 */
-	public GraphHelper(IdGraph<KeyIndexableGraph> baseGraph) {
+	public GraphHelper(Graph baseGraph, EMFtoGraphMapping mapping) {
 		this.graph = baseGraph;
+		this.mapping = mapping;
 	}
 
 	/**
@@ -50,38 +53,22 @@ public class GraphHelper {
 	 *            the nsURI of the metaclass to create
 	 * @return the created {@link Vertex}
 	 */
-	public Vertex createMetaclass(String metaclassName, String nsURI) {
-		checkNotNull(metaclassName, "Cannot create a metaclass with null name");
-		checkNotNull(nsURI, "Cannot create a metaclass with null nsURI");
-		Vertex metaclassVertex = graph.addVertex(metaclassName + '@' + nsURI);
-		metaclassVertex.setProperty("name", metaclassName);
-		metaclassVertex.setProperty("nsURI", nsURI);
-		graph.getIndex("metaclasses", Vertex.class).put("name", metaclassName, metaclassVertex);
-		return metaclassVertex;
-	}
+//	public Vertex createMetaclass(String metaclassName, String nsURI) {
+//		checkNotNull(metaclassName, "Cannot create a metaclass with null name");
+//		checkNotNull(nsURI, "Cannot create a metaclass with null nsURI");
+//		Vertex metaclassVertex = graph.addVertex(metaclassName + '@' + nsURI);
+//		metaclassVertex.setProperty("name", metaclassName);
+//		metaclassVertex.setProperty("nsURI", nsURI);
+//		graph.getIndex("metaclasses", Vertex.class).put("name", metaclassName, metaclassVertex);
+//		return metaclassVertex;
+//	}
 
-	/**
-	 * Creates a new element {@link Vertex} and connects it to its metaclass. A
-	 * trace link is also generated between the source element and the created
-	 * one to ensure transformation consistency
-	 * 
-	 * @param source
-	 *            the {@link Vertex} that triggered the element creation (i.e.
-	 *            the source element in the transformation)
-	 * @param targetLabel
-	 *            the label of the created element in the transformation (i.e.
-	 *            the name in the binding)
-	 * @param metaclassVertex
-	 *            the {@link Vertex} representing the metaclass
-	 * @return the created {@link Vertex}
-	 */
-	public Vertex createElement(Vertex source, String targetLabel, Vertex metaclassVertex) {
-		checkNotNull(metaclassVertex, "Cannot create an element from a null metaclass");
-		Vertex elementVertex = graph.addVertex(EcoreUtil.generateUUID());
-		elementVertex.addEdge("kyanosInstanceOf", metaclassVertex);
-		Edge traceLink = source.addEdge(TRACE_LINK_LABEL, elementVertex);
+	public Vertex createElement(Vertex source, String targetLabel, String metaclassType, String nsURI) {
+		checkNotNull(metaclassType, "Cannot create an element from a null metaclass");
+		Vertex v = (Vertex)mapping.newInstance(metaclassType, nsURI);
+		Edge traceLink = source.addEdge(TRACE_LINK_LABEL, v);
 		traceLink.setProperty(TRACE_LINK_TARGET_KEY, targetLabel);
-		return elementVertex;
+		return v;
 	}
 
 	/**
@@ -100,7 +87,7 @@ public class GraphHelper {
 		checkNotNull(v1, "Cannot create a link from null");
 		checkNotNull(v2, "Cannot create a link to null");
 		checkNotNull(label, "Cannot create a link with null label");
-		return v1.addEdge(label, v2);
+		return mapping.setRef(v1, label, v2);
 	}
 
 	/**
@@ -122,7 +109,7 @@ public class GraphHelper {
 		// we assume here that v1 and v2 are in the same graph (it is the case
 		// if inHelper = outHelper, but should not be true all the time
 		// TODO find a way to deal with cross-graph edges
-		Edge pEdge = v1.addEdge(PROXY_LABEL, v2);
+		Edge pEdge = mapping.setRef(v1, PROXY_LABEL, v2);
 		pEdge.setProperty(BASE_LABEL_KEY, label);
 		return pEdge;
 	}
@@ -139,6 +126,7 @@ public class GraphHelper {
 	 */
 	public void resolveProxies(Vertex source, Vertex target) {
 		int resolvedCount = 0;
+		// Should be put in mapping 
 		Iterator<Edge> pEdges = source.getEdges(Direction.IN, PROXY_LABEL).iterator();
 		while (pEdges.hasNext()) {
 			Edge pEdge = pEdges.next();
@@ -151,7 +139,8 @@ public class GraphHelper {
 				throw new RuntimeException("[Debug] A proxy link has null as its base label");
 			}
 			resolvedCount++;
-			outV.addEdge(baseLabel, target);
+			mapping.setRef(outV, baseLabel, target);
+//			outV.addEdge(baseLabel, target);
 			// Delete the proxy, it is no longer needed
 			pEdge.remove();
 		}
@@ -165,7 +154,8 @@ public class GraphHelper {
 	 *         otherwise
 	 */
 	public boolean isResolvable(Vertex source) {
-		return source.getEdges(Direction.OUT, TRACE_LINK_LABEL).iterator().hasNext();
+		return mapping.getRef(source, TRACE_LINK_LABEL).iterator().hasNext();
+//		return source.getEdges(Direction.OUT, TRACE_LINK_LABEL).iterator().hasNext();
 	}
 
 	/**
@@ -176,7 +166,8 @@ public class GraphHelper {
 	 * @return the {@link Vertex} corresponding to the resolved element
 	 */
 	public Vertex resolve(Vertex source) {
-		return source.getVertices(Direction.OUT, TRACE_LINK_LABEL).iterator().next();
+		return mapping.getRef(source, TRACE_LINK_LABEL).iterator().next();
+//		return source.getVertices(Direction.OUT, TRACE_LINK_LABEL).iterator().next();
 	}
 
 	/**
