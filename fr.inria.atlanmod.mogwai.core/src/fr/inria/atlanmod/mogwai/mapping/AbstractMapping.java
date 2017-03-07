@@ -1,5 +1,6 @@
 package fr.inria.atlanmod.mogwai.mapping;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import com.tinkerpop.blueprints.Graph;
@@ -8,6 +9,7 @@ import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 import com.tinkerpop.gremlin.java.GremlinStartPipe;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
 
 /**
@@ -75,12 +77,21 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	 * the {@link Vertex} elements associated to its input.
 	 */
 	@Override
-	public Pipe<Vertex, Iterable<Vertex>> getRef(final String refName) {
-		return new AbstractPipe<Vertex, Iterable<Vertex>>() {
+	public Pipe<Vertex, Vertex> getRef(final String refName) {
+		return new AbstractPipe<Vertex, Vertex>() {
 
+			private Iterator<Vertex> nextRefs = PipeHelper.emptyIterator();
+			
 			@Override
-			protected Iterable<Vertex> processNextStart() throws NoSuchElementException {
-				return getRef(this.starts.next(), refName);
+			protected Vertex processNextStart() throws NoSuchElementException {
+				while(true) {
+					if(this.nextRefs.hasNext()) {
+						return this.nextRefs.next();
+					}
+					else {
+						this.nextRefs = getRef(this.starts.next(), refName).iterator();
+					}
+				}
 			}
 		};
 	}

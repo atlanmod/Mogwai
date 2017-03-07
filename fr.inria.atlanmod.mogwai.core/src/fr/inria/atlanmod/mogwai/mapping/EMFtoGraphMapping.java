@@ -161,7 +161,7 @@ public interface EMFtoGraphMapping {
 	 *         
 	 * @see #getRef(Vertex, String)
 	 */
-	Pipe<Vertex, Iterable<Vertex>> getRef(String refName);
+	Pipe<Vertex, Vertex> getRef(String refName);
 
 	/**
 	 * Returns an {@link Object} containing the attribute(s) {@code attName} of
