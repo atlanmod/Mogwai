@@ -22,8 +22,8 @@ import com.tinkerpop.pipes.util.Pipeline;
  * {@link Pipe} or a {@link Pipeline} (see <a
  * href="https://github.com/tinkerpop/pipes">Pipe website for further
  * information</a>). Note that these method are implemented as simple wrappers
- * in {@link AbstractMapping}, which can be extended by concrete
- * mapping subclasses.
+ * in {@link AbstractMapping}, which can be extended by concrete mapping
+ * subclasses.
  * <p>
  * A custom {@link EMFtoGraphMapping} can be provided to the Mogwai-ATL engine
  * using the following code:
@@ -69,7 +69,7 @@ public interface EMFtoGraphMapping {
 	 *            the name of the metaclass to get the instances of
 	 * @return an {@link Iterable} containing all the instances of the type
 	 *         {@code typeName}
-	 *         
+	 * 
 	 * @see #allOfTypePipeline(String)
 	 */
 	Iterable<Vertex> allOfType(String typeName);
@@ -86,7 +86,7 @@ public interface EMFtoGraphMapping {
 	 *            the name of the metaclass to get the instances of
 	 * @return a {@link Pipeline} initialized with all the instances of the type
 	 *         {@code typeName}
-	 *         
+	 * 
 	 * @see #allOfType(String)
 	 */
 	Pipeline<Vertex, ?> allOfTypePipeline(String typeName);
@@ -99,7 +99,7 @@ public interface EMFtoGraphMapping {
 	 *            the name of the metaclass to get the instances of
 	 * @return an {@link Iterable} containing all the instances of the type
 	 *         {@code typeName} and its subclasses
-	 *         
+	 * 
 	 * @see #allOfKindPipeline(String)
 	 */
 	Iterable<Vertex> allOfKind(String typeName);
@@ -131,7 +131,7 @@ public interface EMFtoGraphMapping {
 	 *            {@code typeName}
 	 * @return an {@link Object} representing the created instance of
 	 *         {@code typeName}
-	 *         
+	 * 
 	 */
 	Object newInstance(String typeName, String typePackageNsURI);
 
@@ -145,7 +145,7 @@ public interface EMFtoGraphMapping {
 	 *            the name of the reference to navigate
 	 * @return an {@link Iterable} containing the {@link Vertex} elements
 	 *         connected to {@code from}
-	 *         
+	 * 
 	 * @see #getRef(String)
 	 */
 	Iterable<Vertex> getRef(Vertex from, String refName);
@@ -158,10 +158,41 @@ public interface EMFtoGraphMapping {
 	 *            the name of the reference to navigate
 	 * @return a {@link Pipe} that computes the vertices connected to its input
 	 *         elements with an {@link Edge} labeled {@code refName}
-	 *         
+	 * 
 	 * @see #getRef(Vertex, String)
 	 */
 	Pipe<Vertex, Vertex> getRef(String refName);
+
+	/**
+	 * Creates a reference link between {@code from} and {@code to} with the
+	 * label {@code refName}.
+	 * 
+	 * @param from
+	 *            the incoming {@link Vertex} of the reference
+	 * @param refName
+	 *            the label of the reference
+	 * @param to
+	 *            the outgoing {@link Vertex} of the reference
+	 * @return the outgoing {@link Vertex} of the reference
+	 * 
+	 * @see #setRef(String, Vertex)
+	 */
+	Vertex setRef(Vertex from, String refName, Vertex to);
+
+	/**
+	 * Returns a {@link Pipe} that creates a reference link between its input
+	 * elements and {@code to} with the label {@code refName}.
+	 * 
+	 * @param refName
+	 *            the label of the reference
+	 * @param to
+	 *            the outgoing {@link Vertex} of the reference
+	 * @return a {@link Pipe} that creates a reference link between its input
+	 *         elements and {@code to} with the label {@code refName}
+	 * 
+	 * @see #setRef(Vertex, String, Vertex)
+	 */
+	Pipe<Vertex, Vertex> setRef(String refName, Vertex to);
 
 	/**
 	 * Returns an {@link Object} containing the attribute(s) {@code attName} of
@@ -173,7 +204,7 @@ public interface EMFtoGraphMapping {
 	 *            the name of the attribute to retrieve
 	 * @return an {@link Object} containing the attribute(s) {@code attName} of
 	 *         {@code from}
-	 *         
+	 * 
 	 * @see #getAtt(String)
 	 */
 	Object getAtt(Vertex from, String attName);
@@ -186,13 +217,13 @@ public interface EMFtoGraphMapping {
 	 *            the name of the attribute to retrieve
 	 * @return a {@link Pipe} that computes the attribute(s) {@code attName} of
 	 *         its input elements
-	 *         
+	 * 
 	 * @see #getAtt(Vertex, String)
 	 */
 	Pipe<Vertex, Object> getAtt(String attName);
 
 	/**
-	 * Set the value of the attribute {@code attName} of {@code from} to
+	 * Sets the value of the attribute {@code attName} of {@code from} to
 	 * {@code attValue}.
 	 * 
 	 * @param from
@@ -217,7 +248,7 @@ public interface EMFtoGraphMapping {
 	 *            the value of the attribute to set
 	 * @return a {@link Pipe} that sets the attribute {@code attName} of its
 	 *         input elements to {@code attValue}
-	 *         
+	 * 
 	 * @see #setAtt(Vertex, String, Object)
 	 */
 	Pipe<Vertex, Vertex> setAtt(String attName, Object attValue);
@@ -229,7 +260,7 @@ public interface EMFtoGraphMapping {
 	 *            the {@link Vertex} to get the type of
 	 * @return a String representation of the metaclass associated to
 	 *         {@code from}
-	 *         
+	 * 
 	 * @see #getType()
 	 */
 	String getType(Vertex from);
@@ -257,7 +288,7 @@ public interface EMFtoGraphMapping {
 	 *            the type to check
 	 * @return {@code true} if {@code from} is an instance of {@code type},
 	 *         {@code false} otherwise
-	 *         
+	 * 
 	 * @see #isTypeOf(String)
 	 */
 	boolean isTypeOf(Vertex from, String type);
@@ -275,7 +306,7 @@ public interface EMFtoGraphMapping {
 	 *            the type to check
 	 * @return a {@link Pipe} that computes for each input element whether it is
 	 *         an instance of {@code type} or any of its subclasses
-	 *         
+	 * 
 	 * @see #isTypeOf(Vertex, String)
 	 */
 	Pipe<Vertex, Boolean> isTypeOf(String type);
@@ -290,7 +321,7 @@ public interface EMFtoGraphMapping {
 	 *            the type to check
 	 * @return {@code true} if {@code from} is an instance of {@code type} or
 	 *         any of its subclasses, {@code false} otherwise
-	 *         
+	 * 
 	 * @see #isKindOf(String)
 	 */
 	boolean isKindOf(Vertex from, String type);
@@ -303,7 +334,7 @@ public interface EMFtoGraphMapping {
 	 *            the type to check
 	 * @return a {@link Pipe} that computes for each input element whether is is
 	 *         an instance of {@code type} or any of its subclasses
-	 *         
+	 * 
 	 * @see #isKindOf(Vertex, String)
 	 */
 	Pipe<Vertex, Boolean> isKindOf(String type);

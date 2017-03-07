@@ -56,7 +56,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This method uses {@link #allOfKind(String)} to intialize the created
+	 * This method uses {@link #allOfKind(String)} to initialize the created
 	 * {@link Pipeline}.
 	 */
 	@Override
@@ -74,24 +74,43 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	 * {@inheritDoc}
 	 * <p>
 	 * The created {@link Pipe} uses {@link #getRef(Vertex, String)} to retrieve
-	 * the {@link Vertex} elements associated to its input.
+	 * the {@link Vertex} elements associated to its input elements.
 	 */
 	@Override
 	public Pipe<Vertex, Vertex> getRef(final String refName) {
 		return new AbstractPipe<Vertex, Vertex>() {
 
 			private Iterator<Vertex> nextRefs = PipeHelper.emptyIterator();
-			
+
 			@Override
 			protected Vertex processNextStart() throws NoSuchElementException {
-				while(true) {
-					if(this.nextRefs.hasNext()) {
+				while (true) {
+					if (this.nextRefs.hasNext()) {
 						return this.nextRefs.next();
-					}
-					else {
+					} else {
 						this.nextRefs = getRef(this.starts.next(), refName).iterator();
 					}
 				}
+			}
+		};
+	}
+
+	@Override
+	public abstract Vertex setRef(Vertex from, String refName, Vertex to);
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The created {@link Pipe} uses {@link #setRef(Vertex, String, Vertex)} to
+	 * set the reference between its input elements and {@code to}.
+	 */
+	@Override
+	public Pipe<Vertex, Vertex> setRef(final String refName, final Vertex to) {
+		return new AbstractPipe<Vertex, Vertex>() {
+
+			@Override
+			protected Vertex processNextStart() throws NoSuchElementException {
+				return setRef(this.starts.next(), refName, to);
 			}
 		};
 	}
@@ -103,7 +122,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	 * {@inheritDoc}
 	 * <p>
 	 * The created {@link Pipe} uses {@link #getAtt(String)} to retrieve the
-	 * attribute(s) associated to its input.
+	 * attribute(s) associated to its input elements.
 	 */
 	@Override
 	public Pipe<Vertex, Object> getAtt(final String attName) {

@@ -121,6 +121,12 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	public Iterable<Vertex> getRef(Vertex from, String refName) {
 		return from.getVertices(Direction.OUT, refName);
 	}
+	
+	@Override
+	public Vertex setRef(Vertex from, String refName, Vertex to) {
+		from.addEdge(refName, to);
+		return to;
+	}
 
 	@Override
 	public Object getAtt(Vertex from, String attName) {
