@@ -108,7 +108,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	public Object newInstance(final String typeName, final String typePackageNsURI) throws NullPointerException {
 		checkNotNull(graph, "Graph hasn't been initialized, call setGraph before starting graph manipulation");
 		checkNotNull(typePackageNsURI, "NeoEMFMapping requires EPackage nsURI to create a new element");
-		Vertex vertex = graph.addVertex(StringId.generate());
+		Vertex vertex = graph.addVertex(StringId.generate().toString());
 		Vertex eClassVertex = getMetaclassVertex(typeName);
 		if (isNull(eClassVertex)) {
 			eClassVertex = createMetaclassVertex(typeName, typePackageNsURI);
@@ -191,7 +191,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 * @return the created {@link Vertex}
 	 */
 	private Vertex createMetaclassVertex(final String typeName, final String typePackageNsURI) {
-		Vertex vertex = graph.addVertex(new StringId(typeName + '@' + typePackageNsURI));
+		Vertex vertex = graph.addVertex(new StringId(typeName + '@' + typePackageNsURI).toString());
 		vertex.setProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME, typeName);
 		vertex.setProperty(BlueprintsPersistenceBackend.KEY_EPACKAGE_NSURI, typePackageNsURI);
 		return vertex;
