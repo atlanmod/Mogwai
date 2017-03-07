@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.util;
+package fr.inria.atlanmod.mogwai.mapping;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -6,7 +6,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.text.MessageFormat;
-import java.util.Collection;
 
 import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
@@ -21,7 +20,7 @@ import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore;
 
 /**
- * An implementation of {@link EMFtoGraphMapping} representing NeoEMF mapping.
+ * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps EMF models into Blueprints databases.
  * <p>
  * This mapping is based on the one implicitly defined in
  * {@link BlueprintsPersistenceBackend} and {@link DirectWriteBlueprintsStore}.
@@ -35,10 +34,22 @@ import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore
  * throw {@link UnsupportedOperationException}. This will be fixed in a future
  * version of NeoEMF.
  * 
+ * @see BlueprintsPersistenceBackend
+ * @see DirectWriteBlueprintsStore
+ * @see AbstractMapping
+ * @see EMFtoGraphMapping
+ * 
  * @author Gwendal DANIEL
  *
  */
-public final class NeoEMFMapping implements EMFtoGraphMapping {
+public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMapping {
+
+	// Ensuite le script d'init s'occupe de créer les méthodes des vertex /
+	// edges et des pipes (pour les méthode utiliser le delegate, pour les pipe
+	// utiliser les wrappers abstraits).
+	// Si tout fonctionne correctement les pipes créés peuvent appeler les
+	// méthodes abstraites, permettant de définir des comportement au niveau
+	// d'un élément simple ou d'un iterateur
 
 	private IdGraph<KeyIndexableGraph> graph;
 	private Index<Vertex> metaclassIndex;
@@ -46,6 +57,8 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	/**
 	 * {@inheritDoc}
 	 * <p>
+	 * This method also checks the provided graph defines a metaclass index, and
+	 * make it available for other methods.
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the provided {@code graph} is not an instance of
@@ -53,7 +66,7 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setGraph(Graph graph) throws IllegalArgumentException {
+	public void setGraph(final Graph graph) throws IllegalArgumentException {
 		checkNotNull(graph, "No graph provided");
 		checkArgument(graph instanceof IdGraph, "NeoEMFMapping required a KeyIndexableGraph");
 		this.graph = (IdGraph<KeyIndexableGraph>) graph;
@@ -69,15 +82,15 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This method is not implemented in NeoEMF mapping because subclass
-	 * information is not stored at the database level. This will be fixed in a
-	 * future release of <a href="www.neoemf.com">NeoEMF</a>.
+	 * This method is not implemented in NeoEMF mapping because class hierarchy
+	 * is not stored at the database level. This will be fixed in a future
+	 * release of <a href="www.neoemf.com">NeoEMF</a>.
 	 * 
 	 * @throws UnsupportedOperationException
 	 *             when called, will be fixed in a future release of NeoEMF
 	 */
 	@Override
-	public Collection<Vertex> allOfKind(String typeName) throws UnsupportedOperationException {
+	public Iterable<Vertex> allOfKind(String typeName) {
 		throw new UnsupportedOperationException(
 				"NeoEMFMapping doesn't support allOfKind mapping, use multiple allOfType instead");
 	}
@@ -91,7 +104,7 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	 *             required by NeoEMF to create a new instance of a given type)
 	 */
 	@Override
-	public Object newInstance(String typeName, String typePackageNsURI) throws NullPointerException {
+	public Object newInstance(final String typeName, final String typePackageNsURI) throws NullPointerException {
 		checkNotNull(graph, "Graph hasn't been initialized, call setGraph before starting graph manipulation");
 		checkNotNull(typePackageNsURI, "NeoEMFMapping requires EPackage nsURI to create a new element");
 		Vertex vertex = graph.addVertex(StringId.generate());
@@ -115,31 +128,34 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	}
 
 	@Override
+	public Vertex setAtt(Vertex from, String attName, Object attValue) {
+		from.setProperty(attName, attValue);
+		return from;
+	}
+
+	@Override
 	public String getType(Vertex from) {
-		Vertex metaclassVertex = getMetaclassVertexFor(from);
-		return metaclassVertex.getProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME);
+		return getMetaclassVertexFor(from).getProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME);
 	}
 
 	@Override
 	public boolean isTypeOf(Vertex from, String type) {
-		Vertex metaclassVertex = getMetaclassVertexFor(from);
-		return metaclassVertex.getProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME).equals(type);
+		return getMetaclassVertexFor(from).getProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME).equals(type);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This method is not implemented in NeoEMF mapping because subclass
-	 * information is not stored at the database level. This will be fixed in a
-	 * future release of <a href="www.neoemf.com">NeoEMF</a>.
+	 * This method is not implemented in NeoEMF mapping because class hierarchy
+	 * is not stored at the database level. This will be fixed in a future
+	 * release of <a href="www.neoemf.com">NeoEMF</a>.
 	 * 
 	 * @throws UnsupportedOperationException
 	 *             when called, will be fixed in a future release of NeoEMF
 	 */
 	@Override
-	public boolean isKindOf(Vertex from, String type) throws UnsupportedOperationException {
-		throw new UnsupportedOperationException(
-				"NeoEMFMapping doesn't support isKindOf mapping, use multiple isTypeOf instead");
+	public boolean isKindOf(Vertex from, String type) {
+		throw new UnsupportedOperationException("NeoEMFMapping doesn't support isKindOf mapping, use multiple isTypeOf instead");
 	}
 
 	/**
@@ -151,7 +167,7 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	 * @return a {@link Vertex} corresponding to the metaclass, or {@code null}
 	 *         if it doesn't exist in the graph
 	 */
-	private Vertex getMetaclassVertex(String typeName) {
+	private Vertex getMetaclassVertex(final String typeName) {
 		checkNotNull(metaclassIndex,
 				"Metaclass index cannot be found, call setGraph before starting graph manipulation");
 		return Iterables.getOnlyElement(metaclassIndex.get(BlueprintsPersistenceBackend.KEY_NAME, typeName), null);
@@ -168,7 +184,7 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	 *            the metaclass to store
 	 * @return the created {@link Vertex}
 	 */
-	private Vertex createMetaclassVertex(String typeName, String typePackageNsURI) {
+	private Vertex createMetaclassVertex(final String typeName, final String typePackageNsURI) {
 		Vertex vertex = graph.addVertex(new StringId(typeName + '@' + typePackageNsURI));
 		vertex.setProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME, typeName);
 		vertex.setProperty(BlueprintsPersistenceBackend.KEY_EPACKAGE_NSURI, typePackageNsURI);
@@ -188,7 +204,7 @@ public final class NeoEMFMapping implements EMFtoGraphMapping {
 	 *             if {@code instanceVertex} doesn't have an associated
 	 *             metaclass
 	 */
-	private Vertex getMetaclassVertexFor(Vertex instanceVertex) throws IllegalStateException {
+	private Vertex getMetaclassVertexFor(final Vertex instanceVertex) throws IllegalStateException {
 		Vertex metaclassVertex = Iterables.getOnlyElement(
 				instanceVertex.getVertices(Direction.OUT, BlueprintsPersistenceBackend.KEY_INSTANCE_OF), null);
 		if (nonNull(metaclassVertex)) {
