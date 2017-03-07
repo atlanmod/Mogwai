@@ -3,6 +3,7 @@ package fr.inria.atlanmod.mogwai.mapping;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
@@ -96,7 +97,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	}
 
 	@Override
-	public abstract Vertex setRef(Vertex from, String refName, Vertex to);
+	public abstract Edge setRef(Vertex from, String refName, Vertex to);
 
 	/**
 	 * {@inheritDoc}
@@ -105,11 +106,11 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	 * set the reference between its input elements and {@code to}.
 	 */
 	@Override
-	public Pipe<Vertex, Vertex> setRef(final String refName, final Vertex to) {
-		return new AbstractPipe<Vertex, Vertex>() {
+	public Pipe<Vertex, Edge> setRef(final String refName, final Vertex to) {
+		return new AbstractPipe<Vertex, Edge>() {
 
 			@Override
-			protected Vertex processNextStart() throws NoSuchElementException {
+			protected Edge processNextStart() throws NoSuchElementException {
 				return setRef(this.starts.next(), refName, to);
 			}
 		};

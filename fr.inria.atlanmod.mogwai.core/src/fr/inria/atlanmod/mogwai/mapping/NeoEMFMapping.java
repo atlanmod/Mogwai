@@ -9,6 +9,7 @@ import java.text.MessageFormat;
 
 import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Index;
 import com.tinkerpop.blueprints.KeyIndexableGraph;
@@ -123,9 +124,8 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	}
 	
 	@Override
-	public Vertex setRef(Vertex from, String refName, Vertex to) {
-		from.addEdge(refName, to);
-		return to;
+	public Edge setRef(Vertex from, String refName, Vertex to) {
+		return from.addEdge(refName, to);
 	}
 
 	@Override

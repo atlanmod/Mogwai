@@ -173,11 +173,11 @@ public interface EMFtoGraphMapping {
 	 *            the label of the reference
 	 * @param to
 	 *            the outgoing {@link Vertex} of the reference
-	 * @return the outgoing {@link Vertex} of the reference
+	 * @return the created {@link Edge}
 	 * 
 	 * @see #setRef(String, Vertex)
 	 */
-	Vertex setRef(Vertex from, String refName, Vertex to);
+	Edge setRef(Vertex from, String refName, Vertex to);
 
 	/**
 	 * Returns a {@link Pipe} that creates a reference link between its input
@@ -192,7 +192,7 @@ public interface EMFtoGraphMapping {
 	 * 
 	 * @see #setRef(Vertex, String, Vertex)
 	 */
-	Pipe<Vertex, Vertex> setRef(String refName, Vertex to);
+	Pipe<Vertex, Edge> setRef(String refName, Vertex to);
 
 	/**
 	 * Returns an {@link Object} containing the attribute(s) {@code attName} of
