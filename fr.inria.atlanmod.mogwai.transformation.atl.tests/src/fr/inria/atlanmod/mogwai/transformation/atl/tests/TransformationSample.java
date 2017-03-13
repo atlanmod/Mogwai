@@ -3,17 +3,8 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Map;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.neo4j.kernel.impl.util.FileUtils;
 
 import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Named;
@@ -26,15 +17,8 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
-import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
-import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.logging.NeoLogger;
-import fr.inria.atlanmod.neoemf.resource.PersistentResource;
-import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class TransformationSample {
 
@@ -52,7 +36,7 @@ public class TransformationSample {
 		mogResource.query(initQuery);
 		System.out.println("Initialization performed");
 		
-		TransformationHelper helper = new TransformationHelper(mogResource.getBackend().getGraph(), mapping);
+		TransformationHelper helper = new TransformationHelper(mapping);
 		
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()

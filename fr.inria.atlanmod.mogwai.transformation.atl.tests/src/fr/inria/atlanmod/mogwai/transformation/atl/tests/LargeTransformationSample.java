@@ -3,36 +3,21 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Map;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.neo4j.kernel.impl.util.FileUtils;
 
 import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import fr.inria.atlanmod.mogwai.mapping.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
-import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
-import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.logging.NeoLogger;
-import fr.inria.atlanmod.neoemf.resource.PersistentResource;
-import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class LargeTransformationSample {
 
@@ -40,6 +25,10 @@ public class LargeTransformationSample {
 		long begin = System.currentTimeMillis();
 		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
 		long end = System.currentTimeMillis();
+		
+		EMFtoGraphMapping mapping = new NeoEMFMapping();
+		mapping.setGraph(mogResource.getBackend().getGraph());
+		
 		NeoLogger.info("Created large instance in {0}ms", (end-begin));
 //		NeoLogger.info(mogResource.getContents().get(0).toString());
 		
@@ -58,7 +47,7 @@ public class LargeTransformationSample {
 //		
 //		showResult(mqr2, mogResource);
 		
-		TransformationHelper helper = new TransformationHelper(mogResource.getBackend().getGraph());
+		TransformationHelper helper = new TransformationHelper(mapping);
 		
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
