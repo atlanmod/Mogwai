@@ -6,17 +6,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
-import com.sun.org.apache.xerces.internal.util.URI;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.util.GraphHelper;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 
 import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
-import groovy.lang.MetaClass;
 
 /**
  * A helper used in generated script to execute transformation-related
@@ -55,26 +51,18 @@ public class TransformationHelper {
 	private final static String TRACE_LINK_TARGET_KEY = "target";
 
 	/**
-	 * The {@link Graph} that stores the model to transform.
-	 */
-	private Graph graph;
-
-	/**
 	 * The mapping used to compute graph operations.
 	 */
 	private EMFtoGraphMapping mapping;
 
 	/**
-	 * Creates a new {@link TransformationHelper} from the provided
-	 * {@link Graph} and {@link EMFtoGraphMapping}.
+	 * Creates a new {@link TransformationHelper} fusing the provided
+	 * {@link EMFtoGraphMapping}.
 	 * 
-	 * @param baseGraph
-	 *            the graph to manipulate
 	 * @param mapping
 	 *            the mapping used to compute the graph operations
 	 */
-	public TransformationHelper(Graph baseGraph, EMFtoGraphMapping mapping) {
-		this.graph = baseGraph;
+	public TransformationHelper(EMFtoGraphMapping mapping) {
 		this.mapping = mapping;
 	}
 
