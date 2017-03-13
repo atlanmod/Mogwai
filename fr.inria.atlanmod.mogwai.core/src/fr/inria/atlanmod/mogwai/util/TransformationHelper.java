@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import com.sun.org.apache.xerces.internal.util.URI;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
@@ -15,31 +16,64 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 
 import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import groovy.lang.MetaClass;
 
 /**
- * A helper used in generated script to manipulate the graph efficiently and
- * avoid complex instruction creation.
+ * A helper used in generated script to execute transformation-related
+ * instructions.
+ * <p>
+ * The methods provided in this class are called by the transformation to avoid
+ * complex (and inefficient) gremlin instructions. This helper is independent of
+ * the implicit schema used to represent the model, and delegate all the graph
+ * database accesses to its embedded {@link EMFtoGraphMapping}.
+ * 
+ * @see EMFtoGraphMapping
  * 
  * @author Gwendal DANIEL
  *
  */
-public class GraphHelper {
+public class TransformationHelper {
 
+	/**
+	 * The label used to represent proxy links.
+	 */
 	private final static String PROXY_LABEL = "#atl2gremlinProxy";
-	private final static String BASE_LABEL_KEY = "baseLabel";
+
+	/**
+	 * The label used to represent trace links.
+	 */
 	private final static String TRACE_LINK_LABEL = "#trace";
+
+	/**
+	 * The attribute key used to store the base label of a proxy link.
+	 */
+	private final static String BASE_LABEL_KEY = "baseLabel";
+
+	/**
+	 * The attribute key used to store trace link targets.
+	 */
 	private final static String TRACE_LINK_TARGET_KEY = "target";
 
+	/**
+	 * The {@link Graph} that stores the model to transform.
+	 */
 	private Graph graph;
+
+	/**
+	 * The mapping used to compute graph operations.
+	 */
 	private EMFtoGraphMapping mapping;
 
 	/**
-	 * Creates a new {@link GraphHelper} wrapping the given graph
+	 * Creates a new {@link TransformationHelper} from the provided
+	 * {@link Graph} and {@link EMFtoGraphMapping}.
 	 * 
 	 * @param baseGraph
-	 *            the graph to manipulate using the helper
+	 *            the graph to manipulate
+	 * @param mapping
+	 *            the mapping used to compute the graph operations
 	 */
-	public GraphHelper(Graph baseGraph, EMFtoGraphMapping mapping) {
+	public TransformationHelper(Graph baseGraph, EMFtoGraphMapping mapping) {
 		this.graph = baseGraph;
 		this.mapping = mapping;
 	}
@@ -53,19 +87,43 @@ public class GraphHelper {
 	 *            the nsURI of the metaclass to create
 	 * @return the created {@link Vertex}
 	 */
-//	public Vertex createMetaclass(String metaclassName, String nsURI) {
-//		checkNotNull(metaclassName, "Cannot create a metaclass with null name");
-//		checkNotNull(nsURI, "Cannot create a metaclass with null nsURI");
-//		Vertex metaclassVertex = graph.addVertex(metaclassName + '@' + nsURI);
-//		metaclassVertex.setProperty("name", metaclassName);
-//		metaclassVertex.setProperty("nsURI", nsURI);
-//		graph.getIndex("metaclasses", Vertex.class).put("name", metaclassName, metaclassVertex);
-//		return metaclassVertex;
-//	}
+	// public Vertex createMetaclass(String metaclassName, String nsURI) {
+	// checkNotNull(metaclassName, "Cannot create a metaclass with null name");
+	// checkNotNull(nsURI, "Cannot create a metaclass with null nsURI");
+	// Vertex metaclassVertex = graph.addVertex(metaclassName + '@' + nsURI);
+	// metaclassVertex.setProperty("name", metaclassName);
+	// metaclassVertex.setProperty("nsURI", nsURI);
+	// graph.getIndex("metaclasses", Vertex.class).put("name", metaclassName,
+	// metaclassVertex);
+	// return metaclassVertex;
+	// }
 
+	/**
+	 * Creates a new element mapped from the provided {@code source}.
+	 * <p>
+	 * The {@code source} element and the {@code targetLabel} are provided to
+	 * allow trace link creation. Element creation is delegated to the
+	 * underlying {@link EMFtoGraphMapping}, that processes the
+	 * {@code metaclassType} and {@code nsURI} to create a new instance of the
+	 * given type.
+	 * 
+	 * @param source
+	 *            the element mapped by the transformation
+	 * @param targetLabel
+	 *            the label used in the transformation for the created element
+	 * @param metaclassType
+	 *            the type of the element to create
+	 * @param nsURI
+	 *            the {@code uri} of the EPackage containing the metaclass to
+	 *            instantiate
+	 * @return the created {@link Vertex}
+	 * 
+	 * @throws NullPointerException
+	 *             if the provided {@code metaclassType} is null
+	 */
 	public Vertex createElement(Vertex source, String targetLabel, String metaclassType, String nsURI) {
 		checkNotNull(metaclassType, "Cannot create an element from a null metaclass");
-		Vertex v = (Vertex)mapping.newInstance(metaclassType, nsURI);
+		Vertex v = (Vertex) mapping.newInstance(metaclassType, nsURI);
 		Edge traceLink = source.addEdge(TRACE_LINK_LABEL, v);
 		traceLink.setProperty(TRACE_LINK_TARGET_KEY, targetLabel);
 		return v;
@@ -73,7 +131,7 @@ public class GraphHelper {
 
 	/**
 	 * Creates a link between {@code v1} and {@code v2} with the given
-	 * {@code label}
+	 * {@code label}.
 	 * 
 	 * @param v1
 	 *            the tail {@link Vertex}
@@ -82,6 +140,9 @@ public class GraphHelper {
 	 * @param label
 	 *            the label of the link
 	 * @return the created {@link Edge}
+	 * 
+	 * @throws NullPointerException
+	 *             if {@code v1}, {@code v2}, or {@code label} is null
 	 */
 	public Edge link(Vertex v1, Vertex v2, String label) {
 		checkNotNull(v1, "Cannot create a link from null");
@@ -101,23 +162,25 @@ public class GraphHelper {
 	 * @param label
 	 *            the label of the proxy link
 	 * @return the created {@link Edge}
+	 * @throws NullPointerException
+	 *             if {@code v1}, {@code v2}, or {@code label} is null
 	 */
 	public Edge pLink(Vertex v1, Vertex v2, String label) {
-		checkNotNull(v1, "Cannot create a pLink from null");
-		checkNotNull(v2, "Cannot create a pLink to null");
-		checkNotNull(label, "Cannot create a pLink with null label");
-		// we assume here that v1 and v2 are in the same graph (it is the case
-		// if inHelper = outHelper, but should not be true all the time
-		// TODO find a way to deal with cross-graph edges
-		Edge pEdge = mapping.setRef(v1, PROXY_LABEL, v2);
+		/*
+		 * we assume here that v1 and v2 are in the same graph (it is the case
+		 * if inHelper = outHelper, but should not be true all the time) TODO
+		 * find a way to deal with cross-graph edges
+		 */
+		Edge pEdge = link(v1, v2, PROXY_LABEL);
 		pEdge.setProperty(BASE_LABEL_KEY, label);
 		return pEdge;
 	}
 
 	/**
 	 * Resolve the proxy links connected to {@code source} by setting their tail
-	 * to {@code target}. Proxy links are removed from the graph, and resolved
-	 * {@link Edge} are created using {@code target}
+	 * to {@code target}.
+	 * <p>
+	 * Resolved proxy links are removed from the graph.
 	 * 
 	 * @param source
 	 *            the {@link Vertex} that is connected to proxy links
@@ -125,8 +188,7 @@ public class GraphHelper {
 	 *            the {@link Vertex} that resolves the proxies
 	 */
 	public void resolveProxies(Vertex source, Vertex target) {
-		int resolvedCount = 0;
-		// Should be put in mapping 
+		// Should be put in mapping
 		Iterator<Edge> pEdges = source.getEdges(Direction.IN, PROXY_LABEL).iterator();
 		while (pEdges.hasNext()) {
 			Edge pEdge = pEdges.next();
@@ -138,16 +200,16 @@ public class GraphHelper {
 			if (baseLabel == null) {
 				throw new RuntimeException("[Debug] A proxy link has null as its base label");
 			}
-			resolvedCount++;
 			mapping.setRef(outV, baseLabel, target);
-//			outV.addEdge(baseLabel, target);
+			// outV.addEdge(baseLabel, target);
 			// Delete the proxy, it is no longer needed
 			pEdge.remove();
 		}
-//		System.out.println("[DEBUG] Resolved " + resolvedCount + " proxies for " + source.getId());
 	}
 
 	/**
+	 * Checks whether the given {@link Vertex} can be resolved.
+	 * 
 	 * @param source
 	 *            the {@link Vertex} to check
 	 * @return {@code true} is the {@link Vertex} can be resolved, {@code false}
@@ -155,11 +217,14 @@ public class GraphHelper {
 	 */
 	public boolean isResolvable(Vertex source) {
 		return mapping.getRef(source, TRACE_LINK_LABEL).iterator().hasNext();
-//		return source.getEdges(Direction.OUT, TRACE_LINK_LABEL).iterator().hasNext();
 	}
 
 	/**
-	 * Resolves the {@code source} {@link Vertex} by inspecting trace links
+	 * Resolves the {@code source} {@link Vertex} by inspecting trace links.
+	 * <p>
+	 * This method returns the {@link Vertex} linked to {@code source} by a
+	 * trace link if it exists. This allows to handle multiple reference of the
+	 * same element in the ATL transformation.
 	 * 
 	 * @param source
 	 *            the {@link Vertex} to resolve
@@ -167,16 +232,19 @@ public class GraphHelper {
 	 */
 	public Vertex resolve(Vertex source) {
 		return mapping.getRef(source, TRACE_LINK_LABEL).iterator().next();
-//		return source.getVertices(Direction.OUT, TRACE_LINK_LABEL).iterator().next();
+		// return source.getVertices(Direction.OUT,
+		// TRACE_LINK_LABEL).iterator().next();
 	}
 
 	/**
 	 * Links two elements by creating an edge between the corresponding
-	 * {@link Vertex}. Note that {@code target} is an element in the source
-	 * model that has to be resolved. If {@code target} cannot be resolved
-	 * (because the corresponding {@link Vertex} has not been created yet) a
-	 * proxy link (see @link{GraphHelper#pLink(Vertex, Vertex, String)}) is created
-	 * that will be resolved later.
+	 * {@link Vertex} elements.
+	 * <p>
+	 * Note that {@code target} is an element in the source model that has to be
+	 * resolved. If {@code target} cannot be resolved (because the corresponding
+	 * {@link Vertex} has not been created yet) a proxy link (see
+	 * {@link GraphHelper#pLink(Vertex, Vertex, String)}) is created that will
+	 * be resolved later.
 	 * 
 	 * @param source
 	 *            the tail of the link
@@ -186,6 +254,8 @@ public class GraphHelper {
 	 * @param label
 	 *            the label of the link
 	 * @return the created {@link Edge}
+	 * 
+	 * @see #linkReference(Vertex, Iterable, String)
 	 */
 	public Edge linkReference(Vertex source, Vertex target, String label) {
 		// TODO resolve inside the method to optimize database accesses
@@ -198,12 +268,13 @@ public class GraphHelper {
 
 	/**
 	 * Links all the elements of {@code target} to {@code source} by creating
-	 * edges between the corresponding {@link Vertex}. Note that {@code target}
-	 * are elements in the source model that have to be resolved. If
-	 * {@code target} elements cannot be resolved (because corresponding
-	 * {@link Vertex} have not been created yet) a proxy link {see
-	 * GraphHelper#pLink(Vertex, Vertex, String)} is created that will be
-	 * resolved later.
+	 * edges between the corresponding {@link Vertex} elements.
+	 * <p>
+	 * Note that {@code target} contains elements in the source model that have
+	 * to be resolved. If {@code target} elements cannot be resolved (because
+	 * corresponding {@link Vertex} have not been created yet) a proxy link (see
+	 * {@link GraphHelper#pLink(Vertex, Vertex, String)}) is created that will
+	 * be resolved later.
 	 * 
 	 * @param source
 	 *            the tail of the links
@@ -215,15 +286,16 @@ public class GraphHelper {
 	 * @param label
 	 *            the label of the link
 	 * @return a list containing the created {@link Edge}s
+	 * 
+	 * @see #linkReference(Vertex, Vertex, String)
 	 */
 	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label) {
 		// TODO resolve inside the method to optimize database accesses
 		List<Edge> createdEdges = new ArrayList<>();
-		for(Vertex vv : target) {
-			if(isResolvable(vv)) {
+		for (Vertex vv : target) {
+			if (isResolvable(vv)) {
 				createdEdges.add(link(source, resolve(vv), label));
-			}
-			else {
+			} else {
 				createdEdges.add(pLink(source, vv, label));
 			}
 		}

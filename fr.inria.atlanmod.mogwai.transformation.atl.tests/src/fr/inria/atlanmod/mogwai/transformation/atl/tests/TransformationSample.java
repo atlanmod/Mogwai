@@ -27,7 +27,7 @@ import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
-import fr.inria.atlanmod.mogwai.util.GraphHelper;
+import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
@@ -52,7 +52,7 @@ public class TransformationSample {
 		mogResource.query(initQuery);
 		System.out.println("Initialization performed");
 		
-		GraphHelper helper = new GraphHelper(mogResource.getBackend().getGraph(), mapping);
+		TransformationHelper helper = new TransformationHelper(mogResource.getBackend().getGraph(), mapping);
 		
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()

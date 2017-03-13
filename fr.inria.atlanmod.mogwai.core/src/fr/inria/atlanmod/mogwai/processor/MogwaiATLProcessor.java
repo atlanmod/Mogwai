@@ -15,7 +15,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
-import fr.inria.atlanmod.mogwai.util.GraphHelper;
+import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 
 public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 
@@ -74,8 +74,8 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 	
 	private Map<String, Object> createQueryBindings(MogwaiATLQuery query) {
 		Map<String, Object> bindings = new HashMap<>();
-		bindings.put("inHelper", new GraphHelper(query.getInputGraph().getGraph(), query.getInputMapping()));
-		bindings.put("outHelper", new GraphHelper(query.getOutputGraph().getGraph(), query.getOutputMapping()));
+		bindings.put("inHelper", new TransformationHelper(query.getInputGraph().getGraph(), query.getInputMapping()));
+		bindings.put("outHelper", new TransformationHelper(query.getOutputGraph().getGraph(), query.getOutputMapping()));
 		return bindings;
 	}
 
