@@ -21,7 +21,8 @@ import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore;
 
 /**
- * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps EMF models into Blueprints databases.
+ * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps
+ * EMF models into Blueprints databases.
  * <p>
  * This mapping is based on the one implicitly defined in
  * {@link BlueprintsPersistenceBackend} and {@link DirectWriteBlueprintsStore}.
@@ -44,6 +45,12 @@ import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore
  *
  */
 public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMapping {
+
+	private static final String POSITION_KEY = "position";
+
+	private static final String SEPARATOR = ":";
+
+	private static final String SIZE_LITERAL = "size";
 
 	// Ensuite le script d'init s'occupe de créer les méthodes des vertex /
 	// edges et des pipes (pour les méthode utiliser le delegate, pour les pipe
@@ -122,10 +129,20 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	public Iterable<Vertex> getRef(Vertex from, String refName) {
 		return from.getVertices(Direction.OUT, refName);
 	}
-	
+
 	@Override
 	public Edge setRef(Vertex from, String refName, Vertex to) {
-		return from.addEdge(refName, to);
+		/*
+		 * Note: this implementation only consider append behavior. If the
+		 * transformation sets a reference at a specific position model
+		 * consistency is not ensured.
+		 */
+		Edge newEdge = from.addEdge(refName, to);
+		Integer size = getSize(from, refName);
+		int newSize = size + 1;
+		newEdge.setProperty(POSITION_KEY, size);
+		setSize(from, refName, newSize);
+		return newEdge;
 	}
 
 	@Override
@@ -148,7 +165,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	public boolean isTypeOf(Vertex from, String type) {
 		return getMetaclassVertexFor(from).getProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME).equals(type);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -161,7 +178,8 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 */
 	@Override
 	public boolean isKindOf(Vertex from, String type) {
-		throw new UnsupportedOperationException("NeoEMFMapping doesn't support isKindOf mapping, use multiple isTypeOf instead");
+		throw new UnsupportedOperationException(
+				"NeoEMFMapping doesn't support isKindOf mapping, use multiple isTypeOf instead");
 	}
 
 	/**
@@ -219,5 +237,34 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 			throw new IllegalStateException(MessageFormat.format("Cannot find the metaclass vertex of {0}",
 					instanceVertex.getId()));
 		}
+	}
+
+	/**
+	 * Returns the size of the given {@code feature}.
+	 * 
+	 * @param vertex
+	 *            the input {@link Vertex} of the {@code feature}
+	 * @param feature
+	 *            the name of the feature to compute the size of
+	 * @return the size of the {@code feature} if it is multi-valued, {@code 0}
+	 *         otherwise
+	 */
+	private Integer getSize(Vertex vertex, String feature) {
+		Integer size = vertex.getProperty(feature + SEPARATOR + SIZE_LITERAL);
+		return isNull(size) ? 0 : size;
+	}
+
+	/**
+	 * Sets the size of the given {@code feature} to {@code size}.
+	 * 
+	 * @param vertex
+	 *            the input {@link Vertex} of the {@code feature}
+	 * @param feature
+	 *            the name of the feature to set the size of
+	 * @param size
+	 *            the new size to set
+	 */
+	private void setSize(Vertex vertex, String feature, int size) {
+		vertex.setProperty(feature + SEPARATOR + SIZE_LITERAL, size);
 	}
 }
