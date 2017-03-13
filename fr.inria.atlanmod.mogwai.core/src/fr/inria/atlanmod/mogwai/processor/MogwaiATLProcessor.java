@@ -74,8 +74,8 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 	
 	private Map<String, Object> createQueryBindings(MogwaiATLQuery query) {
 		Map<String, Object> bindings = new HashMap<>();
-		bindings.put("inHelper", new TransformationHelper(query.getInputGraph().getGraph(), query.getInputMapping()));
-		bindings.put("outHelper", new TransformationHelper(query.getOutputGraph().getGraph(), query.getOutputMapping()));
+		bindings.put("inHelper", new TransformationHelper(query.getInputMapping()));
+		bindings.put("outHelper", new TransformationHelper(query.getOutputMapping()));
 		return bindings;
 	}
 
