@@ -173,11 +173,14 @@ public interface EMFtoGraphMapping {
 	 *            the label of the reference
 	 * @param to
 	 *            the outgoing {@link Vertex} of the reference
+	 * @param isContainment
+	 *            {@code true} if the reference is a containment, {@code false}
+	 *            otherwise
 	 * @return the created {@link Edge}
 	 * 
-	 * @see #setRef(String, Vertex)
+	 * @see #setRef(String, Vertex, boolean)
 	 */
-	Edge setRef(Vertex from, String refName, Vertex to);
+	Edge setRef(Vertex from, String refName, Vertex to, boolean isContainment);
 
 	/**
 	 * Returns a {@link Pipe} that creates a reference link between its input
@@ -187,12 +190,15 @@ public interface EMFtoGraphMapping {
 	 *            the label of the reference
 	 * @param to
 	 *            the outgoing {@link Vertex} of the reference
+	 * @param isContainment
+	 *            {@code true} if the reference is a containment, {@code false}
+	 *            otherwise
 	 * @return a {@link Pipe} that creates a reference link between its input
 	 *         elements and {@code to} with the label {@code refName}
 	 * 
-	 * @see #setRef(Vertex, String, Vertex)
+	 * @see #setRef(Vertex, String, Vertex, boolean)
 	 */
-	Pipe<Vertex, Edge> setRef(String refName, Vertex to);
+	Pipe<Vertex, Edge> setRef(String refName, Vertex to, boolean isContainment);
 
 	/**
 	 * Returns an {@link Object} containing the attribute(s) {@code attName} of

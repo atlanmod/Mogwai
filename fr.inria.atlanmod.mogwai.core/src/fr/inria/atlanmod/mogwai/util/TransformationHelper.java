@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.mogwai.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,6 +50,8 @@ public class TransformationHelper {
 	 * The attribute key used to store trace link targets.
 	 */
 	private final static String TRACE_LINK_TARGET_KEY = "target";
+
+	private final static String IS_CONTAINMENT_KEY = "isContainment";
 
 	/**
 	 * The mapping used to compute graph operations.
@@ -120,6 +123,9 @@ public class TransformationHelper {
 	/**
 	 * Creates a link between {@code v1} and {@code v2} with the given
 	 * {@code label}.
+	 * <p>
+	 * <b>Note:</b> {@code isContainment} parameter is used by the underlying
+	 * {@link EMFtoGraphMapping} to store container specific information
 	 * 
 	 * @param v1
 	 *            the tail {@link Vertex}
@@ -127,16 +133,19 @@ public class TransformationHelper {
 	 *            the head {@link Vertex}
 	 * @param label
 	 *            the label of the link
+	 * @param isContainment
+	 *            {@code true} if the link is a containment, {@code false}
+	 *            otherwise
 	 * @return the created {@link Edge}
 	 * 
 	 * @throws NullPointerException
 	 *             if {@code v1}, {@code v2}, or {@code label} is null
 	 */
-	public Edge link(Vertex v1, Vertex v2, String label) {
+	public Edge link(Vertex v1, Vertex v2, String label, boolean isContainment) {
 		checkNotNull(v1, "Cannot create a link from null");
 		checkNotNull(v2, "Cannot create a link to null");
 		checkNotNull(label, "Cannot create a link with null label");
-		return mapping.setRef(v1, label, v2);
+		return mapping.setRef(v1, label, v2, isContainment);
 	}
 
 	/**
@@ -149,18 +158,29 @@ public class TransformationHelper {
 	 *            the head {@link Vertex}
 	 * @param label
 	 *            the label of the proxy link
+	 * @param isContainment
+	 *            {@code true} if the proxy link is a containment, {@code false}
+	 *            otherwise
 	 * @return the created {@link Edge}
 	 * @throws NullPointerException
 	 *             if {@code v1}, {@code v2}, or {@code label} is null
 	 */
-	public Edge pLink(Vertex v1, Vertex v2, String label) {
+	public Edge pLink(Vertex v1, Vertex v2, String label, boolean isContainment) {
 		/*
 		 * we assume here that v1 and v2 are in the same graph (it is the case
 		 * if inHelper = outHelper, but should not be true all the time) TODO
 		 * find a way to deal with cross-graph edges
 		 */
-		Edge pEdge = link(v1, v2, PROXY_LABEL);
+		Edge pEdge = link(v1, v2, PROXY_LABEL, false);
+		/*
+		 * Proxy links cannot be containment feature, this information is holded
+		 * in the edge properties to avoid mapping side-effects resulting on
+		 * containment handling
+		 */
 		pEdge.setProperty(BASE_LABEL_KEY, label);
+		if (isContainment) {
+			pEdge.setProperty(IS_CONTAINMENT_KEY, true);
+		}
 		return pEdge;
 	}
 
@@ -184,11 +204,12 @@ public class TransformationHelper {
 			if (outV.getId().equals(source.getId())) {
 				throw new RuntimeException("[Debug] Invalid traversal: in = out");
 			}
-			String baseLabel = pEdge.<String> getProperty(BASE_LABEL_KEY);
-			if (baseLabel == null) {
+			String baseLabel = pEdge.getProperty(BASE_LABEL_KEY);
+			Boolean isContainment = pEdge.getProperty(IS_CONTAINMENT_KEY);
+			if (isNull(baseLabel)) {
 				throw new RuntimeException("[Debug] A proxy link has null as its base label");
 			}
-			mapping.setRef(outV, baseLabel, target);
+			mapping.setRef(outV, baseLabel, target, isContainment);
 			// outV.addEdge(baseLabel, target);
 			// Delete the proxy, it is no longer needed
 			pEdge.remove();
@@ -241,16 +262,19 @@ public class TransformationHelper {
 	 *            link. If it cannot be resolved a proxy link is created instead
 	 * @param label
 	 *            the label of the link
+	 * @param isContainment
+	 *            {@code true} if the reference is a containment, {@code false}
+	 *            otherwise
 	 * @return the created {@link Edge}
 	 * 
 	 * @see #linkReference(Vertex, Iterable, String)
 	 */
-	public Edge linkReference(Vertex source, Vertex target, String label) {
+	public Edge linkReference(Vertex source, Vertex target, String label, boolean isContainment) {
 		// TODO resolve inside the method to optimize database accesses
 		if (isResolvable(target)) {
-			return link(source, resolve(target), label);
+			return link(source, resolve(target), label, isContainment);
 		} else {
-			return pLink(source, target, label);
+			return pLink(source, target, label, isContainment);
 		}
 	}
 
@@ -273,18 +297,21 @@ public class TransformationHelper {
 	 *            instead
 	 * @param label
 	 *            the label of the link
+	 * @param isContainment
+	 *            {@code true} if the reference is a containment, {@code false}
+	 *            otherwise
 	 * @return a list containing the created {@link Edge}s
 	 * 
 	 * @see #linkReference(Vertex, Vertex, String)
 	 */
-	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label) {
+	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label, boolean isContainment) {
 		// TODO resolve inside the method to optimize database accesses
 		List<Edge> createdEdges = new ArrayList<>();
 		for (Vertex vv : target) {
 			if (isResolvable(vv)) {
-				createdEdges.add(link(source, resolve(vv), label));
+				createdEdges.add(link(source, resolve(vv), label, isContainment));
 			} else {
-				createdEdges.add(pLink(source, vv, label));
+				createdEdges.add(pLink(source, vv, label, isContainment));
 			}
 		}
 		return createdEdges;

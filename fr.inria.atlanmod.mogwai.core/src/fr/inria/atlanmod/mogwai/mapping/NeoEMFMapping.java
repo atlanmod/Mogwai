@@ -52,6 +52,10 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 
 	private static final String SIZE_LITERAL = "size";
 
+	private static final String CONTAINER_LABEL = "eContainer";
+
+	private static final String CONTAINING_FEATURE_KEY = "containingFeature";
+
 	// Ensuite le script d'init s'occupe de créer les méthodes des vertex /
 	// edges et des pipes (pour les méthode utiliser le delegate, pour les pipe
 	// utiliser les wrappers abstraits).
@@ -131,12 +135,15 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	}
 
 	@Override
-	public Edge setRef(Vertex from, String refName, Vertex to) {
+	public Edge setRef(Vertex from, String refName, Vertex to, boolean isContainment) {
 		/*
 		 * Note: this implementation only consider append behavior. If the
 		 * transformation sets a reference at a specific position model
 		 * consistency is not ensured.
 		 */
+		if (isContainment) {
+			updateContainment(from, refName, to);
+		}
 		Edge newEdge = from.addEdge(refName, to);
 		Integer size = getSize(from, refName);
 		int newSize = size + 1;
@@ -266,5 +273,27 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 */
 	private void setSize(Vertex vertex, String feature, int size) {
 		vertex.setProperty(feature + SEPARATOR + SIZE_LITERAL, size);
+	}
+
+	/**
+	 * Updates the containment by creating a new container edge between
+	 * {@code to} and {@code from}.
+	 * <p>
+	 * <b>Note:</b> this method removes all outgoing container edges from
+	 * {@code to} before creating the new container edge.
+	 * 
+	 * @param from
+	 *            the {@link Vertex} element representing the container
+	 * @param refName
+	 *            the name of the reference to set
+	 * @param to
+	 *            the {@link Vertex} representing the contained element
+	 */
+	private void updateContainment(Vertex from, String refName, Vertex to) {
+		for (Edge edge : to.getEdges(Direction.OUT, CONTAINER_LABEL)) {
+			edge.remove();
+		}
+		Edge edge = to.addEdge(CONTAINER_LABEL, from);
+		edge.setProperty(CONTAINING_FEATURE_KEY, refName);
 	}
 }

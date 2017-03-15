@@ -11,7 +11,7 @@ g.allOfType("Class").transform {
 	
 	out.setAtt("name", c.getAtt("name"));
 	
-	gHelper.linkReference(out, c.getRef("attr"), "col");
+	gHelper.linkReference(out, c.getRef("attr"), "col", true);
 	
 	// Quick fix to allow NeoEMF access of the created elements, 
 	// need to be fixed (+ doesn't use the mapping)
