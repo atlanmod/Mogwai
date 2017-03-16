@@ -65,6 +65,22 @@ Vertex.metaClass.setAtt =
 		m.setAtt(delegate, attName, attValue); 
 }
 
+// v1.setRef("myRef", v2, isContainment)
+Vertex.metaClass.setRef =
+{
+	String refName, Vertex otherEnd, boolean isContainment ->
+		println("setRef(" + refName + "," + otherEnd + "," + isContainement + ")");
+		m.setRef(delegate, refName, otherEnd, isContainment);
+}
+
+// v1.removeRef("myRef", v2, isContainment)
+Vertex.metaClass.removeRef = 
+{
+	String refName, Vertex otherEnd, boolean isContainment ->
+		println("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")");
+		m.removeRef(delegate, refName, otherEnd, isContainment);
+}
+
 // v.getType();
 Vertex.metaClass.getType = 
 {
@@ -120,6 +136,23 @@ Gremlin.defineStep("setAtt", [Pipe],
 	}	
 )
 
+// Pipe.setRef("myRef", v, isContainment)
+Gremlin.defineStep("setRef", [Pipe],
+	{
+		String refName, Vertex otherEnd, boolean isContainment ->
+			println("setRef(" + refName + "," + otherEnd + "," + isContainment + ")[Pipe]");
+			m.setRef(refName, otherEnd, isContainment);
+	}	
+)
+
+// Pipe.removeRef("myRef", v, isContainment)
+Gremlin.defineStep("removeRef", [Pipe],
+	{
+		String refName, Vertex otherEnd, boolean isContainment ->
+			println("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")[Pipe]");
+			m.removeRef(refName, otherEnd, isContainment);
+	}	
+)
 // Pipe.getType();
 Gremlin.defineStep("getType", [Pipe], 
 	{

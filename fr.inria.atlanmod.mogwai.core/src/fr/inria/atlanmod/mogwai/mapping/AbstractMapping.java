@@ -118,6 +118,26 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	}
 
 	@Override
+	public abstract Vertex removeRef(Vertex from, String refName, Vertex to, boolean isContainment);
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The create {@link Pipe} uses {@link #removeRef(Vertex, String, Vertex)}
+	 * to remove the reference between its input elements and {@code to}.
+	 */
+	@Override
+	public Pipe<Vertex, Vertex> removeRef(final String refName, final Vertex to, final boolean isContainment) {
+		return new AbstractPipe<Vertex, Vertex>() {
+
+			@Override
+			protected Vertex processNextStart() throws NoSuchElementException {
+				return removeRef(this.starts.next(), refName, to, isContainment);
+			}
+		};
+	}
+
+	@Override
 	public abstract Object getAtt(Vertex from, String attName);
 
 	/**

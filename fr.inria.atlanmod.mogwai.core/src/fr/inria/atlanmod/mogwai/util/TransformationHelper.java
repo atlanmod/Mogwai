@@ -210,9 +210,8 @@ public class TransformationHelper {
 				throw new RuntimeException("[Debug] A proxy link has null as its base label");
 			}
 			mapping.setRef(outV, baseLabel, target, isContainment);
-			// outV.addEdge(baseLabel, target);
 			// Delete the proxy, it is no longer needed
-			pEdge.remove();
+			mapping.removeRef(outV, PROXY_LABEL, source, false);
 		}
 	}
 

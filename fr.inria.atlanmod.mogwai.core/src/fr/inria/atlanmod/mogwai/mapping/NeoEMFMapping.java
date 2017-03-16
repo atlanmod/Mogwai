@@ -156,6 +156,32 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	}
 
 	@Override
+	public Vertex removeRef(Vertex from, String refName, Vertex to, boolean isContainment) {
+		int size = getSize(from, refName);
+		Iterable<Edge> refEdges = from.getEdges(Direction.OUT, refName);
+		Vertex oldVertex = null;
+		for (Edge refEdge : refEdges) {
+			if (refEdge.getVertex(Direction.IN).equals(to)) {
+				if (oldVertex != null) {
+					// We have found the edge, update the position of the next ones
+					int position = refEdge.getProperty(POSITION_KEY);
+					refEdge.setProperty(POSITION_KEY, position - 1);
+				}
+				oldVertex = refEdge.getVertex(Direction.IN);
+				if (isContainment) {
+					Edge containerEdge = Iterables.getFirst(oldVertex.getEdges(Direction.OUT, CONTAINER_LABEL), null);
+					if(nonNull(containerEdge)) {
+						containerEdge.remove();
+					}
+				}
+				refEdge.remove();
+			}
+		}
+		setSize(from, refName, size - 1);
+		return oldVertex;
+	}
+
+	@Override
 	public Object getAtt(Vertex from, String attName) {
 		return from.getProperty(attName);
 	}
@@ -301,7 +327,12 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 *            the new size to set
 	 */
 	private void setSize(Vertex vertex, String feature, int size) {
-		vertex.setProperty(feature + SEPARATOR + SIZE_LITERAL, size);
+		if(size == 0) {
+			vertex.removeProperty(feature + SEPARATOR + SIZE_LITERAL);
+		}
+		else {
+			vertex.setProperty(feature + SEPARATOR + SIZE_LITERAL, size);
+		}
 	}
 
 	/**
@@ -319,22 +350,16 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 *            the {@link Vertex} representing the contained element
 	 */
 	private void updateContainment(Vertex from, String refName, Vertex to) {
-		// TODO size of removed edges is not updated! but we also need to update
-		// the position property of the other edges (see
-		// DirectWriteBlueprintsStore.removeReference
-		String incomingContainingFeature = "";
-		// Remove the outgoing container edge
+		// Find the old containment reference name and remove it
 		for (Edge edge : to.getEdges(Direction.OUT, CONTAINER_LABEL)) {
-			incomingContainingFeature = edge.getProperty(CONTAINING_FEATURE_KEY);
-			edge.remove();
+			removeRef(from, (String)edge.getProperty(CONTAINING_FEATURE_KEY), to, true);
+			break;
 		}
-		// Remove the incoming containment edge
-		for (Edge edge : to.getEdges(Direction.IN, incomingContainingFeature)) {
-			edge.remove();
-		}
+		
 		// Remove eContents edges if the element is a top-level element
 		for (Edge edge : to.getEdges(Direction.IN, CONTENTS_LABEL)) {
-			edge.remove();
+			Vertex rootVertex = edge.getVertex(Direction.OUT);
+			removeRef(rootVertex, CONTENTS_LABEL, to, false);
 		}
 		Edge edge = to.addEdge(CONTAINER_LABEL, from);
 		edge.setProperty(CONTAINING_FEATURE_KEY, refName);

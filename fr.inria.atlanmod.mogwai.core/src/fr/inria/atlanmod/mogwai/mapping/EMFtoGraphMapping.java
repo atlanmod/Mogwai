@@ -204,6 +204,43 @@ public interface EMFtoGraphMapping {
 	Pipe<Vertex, Edge> setRef(String refName, Vertex to, boolean isContainment);
 
 	/**
+	 * Removes the reference link between {@code from} and {@code to} with the
+	 * label {@code refName}.
+	 * 
+	 * @param from
+	 *            the incoming {@link Vertex} of the reference
+	 * @param refName
+	 *            the label of the reference
+	 * @param to
+	 *            the outgoing {@link Vertex} of the reference
+	 * @param isContainment
+	 *            {@code true} if the reference is a containment, {@code false}
+	 *            otherwise
+	 * @return the previously linked {@link Vertex}
+	 * 
+	 * @see #removeRef(String, Vertex)
+	 */
+	Vertex removeRef(Vertex from, String refName, Vertex to, boolean isContainment);
+
+	/**
+	 * Returns a {@link Pipe} that removes a reference link between its input
+	 * elements and {@code to} with the label {@code refName}.
+	 * 
+	 * @param refName
+	 *            the label of the reference
+	 * @param to
+	 *            the outgoing {@link Vertex} of the reference
+	 * @param isContainment
+	 *            {@code true} if the reference is a containment, {@code false}
+	 *            otherwise
+	 * @return a {@link Pipe} that creates a reference link between its input
+	 *         elements and {@code to} with the label {@code refName}
+	 * 
+	 * @see #removeRef(Vertex, String, Vertex)
+	 */
+	Pipe<Vertex, Vertex> removeRef(String refName, Vertex to, boolean isContainment);
+
+	/**
 	 * Returns an {@link Object} containing the attribute(s) {@code attName} of
 	 * {@code from}.
 	 * 
