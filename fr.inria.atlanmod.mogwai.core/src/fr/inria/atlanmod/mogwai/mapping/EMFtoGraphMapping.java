@@ -118,7 +118,8 @@ public interface EMFtoGraphMapping {
 	Pipeline<Vertex, ?> allOfKindPipeline(String typeName);
 
 	/**
-	 * Creates a new instance of the type {@code typeName}.
+	 * Creates a new instance of the type {@code typeName} and add it to the
+	 * resource {@code resourceName}.
 	 * <p>
 	 * {@code typePackageNsURI} can be provided for mappings that support
 	 * metaclasses defined in multiple EPackages. Note that this information may
@@ -129,11 +130,13 @@ public interface EMFtoGraphMapping {
 	 * @param typePackageNsURI
 	 *            the URI of the EPackage that defines the metaclass
 	 *            {@code typeName}
+	 * @param resourceName
+	 *            the name of the resource where the new element is stored
 	 * @return an {@link Object} representing the created instance of
 	 *         {@code typeName}
 	 * 
 	 */
-	Object newInstance(String typeName, String typePackageNsURI);
+	Object newInstance(String typeName, String typePackageNsURI, String resourceName);
 
 	/**
 	 * Returns an {@link Iterable} containing the {@link Vertex} elements

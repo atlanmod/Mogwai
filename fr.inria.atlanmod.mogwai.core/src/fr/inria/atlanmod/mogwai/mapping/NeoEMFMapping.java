@@ -54,16 +54,12 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 
 	private static final String CONTAINER_LABEL = "eContainer";
 
+	private static final String CONTENTS_LABEL = "eContents";
+
 	private static final String CONTAINING_FEATURE_KEY = "containingFeature";
 
-	// Ensuite le script d'init s'occupe de créer les méthodes des vertex /
-	// edges et des pipes (pour les méthode utiliser le delegate, pour les pipe
-	// utiliser les wrappers abstraits).
-	// Si tout fonctionne correctement les pipes créés peuvent appeler les
-	// méthodes abstraites, permettant de définir des comportement au niveau
-	// d'un élément simple ou d'un iterateur
-
 	private IdGraph<KeyIndexableGraph> graph;
+
 	private Index<Vertex> metaclassIndex;
 
 	/**
@@ -116,16 +112,23 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 *             required by NeoEMF to create a new instance of a given type)
 	 */
 	@Override
-	public Object newInstance(final String typeName, final String typePackageNsURI) throws NullPointerException {
+	public Object newInstance(final String typeName, final String typePackageNsURI, String resourceName)
+			throws NullPointerException {
 		checkNotNull(graph, "Graph hasn't been initialized, call setGraph before starting graph manipulation");
 		checkNotNull(typePackageNsURI, "NeoEMFMapping requires EPackage nsURI to create a new element");
+		Vertex resourceRoot = getOrCreateResourceRoot(resourceName);
 		Vertex vertex = graph.addVertex(StringId.generate().toString());
 		Vertex eClassVertex = getMetaclassVertex(typeName);
 		if (isNull(eClassVertex)) {
 			eClassVertex = createMetaclassVertex(typeName, typePackageNsURI);
 			metaclassIndex.put(BlueprintsPersistenceBackend.KEY_NAME, typeName, eClassVertex);
 		}
+		/*
+		 * Don't use setRef to set this edge, we don't need to add the property
+		 * kyanosInstanceof:size in the database
+		 */
 		vertex.addEdge(BlueprintsPersistenceBackend.KEY_INSTANCE_OF, eClassVertex);
+		setRef(resourceRoot, CONTENTS_LABEL, vertex, false);
 		return vertex;
 	}
 
@@ -187,6 +190,32 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	public boolean isKindOf(Vertex from, String type) {
 		throw new UnsupportedOperationException(
 				"NeoEMFMapping doesn't support isKindOf mapping, use multiple isTypeOf instead");
+	}
+
+	/**
+	 * Get the {@link Vertex} corresponding to the root of the resource
+	 * {@code resourceName}.
+	 * <p>
+	 * This method creates a new root {@link Vertex} if the database doesn't
+	 * contain the requested one.
+	 * 
+	 * @param resourceName
+	 *            the name of the resource to get the root of
+	 * @return the {@link Vertex} corresponding to the root of the resource, or
+	 *         a new {@link Vertex} if it doesn't exist
+	 */
+	private Vertex getOrCreateResourceRoot(String resourceName) {
+		Vertex eObjectMetaclass = getMetaclassVertex("EObject");
+		Iterable<Vertex> resourceRoots = eObjectMetaclass.getVertices(Direction.IN,
+				BlueprintsPersistenceBackend.KEY_INSTANCE_OF);
+		for (Vertex rRoot : resourceRoots) {
+			if (rRoot.getId().equals(resourceName)) {
+				return rRoot;
+			}
+		}
+		Vertex newResourceRoot = graph.addVertex(resourceName);
+		newResourceRoot.addEdge(BlueprintsPersistenceBackend.KEY_INSTANCE_OF, eObjectMetaclass);
+		return newResourceRoot;
 	}
 
 	/**
@@ -290,7 +319,21 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 *            the {@link Vertex} representing the contained element
 	 */
 	private void updateContainment(Vertex from, String refName, Vertex to) {
+		// TODO size of removed edges is not updated! but we also need to update
+		// the position property of the other edges (see
+		// DirectWriteBlueprintsStore.removeReference
+		String incomingContainingFeature = "";
+		// Remove the outgoing container edge
 		for (Edge edge : to.getEdges(Direction.OUT, CONTAINER_LABEL)) {
+			incomingContainingFeature = edge.getProperty(CONTAINING_FEATURE_KEY);
+			edge.remove();
+		}
+		// Remove the incoming containment edge
+		for (Edge edge : to.getEdges(Direction.IN, incomingContainingFeature)) {
+			edge.remove();
+		}
+		// Remove eContents edges if the element is a top-level element
+		for (Edge edge : to.getEdges(Direction.IN, CONTENTS_LABEL)) {
 			edge.remove();
 		}
 		Edge edge = to.addEdge(CONTAINER_LABEL, from);

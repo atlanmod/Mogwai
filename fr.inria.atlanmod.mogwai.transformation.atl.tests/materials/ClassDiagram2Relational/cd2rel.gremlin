@@ -5,7 +5,7 @@ g.allOfType("Class").transform {
 	
 	def c = it;
 	
-	def out = gHelper.createElement(c, "out", "Table", "ClassDiagram");
+	def out = gHelper.createElement(c, "out", "Table", "ClassDiagram", "OUTROOT");
 	
 	gHelper.resolveProxies(c, out);
 	
@@ -15,14 +15,14 @@ g.allOfType("Class").transform {
 	
 	// Quick fix to allow NeoEMF access of the created elements, 
 	// need to be fixed (+ doesn't use the mapping)
-	gr.addEdge(gr.getVertex('ROOT'), out, "eContents");
+//	gr.addEdge(gr.getVertex('ROOT'), out, "eContents");
 }.iterate();
 
 g.allOfType("Attribute").transform {
 	
 	def a = it;
 	
-	def fKey = gHelper.createElement(a, "fKey", "Column", "ClassDiagram");
+	def fKey = gHelper.createElement(a, "fKey", "Column", "ClassDiagram", "OUTROOT");
 	
 	gHelper.resolveProxies(a, fKey);
 	

@@ -112,9 +112,9 @@ public class TransformationHelper {
 	 * @throws NullPointerException
 	 *             if the provided {@code metaclassType} is null
 	 */
-	public Vertex createElement(Vertex source, String targetLabel, String metaclassType, String nsURI) {
+	public Vertex createElement(Vertex source, String targetLabel, String metaclassType, String nsURI, String resourceName) {
 		checkNotNull(metaclassType, "Cannot create an element from a null metaclass");
-		Vertex v = (Vertex) mapping.newInstance(metaclassType, nsURI);
+		Vertex v = (Vertex) mapping.newInstance(metaclassType, nsURI, resourceName);
 		Edge traceLink = source.addEdge(TRACE_LINK_LABEL, v);
 		traceLink.setProperty(TRACE_LINK_TARGET_KEY, targetLabel);
 		return v;

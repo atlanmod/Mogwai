@@ -66,7 +66,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	}
 
 	@Override
-	public abstract Object newInstance(String typeName, String typePackageNsURI);
+	public abstract Object newInstance(String typeName, String typePackageNsURI, String resourceName);
 
 	@Override
 	public abstract Iterable<Vertex> getRef(Vertex from, String refName);
