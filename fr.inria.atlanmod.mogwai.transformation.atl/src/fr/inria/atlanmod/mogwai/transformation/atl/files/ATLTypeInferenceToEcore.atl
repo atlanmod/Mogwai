@@ -1,14 +1,14 @@
 -- @atlcompiler atl2010
 -- ATL Type Inference support for Ecore Platform by Frédéric Jouault
--- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+-- @nsURI ATL=http://www.eclipse.org/gmt/2005/OCL
 -- @nsURI SourceEcore=http://www.eclipse.org/emf/2002/Ecore
-library ATLTypeInferenceToUMLToEcore;
+library ATLTypeInferenceToEcore;
 
 helper context String def: primitiveType : OclAny =
 	Map {
-		('Boolean', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EBoolean'))
---		('Integer', SourceEcore!EInteger),
---		('String', SourceEcore!EString)
+		('Boolean', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EBoolean')),
+		('Integer', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EInteger')),
+		('String', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EString'))
 	}.get(self);
 
 --helper context UML!Behavior def: type : UML!Type =
@@ -36,6 +36,8 @@ helper context SourceEcore!EStructuralFeature def: upper : Integer =
 	self.upperBound;
 helper context SourceEcore!EStructuralFeature def: type : Integer =
 	self.eType;
+helper context SourceEcore!EAttribute def: type : Integer =
+	self.eType.name.primitiveType;
 
 helper context String def: class: OclAny =
 	SourceEcore!EClass.allInstancesFrom('SOURCEMM') -> any(e | e.name = self);
@@ -44,4 +46,21 @@ helper context String def: class: OclAny =
 --	' from ' + self.eResource().toString();
 
 helper context ATL!OperationCallExp def: platformSpecificInferredType : OclAny =
-	OclUndefined;
+	let sourceType : OclAny = self.source.inferredType in
+	let ret : OclAny =
+		if sourceType = 'Boolean'.primitiveType then
+			if self.operationName = 'not' then
+				sourceType
+			else
+				OclUndefined
+			endif
+		else
+			OclUndefined
+		endif
+	in
+	let _ : String = if ret.oclIsUndefined() and not sourceType.oclIsUndefined() then ('warning: operation "' + self.operationName + '" not found on ' + sourceType.toString()).debug() else '' endif in
+	ret;
+-- TODO: add warning when operation not found
+
+helper context SourceEcore!EModelElement def: origin : String =
+	' from ' + self.eResource().getURI().toString();

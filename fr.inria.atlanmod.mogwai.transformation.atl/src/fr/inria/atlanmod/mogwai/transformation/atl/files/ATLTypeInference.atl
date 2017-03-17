@@ -134,38 +134,6 @@ helper context ATL!OperationCallExp def: inferredType : OclAny =
 	else
 		self.platformSpecificInferredType
 	endif endif endif endif;
---	else if Set {'Integer'.primitiveType, 'Boolean'.primitiveType.debug(), 'String'.primitiveType}->includes(self.sourceType.debug()) then
---
---		FUML!Behavior.allInstancesFrom('lib') -> any(e |
---			e.name.toLower() = name.toLower()
---		).type
---	else if self.sourceType.oclIsUndefined() then
---		OclUndefined
---	else if self.sourceType.isCollection then
---		if Set {'including', 'excluding',
---					'union', 'intersection', 'insertAt'
---				}->includes(name) then
---			self.sourceType
---		else if Set {'first', 'last', 'at'}->includes(name) then
---			self.sourceType.elementType
---		else
---			ALF!Behavior.allInstancesFrom('lib_ALF')->reject(e |
---				e.name.oclIsUndefined()
---			)->any(e |
---				e.name.toLower() = name.toLower()
---			).type
---		endif endif-- endif
---	else
---		let h : ATL!Operation = ATL!Operation.allInstancesFrom('helpers')->any(e |
---			e.name = name and
---			e.definition.context_.context_.toPlatform = self.sourceType
---		) in
---		if h.oclIsUndefined() then
---			OclUndefined
---		else
---			h.returnType.toPlatform
---		endif
---	endif endif endif endif endif endif endif;
 
 helper context ATL!NavigationOrAttributeCallExp def: inferredType : OclAny =
 	
@@ -185,7 +153,8 @@ helper context ATL!NavigationOrAttributeCallExp def: inferredType : OclAny =
 			)
 		in
 		if property.oclIsUndefined() then
-			OclUndefined.debug('warning: could not find property for: ' + self.name)
+			let _ : String = ('warning: could not find property "' + self.name + '" on ' + sourceType.toString()).debug() in
+			OclUndefined
 		else if property.upper > 1 or property.upper < 0 then
 			Tuple {ttype = 'Collection', elementType = property.type}
 		else
@@ -215,6 +184,7 @@ helper context ATL!OclFeature def: class: UML!Class =
 helper context OclAny def: origin : String =
 	'';
 
+-- BELOW THIS COMMENT: type checking that should ideally not be part of this lib
 
 helper context String def: assertEquals(expected : OclAny, actual : OclAny, featureName : String) : String =
 	if actual.oclIsUndefined() then
@@ -225,7 +195,7 @@ helper context String def: assertEquals(expected : OclAny, actual : OclAny, feat
 		''
 	endif endif;
 	
-helper def: test : OclAny =
+helper def: check : OclAny =
 	Sequence {
 		-- Operation helper return type
 		ATL!Operation.allInstances()->collect(e |
@@ -237,5 +207,10 @@ helper def: test : OclAny =
 			let actual : OclType = e.body.inferredType in
 			let expected : OclType = 'Boolean'.primitiveType in
 			('select@' + e.location).assertEquals(expected, actual, 'body')
+		),
+		ATL!IfExp.allInstances()->collect(e |
+			let actual : OclType = e.condition.inferredType in
+			let expected : OclType = 'Boolean'.primitiveType in
+			('IfExp@' + e.location).assertEquals(expected, actual, 'condition')
 		)
 	};
