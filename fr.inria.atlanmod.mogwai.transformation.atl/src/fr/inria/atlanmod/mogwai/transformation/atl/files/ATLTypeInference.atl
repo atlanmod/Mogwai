@@ -153,7 +153,8 @@ helper context ATL!NavigationOrAttributeCallExp def: inferredType : OclAny =
 			)
 		in
 		if property.oclIsUndefined() then
-			OclUndefined.debug('warning: could not find property for: ' + self.name)
+			let _ : String = ('warning: could not find property "' + self.name + '" on ' + sourceType.toString()).debug() in
+			OclUndefined
 		else if property.upper > 1 or property.upper < 0 then
 			Tuple {ttype = 'Collection', elementType = property.type}
 		else

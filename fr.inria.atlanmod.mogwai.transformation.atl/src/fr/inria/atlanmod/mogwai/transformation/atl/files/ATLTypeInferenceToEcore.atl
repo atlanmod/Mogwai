@@ -6,9 +6,9 @@ library ATLTypeInferenceToEcore;
 
 helper context String def: primitiveType : OclAny =
 	Map {
-		('Boolean', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EBoolean'))
---		('Integer', SourceEcore!EInteger),
---		('String', SourceEcore!EString)
+		('Boolean', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EBoolean')),
+		('Integer', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EInteger')),
+		('String', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EString'))
 	}.get(self);
 
 --helper context UML!Behavior def: type : UML!Type =
@@ -47,12 +47,20 @@ helper context String def: class: OclAny =
 
 helper context ATL!OperationCallExp def: platformSpecificInferredType : OclAny =
 	let sourceType : OclAny = self.source.inferredType in
-	if sourceType = 'Boolean'.primitiveType then
-		if self.operationName = 'not' then
-			sourceType
+	let ret : OclAny =
+		if sourceType = 'Boolean'.primitiveType then
+			if self.operationName = 'not' then
+				sourceType
+			else
+				OclUndefined
+			endif
 		else
 			OclUndefined
 		endif
-	else
-		OclUndefined
-	endif;
+	in
+	let _ : String = if ret.oclIsUndefined() and not sourceType.oclIsUndefined() then ('warning: operation "' + self.operationName + '" not found on ' + sourceType.toString()).debug() else '' endif in
+	ret;
+-- TODO: add warning when operation not found
+
+helper context SourceEcore!EModelElement def: origin : String =
+	' from ' + self.eResource().getURI().toString();
