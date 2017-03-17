@@ -16,14 +16,14 @@ rule Class2Table {
 		c : ClassMM!Class
 	to
 		out : RelationalMM!Table (
-			name <- c.name,
+			name <- c.name
 			-- Columns are generated from Attributes in another rule not explicitly called here !
-			col <- Sequence {key}->union(c.attr->select(e | not e.multiValued)),
-			key <- Set {key}
+			,col <- Sequence {key}->union(c.attr->select(e | not e.multiValued))
+			,key <- Set {key}
 		),
 		key : RelationalMM!Column (
-			name <- 'objectId',
-			type <- thisModule.objectIdType
+			name <- 'objectId'
+--			,type <- thisModule.objectIdType
 		)
 }
 
@@ -39,7 +39,8 @@ rule DataType2Type {
 rule DataTypeAttribute2Column {
 	from
 		a : ClassMM!Attribute (
-			a.type.oclIsKindOf(ClassMM!DataType) and not a.multiValued
+--			a.type.oclIsKindOf(ClassMM!DataType) and not a.multiValued
+			true
 		)
 	to
 		out : RelationalMM!Column (
@@ -54,16 +55,17 @@ rule DataTypeAttribute2Column {
 rule MultiValuedDataTypeAttribute2Column {
 	from
 		a : ClassMM!Attribute (
-			a.type.oclIsKindOf(ClassMM!DataType) and a.multiValued
+--			a.type.oclIsKindOf(ClassMM!DataType) and a.multiValued
+			true
 		)
 	to
 		out : RelationalMM!Table (
-			name <- a.owner.name + '_' + a.name,
-			col <- Sequence {id, value}
+			name <- a.owner.name + '_' + a.name
+			,col <- Sequence {id, value}
 		),
 		id : RelationalMM!Column (
-			name <- a.owner.name + 'Id',
-			type <- thisModule.objectIdType
+			name <- a.owner.name + 'Id'
+--			,type <- thisModule.objectIdType
 		),
 		value : RelationalMM!Column (
 			name <- a.name,
@@ -74,32 +76,34 @@ rule MultiValuedDataTypeAttribute2Column {
 rule ClassAttribute2Column {
 	from
 		a : ClassMM!Attribute (
-			a.type.oclIsKindOf(ClassMM!Class) and not a.multiValued
+--			a.type.oclIsKindOf(ClassMM!Class) and not a.multiValued
+			true
 		)
 	to
 		foreignKey : RelationalMM!Column (
-			name <- a.name + 'Id',
-			type <- thisModule.objectIdType
+			name <- a.name + 'Id'
+--			,type <- thisModule.objectIdType
 		)
 }
 
 rule MultiValuedClassAttribute2Column {
 	from
 		a : ClassMM!Attribute (
-			a.type.oclIsKindOf(ClassMM!Class) and a.multiValued
+--			a.type.oclIsKindOf(ClassMM!Class) and a.multiValued
+			true
 		)
 	to
 		t : RelationalMM!Table (
-			name <- a.owner.name + '_' + a.name,
-			col <- Sequence {id, foreignKey}
+			name <- a.owner.name + '_' + a.name
+			,col <- Sequence {id, foreignKey}
 		),
 		id : RelationalMM!Column (
-			name <- a.owner.name + 'Id',
-			type <- thisModule.objectIdType
+			name <- a.owner.name + 'Id'
+--			,type <- thisModule.objectIdType
 		),
 		foreignKey : RelationalMM!Column (
-			name <- a.name + 'Id',
-			type <- thisModule.objectIdType
+			name <- a.name + 'Id'
+--			,type <- thisModule.objectIdType
 		)
 }
 
