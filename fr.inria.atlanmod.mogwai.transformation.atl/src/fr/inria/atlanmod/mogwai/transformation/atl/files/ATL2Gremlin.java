@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.EcoreFactoryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.ATL.ATLPackage;
@@ -140,6 +141,15 @@ public class ATL2Gremlin {
 		
 		Resource atlResource = rSet.createResource(atlURI);
 		atlResource.load(Collections.EMPTY_MAP);
+		
+		// debug
+		Resource xmiResource = rSet.createResource(URI.createURI(atlURI.toString().replace(".atl", ".xmi")));
+//		xmiResource.load(Collections.EMPTY_MAP);
+		xmiResource.getContents().clear();
+		xmiResource.getContents().addAll(EcoreUtil.copyAll(atlResource.getContents()));
+		xmiResource.save(Collections.EMPTY_MAP);
+		//
+		
 		return transform(atlResource);
 	}
 	
