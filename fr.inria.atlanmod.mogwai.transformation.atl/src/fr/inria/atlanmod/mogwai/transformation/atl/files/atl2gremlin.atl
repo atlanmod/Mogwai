@@ -7,6 +7,8 @@ module atl2gremlin;
 
 create OUT: Gremlin from IN: ATL, SOURCEMM:SourceEcore, TARGETMM:TargetEcore;
 
+helper def : resourceName : String = 'OUTROOT';
+
 helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
 	ATL!MatchedRule.allInstances()->asSequence()
 ;
@@ -177,10 +179,22 @@ rule outPatternElement2instructions {
 		createCall : Gremlin!CustomMethodCall (
 			name <- 'createElement',
 			-- TODO multiple out types
-			params <- metaVarAccess
+			params <- Sequence{inVar, targetPatternLiteral, typeLiteral, mmNsURILiteral, resourceNameLiteral}
 		),
-		metaVarAccess : Gremlin!VariableAccess (
-			name <- 'meta' + pp.type.name + 'Node'	
+		inVar : Gremlin!VariableAccess (
+			name <- pp.refImmediateComposite().refImmediateComposite().inPattern.elements->first().varName	
+		),
+		targetPatternLiteral : Gremlin!StringLiteral (
+			value <- pp.varName	
+		),
+		typeLiteral : Gremlin!StringLiteral (
+			value <- pp.type.name	
+		),
+		mmNsURILiteral : Gremlin!StringLiteral (
+			value <- pp.type.toPlatform.ePackage.nsURI	
+		),
+		resourceNameLiteral : Gremlin!StringLiteral (
+			value <- thisModule.resourceName	
 		)
 }
 
@@ -209,13 +223,18 @@ rule referenceBinding2instruction {
 		),
 		linkRefCall : Gremlin!CustomMethodCall (
 			name <- 'linkReference',
-			params <- Sequence{bindedElVarAccess, bb.value.getFirstInstruction(), propSR}
+			params <- Sequence{bindedElVarAccess, bb.value.getFirstInstruction(), propSR, containmentLiteral}
 		),
 		bindedElVarAccess : Gremlin!VariableAccess (
 			name <- bb.getBindedElement()	
 		),
 		propSR : Gremlin!StringLiteral (
 			value <- bb.propertyName	
+		),
+		containmentLiteral : Gremlin!BooleanLiteral (
+			value <- bb.outPatternElement.type.toPlatform.eAllStructuralFeatures->any(e |
+					e.name = bb.propertyName
+				).containment	
 		)
 }
 
