@@ -255,5 +255,10 @@
     <genClasses ecoreClass="gremlin.ecore#//PlusExpression">
       <genOperations ecoreOperation="gremlin.ecore#//PlusExpression/toString"/>
     </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//CustomStep">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//CustomStep/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gremlin.ecore#//CustomStep/params"/>
+      <genOperations ecoreOperation="gremlin.ecore#//CustomStep/toString"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

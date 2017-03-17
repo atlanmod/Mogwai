@@ -14,6 +14,7 @@ import fr.inria.atlanmod.mogwai.gremlin.ContainsAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.ContainsCall;
 import fr.inria.atlanmod.mogwai.gremlin.CountCall;
 import fr.inria.atlanmod.mogwai.gremlin.CustomMethodCall;
+import fr.inria.atlanmod.mogwai.gremlin.CustomStep;
 import fr.inria.atlanmod.mogwai.gremlin.DifferenceExpression;
 import fr.inria.atlanmod.mogwai.gremlin.DoubleLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.EdgesStep;
@@ -571,6 +572,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass plusExpressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass customStepEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -2294,6 +2302,42 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getCustomStep() {
+		return customStepEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCustomStep_Name() {
+		return (EAttribute)customStepEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getCustomStep_Params() {
+		return (EReference)customStepEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCustomStep__ToString() {
+		return customStepEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public GremlinFactory getGremlinFactory() {
 		return (GremlinFactory)getEFactoryInstance();
 	}
@@ -2569,6 +2613,11 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		plusExpressionEClass = createEClass(PLUS_EXPRESSION);
 		createEOperation(plusExpressionEClass, PLUS_EXPRESSION___TO_STRING);
+
+		customStepEClass = createEClass(CUSTOM_STEP);
+		createEAttribute(customStepEClass, CUSTOM_STEP__NAME);
+		createEReference(customStepEClass, CUSTOM_STEP__PARAMS);
+		createEOperation(customStepEClass, CUSTOM_STEP___TO_STRING);
 	}
 
 	/**
@@ -2666,6 +2715,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		nullLiteralEClass.getESuperTypes().add(this.getExpression());
 		toIntegerCallEClass.getESuperTypes().add(this.getMethodCall());
 		plusExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
+		customStepEClass.getESuperTypes().add(this.getStep());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(gremlinScriptEClass, GremlinScript.class, "GremlinScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2981,6 +3031,12 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEClass(plusExpressionEClass, PlusExpression.class, "PlusExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getPlusExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(customStepEClass, CustomStep.class, "CustomStep", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCustomStep_Name(), ecorePackage.getEString(), "name", null, 0, 1, CustomStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCustomStep_Params(), ecorePackage.getEObject(), null, "params", null, 0, -1, CustomStep.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getCustomStep__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -3936,6 +3936,80 @@ public interface GremlinPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.CustomStepImpl <em>Custom Step</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.CustomStepImpl
+	 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getCustomStep()
+	 * @generated
+	 */
+	int CUSTOM_STEP = 69;
+
+	/**
+	 * The feature id for the '<em><b>Next Element</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_STEP__NEXT_ELEMENT = STEP__NEXT_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Previous Element</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_STEP__PREVIOUS_ELEMENT = STEP__PREVIOUS_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_STEP__NAME = STEP_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Params</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_STEP__PARAMS = STEP_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Custom Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_STEP_FEATURE_COUNT = STEP_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>To String</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_STEP___TO_STRING = STEP_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Custom Step</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_STEP_OPERATION_COUNT = STEP_OPERATION_COUNT + 1;
+
+
+	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.GremlinScript <em>Script</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5830,6 +5904,48 @@ public interface GremlinPackage extends EPackage {
 	EOperation getPlusExpression__ToString();
 
 	/**
+	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.gremlin.CustomStep <em>Custom Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Custom Step</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.CustomStep
+	 * @generated
+	 */
+	EClass getCustomStep();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.inria.atlanmod.mogwai.gremlin.CustomStep#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.CustomStep#getName()
+	 * @see #getCustomStep()
+	 * @generated
+	 */
+	EAttribute getCustomStep_Name();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link fr.inria.atlanmod.mogwai.gremlin.CustomStep#getParams <em>Params</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Params</em>'.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.CustomStep#getParams()
+	 * @see #getCustomStep()
+	 * @generated
+	 */
+	EReference getCustomStep_Params();
+
+	/**
+	 * Returns the meta object for the '{@link fr.inria.atlanmod.mogwai.gremlin.CustomStep#toString() <em>To String</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>To String</em>' operation.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.CustomStep#toString()
+	 * @generated
+	 */
+	EOperation getCustomStep__ToString();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7461,6 +7577,40 @@ public interface GremlinPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation PLUS_EXPRESSION___TO_STRING = eINSTANCE.getPlusExpression__ToString();
+
+		/**
+		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.gremlin.impl.CustomStepImpl <em>Custom Step</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.CustomStepImpl
+		 * @see fr.inria.atlanmod.mogwai.gremlin.impl.GremlinPackageImpl#getCustomStep()
+		 * @generated
+		 */
+		EClass CUSTOM_STEP = eINSTANCE.getCustomStep();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CUSTOM_STEP__NAME = eINSTANCE.getCustomStep_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CUSTOM_STEP__PARAMS = eINSTANCE.getCustomStep_Params();
+
+		/**
+		 * The meta object literal for the '<em><b>To String</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CUSTOM_STEP___TO_STRING = eINSTANCE.getCustomStep__ToString();
 
 	}
 

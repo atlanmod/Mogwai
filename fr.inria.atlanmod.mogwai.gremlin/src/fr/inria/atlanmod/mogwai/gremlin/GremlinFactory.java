@@ -598,6 +598,15 @@ public interface GremlinFactory extends EFactory {
 	PlusExpression createPlusExpression();
 
 	/**
+	 * Returns a new object of class '<em>Custom Step</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Custom Step</em>'.
+	 * @generated
+	 */
+	CustomStep createCustomStep();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

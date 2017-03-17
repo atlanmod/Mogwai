@@ -344,6 +344,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createPlusExpressionAdapter();
 			}
 			@Override
+			public Adapter caseCustomStep(CustomStep object) {
+				return createCustomStepAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -1326,6 +1330,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPlusExpressionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.CustomStep <em>Custom Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.CustomStep
+	 * @generated
+	 */
+	public Adapter createCustomStepAdapter() {
 		return null;
 	}
 
