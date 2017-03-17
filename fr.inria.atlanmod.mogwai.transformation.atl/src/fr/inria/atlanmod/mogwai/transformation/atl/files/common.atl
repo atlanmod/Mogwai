@@ -89,7 +89,7 @@ helper context ATL!OperationCallExp def : isMathOperation() : Boolean =
 helper context OclAny def : getComposite() : OclAny =
 	let composite : OclAny = self.refImmediateComposite() in
 	if composite.oclIsKindOf(ATL!OperationCallExp) then
-		if(composite.isComparison()) then
+		if(composite.isMathOperation()) then
 			OclUndefined
 		else
 			if(composite.hasInArguments(self)) then
