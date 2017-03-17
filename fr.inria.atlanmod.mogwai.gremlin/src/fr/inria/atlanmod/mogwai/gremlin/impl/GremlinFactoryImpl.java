@@ -119,6 +119,7 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 			case GremlinPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
 			case GremlinPackage.NULL_LITERAL: return createNullLiteral();
 			case GremlinPackage.TO_INTEGER_CALL: return createToIntegerCall();
+			case GremlinPackage.PLUS_EXPRESSION: return createPlusExpression();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -752,6 +753,16 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public ToIntegerCall createToIntegerCall() {
 		ToIntegerCallImpl toIntegerCall = new ToIntegerCallImpl();
 		return toIntegerCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PlusExpression createPlusExpression() {
+		PlusExpressionImpl plusExpression = new PlusExpressionImpl();
+		return plusExpression;
 	}
 
 	/**

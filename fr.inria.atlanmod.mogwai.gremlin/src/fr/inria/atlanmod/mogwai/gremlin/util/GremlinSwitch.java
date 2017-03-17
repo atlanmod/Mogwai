@@ -645,6 +645,15 @@ public class GremlinSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case GremlinPackage.PLUS_EXPRESSION: {
+				PlusExpression plusExpression = (PlusExpression)theEObject;
+				T result = casePlusExpression(plusExpression);
+				if (result == null) result = caseBinaryExpression(plusExpression);
+				if (result == null) result = caseExpression(plusExpression);
+				if (result == null) result = caseInstruction(plusExpression);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -1666,6 +1675,21 @@ public class GremlinSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseToIntegerCall(ToIntegerCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Plus Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Plus Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePlusExpression(PlusExpression object) {
 		return null;
 	}
 

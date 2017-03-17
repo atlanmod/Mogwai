@@ -589,6 +589,15 @@ public interface GremlinFactory extends EFactory {
 	ToIntegerCall createToIntegerCall();
 
 	/**
+	 * Returns a new object of class '<em>Plus Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Plus Expression</em>'.
+	 * @generated
+	 */
+	PlusExpression createPlusExpression();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

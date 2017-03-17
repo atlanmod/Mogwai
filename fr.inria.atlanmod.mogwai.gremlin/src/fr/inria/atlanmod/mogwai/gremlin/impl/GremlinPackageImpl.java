@@ -51,6 +51,7 @@ import fr.inria.atlanmod.mogwai.gremlin.NullLiteral;
 import fr.inria.atlanmod.mogwai.gremlin.OrExpression;
 import fr.inria.atlanmod.mogwai.gremlin.OutEStep;
 import fr.inria.atlanmod.mogwai.gremlin.OutVStep;
+import fr.inria.atlanmod.mogwai.gremlin.PlusExpression;
 import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
 import fr.inria.atlanmod.mogwai.gremlin.RetainAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
@@ -563,6 +564,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass toIntegerCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass plusExpressionEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -2268,6 +2276,24 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getPlusExpression() {
+		return plusExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getPlusExpression__ToString() {
+		return plusExpressionEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public GremlinFactory getGremlinFactory() {
 		return (GremlinFactory)getEFactoryInstance();
 	}
@@ -2540,6 +2566,9 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		toIntegerCallEClass = createEClass(TO_INTEGER_CALL);
 		createEOperation(toIntegerCallEClass, TO_INTEGER_CALL___TO_STRING);
+
+		plusExpressionEClass = createEClass(PLUS_EXPRESSION);
+		createEOperation(plusExpressionEClass, PLUS_EXPRESSION___TO_STRING);
 	}
 
 	/**
@@ -2636,6 +2665,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		booleanLiteralEClass.getESuperTypes().add(this.getExpression());
 		nullLiteralEClass.getESuperTypes().add(this.getExpression());
 		toIntegerCallEClass.getESuperTypes().add(this.getMethodCall());
+		plusExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(gremlinScriptEClass, GremlinScript.class, "GremlinScript", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2947,6 +2977,10 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEClass(toIntegerCallEClass, ToIntegerCall.class, "ToIntegerCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEOperation(getToIntegerCall__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(plusExpressionEClass, PlusExpression.class, "PlusExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEOperation(getPlusExpression__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

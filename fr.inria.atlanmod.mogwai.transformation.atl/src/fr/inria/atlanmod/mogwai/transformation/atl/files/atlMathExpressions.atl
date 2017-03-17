@@ -111,6 +111,17 @@ rule equality2steps2 {
 		)
 }
 
+rule plus2steps {
+	from
+		oclPlus : ATL!OperatorCallExp(
+			oclPlus.getOpName() = '+'	
+		)
+	to
+		plusExp : Gremlin!PlusExpression(
+			left <- oclPlus.source.getFirstInstruction(),
+			right <- oclPlus.argument.first().getFirstInstruction()
+		)
+}
 
 --
 -- Boolean Operations

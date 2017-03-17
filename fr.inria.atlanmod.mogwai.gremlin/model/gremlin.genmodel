@@ -252,5 +252,8 @@
     <genClasses ecoreClass="gremlin.ecore#//ToIntegerCall">
       <genOperations ecoreOperation="gremlin.ecore#//ToIntegerCall/toString"/>
     </genClasses>
+    <genClasses ecoreClass="gremlin.ecore#//PlusExpression">
+      <genOperations ecoreOperation="gremlin.ecore#//PlusExpression/toString"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
