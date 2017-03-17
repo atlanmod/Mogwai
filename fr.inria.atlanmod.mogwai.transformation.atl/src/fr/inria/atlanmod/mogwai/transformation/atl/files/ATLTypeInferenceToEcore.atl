@@ -1,8 +1,8 @@
 -- @atlcompiler atl2010
 -- ATL Type Inference support for Ecore Platform by Frédéric Jouault
--- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+-- @nsURI ATL=http://www.eclipse.org/gmt/2005/OCL
 -- @nsURI SourceEcore=http://www.eclipse.org/emf/2002/Ecore
-library ATLTypeInferenceToUMLToEcore;
+library ATLTypeInferenceToEcore;
 
 helper context String def: primitiveType : OclAny =
 	Map {
@@ -36,6 +36,8 @@ helper context SourceEcore!EStructuralFeature def: upper : Integer =
 	self.upperBound;
 helper context SourceEcore!EStructuralFeature def: type : Integer =
 	self.eType;
+helper context SourceEcore!EAttribute def: type : Integer =
+	self.eType.name.primitiveType;
 
 helper context String def: class: OclAny =
 	SourceEcore!EClass.allInstancesFrom('SOURCEMM') -> any(e | e.name = self);
@@ -44,4 +46,13 @@ helper context String def: class: OclAny =
 --	' from ' + self.eResource().toString();
 
 helper context ATL!OperationCallExp def: platformSpecificInferredType : OclAny =
-	OclUndefined;
+	let sourceType : OclAny = self.source.inferredType in
+	if sourceType = 'Boolean'.primitiveType then
+		if self.operationName = 'not' then
+			sourceType
+		else
+			OclUndefined
+		endif
+	else
+		OclUndefined
+	endif;
