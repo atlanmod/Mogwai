@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
@@ -128,6 +127,20 @@ public class ATL2Gremlin {
 		}
 	}
 	
+	public Resource transform(URI atlURI) throws IOException {
+		ResourceSet rSet = new ResourceSetImpl();
+		EPackage.Registry.INSTANCE.put(ATLPackage.eNS_URI, ATLPackage.eINSTANCE);
+		EPackage.Registry.INSTANCE.put(OCLPackage.eNS_URI, OCLPackage.eINSTANCE);
+
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreFactoryImpl());
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("atl", new AtlResourceFactoryImpl());
+		
+		Resource atlResource = rSet.createResource(atlURI);
+		atlResource.load(Collections.EMPTY_MAP);
+		return transform(atlResource);
+	}
+	
 	/**
 	 * Transform the input ATL resource into a Gremlin resource containing the script
 	 * to execute to perform the transformation
@@ -137,17 +150,6 @@ public class ATL2Gremlin {
 	 */
 	public Resource transform(Resource inputResource) {
 		try {
-			
-			// Debug
-			Iterator<EObject> it = inputResource.getAllContents();
-			int i = 0;
-			while(it.hasNext()) {
-				it.next();
-				i++;
-			}
-			System.out.println("Input resource contains " + i + " elements");
-			// /Debug
-			
 			IModel inputModel = modelFactory.newModel(atlMetamodel);
 			injector.inject(inputModel, inputResource);
 			
@@ -173,7 +175,6 @@ public class ATL2Gremlin {
 			
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			extractor.extract(gModel, os, null);
-			System.out.println(os.toString());
 			Resource gremlinResource = rSet.createResource(URI.createURI("gremlinOutput"));
 			
 			try {
