@@ -23,6 +23,9 @@ helper context ATL!VariableExp def: inferredType : OclAny =
 	let var : ATL!VariableDeclaration = self.referredVariable in
 	if var.varName = 'self' then
 		self.feature.class
+	else if var.varName = 'thisModule' then
+		let _ : String = 'warning: thisModule not supported by type inference'.debug() in
+		OclUndefined
 	else if var.oclIsKindOf(ATL!Iterator) then
 		let sourceType : OclAny = var.loopExpr.sourceType in
 		if sourceType.oclIsUndefined() then
@@ -32,7 +35,7 @@ helper context ATL!VariableExp def: inferredType : OclAny =
 		endif
 	else
 		var.type.toPlatform
-	endif endif;
+	endif endif endif;
 
 helper context ATL!LetExp def: inferredType : OclAny =
 	self.in_.inferredType;
