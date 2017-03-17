@@ -7,7 +7,12 @@ module atlEmbeddedOcl2Gremlin;
 create OUT: Gremlin from IN: ATL;
 
 helper context ATL!NavigationOrAttributeCallExp def: feature : Ecore!EStructuralFeature =
-	self.source.inferredType.eAllStructuralFeatures->any(e | e.name = self.name);
+	let type : OclAny = self.source.inferredType in
+	if type.oclIsUndefined() then
+		('error: cannot infer type of expression @' + self.source.location).debug()
+	else
+		type.eAllStructuralFeatures->any(e | e.name = self.name)
+	endif;
 
 helper context ATL!NavigationOrAttributeCallExp def : isAttributeNavigation() : Boolean = 
 	-- Quick fix, a complete solution is not that easy
