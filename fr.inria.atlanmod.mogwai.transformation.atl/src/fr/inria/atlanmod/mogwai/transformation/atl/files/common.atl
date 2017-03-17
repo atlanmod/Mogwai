@@ -100,13 +100,13 @@ helper context OclAny def : getComposite() : OclAny =
 				composite
 			endif
 		endif
-	else 
-		if composite.oclIsTypeOf(ATL!Binding) then
-			OclUndefined
-		else
-			composite
-		endif
-	endif
+	else if composite.oclIsTypeOf(ATL!Binding) then
+		OclUndefined
+	else if composite.oclIsTypeOf(ATL!CollectionExp) then 
+		OclUndefined
+	else
+		composite
+	endif endif endif
 ;
 	
 -- Retrieve the next operation to transform from a given OCL expression.
