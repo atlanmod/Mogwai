@@ -66,11 +66,12 @@ rule referenceNavigationOrAttributeCallExp2steps {
 	from
 		nav : ATL!NavigationOrAttributeCallExp (nav.isReferenceNavigation())
 	to
-		outE : Gremlin!OutEStep (
-			relationshipName <- nav.name,
-			nextElement <- inV
+		getRef : Gremlin!CustomStep (
+			name <- 'getRef',
+			params <- Sequence{refLabelLiteral},
+			nextElement <- nav.getComposite()
 		),
-		inV : Gremlin!InVStep (
-			nextElement <- nav.getComposite()	
+		refLabelLiteral : Gremlin!StringLiteral (
+			value <- nav.name	
 		)
 }
