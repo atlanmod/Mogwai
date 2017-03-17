@@ -84,7 +84,7 @@ helper context ATL!Binding def : isAttributebinding() : Boolean =
 	let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.getBindedElementClass()) in
 		let att : SourceEcore!EAttribute = selfClass.eAllAttributes->select(aa | aa.name = self.propertyName)->first() in
 			if att.oclIsUndefined() then
-				false.debug('Cannot find attribute ' + self.propertyName + ' in EClass ' + selfClass.name)
+				false
 			else
 				true
 			endif
@@ -94,7 +94,7 @@ helper context ATL!Binding def : isReferenceBinding() : Boolean =
 	let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.getBindedElementClass()) in
 		let ref : SourceEcore!EReference = selfClass.eAllReferences->select(rr | rr.name = self.propertyName)->first() in
 			if ref.oclIsUndefined() then
-				false.debug('Cannot find reference ' + self.propertyName + ' in EClass ' + selfClass.name)
+				false
 			else
 				true
 			endif
