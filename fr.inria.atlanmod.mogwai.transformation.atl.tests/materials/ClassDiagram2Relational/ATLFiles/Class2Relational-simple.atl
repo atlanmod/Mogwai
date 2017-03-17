@@ -1,0 +1,31 @@
+module Class2Relational;
+create OUT : RelationalMM from IN : ClassMM;
+
+-- inheritance not supported yet
+
+-- issue: choose an object-id Type (Integer, String?).
+-- We choose Integer here, assuming this type is defined in the source model.
+
+-- global variable
+-- context 
+
+rule Class2Table {
+	from
+		c : ClassMM!Class (c.name = 'test')
+	to
+		out : RelationalMM!Table (
+			name <- c.name,
+			col <- c.attr->select(e | not e.multiValued)
+		)
+}
+
+rule Attribute2Column {
+	from
+		a : ClassMM!Attribute
+	to
+		fKey : RelationalMM!Column (
+			name <- a.name + 'Id'	
+		)	
+}
+
+

@@ -19,7 +19,7 @@ public class TestATL2Gremlin {
 		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
 		
 		Resource r = atl2gremlin.transform(URI
-				.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational.atl"));
+				.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational-simple.atl"));
 		System.out.println(r.getContents().get(0));
 	}
 
