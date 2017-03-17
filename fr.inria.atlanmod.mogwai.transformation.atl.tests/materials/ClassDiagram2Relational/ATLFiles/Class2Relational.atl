@@ -15,7 +15,7 @@ rule Class2Table {
 	to
 		out : RelationalMM!Table (
 			name <- c.name,
-			col <- c.attr->toto()
+			col <- c.attr->select(e | not e.multiValued)
 		)
 }
 

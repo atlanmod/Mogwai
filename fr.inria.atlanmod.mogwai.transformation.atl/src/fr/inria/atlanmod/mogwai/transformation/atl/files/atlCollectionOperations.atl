@@ -331,7 +331,7 @@ uses common;
 -- Select body is transformed into a Groovy closure applied on the filter.
 rule select2steps {
 	from
-		oclSelect : ATL!IteratorExp (oclSelect.getOpName() = 'select' and not(oclSelect.canContainEmptyProp()))
+		oclSelect : ATL!IteratorExp (oclSelect.getOpName() = 'select')--and not(oclSelect.canContainEmptyProp()))
 	to
 		lastColStep : Gremlin!FilterStep (
 			closure <- gremlinClosure,
@@ -341,7 +341,7 @@ rule select2steps {
 			instructions <- OrderedSet{}
 				.append(
 					-- Transform the iterator into a variable definition
-					thisModule.varIterator2def(oclSelect.iterator.first())
+					thisModule.createDefForVarIterator(oclSelect.iterators.first())
 				)
 				.append(
 					-- Add the transformed body
