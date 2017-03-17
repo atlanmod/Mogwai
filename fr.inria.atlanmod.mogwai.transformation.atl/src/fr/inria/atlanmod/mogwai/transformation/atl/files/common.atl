@@ -33,7 +33,7 @@ helper context ATL!MatchedRule def : getGuardFirstInstruction() : ATL!OclExpress
 -- Traverse the source reference chain to get the first element.
 helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression =
 	if self.oclIsTypeOf(ATL!OperatorCallExp) then
-		if self.isComparison() then
+		if self.isMathOperation() then
 			self
 		else
 			self.source.getFirstInstruction()
@@ -80,6 +80,10 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 -- Returns true if the OperationCallExp is an comparison operation.
 helper context ATL!OperationCallExp def : isComparison() : Boolean =
 	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())
+	;
+	
+helper context ATL!OperationCallExp def : isMathOperation() : Boolean =
+	self.isComparison() or OrderedSet{'+'}.includes(self.getOpName())
 	;
 	
 helper context OclAny def : getComposite() : OclAny =
