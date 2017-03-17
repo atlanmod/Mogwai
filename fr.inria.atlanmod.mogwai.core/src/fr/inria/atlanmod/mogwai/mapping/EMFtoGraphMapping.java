@@ -139,6 +139,24 @@ public interface EMFtoGraphMapping {
 	Object newInstance(String typeName, String typePackageNsURI, String resourceName);
 
 	/**
+	 * Returns the {@link Vertex} corresponding to the parent of {@code from}.
+	 * 
+	 * @param from
+	 *            the {@link Vertex} to compute the parent of
+	 * @return the {@link Vertex} corresponding to the parent of {@code from}
+	 */
+	Vertex getParent(Vertex from);
+
+	/**
+	 * Returns a {@link Pipe} that computes the parent vertices connected to its
+	 * input elements.
+	 * 
+	 * @return a {@link Pipe} that computes the parent vertices connected to its
+	 *         input elements
+	 */
+	Pipe<Vertex, Vertex> getParent();
+
+	/**
 	 * Returns an {@link Iterable} containing the {@link Vertex} elements
 	 * connected to {@code from} with an {@link Edge} labeled {@code refName}.
 	 * 

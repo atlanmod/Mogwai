@@ -49,6 +49,14 @@ Vertex.metaClass.getAtt =
 		m.getAtt(delegate, attName); 
 }
 
+// v.getParent();
+Vertex.metaClass.getParent = 
+{
+	->
+		println("getParent()");
+		m.getParent(delegate);
+}
+
 // v.getRef("myRef");
 Vertex.metaClass.getRef = 
 { 
@@ -115,6 +123,15 @@ Gremlin.defineStep("getAtt", [Pipe],
 		String attName ->
 			println("getAtt(" + attName + ")[Pipe]");
 			m.getAtt(attName);
+	}	
+)
+
+// Pipe.getParent()
+Gremlin.defineStep("getParent", [Pipe],
+	{
+		->
+			println("getParent()[Pipe]");
+			m.getParent();
 	}	
 )
 

@@ -69,6 +69,26 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	public abstract Object newInstance(String typeName, String typePackageNsURI, String resourceName);
 
 	@Override
+	public abstract Vertex getParent(Vertex from);
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The created {@link Pipe} uses {@link #getParent()} to retrieve the
+	 * {@link Vertex} element associated to its input elements.
+	 */
+	@Override
+	public Pipe<Vertex, Vertex> getParent() {
+		return new AbstractPipe<Vertex, Vertex>() {
+
+			@Override
+			protected Vertex processNextStart() throws NoSuchElementException {
+				return getParent(this.starts.next());
+			}
+		};
+	}
+
+	@Override
 	public abstract Iterable<Vertex> getRef(Vertex from, String refName);
 
 	/**

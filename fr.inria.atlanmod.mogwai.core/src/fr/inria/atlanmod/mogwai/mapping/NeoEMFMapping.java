@@ -15,6 +15,7 @@ import com.tinkerpop.blueprints.Index;
 import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
+import com.tinkerpop.pipes.Pipe;
 
 import fr.inria.atlanmod.neoemf.core.StringId;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
@@ -133,6 +134,11 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	}
 
 	@Override
+	public Vertex getParent(Vertex from) {
+		return Iterables.getOnlyElement(from.getVertices(Direction.OUT, CONTAINER_LABEL), null);
+	}
+
+	@Override
 	public Iterable<Vertex> getRef(Vertex from, String refName) {
 		return from.getVertices(Direction.OUT, refName);
 	}
@@ -163,14 +169,15 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 		for (Edge refEdge : refEdges) {
 			if (refEdge.getVertex(Direction.IN).equals(to)) {
 				if (oldVertex != null) {
-					// We have found the edge, update the position of the next ones
+					// We have found the edge, update the position of the next
+					// ones
 					int position = refEdge.getProperty(POSITION_KEY);
 					refEdge.setProperty(POSITION_KEY, position - 1);
 				}
 				oldVertex = refEdge.getVertex(Direction.IN);
 				if (isContainment) {
 					Edge containerEdge = Iterables.getFirst(oldVertex.getEdges(Direction.OUT, CONTAINER_LABEL), null);
-					if(nonNull(containerEdge)) {
+					if (nonNull(containerEdge)) {
 						containerEdge.remove();
 					}
 				}
@@ -327,10 +334,9 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 *            the new size to set
 	 */
 	private void setSize(Vertex vertex, String feature, int size) {
-		if(size == 0) {
+		if (size == 0) {
 			vertex.removeProperty(feature + SEPARATOR + SIZE_LITERAL);
-		}
-		else {
+		} else {
 			vertex.setProperty(feature + SEPARATOR + SIZE_LITERAL, size);
 		}
 	}
@@ -352,10 +358,10 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	private void updateContainment(Vertex from, String refName, Vertex to) {
 		// Find the old containment reference name and remove it
 		for (Edge edge : to.getEdges(Direction.OUT, CONTAINER_LABEL)) {
-			removeRef(from, (String)edge.getProperty(CONTAINING_FEATURE_KEY), to, true);
+			removeRef(from, (String) edge.getProperty(CONTAINING_FEATURE_KEY), to, true);
 			break;
 		}
-		
+
 		// Remove eContents edges if the element is a top-level element
 		for (Edge edge : to.getEdges(Direction.IN, CONTENTS_LABEL)) {
 			Vertex rootVertex = edge.getVertex(Direction.OUT);
