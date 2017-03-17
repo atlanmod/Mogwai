@@ -1,0 +1,241 @@
+-- @atlcompiler atl2010
+-- ATL Type Inference by Frédéric Jouault
+-- @nsURI ATL=http://www.eclipse.org/gmt/2005/OCL
+library ATLTypeInference;
+
+uses ATLTypeInferenceToPlatform;	-- e.g., -ToEcore, or -ToUML
+
+-- This library defines:
+--	- ATL!OclExpression.inferredType, which returns the inferred type of its source expression
+--		- the type may be:
+--			- a native type (e.g., UML-specific or Ecore specific, depending on which complementary lib is used)
+--			- a Tuple(ttype:String,elementType:OclAny) for a collection type
+-- This library requires a complementary platform-specific lib (e.g., for UML, or for Ecore), which should provide:
+--		- ATL!OclModelElement.toPlatform
+--		- String.primitiveType
+--		- String.class
+
+helper context ATL!OclExpression def: inferredType : OclAny =
+	let t : String = self.oclType().name.debug('CANNOT infer type of') in
+	OclUndefined;
+
+helper context ATL!VariableExp def: inferredType : OclAny =
+	let var : ATL!VariableDeclaration = self.referredVariable in
+	if var.varName = 'self' then
+		self.feature.class
+	else if var.oclIsKindOf(ATL!Iterator) then
+		let sourceType : OclAny = var.loopExpr.sourceType in
+		if sourceType.oclIsUndefined() then
+			OclUndefined
+		else
+			sourceType.elementType
+		endif
+	else
+		var.type.toPlatform
+	endif endif;
+
+helper context ATL!LetExp def: inferredType : OclAny =
+	self.in_.inferredType;
+
+helper context ATL!IfExp def: inferredType : OclAny =
+	self.thenExpression.inferredType;
+
+helper context ATL!OclModelElement def: inferredType : OclAny =
+	self.toPlatform;
+
+helper context ATL!IntegerExp def: inferredType : OclAny =
+	'Integer'.primitiveType;
+
+helper context ATL!BooleanExp def: inferredType : OclAny =
+	'Boolean'.primitiveType;
+
+helper context ATL!StringExp def: inferredType : OclAny =
+	'String'.primitiveType;
+
+helper context ATL!CollectionExp def: inferredType : OclAny =
+
+	Tuple {ttype = 'Collection', elementType =
+		self.elements->first().inferredType
+	};
+
+helper context ATL!IterateExp def: inferredType : OclAny =
+	self.result.type.toPlatform;
+
+helper context ATL!LoopExp def: sourceType : OclAny =
+	if self.source.inferredType.isCollection then
+		self.source.inferredType
+	else
+		Tuple {ttype = 'Collection', elementType = self.source.inferredType}
+	endif;
+
+
+helper context ATL!IteratorExp def: inferredType : OclAny =
+	if Set {'select', 'reject'}->includes(self.name) then
+		self.sourceType
+	else if 'collect' = self.name then
+		Tuple {ttype = 'Collection', elementType = self.body.inferredType}
+	else if 'any' = self.name then
+		self.sourceType.elementType
+	else
+		OclUndefined
+	endif endif endif;
+
+helper context ATL!IntegerType def: toPlatform : OclAny =
+	'Integer'.primitiveType;
+
+helper context ATL!BooleanType def: toPlatform : OclAny =
+	'Boolean'.primitiveType;
+
+helper context ATL!RealType def: toPlatform : OclAny =
+	'Real'.primitiveType;
+
+helper context ATL!StringType def: toPlatform : OclAny =
+	'String'.primitiveType;
+
+helper context ATL!OclAnyType def: toPlatform : OclAny =
+	OclUndefined;
+
+helper context ATL!CollectionType def: toPlatform : OclAny =
+	Tuple {ttype = 'Collection', elementType = self.elementType.toPlatform};
+
+
+helper context OclAny def: isCollection : Boolean =
+	if self.oclIsUndefined() then
+		false	
+	else
+		self.ttype = 'Collection'
+	endif;
+
+helper context ATL!OperationCallExp def: sourceType : OclAny =
+	self.source.inferredType;
+
+helper context ATL!CollectionOperationCallExp def: sourceType : OclAny =
+	if self.source.inferredType.isCollection then
+		self.source.inferredType
+	else
+		Tuple {ttype = 'Collection', elementType = self.source.inferredType}
+	endif;
+
+helper context ATL!OperationCallExp def: inferredType : OclAny =
+
+	let sourceType : OclAny = self.source.inferredType in
+	let name : String = self.operationName in
+
+	if Set {'assertEquals', 'debug', 'refSetValue'}->includes(name) then
+		self.sourceType
+	else if Set {'=', '<>', 'oclIsKindOf', 'oclIsTypeOf'}->includes(name) then
+		'Boolean'.primitiveType
+	else if 'allInstances' = name then
+
+		Tuple {ttype = 'Collection', elementType = self.source.toPlatform}
+	else if 'newInstance' = name then
+		self.source.toPlatform
+
+	else
+		self.platformSpecificInferredType
+	endif endif endif endif;
+--	else if Set {'Integer'.primitiveType, 'Boolean'.primitiveType.debug(), 'String'.primitiveType}->includes(self.sourceType.debug()) then
+--
+--		FUML!Behavior.allInstancesFrom('lib') -> any(e |
+--			e.name.toLower() = name.toLower()
+--		).type
+--	else if self.sourceType.oclIsUndefined() then
+--		OclUndefined
+--	else if self.sourceType.isCollection then
+--		if Set {'including', 'excluding',
+--					'union', 'intersection', 'insertAt'
+--				}->includes(name) then
+--			self.sourceType
+--		else if Set {'first', 'last', 'at'}->includes(name) then
+--			self.sourceType.elementType
+--		else
+--			ALF!Behavior.allInstancesFrom('lib_ALF')->reject(e |
+--				e.name.oclIsUndefined()
+--			)->any(e |
+--				e.name.toLower() = name.toLower()
+--			).type
+--		endif endif-- endif
+--	else
+--		let h : ATL!Operation = ATL!Operation.allInstancesFrom('helpers')->any(e |
+--			e.name = name and
+--			e.definition.context_.context_.toPlatform = self.sourceType
+--		) in
+--		if h.oclIsUndefined() then
+--			OclUndefined
+--		else
+--			h.returnType.toPlatform
+--		endif
+--	endif endif endif endif endif endif endif;
+
+helper context ATL!NavigationOrAttributeCallExp def: inferredType : OclAny =
+	
+	if self.source.inferredType.oclIsUndefined() then
+		OclUndefined
+	else
+		let sourceType : OclAny =
+			if self.source.inferredType.isCollection then
+				self.source.inferredType.elementType
+			else
+				self.source.inferredType
+			endif
+		in
+		let property : UML!Property =
+			sourceType.navigableProperties->any(e |
+				e.name = self.name
+			)
+		in
+		if property.oclIsUndefined() then
+			OclUndefined.debug('warning: could not find property for: ' + self.name)
+		else if property.upper > 1 or property.upper < 0 then
+			Tuple {ttype = 'Collection', elementType = property.type}
+		else
+			if self.source.inferredType.isCollection then
+				Tuple {ttype = 'Collection', elementType = property.type}
+			else
+				property.type
+			endif
+		endif endif
+	endif;
+
+-- @begin Copied from Augment transformation
+helper context OclAny def: feature: OclAny =
+	if self.refImmediateComposite().oclIsKindOf(ATL!OclFeature) then
+		self.refImmediateComposite()
+	else
+		self.refImmediateComposite().feature
+	endif;
+
+helper context ATL!OclFeature def: typeName: String =
+	self.definition.context_.context_.name;
+
+helper context ATL!OclFeature def: class: UML!Class =
+	self.typeName.class;
+-- @end Copied from Augment transformation
+
+helper context OclAny def: origin : String =
+	'';
+
+
+helper context String def: assertEquals(expected : OclAny, actual : OclAny, featureName : String) : String =
+	if actual.oclIsUndefined() then
+		('expected: ' + expected.toString() + expected.origin).debug('warning: ' + self + ' ' + featureName + ' could not be computed')
+	else if actual <> expected then
+		('expected: ' + expected.toString() + expected.origin + ', actual: ' + actual.toString() + ' from ' + actual.origin).debug('error: ' + self + ' inconsistent ' + featureName)
+	else
+		''
+	endif endif;
+	
+helper def: test : OclAny =
+	Sequence {
+		-- Operation helper return type
+		ATL!Operation.allInstances()->collect(e |
+			let actual : OclType = e.body.inferredType in
+			let expected : OclType = e.returnType.toPlatform in
+			(e.class.name + '.' + e.name + '@' + e.location).assertEquals(expected, actual, 'returnType')
+		),
+		ATL!IteratorExp.allInstances()->select(e | e.name = 'select')->collect(e |
+			let actual : OclType = e.body.inferredType in
+			let expected : OclType = 'Boolean'.primitiveType in
+			('select@' + e.location).assertEquals(expected, actual, 'body')
+		)
+	};

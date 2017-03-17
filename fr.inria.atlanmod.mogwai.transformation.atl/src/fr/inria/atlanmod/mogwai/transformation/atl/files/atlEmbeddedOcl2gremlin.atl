@@ -1,3 +1,4 @@
+-- @nsURI ATL=http://www.eclipse.org/gmt/2005/OCL
 -- @path ATL=/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore
 -- @path Gremlin=/fr.inria.atlanmod.mogwai.gremlin/model/gremlin.ecore
 
@@ -5,34 +6,39 @@ module atlEmbeddedOcl2Gremlin;
 
 create OUT: Gremlin from IN: ATL;
 
+helper context ATL!NavigationOrAttributeCallExp def: feature : Ecore!EStructuralFeature =
+	self.source.inferredType.eAllStructuralFeatures->any(e | e.name = self.name);
+
 helper context ATL!NavigationOrAttributeCallExp def : isAttributeNavigation() : Boolean = 
 	-- Quick fix, a complete solution is not that easy
-	if(self.source.oclIsTypeOf(ATL!VariableExp)) then
-		let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.source.referredVariable.type.name) in
-			let att : SourceEcore!EAttribute = selfClass.eAllAttributes->select(aa | aa.name = self.name)->first() in
-				if att.oclIsUndefined() then
-					false.debug('Cannot find attribute ' + self.name + ' in EClass ' + selfClass.name)
-				else
-					true
-				endif
-	else
-		false.debug('Cannot deduce if the navigation navigates through an attribute')
-	endif
+--	if(self.source.oclIsTypeOf(ATL!VariableExp)) then
+--		let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.source.referredVariable.type.name) in
+--			let att : SourceEcore!EAttribute = selfClass.eAllAttributes->select(aa | aa.name = self.name)->first() in
+--				if att.oclIsUndefined() then
+--					false.debug('Cannot find attribute ' + self.name + ' in EClass ' + selfClass.name)
+--				else
+--					true
+--				endif
+--	else
+--		false.debug('Cannot deduce if the navigation navigates through an attribute')
+--	endif
+	self.feature.oclIsKindOf(SourceEcore!EAttribute)
 ;
 
 helper context ATL!NavigationOrAttributeCallExp def : isReferenceNavigation() : Boolean = 
 	-- Quick fix, a complete solution is not that easy
-	if(self.source.oclIsTypeOf(ATL!VariableExp)) then
-		let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.source.referredVariable.type.name) in
-			let ref : SourceEcore!EReference = selfClass.eAllReferences->select(rr | rr.name = self.name)->first() in
-				if ref.oclIsUndefined() then
-					false.debug('Cannot find reference ' + self.name + ' in EClass ' + selfClass.name)
-				else
-					true
-				endif
-	else
-		false.debug('Cannot deduce if the navigation navigates through a reference')
-	endif
+--	if(self.source.oclIsTypeOf(ATL!VariableExp)) then
+--		let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.source.referredVariable.type.name) in
+--			let ref : SourceEcore!EReference = selfClass.eAllReferences->select(rr | rr.name = self.name)->first() in
+--				if ref.oclIsUndefined() then
+--					false.debug('Cannot find reference ' + self.name + ' in EClass ' + selfClass.name)
+--				else
+--					true
+--				endif
+--	else
+--		false.debug('Cannot deduce if the navigation navigates through a reference')
+--	endif
+	self.feature.oclIsKindOf(SourceEcore!EReference)
 ;
 	
 

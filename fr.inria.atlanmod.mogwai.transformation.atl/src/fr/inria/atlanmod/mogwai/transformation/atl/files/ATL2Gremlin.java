@@ -92,6 +92,7 @@ public class ATL2Gremlin {
 			rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("atl", new AtlResourceFactoryImpl());
 			
 			transformationLauncher.initialize(new HashMap<String, Object>());
+
 			modules = new ArrayList<>();
 			
 			InputStream atl2gremlinStream = getFileURL("atl2gremlin.asm").openStream();
@@ -108,6 +109,7 @@ public class ATL2Gremlin {
 			modules.add((ASM) transformationLauncher.loadModule(atlMathExpressionsStream));
 			modules.add((ASM) transformationLauncher.loadModule(atlCollectionsStream));
 			modules.add((ASM) transformationLauncher.loadModule(atlCollectionOperationsStream));
+
 			
 			ASMCommon = (ASM) transformationLauncher.loadModule(commonStream);
 			
@@ -165,6 +167,12 @@ public class ATL2Gremlin {
 			transformationLauncher = new EMFVMLauncher();
 			transformationLauncher.initialize(new HashMap<String, Object>());
 			transformationLauncher.addLibrary("common", ASMCommon);
+			try {
+				transformationLauncher.addLibrary("ATLTypeInferenc", getFileURL("ATLTypeInferenceToEcore.asm").openStream());
+				transformationLauncher.addLibrary("ATLTypeInference", getFileURL("ATLTypeInference.asm").openStream());
+			} catch(IOException e) {
+				throw new RuntimeException(e);
+			}
 			
 			transformationLauncher.addInModel(inputModel, "IN", "ATL");
 			transformationLauncher.addInModel(sourceMM, "SOURCEMM", "SourceEcore");
