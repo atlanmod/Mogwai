@@ -15,34 +15,10 @@ helper context ATL!NavigationOrAttributeCallExp def: feature : Ecore!EStructural
 	endif;
 
 helper context ATL!NavigationOrAttributeCallExp def : isAttributeNavigation() : Boolean = 
-	-- Quick fix, a complete solution is not that easy
---	if(self.source.oclIsTypeOf(ATL!VariableExp)) then
---		let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.source.referredVariable.type.name) in
---			let att : SourceEcore!EAttribute = selfClass.eAllAttributes->select(aa | aa.name = self.name)->first() in
---				if att.oclIsUndefined() then
---					false.debug('Cannot find attribute ' + self.name + ' in EClass ' + selfClass.name)
---				else
---					true
---				endif
---	else
---		false.debug('Cannot deduce if the navigation navigates through an attribute')
---	endif
 	self.feature.oclIsKindOf(SourceEcore!EAttribute)
 ;
 
 helper context ATL!NavigationOrAttributeCallExp def : isReferenceNavigation() : Boolean = 
-	-- Quick fix, a complete solution is not that easy
---	if(self.source.oclIsTypeOf(ATL!VariableExp)) then
---		let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.source.referredVariable.type.name) in
---			let ref : SourceEcore!EReference = selfClass.eAllReferences->select(rr | rr.name = self.name)->first() in
---				if ref.oclIsUndefined() then
---					false.debug('Cannot find reference ' + self.name + ' in EClass ' + selfClass.name)
---				else
---					true
---				endif
---	else
---		false.debug('Cannot deduce if the navigation navigates through a reference')
---	endif
 	self.feature.oclIsKindOf(SourceEcore!EReference)
 ;
 	
