@@ -150,7 +150,7 @@ helper context ATL!NavigationOrAttributeCallExp def: inferredType : OclAny =
 				self.source.inferredType
 			endif
 		in
-		let property : UML!Property =
+		let property : OclAny =
 			sourceType.navigableProperties->any(e |
 				e.name = self.name
 			)
@@ -180,7 +180,7 @@ helper context OclAny def: feature: OclAny =
 helper context ATL!OclFeature def: typeName: String =
 	self.definition.context_.context_.name;
 
-helper context ATL!OclFeature def: class: UML!Class =
+helper context ATL!OclFeature def: class: OclAny =
 	self.typeName.class;
 -- @end Copied from Augment transformation
 
