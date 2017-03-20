@@ -37,9 +37,13 @@ rule attributeNavigationOrAttributeCallExp2steps {
 	from
 		nav : ATL!NavigationOrAttributeCallExp (nav.isAttributeNavigation())
 	to
-		prop : Gremlin!PropertyStep(
-			name <- nav.name,
+		prop : Gremlin!CustomStep(
+			name <- 'getAtt',
+			params <- Sequence{attNameLiteral},
 			nextElement <- nav.getComposite()
+		),
+		attNameLiteral : Gremlin!StringLiteral(
+			value <- nav.name	
 		)
 }
 
