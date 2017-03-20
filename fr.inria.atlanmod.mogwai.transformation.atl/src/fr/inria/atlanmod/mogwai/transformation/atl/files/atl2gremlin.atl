@@ -206,9 +206,12 @@ rule attributeBinding2instruction {
 			name <- bb.getBindedElement(),
 			nextElement <- prop
 		),
-		prop : Gremlin!PropertyStep(
-			name <- bb.propertyName,
-			value <- bb.value.getFirstInstruction()
+		prop : Gremlin!CustomStep(
+			name <- 'setAtt',
+			params <- Sequence{attNameLiteral, bb.value.getFirstInstruction()}
+		),
+		attNameLiteral : Gremlin!StringLiteral(
+			value <- bb.propertyName	
 		)
 }
 
