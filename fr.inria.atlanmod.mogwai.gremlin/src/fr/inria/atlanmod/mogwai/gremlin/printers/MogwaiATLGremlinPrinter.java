@@ -7,6 +7,7 @@ import fr.inria.atlanmod.mogwai.gremlin.CustomStep;
 import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
 import fr.inria.atlanmod.mogwai.gremlin.TransformStep;
+import fr.inria.atlanmod.mogwai.gremlin.TraversalElement;
 
 public class MogwaiATLGremlinPrinter extends DefaultGremlinPrinter {
 
@@ -16,7 +17,7 @@ public class MogwaiATLGremlinPrinter extends DefaultGremlinPrinter {
 	public String caseTransformStep(TransformStep o) {
 		if(isRuleTransform(o)) {
 			StringBuffer res = new StringBuffer();
-			res.append("transform\n");
+			res.append("transform");
 			res.append(doSwitch(o.getClosure()));
 			if(o.getNextElement() != null) {
 				res.append(".").append(doSwitch(o.getNextElement()));
@@ -31,6 +32,7 @@ public class MogwaiATLGremlinPrinter extends DefaultGremlinPrinter {
 	@Override
 	public String caseClosure(Closure o) {
 		StringBuffer res = new StringBuffer();
+		res.append("\n");
 		pad(res).append("{\n");
 		padding++;
 		for(Instruction i : o.getInstructions()) {
