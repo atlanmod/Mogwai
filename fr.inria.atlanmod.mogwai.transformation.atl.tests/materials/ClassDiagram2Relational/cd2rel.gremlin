@@ -2,7 +2,8 @@
 final def gr = g;
 final def gHelper = graphHelper;
 
-g.allOfType("Class").transform {
+g.allOfType("Class").transform
+{
 	
 	def c = it;
 	
@@ -15,7 +16,8 @@ g.allOfType("Class").transform {
 	gHelper.linkReference(out, c.getRef("attr"), "col", true);
 }.iterate();
 
-g.allOfType("Attribute").transform {
+g.allOfType("Attribute").transform 
+{
 	
 	def a = it;
 	

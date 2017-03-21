@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.mogwai.gremlin.printers.DefaultGremlinPrinter;
+import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 
 public class TestATL2Gremlin {
@@ -22,7 +23,7 @@ public class TestATL2Gremlin {
 		Resource r = atl2gremlin.transform(URI
 				.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational-simple.atl"));
 		
-		DefaultGremlinPrinter printer = new DefaultGremlinPrinter();
+		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
 		System.out.println(printer.print(r.getContents().get(0)));
 		
 //		Resource r = atl2gremlin.transform(URI
