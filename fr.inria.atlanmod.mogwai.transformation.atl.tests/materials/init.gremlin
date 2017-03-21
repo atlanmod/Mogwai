@@ -16,6 +16,7 @@
 
 // Put the mapping helper in a final variable to allow its access from closures
 final m = mappingHelper;
+final t = graphHelper;
 
 /*
  * Additional Graph methods
@@ -196,3 +197,31 @@ Gremlin.defineStep("isKindOf", [Pipe],
 			m.isKindOf(typeName);
 	}	
 )
+
+/*
+ * Additional operations
+ */
+
+// [a,b,c].union([d,e,f]);
+Iterable.metaClass.union = 
+{
+	Iterable right ->
+		println("union");
+		t.union(delegate, right);
+}
+
+// [a,b,c].intersection([d,e,f]);
+Iterable.metaClass.intersection = 
+{
+	Iterable right ->
+		println("intersection");
+		t.intersection(delegate, right);
+}
+
+// [a,b,c].difference([d,e,f]);
+Iterable.metaClass.difference = 
+{
+	Iterable right ->
+		println("difference");
+		t.difference(delegate, right);
+}

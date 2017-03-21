@@ -4,9 +4,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Objects.isNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
@@ -112,7 +115,8 @@ public class TransformationHelper {
 	 * @throws NullPointerException
 	 *             if the provided {@code metaclassType} is null
 	 */
-	public Vertex createElement(Vertex source, String targetLabel, String metaclassType, String nsURI, String resourceName) {
+	public Vertex createElement(Vertex source, String targetLabel, String metaclassType, String nsURI,
+			String resourceName) {
 		checkNotNull(metaclassType, "Cannot create an element from a null metaclass");
 		Vertex v = (Vertex) mapping.newInstance(metaclassType, nsURI, resourceName);
 		Edge traceLink = source.addEdge(TRACE_LINK_LABEL, v);
@@ -314,6 +318,60 @@ public class TransformationHelper {
 			}
 		}
 		return createdEdges;
+	}
+
+	/**
+	 * Computes the union of two {@link Iterable}s.
+	 * 
+	 * @param left
+	 *            the left part of the union
+	 * @param right
+	 *            the right part of the union
+	 * @return an {@link Iterable} containing {@code left union right}
+	 */
+	public Iterable<Object> union(Iterable<Object> left, Iterable<Object> right) {
+		Set<Object> set = new HashSet<>();
+		Iterables.addAll(set, left);
+		Iterables.addAll(set, right);
+		return set;
+	}
+
+	/**
+	 * Computes the intersection of two {@link Iterable}s.
+	 * 
+	 * @param left
+	 *            the left part of the intersection
+	 * @param right
+	 *            the right part of the intersection
+	 * @return an {@link Iterable} containing {@code left intersection right}
+	 */
+	public Iterable<Object> intersection(Iterable<Object> left, Iterable<Object> right) {
+		List<Object> res = new ArrayList<>();
+		for (Object o : left) {
+			if (Iterables.contains(right, o)) {
+				res.add(o);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Computes the difference between two {@link Iterable}s.
+	 * 
+	 * @param left
+	 *            the left part of the difference
+	 * @param right
+	 *            the right part of the difference
+	 * @return an {@link Iterable} containing {@code left difference right}
+	 */
+	public Iterable<Object> difference(Iterable<Object> left, Iterable<Object> right) {
+		List<Object> res = new ArrayList<>();
+		for (Object o : left) {
+			if (!Iterables.contains(right, o)) {
+				res.add(o);
+			}
+		}
+		return res;
 	}
 
 }

@@ -350,6 +350,31 @@ rule select2steps {
 		)
 }
 
+rule union2steps {
+	from
+		oclUnion : ATL!CollectionOperationCallExp (oclUnion.getOpName() = 'union')
+	to
+		gremlinUnion : Gremlin!CustomMethodCall(
+			name <- 'union',
+			params <- Sequence{oclUnion.arguments->first().getFirstInstruction()},
+			nextElement <- oclUnion.getComposite()
+		)
+}
+
+rule intersection2steps {
+	from
+		oclIntersection : ATL!CollectionOperationCallExp (oclIntersection.getOpName() = 'intersection')
+	to
+		gremlinIntersection : Gremlin!CustomMethodCall(
+			name <- 'intersection',
+			params <- Sequence{oclIntersection.arguments->first().getFirstInstruction()},
+			nextElement <- oclIntersection.getComposite()
+		)
+}
+
+-- TODO handle set difference: everything is there in the helper but we need to take into account that the
+-- '-' operator can be used for arithmetic operations too.
+
 --rule selectEmpty2steps {
 --	from
 --		oclSelect : OCL!IteratorExp (oclSelect.getOpName() = 'select' and oclSelect.canContainEmptyProp())
