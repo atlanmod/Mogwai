@@ -40,13 +40,10 @@ rule attributeNavigationOrAttributeCallExp2steps {
 		prop : Gremlin!CustomStep(
 			name <- 'getAtt',
 			params <- Sequence{attNameLiteral},
-			nextElement <- idStep
+			nextElement <- nav.getComposite()
 		),
 		attNameLiteral : Gremlin!StringLiteral(
 			value <- nav.name	
-		),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- nav.getComposite()	
 		)
 }
 
