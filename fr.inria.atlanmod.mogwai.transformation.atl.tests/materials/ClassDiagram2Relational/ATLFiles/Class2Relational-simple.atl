@@ -36,5 +36,3 @@ rule Attribute2Column {
 			name <- a.name + 'Id'	
 		)	
 }
-
-
