@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Column;
@@ -13,6 +15,7 @@ import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import ClassDiagram.Table;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
 import fr.inria.atlanmod.mogwai.mapping.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -20,6 +23,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
+import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
@@ -34,6 +38,8 @@ import fr.inria.atlanmod.neoemf.logging.NeoLogger;
  *
  */
 public class TransformationSample {
+	
+	private static String ATL_URI = "materials/ClassDiagram2Relational/ATLFiles/Class2Relational-simple.atl";
 
 	public static void main(String[] args) throws IOException, MogwaiException {
 		
@@ -44,23 +50,33 @@ public class TransformationSample {
 		NeoLogger.info("Initializing mapping");
 		EMFtoGraphMapping mapping = new NeoEMFMapping();
 		mapping.setGraph(mogResource.getBackend().getGraph());
+		TransformationHelper helper = new TransformationHelper(mapping);
+
 		NeoLogger.info("Done");
 		
 		NeoLogger.info("Initializing the Gremlin engine");
 		MogwaiQuery initQuery = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/init.gremlin"))
 				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
+				.bind("graphHelper", helper)
 				.build();
 
 		mogResource.query(initQuery);
 		NeoLogger.info("Gremlin engine initialized");
-
-		NeoLogger.info("Computing model transformation");
-		TransformationHelper helper = new TransformationHelper(mapping);
-
+		
+		NeoLogger.info("Translating ATL file (" + ATL_URI + ")");;
+		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
+		atl2gremlin.enableATLDebug();
+		Resource r = atl2gremlin.transform(URI
+				.createURI(ATL_URI));
+		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
+		String textualQuery = printer.print(r.getContents().get(0));
+		
+		NeoLogger.info("Generated Gremlin Script: \n{0}", textualQuery);
+		
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
-				.fromFile(new File("materials/ClassDiagram2Relational/cd2rel.gremlin"))
+				.fromString(textualQuery)
 				.bind("graphHelper", helper)
 				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
 				.build();
