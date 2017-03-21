@@ -17,7 +17,6 @@ import com.tinkerpop.blueprints.util.GraphHelper;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 
 import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
 /**
  * A helper used in generated script to execute transformation-related
@@ -315,17 +314,14 @@ public class TransformationHelper {
 	 */
 	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label, boolean isContainment) {
 		// TODO resolve inside the method to optimize database accesses
-		NeoLogger.info("linkRef: iterable.size() = {0}", Iterables.size(target));
 		List<Edge> createdEdges = new ArrayList<>();
 		for (Vertex vv : target) {
 			if (isTargetElement(vv)) {
 				createdEdges.add(link(source, vv, label, isContainment));
 			} else {
 				if (isResolvable(vv)) {
-					NeoLogger.info("isResolvable");
 					createdEdges.add(link(source, resolve(vv), label, isContainment));
 				} else {
-					NeoLogger.info("isNotResolvable");
 					createdEdges.add(pLink(source, vv, label, isContainment));
 				}
 			}
