@@ -17,6 +17,7 @@ import com.tinkerpop.blueprints.util.GraphHelper;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 
 import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
 /**
  * A helper used in generated script to execute transformation-related
@@ -55,6 +56,8 @@ public class TransformationHelper {
 	private final static String TRACE_LINK_TARGET_KEY = "target";
 
 	private final static String IS_CONTAINMENT_KEY = "isContainment";
+
+	private final static String IS_TARGET_KEY = "is_target";
 
 	/**
 	 * The mapping used to compute graph operations.
@@ -119,6 +122,11 @@ public class TransformationHelper {
 			String resourceName) {
 		checkNotNull(metaclassType, "Cannot create an element from a null metaclass");
 		Vertex v = (Vertex) mapping.newInstance(metaclassType, nsURI, resourceName);
+		/*
+		 * Set the element as a target element to avoid not resolvable proxies
+		 * for target-specific model elements
+		 */
+		v.setProperty(IS_TARGET_KEY, true);
 		Edge traceLink = source.addEdge(TRACE_LINK_LABEL, v);
 		traceLink.setProperty(TRACE_LINK_TARGET_KEY, targetLabel);
 		return v;
@@ -244,8 +252,6 @@ public class TransformationHelper {
 	 */
 	public Vertex resolve(Vertex source) {
 		return mapping.getRef(source, TRACE_LINK_LABEL).iterator().next();
-		// return source.getVertices(Direction.OUT,
-		// TRACE_LINK_LABEL).iterator().next();
 	}
 
 	/**
@@ -309,12 +315,19 @@ public class TransformationHelper {
 	 */
 	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label, boolean isContainment) {
 		// TODO resolve inside the method to optimize database accesses
+		NeoLogger.info("linkRef: iterable.size() = {0}", Iterables.size(target));
 		List<Edge> createdEdges = new ArrayList<>();
 		for (Vertex vv : target) {
-			if (isResolvable(vv)) {
-				createdEdges.add(link(source, resolve(vv), label, isContainment));
+			if (isTargetElement(vv)) {
+				createdEdges.add(link(source, vv, label, isContainment));
 			} else {
-				createdEdges.add(pLink(source, vv, label, isContainment));
+				if (isResolvable(vv)) {
+					NeoLogger.info("isResolvable");
+					createdEdges.add(link(source, resolve(vv), label, isContainment));
+				} else {
+					NeoLogger.info("isNotResolvable");
+					createdEdges.add(pLink(source, vv, label, isContainment));
+				}
 			}
 		}
 		return createdEdges;
@@ -372,6 +385,18 @@ public class TransformationHelper {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Returns whether a {@link Vertex} is in the target model or not.
+	 * 
+	 * @param vv
+	 *            the {@link Vertex}
+	 * @return {@code true} if the {@link Vertex} is in the target model,
+	 *         {@code false} otherwise
+	 */
+	private boolean isTargetElement(Vertex vv) {
+		return vv.getProperty(IS_TARGET_KEY);
 	}
 
 }
