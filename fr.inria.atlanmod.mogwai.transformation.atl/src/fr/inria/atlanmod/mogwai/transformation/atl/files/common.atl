@@ -26,11 +26,11 @@ helper context ATL!Helper def : hasContext() : Boolean =
 ;
 
 helper context ATL!Helper def : getName() : String =
-	self.definition.feature.name
+	self.definition.getFeature().name
 ;
 
 helper context ATL!Helper def : getFirstInstruction() : ATL!OclExpression =
-	self.definition.feature.initExpression.getFirstInstruction()
+	self.definition.getFeature().initExpression.getFirstInstruction()
 ;
 
 helper context ATL!MatchedRule def : getGuardFirstInstruction() : ATL!OclExpression = 
@@ -52,7 +52,11 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 		endif
 	else
 		if self.oclIsTypeOf(ATL!OperationCallExp) then
-			self.source.getFirstInstruction()
+			if(self.getOpName() = 'allInstances') then
+				self
+			else
+				self.source.getFirstInstruction()
+			endif
 		else
 			if self.oclIsTypeOf(ATL!IteratorExp) then
 				self.source.getFirstInstruction()
