@@ -127,6 +127,13 @@ lazy rule module2graphFinalVar {
 		)
 }
 
+-- Translates a matched rule that does not define a guard into a sequence of steps.
+-- Each rule is mapped to an allInstances call that retrieves all the instances of its
+-- matched EClassifier, and a TransformStep that contains the core of the rule itself.
+-- <p>
+-- Rule content includes (i) the transformation of out pattern elements, (ii) a resolveProxy call
+-- which is responsible of resolving the proxy links created during the transformation, and (iii)
+-- the transformation of the bindings themselves.
 rule matchedRule2transform {
 	from
 		mm : ATL!MatchedRule
@@ -138,17 +145,10 @@ rule matchedRule2transform {
 		allOfTypeStep : Gremlin!CustomStep(
 			name <- 'allOfType',
 			params <- typeLiteral,
-			nextElement <- filter
+			nextElement <- transform
 		),
 		typeLiteral : Gremlin!StringLiteral(
 			value <- mm.getMatchedType().name	
-		),
-		filter : Gremlin!FilterStep(
-			closure <- clos,
-			nextElement <- transform
-		),
-		clos : Gremlin!Closure(
-			instructions <- Sequence{thisModule.createDefForIt(mm.inPattern.elements->first())}.append(mm.getGuardFirstInstruction())
 		),
 		transform : Gremlin!TransformStep(
 			closure <- transformClos	
@@ -161,6 +161,26 @@ rule matchedRule2transform {
 				-- supported yet
 				.append(thisModule.createResolveProxyCall(mm))
 				.union(mm.outPattern.elements->collect(e | e.bindings))
+		)
+}
+
+-- Translates a matched rule that defines a guard into a sequence of steps.
+-- The OCL guard is translated into a FilterStep that filters allInstances result
+-- according to the guard.
+rule matchedRuleWithGuard2transform extends matchedRule2transform {
+	from
+		mm : ATL!MatchedRule (not mm.getGuardFirstInstruction().oclIsUndefined())
+	to
+		varAccess : Gremlin!VariableAccess(),
+		allOfTypeStep : Gremlin!CustomStep(
+			nextElement <- filter	
+		),
+		filter : Gremlin!FilterStep(
+			closure <- clos,
+			nextElement <- transform
+		),
+		clos : Gremlin!Closure(
+			instructions <- Sequence{thisModule.createDefForIt(mm.inPattern.elements->first())}.append(mm.getGuardFirstInstruction())
 		)
 }
 

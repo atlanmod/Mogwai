@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -19,9 +20,13 @@ public class TestATL2Gremlin {
 	public static void main(String[] args) throws IOException {
 
 		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
+		atl2gremlin.enableATLDebug();
 		
 		Resource r = atl2gremlin.transform(URI
 				.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational-simple.atl"));
+		
+		r.setURI(URI.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational-simple-gremlin.xmi"));
+		r.save(Collections.emptyMap());
 		
 		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
 		System.out.println(printer.print(r.getContents().get(0)));
