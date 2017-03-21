@@ -13,6 +13,10 @@ helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
 	ATL!MatchedRule.allInstances()->asSequence()
 ;
 
+helper context ATL!Module def: getHelpers() : Sequence(ATL!Helper) =
+	ATL!Helper.allInstances()->asSequence()
+;
+
 -- Get all the types matched by the transformation
 -- Note that for now rules matching type tuples are not supported
 -- @TODO support rules matching type tuples
@@ -107,6 +111,7 @@ rule module2script {
 		gg : Gremlin!GremlinScript(
 			name <- mm.name,
 			instructions <- Sequence{thisModule.module2graphFinalVar(mm)}
+				->union(mm.getHelpers())
 				->union(mm.getMatchedRules())
 		)
 }
@@ -124,6 +129,17 @@ lazy rule module2graphFinalVar {
 		),
 		varAccess : Gremlin!VariableAccess (
 			name <- 'graphHelper'	
+		)
+}
+
+rule globalHelper2function {
+	from
+		hh : ATL!Helper (not hh.hasContext())
+	to
+		ff : Gremlin!MethodDeclaration(
+			name <- hh.getName(),
+			parameters <- Sequence{},
+			instructions <- hh.getFirstInstruction()
 		)
 }
 

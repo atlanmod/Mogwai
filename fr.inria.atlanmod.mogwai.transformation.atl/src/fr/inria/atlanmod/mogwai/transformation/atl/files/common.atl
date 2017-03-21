@@ -21,6 +21,18 @@ helper context ATL!PropertyCallExp def : getOpName() : String =
 	endif
 ;
 
+helper context ATL!Helper def : hasContext() : Boolean =
+	not self.definition.context_.oclIsUndefined()
+;
+
+helper context ATL!Helper def : getName() : String =
+	self.definition.feature.name
+;
+
+helper context ATL!Helper def : getFirstInstruction() : ATL!OclExpression =
+	self.definition.feature.initExpression.getFirstInstruction()
+;
+
 helper context ATL!MatchedRule def : getGuardFirstInstruction() : ATL!OclExpression = 
 	if self.inPattern.filter.oclIsUndefined() then
 		OclUndefined
