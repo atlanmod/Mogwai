@@ -151,7 +151,8 @@ rule matchedRule2transform {
 			value <- mm.getMatchedType().name	
 		),
 		transform : Gremlin!TransformStep(
-			closure <- transformClos	
+			closure <- transformClos,
+			nextElement <- iterateCall
 		),
 		transformClos : Gremlin!Closure(
 			instructions <- Sequence{}
@@ -161,6 +162,9 @@ rule matchedRule2transform {
 				-- supported yet
 				.append(thisModule.createResolveProxyCall(mm))
 				.union(mm.outPattern.elements->collect(e | e.bindings))
+		),
+		iterateCall : Gremlin!CustomMethodCall(
+			name <- 'iterate'	
 		)
 }
 
