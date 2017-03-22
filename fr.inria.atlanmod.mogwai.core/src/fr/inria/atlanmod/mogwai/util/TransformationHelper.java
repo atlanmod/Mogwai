@@ -218,6 +218,12 @@ public class TransformationHelper {
 			}
 			String baseLabel = pEdge.getProperty(BASE_LABEL_KEY);
 			Boolean isContainment = pEdge.getProperty(IS_CONTAINMENT_KEY);
+			if(isNull(isContainment)) {
+				/*
+				 * False is not set in the database to reduce its size
+				 */
+				isContainment = false;
+			}
 			if (isNull(baseLabel)) {
 				throw new RuntimeException("[Debug] A proxy link has null as its base label");
 			}
