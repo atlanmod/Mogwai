@@ -64,6 +64,19 @@ rule referenceNavigationOrAttributeCallExp2steps {
 		)
 }
 
+rule globalHelperNavigation2steps {
+	from
+		nav : ATL!NavigationOrAttributeCallExp (
+				not nav.isAttributeNavigation() 
+				and not nav.isReferenceNavigation()
+				and nav.source.oclIsTypeOf(ATL!VariableExp)
+				and nav.source.referredVariable.varName = 'thisModule')
+	to
+		mc : Gremlin!CustomMethodCall (
+			name <- nav.name
+		)
+}
+
 rule allInstances2steps {
 	from
 		ai : ATL!OperationCallExp (ai.getOpName() = 'allInstances')

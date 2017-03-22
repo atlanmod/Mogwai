@@ -23,8 +23,8 @@ rule Class2Table {
 			key <- Set {key}
 		),
 		key : RelationalMM!Column (
-			name <- 'objectId'--,
---			type <- thisModule.objectIdType
+			name <- 'objectId',
+			type <- thisModule.objectIdType
 		)
 }
 
