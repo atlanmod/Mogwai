@@ -25,7 +25,7 @@ helper context ATL!NavigationOrAttributeCallExp def : isReferenceNavigation() : 
 
 rule varExp2steps {
 	from
-		varExp : ATL!VariableExp
+		varExp : ATL!VariableExp (not varExp.isThisModuleVar())
 	to
 		va : Gremlin!VariableAccess(
 			name <- varExp.referredVariable.varName,
@@ -69,8 +69,7 @@ rule globalHelperNavigation2steps {
 		nav : ATL!NavigationOrAttributeCallExp (
 				not nav.isAttributeNavigation() 
 				and not nav.isReferenceNavigation()
-				and nav.source.oclIsTypeOf(ATL!VariableExp)
-				and nav.source.referredVariable.varName = 'thisModule')
+				and nav.isGlobalHelperInvocation())
 	to
 		mc : Gremlin!CustomMethodCall (
 			name <- nav.name
