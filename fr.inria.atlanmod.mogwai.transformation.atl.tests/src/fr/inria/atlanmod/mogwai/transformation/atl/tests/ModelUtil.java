@@ -2,13 +2,13 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -20,6 +20,7 @@ import org.neo4j.kernel.impl.util.FileUtils;
 import ClassDiagram.Attribute;
 import ClassDiagram.ClassDiagramFactory;
 import ClassDiagram.ClassDiagramPackage;
+import ClassDiagram.DataType;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
@@ -92,7 +93,7 @@ public class ModelUtil {
 				BlueprintsURI.SCHEME,
 				BlueprintsPersistenceBackendFactory.getInstance());
 		
-		int classCount = 10000;
+		int classCount = 1000;
 		int attributePerClass = 4;
 		
 		ResourceSet rSet = new ResourceSetImpl();
@@ -117,16 +118,38 @@ public class ModelUtil {
 		// Creating new resource
 		neoResource.save(options);
 
+		
+		DataType dt = ClassDiagramFactory.eINSTANCE.createDataType();
+		dt.setName("Integer");
+		
+		DataType dt2 = ClassDiagramFactory.eINSTANCE.createDataType();
+		dt2.setName("String");
+		
+		neoResource.getContents().add(dt);
+		neoResource.getContents().add(dt2);
+		
 		for(int i = 0; i < classCount; i++) {
 			ClassDiagram.Class c = ClassDiagramFactory.eINSTANCE.createClass();
 			c.setName(UUID.randomUUID().toString());
 			for(int j = 0; j < attributePerClass ; j++) {
 				Attribute att = ClassDiagramFactory.eINSTANCE.createAttribute();
 				att.setName(UUID.randomUUID().toString());
+				if(Math.random() > 0.5) {
+					att.setMultiValued(true);
+				} else {
+					att.setMultiValued(false);
+				}
+				if(Math.random() > 0.5) {
+					att.setType(dt);
+				}
+				else {
+					att.setType(dt2);
+				}
 				c.getAttr().add(att);
 			}
 			neoResource.getContents().add(c);
 		}
+		
 		
 		neoResource.save(Collections.emptyMap());
 		
