@@ -2,6 +2,7 @@ package fr.inria.atlanmod.mogwai.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -384,6 +385,25 @@ public class TransformationHelper {
 	}
 
 	/**
+	 * Casts the provided {@code object} to a {@code boolean}.
+	 * 
+	 * @param object
+	 *            the {@link Object} to cast
+	 * @return the {@code boolean} value representing {@code object}
+	 * @throws IllegalArgumentException
+	 *             if {@code object} cannot be cast
+	 */
+	public boolean booleanFrom(Object object) {
+		if (object instanceof String) {
+			return Boolean.parseBoolean((String) object);
+		} else if (object instanceof Boolean) {
+			return ((Boolean) object).booleanValue();
+		} else {
+			throw new IllegalArgumentException(object + " cannot be cast to Boolean");
+		}
+	}
+
+	/**
 	 * Returns whether a {@link Vertex} is in the target model or not.
 	 * 
 	 * @param vv
@@ -392,7 +412,15 @@ public class TransformationHelper {
 	 *         {@code false} otherwise
 	 */
 	private boolean isTargetElement(Vertex vv) {
-		return vv.getProperty(IS_TARGET_KEY);
+		Object isTargetProp = vv.getProperty(IS_TARGET_KEY);
+		if(nonNull(isTargetProp)) {
+			return (boolean)isTargetProp;
+		}
+		/*
+		 * The property isn't set, this means that the object hasn't been
+		 * created by the transformation.
+		 */
+		return false;
 	}
 
 }

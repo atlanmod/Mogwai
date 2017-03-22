@@ -136,7 +136,15 @@ rule not2steps {
 		)
 	to
 		gremlinNot : Gremlin!NotExpression(
-			exp <- oclNot.source.getFirstInstruction()
+			exp <- gHelper
+		),
+		gHelper : Gremlin!VariableAccess(
+			name <- 'gHelper',
+			nextElement <- bFromCall
+		),
+		bFromCall : Gremlin!CustomMethodCall(
+			name <- 'booleanFrom',
+			params <- oclNot.source.getFirstInstruction()
 		)
 }
 
