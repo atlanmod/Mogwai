@@ -156,7 +156,7 @@ rule sequence2steps {
 rule sequenceInChain2steps extends sequence2steps{
 	from
 		oclSequence : ATL!SequenceExp (
-			(oclSequence.getComposite() <> OclUndefined).debug('known sequence composite ' + oclSequence.getComposite())
+			oclSequence.getComposite() <> OclUndefined
 		)
 	to
 		lastColStep : Gremlin!CollectionDefinition(
