@@ -3,10 +3,12 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -67,7 +69,6 @@ public class ModelUtil {
 				.createResource(BlueprintsURI
 						.createFileURI(new File(
 								"materials/ClassDiagram2Relational/ClassDiagram/sample.graphdb")));
-
 		
 		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder().asMap();
 		
@@ -77,10 +78,6 @@ public class ModelUtil {
 		neoResource.getContents().addAll(EcoreUtil.copyAll(classModel.getContents()));
 		
 		neoResource.save(Collections.emptyMap());
-		
-		PersistentResource pr = (PersistentResource)neoResource;
-		System.out.println("Class count: "+ pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getClass_()).size());
-		System.out.println("Attribute count: "+ pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getAttribute()).size());
 		
 		MogwaiResource mogResource = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)neoResource);
 		

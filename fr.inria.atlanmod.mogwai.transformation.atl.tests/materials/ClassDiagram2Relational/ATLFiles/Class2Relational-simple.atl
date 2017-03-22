@@ -10,7 +10,7 @@ create OUT : RelationalMM from IN : ClassMM;
 -- context 
 
 helper def: objectIdType : Relational!Type =
-	Class!DataType.allInstances()->select(e | e.name = 'Integer')->first();
+	ClassMM!DataType.allInstances()->select(e | e.name = 'Integer')->first();
 
 rule Class2Table {
 	from
@@ -25,6 +25,15 @@ rule Class2Table {
 		key : RelationalMM!Column (
 			name <- 'objectId',
 			type <- thisModule.objectIdType
+		)
+}
+
+rule DataType2Type {
+	from
+		dt : ClassMM!DataType
+	to
+		out : RelationalMM!Type (
+			name <- dt.name
 		)
 }
 

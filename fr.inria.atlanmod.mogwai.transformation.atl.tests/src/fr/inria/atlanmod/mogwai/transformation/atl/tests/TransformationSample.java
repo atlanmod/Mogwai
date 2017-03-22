@@ -116,6 +116,8 @@ public class TransformationSample {
 			NeoLogger.info("Table: " + t.getName());
 			for (Column c : t.getCol()) {
 				NeoLogger.info("\tColumn: " + c.getName());
+				NeoLogger.info("\t\tkeyOf: " + c.getKeyOf());
+				NeoLogger.info("\t\ttype: " + c.getType());
 			}
 		}
 		mogResource.close();
