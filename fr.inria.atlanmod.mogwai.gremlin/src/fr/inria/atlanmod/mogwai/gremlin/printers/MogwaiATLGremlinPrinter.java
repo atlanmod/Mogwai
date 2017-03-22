@@ -29,6 +29,31 @@ public class MogwaiATLGremlinPrinter extends DefaultGremlinPrinter {
 		}
 	}
 	
+	public String caseMethodDeclaration(fr.inria.atlanmod.mogwai.gremlin.MethodDeclaration o) {
+		StringBuffer res = new StringBuffer();
+		res.append("def ");
+		res.append(o.getName());
+		res.append("(");
+		int gen = 0;
+		for(String s : o.getParameters()) {
+			res.append(s);
+			gen++;
+			if(gen < o.getParameters().size()) {
+				res.append(", ");
+			}
+		}
+		res.append(")\n");
+		pad(res).append("{\n");
+		padding++;
+		for(Instruction i : o.getInstructions()) {
+			pad(res).append(doSwitch(i)).append(";\n");
+		}
+		padding--;
+		pad(res).append("}\n");
+		return res.toString();
+		
+	};
+	
 	@Override
 	public String caseClosure(Closure o) {
 		StringBuffer res = new StringBuffer();
