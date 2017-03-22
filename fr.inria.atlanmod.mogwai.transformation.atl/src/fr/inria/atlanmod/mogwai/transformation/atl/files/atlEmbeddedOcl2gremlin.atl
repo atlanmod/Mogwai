@@ -63,3 +63,21 @@ rule referenceNavigationOrAttributeCallExp2steps {
 			nextElement <- nav.getComposite()	
 		)
 }
+
+rule allInstances2steps {
+	from
+		ai : ATL!OperationCallExp (ai.getOpName() = 'allInstances')
+	to
+		varAccess : Gremlin!VariableAccess(
+			name <- 'g',
+			nextElement <- allOfTypeStep
+		),
+		allOfTypeStep : Gremlin!CustomStep(
+			name <- 'allOfType',
+			params <- typeLiteral,
+			nextElement <- ai.getComposite()
+		),
+		typeLiteral : Gremlin!StringLiteral(
+			value <- ai.source.name
+		)
+}
