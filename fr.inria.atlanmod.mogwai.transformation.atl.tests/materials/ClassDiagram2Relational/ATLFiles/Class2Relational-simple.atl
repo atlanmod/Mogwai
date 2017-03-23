@@ -48,3 +48,55 @@ rule DataTypeAttribute2Column {
 			type <- a.type
 		)
 }
+
+rule MultiValuedDataTypeAttribute2Column {
+	from
+		a : ClassMM!Attribute (
+			a.type.oclIsKindOf(ClassMM!DataType) and a.multiValued
+		)
+	to
+		out : RelationalMM!Table (
+			name <- a.owner.name + '_' + a.name,
+			col <- Sequence {id, value}
+		),
+		id : RelationalMM!Column (
+			name <- a.owner.name + 'Id',
+			type <- thisModule.objectIdType
+		),
+		value : RelationalMM!Column (
+			name <- a.name,
+			type <- a.type
+		)
+}
+
+rule ClassAttribute2Column {
+	from
+		a : ClassMM!Attribute (
+			a.type.oclIsKindOf(ClassMM!Class) and not a.multiValued
+		)
+	to
+		foreignKey : RelationalMM!Column (
+			name <- a.name + 'Id',
+			type <- thisModule.objectIdType
+		)
+}
+
+rule MultiValuedClassAttribute2Column {
+	from
+		a : ClassMM!Attribute (
+			a.type.oclIsKindOf(ClassMM!Class) and a.multiValued
+		)
+	to
+		t : RelationalMM!Table (
+			name <- a.owner.name + '_' + a.name,
+			col <- Sequence {id, foreignKey}
+		),
+		id : RelationalMM!Column (
+			name <- a.owner.name + 'Id',
+			type <- thisModule.objectIdType
+		),
+		foreignKey : RelationalMM!Column (
+			name <- a.name + 'Id',
+			type <- thisModule.objectIdType
+		)
+}
