@@ -19,6 +19,7 @@ import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
 import fr.inria.atlanmod.neoemf.core.StringId;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore;
+import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
 /**
  * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps
@@ -220,8 +221,8 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 */
 	@Override
 	public boolean isKindOf(Vertex from, String type) {
-		throw new UnsupportedOperationException(
-				"NeoEMFMapping doesn't support isKindOf mapping, use multiple isTypeOf instead");
+		NeoLogger.warn("NeoEMFMapping doesn't support isKindOf mapping, computing isTypeOf instead");
+		return isTypeOf(from, type);
 	}
 
 	/**
