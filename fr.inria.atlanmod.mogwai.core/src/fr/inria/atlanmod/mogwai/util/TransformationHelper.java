@@ -153,11 +153,11 @@ public class TransformationHelper {
 	 * @throws NullPointerException
 	 *             if {@code v1}, {@code v2}, or {@code label} is null
 	 */
-	public Edge link(Vertex v1, Vertex v2, String label, boolean isContainment) {
+	public Edge link(Vertex v1, Vertex v2, String label, String oppositeLabel, boolean isContainment) {
 		checkNotNull(v1, "Cannot create a link from null");
 		checkNotNull(v2, "Cannot create a link to null");
 		checkNotNull(label, "Cannot create a link with null label");
-		return mapping.setRef(v1, label, v2, isContainment);
+		return mapping.setRef(v1, label, oppositeLabel, v2, isContainment);
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class TransformationHelper {
 		 * if inHelper = outHelper, but should not be true all the time) TODO
 		 * find a way to deal with cross-graph edges
 		 */
-		Edge pEdge = link(v1, v2, PROXY_LABEL, false);
+		Edge pEdge = link(v1, v2, PROXY_LABEL, null, false);
 		/*
 		 * Proxy links cannot be containment feature, this information is holded
 		 * in the edge properties to avoid mapping side-effects resulting on
@@ -227,7 +227,7 @@ public class TransformationHelper {
 			if (isNull(baseLabel)) {
 				throw new RuntimeException("[Debug] A proxy link has null as its base label");
 			}
-			mapping.setRef(outV, baseLabel, target, isContainment);
+			mapping.setRef(outV, baseLabel, null, target, isContainment);
 			// Delete the proxy, it is no longer needed
 			mapping.removeRef(outV, PROXY_LABEL, source, false);
 		}
@@ -284,10 +284,10 @@ public class TransformationHelper {
 	 * 
 	 * @see #linkReference(Vertex, Iterable, String)
 	 */
-	public Edge linkReference(Vertex source, Vertex target, String label, boolean isContainment) {
+	public Edge linkReference(Vertex source, Vertex target, String label, String oppositeLabel, boolean isContainment) {
 		// TODO resolve inside the method to optimize database accesses
 		if (isResolvable(target)) {
-			return link(source, resolve(target), label, isContainment);
+			return link(source, resolve(target), label, oppositeLabel, isContainment);
 		} else {
 			return pLink(source, target, label, isContainment);
 		}
@@ -319,15 +319,15 @@ public class TransformationHelper {
 	 * 
 	 * @see #linkReference(Vertex, Vertex, String)
 	 */
-	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label, boolean isContainment) {
+	public List<Edge> linkReference(Vertex source, Iterable<Vertex> target, String label, String oppositeLabel, boolean isContainment) {
 		// TODO resolve inside the method to optimize database accesses
 		List<Edge> createdEdges = new ArrayList<>();
 		for (Vertex vv : target) {
 			if (isTargetElement(vv)) {
-				createdEdges.add(link(source, vv, label, isContainment));
+				createdEdges.add(link(source, vv, label, oppositeLabel, isContainment));
 			} else {
 				if (isResolvable(vv)) {
-					createdEdges.add(link(source, resolve(vv), label, isContainment));
+					createdEdges.add(link(source, resolve(vv), label, oppositeLabel, isContainment));
 				} else {
 					createdEdges.add(pLink(source, vv, label, isContainment));
 				}

@@ -130,7 +130,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 		 * kyanosInstanceof:size in the database
 		 */
 		vertex.addEdge(BlueprintsPersistenceBackend.KEY_INSTANCE_OF, eClassVertex);
-		setRef(resourceRoot, CONTENTS_LABEL, vertex, false);
+		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false);
 		return vertex;
 	}
 
@@ -158,7 +158,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	}
 
 	@Override
-	public Edge setRef(Vertex from, String refName, Vertex to, boolean isContainment) {
+	public Edge setRef(Vertex from, String refName, String oppositeName, Vertex to, boolean isContainment) {
 		/*
 		 * Note: this implementation only consider append behavior. If the
 		 * transformation sets a reference at a specific position model
@@ -166,6 +166,16 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 		 */
 		if (isContainment) {
 			updateContainment(from, refName, to);
+		}
+		else {
+			// NeoEMF stores opposites if they are not eContainers
+			if(nonNull(oppositeName) && !oppositeName.equals("")) {
+				/*
+				 *  We don't give an opposite to setRef to avoid infinite recursion.
+				 *  Note that the opposite reference cannot be a containment.
+				 */
+				setRef(to, oppositeName, null, from, false);
+			}
 		}
 		Edge newEdge = from.addEdge(refName, to);
 		Integer size = getSize(from, refName);

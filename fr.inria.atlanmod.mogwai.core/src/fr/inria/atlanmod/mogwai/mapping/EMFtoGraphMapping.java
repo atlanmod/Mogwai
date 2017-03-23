@@ -195,7 +195,7 @@ public interface EMFtoGraphMapping {
 	 * 
 	 * @see #getRef(Vertex, String)
 	 */
-	Pipe<Vertex, Vertex> getRef(String refName, String oppositeName, boolean isContainer);
+	Pipe<Vertex, Vertex> getRef(String refName, @Nullable String oppositeName, boolean isContainer);
 
 	/**
 	 * Creates a reference link between {@code from} and {@code to} with the
@@ -214,7 +214,7 @@ public interface EMFtoGraphMapping {
 	 * 
 	 * @see #setRef(String, Vertex, boolean)
 	 */
-	Edge setRef(Vertex from, String refName, Vertex to, boolean isContainment);
+	Edge setRef(Vertex from, String refName, @Nullable String oppositeName, Vertex to, boolean isContainment);
 
 	/**
 	 * Returns a {@link Pipe} that creates a reference link between its input
@@ -232,7 +232,7 @@ public interface EMFtoGraphMapping {
 	 * 
 	 * @see #setRef(Vertex, String, Vertex, boolean)
 	 */
-	Pipe<Vertex, Edge> setRef(String refName, Vertex to, boolean isContainment);
+	Pipe<Vertex, Edge> setRef(String refName, @Nullable String oppositeName, Vertex to, boolean isContainment);
 
 	/**
 	 * Removes the reference link between {@code from} and {@code to} with the

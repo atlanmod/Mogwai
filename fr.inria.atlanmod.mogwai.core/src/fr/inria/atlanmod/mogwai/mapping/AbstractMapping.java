@@ -117,7 +117,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	}
 
 	@Override
-	public abstract Edge setRef(Vertex from, String refName, Vertex to, boolean isContainment);
+	public abstract Edge setRef(Vertex from, String refName, String oppositeName, Vertex to, boolean isContainment);
 
 	/**
 	 * {@inheritDoc}
@@ -127,12 +127,12 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	 * between its input elements and {@code to}.
 	 */
 	@Override
-	public Pipe<Vertex, Edge> setRef(final String refName, final Vertex to, final boolean isContainment) {
+	public Pipe<Vertex, Edge> setRef(final String refName, final String oppositeName, final Vertex to, final boolean isContainment) {
 		return new AbstractPipe<Vertex, Edge>() {
 
 			@Override
 			protected Edge processNextStart() throws NoSuchElementException {
-				return setRef(this.starts.next(), refName, to, isContainment);
+				return setRef(this.starts.next(), refName, oppositeName, to, isContainment);
 			}
 		};
 	}
