@@ -133,6 +133,16 @@ helper context ATL!OperationCallExp def : isLastInComparison() : Boolean =
 	endif
 	;
 
+-- Returns true if an OclExpression is the last one in a math operation, false otherwise.
+-- This method is used to append next() calls at the end of operation expressions.
+helper context ATL!OclExpression def : isLastInMathOperation() : Boolean =
+	if self.refImmediateComposite().oclIsTypeOf(ATL!OperatorCallExp) then
+		self.refImmediateComposite().isMathOperation()
+	else
+		false
+	endif
+;
+
 -- Returns true if the OperationCallExp is an comparison operation.
 helper context ATL!OperationCallExp def : isComparison() : Boolean =
 	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())

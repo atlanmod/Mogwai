@@ -1,5 +1,6 @@
 package fr.inria.atlanmod.mogwai.mapping;
 
+import com.sun.istack.internal.Nullable;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -164,12 +165,18 @@ public interface EMFtoGraphMapping {
 	 *            the {@link Vertex} to get the reference from
 	 * @param refName
 	 *            the name of the reference to navigate
+	 * @param oppositeName
+	 *            the name of the opposite of the reference to navigate if it
+	 *            exists
+	 * @param isContainer
+	 *            {@code true} if {@code refName} is a containment,
+	 *            {@code false} otherwise
 	 * @return an {@link Iterable} containing the {@link Vertex} elements
 	 *         connected to {@code from}
 	 * 
 	 * @see #getRef(String)
 	 */
-	Iterable<Vertex> getRef(Vertex from, String refName);
+	Iterable<Vertex> getRef(Vertex from, String refName, @Nullable String oppositeName, boolean isContainer);
 
 	/**
 	 * Returns a {@link Pipe} that computes the vertices connected to its input
@@ -177,12 +184,18 @@ public interface EMFtoGraphMapping {
 	 * 
 	 * @param refName
 	 *            the name of the reference to navigate
+	 * @param oppositeName
+	 *            the name of the opposite of the reference to navigate if it
+	 *            exists
+	 * @param isContainer
+	 *            {@code true} if {@code refName} is a containment,
+	 *            {@code false} otherwise
 	 * @return a {@link Pipe} that computes the vertices connected to its input
 	 *         elements with an {@link Edge} labeled {@code refName}
 	 * 
 	 * @see #getRef(Vertex, String)
 	 */
-	Pipe<Vertex, Vertex> getRef(String refName);
+	Pipe<Vertex, Vertex> getRef(String refName, String oppositeName, boolean isContainer);
 
 	/**
 	 * Creates a reference link between {@code from} and {@code to} with the

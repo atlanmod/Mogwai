@@ -242,7 +242,7 @@ public class TransformationHelper {
 	 *         otherwise
 	 */
 	public boolean isResolvable(Vertex source) {
-		return mapping.getRef(source, TRACE_LINK_LABEL).iterator().hasNext();
+		return mapping.getRef(source, TRACE_LINK_LABEL, null, false).iterator().hasNext();
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class TransformationHelper {
 	 * @return the {@link Vertex} corresponding to the resolved element
 	 */
 	public Vertex resolve(Vertex source) {
-		return mapping.getRef(source, TRACE_LINK_LABEL).iterator().next();
+		return mapping.getRef(source, TRACE_LINK_LABEL, null, false).iterator().next();
 	}
 
 	/**

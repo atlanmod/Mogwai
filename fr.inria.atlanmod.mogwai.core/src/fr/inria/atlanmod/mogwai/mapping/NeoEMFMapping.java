@@ -85,6 +85,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	@Override
 	public Iterable<Vertex> allOfType(String typeName) {
 		Vertex metaClassVertex = getMetaclassVertex(typeName);
+		System.out.println("ALLOFTYPE?: " + Iterables.size(metaClassVertex.getVertices(Direction.IN, BlueprintsPersistenceBackend.KEY_INSTANCE_OF)));
 		return metaClassVertex.getVertices(Direction.IN, BlueprintsPersistenceBackend.KEY_INSTANCE_OF);
 	}
 
@@ -139,8 +140,21 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	}
 
 	@Override
-	public Iterable<Vertex> getRef(Vertex from, String refName) {
-		return from.getVertices(Direction.OUT, refName);
+	public Iterable<Vertex> getRef(Vertex from, String refName, String oppositeName, boolean isContainer) {
+		Iterable<Vertex> result = null;
+		if(isContainer && nonNull(oppositeName) && !oppositeName.equals("")) {
+			/*
+			 * NeoEMF doesn't store containment features with an opposite as edges,
+			 * so we need to navigate the opposite to find the container of from.
+			 * We can also navigate the eContainer edge, but this implies a property check to
+			 * ensure the eContainer has the right type which is more expensive.
+			 */
+			result = from.getVertices(Direction.IN, oppositeName);
+		}
+		else {
+			result = from.getVertices(Direction.OUT, refName);
+		}
+		return result;
 	}
 
 	@Override

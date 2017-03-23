@@ -89,7 +89,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	}
 
 	@Override
-	public abstract Iterable<Vertex> getRef(Vertex from, String refName);
+	public abstract Iterable<Vertex> getRef(Vertex from, String refName, String oppositeName, boolean isContainer);
 
 	/**
 	 * {@inheritDoc}
@@ -98,7 +98,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 	 * the {@link Vertex} elements associated to its input elements.
 	 */
 	@Override
-	public Pipe<Vertex, Vertex> getRef(final String refName) {
+	public Pipe<Vertex, Vertex> getRef(final String refName, final String oppositeName, final boolean isContainer) {
 		return new AbstractPipe<Vertex, Vertex>() {
 
 			private Iterator<Vertex> nextRefs = PipeHelper.emptyIterator();
@@ -109,7 +109,7 @@ public abstract class AbstractMapping implements EMFtoGraphMapping {
 					if (this.nextRefs.hasNext()) {
 						return this.nextRefs.next();
 					} else {
-						this.nextRefs = getRef(this.starts.next(), refName).iterator();
+						this.nextRefs = getRef(this.starts.next(), refName, oppositeName, isContainer).iterator();
 					}
 				}
 			}

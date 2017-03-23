@@ -21,7 +21,18 @@ helper context ATL!NavigationOrAttributeCallExp def : isAttributeNavigation() : 
 helper context ATL!NavigationOrAttributeCallExp def : isReferenceNavigation() : Boolean = 
 	self.feature.oclIsKindOf(SourceEcore!EReference)
 ;
-	
+
+helper context SourceEcore!EReference def : getOpposite() : String =
+	if(self.eOpposite.oclIsUndefined()) then
+		''
+	else
+		self.eOpposite.name
+	endif
+;
+
+helper context SourceEcore!EReference def : isContainer() : Boolean =
+	self.container
+;
 
 rule varExp2steps {
 	from
@@ -47,17 +58,38 @@ rule attributeNavigationOrAttributeCallExp2steps {
 		)
 }
 
+rule attributeNavigationOrAttributeCallExpLastInMathOperation2steps extends attributeNavigationOrAttributeCallExp2steps {
+	from
+		nav : ATL!NavigationOrAttributeCallExp (nav.isAttributeNavigation() and nav.isLastInMathOperation())
+	to
+		-- wrap the result into a pipeline to be sure we can call next on it
+		-- TODO optimize
+		idStep : Gremlin!IdentityStep(
+			nextElement <- prop	
+		),
+		prop : Gremlin!CustomStep(
+			nextElement <- nextCall	
+		),
+		nextCall : Gremlin!NextCall()
+}
+
 rule referenceNavigationOrAttributeCallExp2steps {
 	from
 		nav : ATL!NavigationOrAttributeCallExp (nav.isReferenceNavigation())
 	to
 		getRef : Gremlin!CustomStep (
 			name <- 'getRef',
-			params <- Sequence{refLabelLiteral},
+			params <- Sequence{refLabelLiteral, oppositeLabelLiteral, isContainmentLiteral},
 			nextElement <- idStep
 		),
 		refLabelLiteral : Gremlin!StringLiteral (
 			value <- nav.name	
+		),
+		oppositeLabelLiteral : Gremlin!StringLiteral (
+			value <- nav.feature.getOpposite()
+		),
+		isContainmentLiteral : Gremlin!BooleanLiteral (
+			value <- nav.feature.isContainer()
 		),
 		idStep : Gremlin!IdentityStep(
 			nextElement <- nav.getComposite()	
