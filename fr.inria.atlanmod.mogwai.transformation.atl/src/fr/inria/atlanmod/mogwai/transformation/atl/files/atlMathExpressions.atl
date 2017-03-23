@@ -157,8 +157,24 @@ rule or2steps {
 			)
 	to
 		gremlinOr : Gremlin!OrExpression(
-			left <- oclOr.source.getFirstInstruction(),
-			right <- oclOr.arguments.first().getFirstInstruction()
+			left <- gHelper1,
+			right <- gHelper2
+		),
+		gHelper1 : Gremlin!VariableAccess(
+			name <- 'gHelper',
+			nextElement <- bFromCall1
+		),
+		bFromCall1 : Gremlin!CustomMethodCall(
+			name <- 'booleanFrom',
+			params <- oclOr.source.getFirstInstruction()
+		),
+		gHelper2 : Gremlin!VariableAccess(
+			name <- 'gHelper',
+			nextElement <- bFromCall2
+		),
+		bFromCall2 : Gremlin!CustomMethodCall(
+			name <- 'booleanFrom',
+			params <- oclOr.arguments.first().getFirstInstruction()
 		)
 }
 
@@ -171,7 +187,23 @@ rule and2steps {
 		)
 	to
 		gremlinAnd : Gremlin!AndExpression(
-			left <- oclAnd.source.getFirstInstruction(),
-			right <- oclAnd.arguments.first().getFirstInstruction()
+			left <- gHelper1,
+			right <- gHelper2
+		),
+		gHelper1 : Gremlin!VariableAccess(
+			name <- 'gHelper',
+			nextElement <- bFromCall1
+		),
+		bFromCall1 : Gremlin!CustomMethodCall(
+			name <- 'booleanFrom',
+			params <- oclAnd.source.getFirstInstruction()
+		),
+		gHelper2 : Gremlin!VariableAccess(
+			name <- 'gHelper',
+			nextElement <- bFromCall2
+		),
+		bFromCall2 : Gremlin!CustomMethodCall(
+			name <- 'booleanFrom',
+			params <- oclAnd.arguments.first().getFirstInstruction()
 		)
 }
