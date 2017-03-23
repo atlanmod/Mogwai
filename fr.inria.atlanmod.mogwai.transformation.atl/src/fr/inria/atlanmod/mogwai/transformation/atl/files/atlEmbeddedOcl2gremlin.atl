@@ -14,12 +14,22 @@ helper context ATL!NavigationOrAttributeCallExp def: feature : Ecore!EStructural
 		type.eAllStructuralFeatures->any(e | e.name = self.name)
 	endif;
 
+helper context ATL!Binding def: feature : Ecore!EStructuralFeature =
+	let cType : OclAny = self.refImmediateComposite().type.inferredType in
+		cType.eAllStructuralFeatures->any(e | e.name = self.propertyName)
+;
+			
+
 helper context ATL!NavigationOrAttributeCallExp def : isAttributeNavigation() : Boolean = 
 	self.feature.oclIsKindOf(SourceEcore!EAttribute)
 ;
 
 helper context ATL!NavigationOrAttributeCallExp def : isReferenceNavigation() : Boolean = 
 	self.feature.oclIsKindOf(SourceEcore!EReference)
+;
+
+helper context SourceEcore!EAttribute def : getOpposite() : String =
+	''
 ;
 
 helper context SourceEcore!EReference def : getOpposite() : String =

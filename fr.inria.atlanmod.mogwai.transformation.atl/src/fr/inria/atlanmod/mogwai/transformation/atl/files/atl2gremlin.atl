@@ -266,13 +266,16 @@ rule referenceBinding2instruction {
 		),
 		linkRefCall : Gremlin!CustomMethodCall (
 			name <- 'linkReference',
-			params <- Sequence{bindedElVarAccess, bb.value.getFirstInstruction(), propSR, containmentLiteral}
+			params <- Sequence{bindedElVarAccess, bb.value.getFirstInstruction(), propSR, oppositeLiteral, containmentLiteral}
 		),
 		bindedElVarAccess : Gremlin!VariableAccess (
 			name <- bb.getBindedElement()	
 		),
 		propSR : Gremlin!StringLiteral (
 			value <- bb.propertyName	
+		),
+		oppositeLiteral : Gremlin!StringLiteral (
+			value <- bb.feature.getOpposite()
 		),
 		containmentLiteral : Gremlin!BooleanLiteral (
 			value <- bb.outPatternElement.type.toPlatform.eAllStructuralFeatures->any(e |
