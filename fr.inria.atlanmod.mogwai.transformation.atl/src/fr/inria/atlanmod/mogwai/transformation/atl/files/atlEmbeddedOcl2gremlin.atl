@@ -93,3 +93,51 @@ rule allInstances2steps {
 			value <- ai.source.name
 		)
 }
+
+rule oclIsKindOf2steps {
+	from
+		ok : ATL!OperationCallExp (ok.getOpName() = 'oclIsKindOf')
+	to
+		koStep : Gremlin!CustomStep(
+			name <- 'isKindOf',
+			params <- typeLiteral,
+			nextElement <- ok.getComposite()
+		),
+		typeLiteral : Gremlin!StringLiteral(
+			value <- ok.arguments->first().name	
+		)
+}
+
+rule oclIsKinOf2stepsLastInComparison2steps extends oclIsKindOf2steps {
+	from
+		ok : ATL!OperationCallExp (ok.getOpName() = 'oclIsKindOf' and ok.isLastInComparison())
+	to
+		koStep : Gremlin!CustomStep (
+			nextElement <- nextCall	
+		),
+		nextCall : Gremlin!NextCall()
+}
+
+rule oclIsTypeOf2steps {
+	from
+		ot : ATL!OperationCallExp (ot.getOpName() = 'oclIsTypeOf')
+	to
+		toStep : Gremlin!CustomStep (
+			name <- 'isTypeOf',
+			params <- typeLiteral,
+			nextElement <- ot.getComposite()
+		),
+		typeLiteral : Gremlin!StringLiteral(
+			value <- ot.arguments->first().name	
+		)
+}
+
+rule oclIsTypeOf2stepsLastInComparison2steps extends oclIsTypeOf2steps {
+	from
+		ot : ATL!OperationCallExp (ot.getOpName() = 'oclIsTypeOf' and ot.isLastInComparison())
+	to
+		toStep : Gremlin!CustomStep (
+			nextElement <- nextCall	
+		),
+		nextCall : Gremlin!NextCall()
+}
