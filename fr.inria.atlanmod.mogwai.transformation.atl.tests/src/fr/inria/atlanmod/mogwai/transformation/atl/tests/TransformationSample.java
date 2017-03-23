@@ -119,7 +119,7 @@ public class TransformationSample {
 			}
 			for (Column c : t.getCol()) {
 				NeoLogger.info("\tColumn: " + c.getName());
-				NeoLogger.info("\t\tkeyOf: " + c.getKeyOf());
+				NeoLogger.info("\t\tkeyOf: {0}", c.getKeyOf() == null ? "null" : c.getKeyOf().getName());
 				NeoLogger.info("\t\ttype: {0}", c.getType() == null ? "null" : c.getType().getName());
 			}
 		}
