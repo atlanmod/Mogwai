@@ -78,6 +78,7 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 				self.source.getFirstInstruction()
 			else
 				if self.oclIsTypeOf(ATL!VariableExp) or
+					self.oclIsKindOf(ATL!OclModelElement) or
 					self.oclIsKindOf(ATL!PrimitiveExp) or
 					self.oclIsTypeOf(ATL!OclModel) or
 					self.oclIsKindOf(ATL!BooleanExp) or

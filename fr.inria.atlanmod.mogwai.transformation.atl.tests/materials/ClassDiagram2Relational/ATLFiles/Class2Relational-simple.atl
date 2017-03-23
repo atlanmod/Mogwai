@@ -37,11 +37,14 @@ rule DataType2Type {
 		)
 }
 
-rule Attribute2Column {
+rule DataTypeAttribute2Column {
 	from
-		a : ClassMM!Attribute
+		a : ClassMM!Attribute (
+			a.type.oclIsKindOf(ClassMM!DataType) and not a.multiValued
+		)
 	to
-		fKey : RelationalMM!Column (
-			name <- a.name + 'Id'	
-		)	
+		out : RelationalMM!Column (
+			name <- a.name,
+			type <- a.type
+		)
 }
