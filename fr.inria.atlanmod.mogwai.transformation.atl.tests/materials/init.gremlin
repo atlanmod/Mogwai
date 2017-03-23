@@ -61,9 +61,9 @@ Vertex.metaClass.getParent =
 // v.getRef("myRef");
 Vertex.metaClass.getRef = 
 { 
-	String refName -> 
-		println("getRef(" + refName + ")"); 
-		m.getRef(delegate, refName); 
+	String refName, String oppositeName, boolean isContainer -> 
+		println("getRef(" + refName + "," + oppositeName + "," + isContainer + ")"); 
+		m.getRef(delegate, refName, oppositeName, isContainer); 
 }
 
 // v.setAtt("myAtt", value);
@@ -139,9 +139,9 @@ Gremlin.defineStep("getParent", [Pipe],
 // Pipe.getRef("myRef");
 Gremlin.defineStep("getRef", [Pipe], 
 	{
-		String refName ->
-			println("getRef(" + refName + ")[Pipe]");
-			m.getRef(refName);
+		String refName, String oppositeName, boolean isContainer ->
+			println("getRef(" + refName + "," + oppositeName + "," + isContainer + ")[Pipe]");
+			m.getRef(refName, oppositeName, isContainer);
 	}	
 )
 
