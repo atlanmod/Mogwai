@@ -114,10 +114,13 @@ public class TransformationSample {
 		for (EObject e : allTables) {
 			Table t = (Table) e;
 			NeoLogger.info("Table: " + t.getName());
+			for(Column key : t.getKey()) {
+				NeoLogger.info("\tkey: {0} ( {1} )", key.getName(), key.getType() == null ? "null" : key.getType().getName());
+			}
 			for (Column c : t.getCol()) {
 				NeoLogger.info("\tColumn: " + c.getName());
 				NeoLogger.info("\t\tkeyOf: " + c.getKeyOf());
-				NeoLogger.info("\t\ttype: " + c.getType());
+				NeoLogger.info("\t\ttype: {0}", c.getType() == null ? "null" : c.getType().getName());
 			}
 		}
 		mogResource.close();
