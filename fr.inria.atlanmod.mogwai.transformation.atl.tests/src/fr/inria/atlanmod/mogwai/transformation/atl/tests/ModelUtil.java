@@ -128,9 +128,15 @@ public class ModelUtil {
 		neoResource.getContents().add(dt);
 		neoResource.getContents().add(dt2);
 		
+		List<ClassDiagram.Class> classes = new ArrayList<>();
 		for(int i = 0; i < classCount; i++) {
 			ClassDiagram.Class c = ClassDiagramFactory.eINSTANCE.createClass();
 			c.setName(UUID.randomUUID().toString());
+			classes.add(c);
+		}
+		
+		for(int i = 0; i < classCount; i++) {
+			ClassDiagram.Class c = classes.get(i);
 			for(int j = 0; j < attributePerClass ; j++) {
 				Attribute att = ClassDiagramFactory.eINSTANCE.createAttribute();
 				att.setName(UUID.randomUUID().toString());
@@ -140,10 +146,18 @@ public class ModelUtil {
 					att.setMultiValued(false);
 				}
 				if(Math.random() > 0.5) {
-					att.setType(dt);
+					// set datatype attribute
+					if(Math.random() > 0.5) {
+						att.setType(dt);
+					}
+					else {
+						att.setType(dt2);
+					}
 				}
 				else {
-					att.setType(dt2);
+					// set class attribute
+					int idx = (int) Math.random() * classCount;
+					att.setType(classes.get(idx));
 				}
 				c.getAttr().add(att);
 			}
