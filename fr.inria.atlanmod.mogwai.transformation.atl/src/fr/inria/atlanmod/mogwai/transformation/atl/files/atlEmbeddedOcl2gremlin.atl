@@ -60,7 +60,7 @@ rule attributeNavigationOrAttributeCallExp2steps {
 
 rule attributeNavigationOrAttributeCallExpLastInMathOperation2steps extends attributeNavigationOrAttributeCallExp2steps {
 	from
-		nav : ATL!NavigationOrAttributeCallExp (nav.isAttributeNavigation() and nav.isLastInMathOperation())
+		nav : ATL!NavigationOrAttributeCallExp (nav.isAttributeNavigation() and (nav.isLastInMathOperation() or nav.isLastInBinding()))
 	to
 		-- wrap the result into a pipeline to be sure we can call next on it
 		-- TODO optimize

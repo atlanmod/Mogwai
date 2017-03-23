@@ -143,6 +143,10 @@ helper context ATL!OclExpression def : isLastInMathOperation() : Boolean =
 	endif
 ;
 
+helper context ATL!OclExpression def : isLastInBinding() : Boolean =
+	self.refImmediateComposite().oclIsTypeOf(ATL!Binding)
+;
+
 -- Returns true if the OperationCallExp is an comparison operation.
 helper context ATL!OperationCallExp def : isComparison() : Boolean =
 	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())
