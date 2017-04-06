@@ -16,7 +16,11 @@ helper context ATL!NavigationOrAttributeCallExp def: feature : Ecore!EStructural
 
 helper context ATL!Binding def: feature : Ecore!EStructuralFeature =
 	let cType : OclAny = self.refImmediateComposite().type.inferredType in
+	if cType.oclIsUndefined() then
+		('error: cannot infer type of expression @' + self.refImmediateComposite().type.location).debug()
+	else
 		cType.eAllStructuralFeatures->any(e | e.name = self.propertyName)
+	endif
 ;
 			
 

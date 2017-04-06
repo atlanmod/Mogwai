@@ -25,7 +25,7 @@ helper context String def: primitiveType : OclAny =
 helper context SourceEcore!EClassifier def: ttype : String = OclUndefined;
 
 helper context ATL!OclModelElement def: toPlatform : OclAny =
-	SourceEcore!EClassifier.allInstancesFrom('SOURCEMM') -> any(e |
+	SourceEcore!EClassifier.allInstances() -> any(e | 
 		e.name = self.name
 	);
 
@@ -40,7 +40,7 @@ helper context SourceEcore!EAttribute def: type : Integer =
 	self.eType.name.primitiveType;
 
 helper context String def: class: OclAny =
-	SourceEcore!EClass.allInstancesFrom('SOURCEMM') -> any(e | e.name = self);
+	SourceEcore!EClass.allInstances() -> any(e | e.name = self);
 
 --helper context UML!Element def: origin : String =
 --	' from ' + self.eResource().toString();

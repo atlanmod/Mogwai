@@ -130,7 +130,7 @@ public class ATL2Gremlin {
 		}
 	}
 	
-	public Resource transform(URI atlURI) throws IOException {
+	public Resource transform(URI atlURI, EPackage sourcePackage, EPackage targetPackage) throws IOException {
 		ResourceSet rSet = new ResourceSetImpl();
 		EPackage.Registry.INSTANCE.put(ATLPackage.eNS_URI, ATLPackage.eINSTANCE);
 		EPackage.Registry.INSTANCE.put(OCLPackage.eNS_URI, OCLPackage.eINSTANCE);
@@ -150,7 +150,7 @@ public class ATL2Gremlin {
 		xmiResource.save(Collections.EMPTY_MAP);
 		//
 		
-		return transform(atlResource);
+		return transform(atlResource, sourcePackage, targetPackage);
 	}
 	
 	/**
@@ -160,16 +160,18 @@ public class ATL2Gremlin {
 	 * @param inputResource the resource containing the ATL model to transform
 	 * @return a {@link Resource} containing the Gremlin script corresponding to the transformation
 	 */
-	public Resource transform(Resource inputResource) {
+	public Resource transform(Resource inputResource, EPackage sourcePackage, EPackage targetPackage) {
 		try {
 			IModel inputModel = modelFactory.newModel(atlMetamodel);
 			injector.inject(inputModel, inputResource);
 			
 			IModel sourceMM = modelFactory.newModel(sourceMetamodel);
 			IModel targetMM = modelFactory.newModel(targetMetamodel);
+			injector.inject(sourceMM, sourcePackage.eResource());
+			injector.inject(targetMM, targetPackage.eResource());
 			// dev
-			injector.inject(sourceMM, ClassDiagramPackage.eINSTANCE.eResource());
-			injector.inject(targetMM, ClassDiagramPackage.eINSTANCE.eResource());
+//			injector.inject(sourceMM, ClassDiagramPackage.eINSTANCE.eResource());
+//			injector.inject(targetMM, ClassDiagramPackage.eINSTANCE.eResource());
 			// /dev
 			
 			IModel gModel = modelFactory.newModel(gremlinMetamodel);

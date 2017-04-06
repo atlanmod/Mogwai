@@ -77,16 +77,16 @@ helper context ATL!Binding def : getBindedElementClass() : String =
 	endif
 ;
 	
-helper def : getSourceEClassFromString(eClass : String) : SourceEcore!EClass = 
-	SourceEcore!EClass.allInstances()->select(cc | cc.name = eClass)->first()
+helper def : getTargetEClassFromString(eClass : String) : TargetEcore!EClass = 
+	TargetEcore!EClass.allInstances()->select(cc | cc.name = eClass)->first()
 ;
 
 -- Returns true if the binding sets an attribute value, false otherwise
 -- Note: returning false does not mean the binding sets a reference value, it may also mean that
 -- the EStructuralFeature was not found in the source metamodel (it is debugged in that case)
 helper context ATL!Binding def : isAttributebinding() : Boolean = 
-	let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.getBindedElementClass()) in
-		let att : SourceEcore!EAttribute = selfClass.eAllAttributes->select(aa | aa.name = self.propertyName)->first() in
+	let selfClass : TargetEcore!EClass = thisModule.getTargetEClassFromString(self.getBindedElementClass()) in
+		let att : TargetEcore!EAttribute = selfClass.eAllAttributes->select(aa | aa.name = self.propertyName)->first() in
 			if att.oclIsUndefined() then
 				false
 			else
@@ -95,8 +95,8 @@ helper context ATL!Binding def : isAttributebinding() : Boolean =
 ;
 	
 helper context ATL!Binding def : isReferenceBinding() : Boolean =
-	let selfClass : SourceEcore!EClass = thisModule.getSourceEClassFromString(self.getBindedElementClass()) in
-		let ref : SourceEcore!EReference = selfClass.eAllReferences->select(rr | rr.name = self.propertyName)->first() in
+	let selfClass : TargetEcore!EClass = thisModule.getTargetEClassFromString(self.getBindedElementClass()) in
+		let ref : TargetEcore!EReference = selfClass.eAllReferences->select(rr | rr.name = self.propertyName)->first() in
 			if ref.oclIsUndefined() then
 				false
 			else
@@ -231,7 +231,7 @@ rule outPatternElement2instructions {
 			value <- pp.type.name	
 		),
 		mmNsURILiteral : Gremlin!StringLiteral (
-			value <- pp.type.toPlatform.ePackage.nsURI	
+			value <- thisModule.getTargetEClassFromString(pp.type.name).ePackage.nsURI	
 		),
 		resourceNameLiteral : Gremlin!StringLiteral (
 			value <- thisModule.resourceName	
