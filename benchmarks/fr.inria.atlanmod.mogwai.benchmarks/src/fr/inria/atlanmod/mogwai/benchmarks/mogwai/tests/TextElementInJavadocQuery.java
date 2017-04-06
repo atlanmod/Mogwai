@@ -12,7 +12,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
+import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class TextElementInJavadocQuery extends MogwaiQueryTest {
 
