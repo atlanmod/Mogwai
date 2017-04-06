@@ -19,7 +19,6 @@ import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
 import fr.inria.atlanmod.neoemf.core.StringId;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 
 /**
  * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps
@@ -85,7 +84,6 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	@Override
 	public Iterable<Vertex> allOfType(String typeName) {
 		Vertex metaClassVertex = getMetaclassVertex(typeName);
-		System.out.println("ALLOFTYPE?: " + Iterables.size(metaClassVertex.getVertices(Direction.IN, BlueprintsPersistenceBackend.KEY_INSTANCE_OF)));
 		return metaClassVertex.getVertices(Direction.IN, BlueprintsPersistenceBackend.KEY_INSTANCE_OF);
 	}
 
@@ -116,23 +114,42 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	@Override
 	public Object newInstance(final String typeName, final String typePackageNsURI, String resourceName)
 			throws NullPointerException {
+		long begin = System.currentTimeMillis();
 		checkNotNull(graph, "Graph hasn't been initialized, call setGraph before starting graph manipulation");
 		checkNotNull(typePackageNsURI, "NeoEMFMapping requires EPackage nsURI to create a new element");
+		long beginGetR = System.currentTimeMillis();
 		Vertex resourceRoot = getOrCreateResourceRoot(resourceName);
-		Vertex vertex = graph.addVertex(StringId.generate().toString());
+		long endGetR = System.currentTimeMillis();
+		newInstanceGetResourceRoot += (endGetR-beginGetR);
+//		Vertex vertex = graph.addVertex(StringId.generate().toString());
+		Vertex vertex = graph.addVertex(null);
+		long endNewVertex = System.currentTimeMillis();
+		newInstanceAddVertex += (endNewVertex-endGetR);
 		Vertex eClassVertex = getMetaclassVertex(typeName);
 		if (isNull(eClassVertex)) {
 			eClassVertex = createMetaclassVertex(typeName, typePackageNsURI);
 			metaclassIndex.put(BlueprintsPersistenceBackend.KEY_NAME, typeName, eClassVertex);
 		}
+		long endGetMetaclass = System.currentTimeMillis();
+		newInstanceGetMetaclass += (endGetMetaclass-endNewVertex);
 		/*
 		 * Don't use setRef to set this edge, we don't need to add the property
 		 * kyanosInstanceof:size in the database
 		 */
 		vertex.addEdge(BlueprintsPersistenceBackend.KEY_INSTANCE_OF, eClassVertex);
-		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false);
+		long begin2 = System.currentTimeMillis();
+		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false); // ça doit chier ici
+		long end = System.currentTimeMillis();
+		newInstanceTime += (end-begin);
+		newInstanceSetRef += (end-begin2);
 		return vertex;
 	}
+	
+	public static long newInstanceTime = 0;
+	public static long newInstanceSetRef = 0;
+	public static long newInstanceGetResourceRoot = 0;
+	public static long newInstanceAddVertex = 0;
+	public static long newInstanceGetMetaclass = 0;
 
 	@Override
 	public Vertex getParent(Vertex from) {
@@ -245,7 +262,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 */
 	@Override
 	public boolean isKindOf(Vertex from, String type) {
-		NeoLogger.warn("NeoEMFMapping doesn't support isKindOf mapping, computing isTypeOf instead");
+//		NeoLogger.warn("NeoEMFMapping doesn't support isKindOf mapping, computing isTypeOf instead");
 		return isTypeOf(from, type);
 	}
 
@@ -380,18 +397,31 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 *            the {@link Vertex} representing the contained element
 	 */
 	private void updateContainment(Vertex from, String refName, Vertex to) {
+		long begin = System.currentTimeMillis();
 		// Find the old containment reference name and remove it
+		long begin1 = System.currentTimeMillis();
 		for (Edge edge : to.getEdges(Direction.OUT, CONTAINER_LABEL)) {
 			removeRef(from, (String) edge.getProperty(CONTAINING_FEATURE_KEY), to, true);
 			break;
 		}
-
+		long end1 = System.currentTimeMillis();
+		
 		// Remove eContents edges if the element is a top-level element
+		long begin2 = System.currentTimeMillis();
 		for (Edge edge : to.getEdges(Direction.IN, CONTENTS_LABEL)) {
-			Vertex rootVertex = edge.getVertex(Direction.OUT);
-			removeRef(rootVertex, CONTENTS_LABEL, to, false);
+			edge.remove();
+			break;
 		}
+		long end2 = System.currentTimeMillis();
 		Edge edge = to.addEdge(CONTAINER_LABEL, from);
 		edge.setProperty(CONTAINING_FEATURE_KEY, refName);
+		long end = System.currentTimeMillis();
+		updateContainmentTime += (end-begin);
+		updateContainment1 += (end1-begin1);
+		updateContainment2 += (end2-begin2);
 	}
+	
+	public static long updateContainmentTime = 0;
+	public static long updateContainment1 = 0;
+	public static long updateContainment2 = 0;
 }

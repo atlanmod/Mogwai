@@ -76,26 +76,6 @@ public class TransformationHelper {
 	}
 
 	/**
-	 * Creates a new metaclass {@link Vertex} in the graph
-	 * 
-	 * @param metaclassName
-	 *            the name of the metaclass to create
-	 * @param nsURI
-	 *            the nsURI of the metaclass to create
-	 * @return the created {@link Vertex}
-	 */
-	// public Vertex createMetaclass(String metaclassName, String nsURI) {
-	// checkNotNull(metaclassName, "Cannot create a metaclass with null name");
-	// checkNotNull(nsURI, "Cannot create a metaclass with null nsURI");
-	// Vertex metaclassVertex = graph.addVertex(metaclassName + '@' + nsURI);
-	// metaclassVertex.setProperty("name", metaclassName);
-	// metaclassVertex.setProperty("nsURI", nsURI);
-	// graph.getIndex("metaclasses", Vertex.class).put("name", metaclassName,
-	// metaclassVertex);
-	// return metaclassVertex;
-	// }
-
-	/**
 	 * Creates a new element mapped from the provided {@code source}.
 	 * <p>
 	 * The {@code source} element and the {@code targetLabel} are provided to
@@ -120,6 +100,7 @@ public class TransformationHelper {
 	 */
 	public Vertex createElement(Vertex source, String targetLabel, String metaclassType, String nsURI,
 			String resourceName) {
+		long begin = System.currentTimeMillis();
 		checkNotNull(metaclassType, "Cannot create an element from a null metaclass");
 		Vertex v = (Vertex) mapping.newInstance(metaclassType, nsURI, resourceName);
 		/*
@@ -129,8 +110,12 @@ public class TransformationHelper {
 		v.setProperty(IS_TARGET_KEY, true);
 		Edge traceLink = source.addEdge(TRACE_LINK_LABEL, v);
 		traceLink.setProperty(TRACE_LINK_TARGET_KEY, targetLabel);
+		long end = System.currentTimeMillis();
+		createTime += (end-begin);
 		return v;
 	}
+	
+	public static long createTime = 0;
 
 	/**
 	 * Creates a link between {@code v1} and {@code v2} with the given
@@ -154,11 +139,17 @@ public class TransformationHelper {
 	 *             if {@code v1}, {@code v2}, or {@code label} is null
 	 */
 	public Edge link(Vertex v1, Vertex v2, String label, String oppositeLabel, boolean isContainment) {
+		long begin = System.currentTimeMillis();
 		checkNotNull(v1, "Cannot create a link from null");
 		checkNotNull(v2, "Cannot create a link to null");
 		checkNotNull(label, "Cannot create a link with null label");
-		return mapping.setRef(v1, label, oppositeLabel, v2, isContainment);
+		Edge result = mapping.setRef(v1, label, oppositeLabel, v2, isContainment);
+		long end = System.currentTimeMillis();
+		linkTime += (end-begin);
+		return result;
 	}
+	
+	public static long linkTime = 0;
 
 	/**
 	 * Creates a proxy link between {@code v1} and {@code v2} with the given
@@ -178,6 +169,7 @@ public class TransformationHelper {
 	 *             if {@code v1}, {@code v2}, or {@code label} is null
 	 */
 	public Edge pLink(Vertex v1, Vertex v2, String label, boolean isContainment) {
+		long begin = System.currentTimeMillis();
 		/*
 		 * we assume here that v1 and v2 are in the same graph (it is the case
 		 * if inHelper = outHelper, but should not be true all the time) TODO
@@ -193,8 +185,12 @@ public class TransformationHelper {
 		if (isContainment) {
 			pEdge.setProperty(IS_CONTAINMENT_KEY, true);
 		}
+		long end = System.currentTimeMillis();
+		pLinkTime += (end-begin);
 		return pEdge;
 	}
+	
+	public static long pLinkTime = 0;
 
 	/**
 	 * Resolve the proxy links connected to {@code source} by setting their tail
@@ -208,6 +204,7 @@ public class TransformationHelper {
 	 *            the {@link Vertex} that resolves the proxies
 	 */
 	public void resolveProxies(Vertex source, Vertex target) {
+		long begin = System.currentTimeMillis();
 		// Should be put in mapping
 		Iterator<Edge> pEdges = source.getEdges(Direction.IN, PROXY_LABEL).iterator();
 		while (pEdges.hasNext()) {
@@ -231,7 +228,11 @@ public class TransformationHelper {
 			// Delete the proxy, it is no longer needed
 			mapping.removeRef(outV, PROXY_LABEL, source, false);
 		}
+		long end = System.currentTimeMillis();
+		resolveProxyTime += (end-begin);
 	}
+	
+	public static long resolveProxyTime = 0;
 
 	/**
 	 * Checks whether the given {@link Vertex} can be resolved.
@@ -242,8 +243,14 @@ public class TransformationHelper {
 	 *         otherwise
 	 */
 	public boolean isResolvable(Vertex source) {
-		return mapping.getRef(source, TRACE_LINK_LABEL, null, false).iterator().hasNext();
+		long begin = System.currentTimeMillis();
+		boolean result = mapping.getRef(source, TRACE_LINK_LABEL, null, false).iterator().hasNext();
+		long end = System.currentTimeMillis();
+		isResolvableTime += (end-begin);
+		return result;
 	}
+	
+	public static long isResolvableTime = 0;
 
 	/**
 	 * Resolves the {@code source} {@link Vertex} by inspecting trace links.
@@ -257,9 +264,15 @@ public class TransformationHelper {
 	 * @return the {@link Vertex} corresponding to the resolved element
 	 */
 	public Vertex resolve(Vertex source) {
-		return mapping.getRef(source, TRACE_LINK_LABEL, null, false).iterator().next();
+		long begin = System.currentTimeMillis();
+		Vertex result = mapping.getRef(source, TRACE_LINK_LABEL, null, false).iterator().next();
+		long end = System.currentTimeMillis();
+		resolveTime += (end - begin);
+		return result;
 	}
 
+	public static long resolveTime = 0;
+	
 	/**
 	 * Links two elements by creating an edge between the corresponding
 	 * {@link Vertex} elements.
