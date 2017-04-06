@@ -57,7 +57,7 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 	}
 	
 	private GremlinScript createGremlinScript(MogwaiATLQuery query) {
-		Resource gremlinResource = transformation.transform(query.getATLResource());
+		Resource gremlinResource = transformation.transform(query.getATLResource(), query.getSourcePackage(), query.getTargetPackage());
 		checkArgument(gremlinResource.getContents() != null, "Created resource content is null");
 //		Relax that for debugging purposes
 //		checkArgument(gremlinResource.getContents().size() == 1,

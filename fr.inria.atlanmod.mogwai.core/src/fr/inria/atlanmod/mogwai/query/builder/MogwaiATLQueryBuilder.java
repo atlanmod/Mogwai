@@ -34,6 +34,8 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 	private PersistentResource outputResource;
 	private EMFtoGraphMapping inputMapping;
 	private EMFtoGraphMapping outputMapping;
+	private EPackage sourcePackage;
+	private EPackage targetPackage;
 
 	protected MogwaiATLQueryBuilder() {
 		rSet = new ResourceSetImpl();
@@ -94,6 +96,18 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 		this.outputMapping = mapping;
 		return me();
 	}
+	
+	public MogwaiATLQueryBuilder sourcePackage(EPackage ePackage) {
+		checkNotNull(ePackage, "null ePackage");
+		this.sourcePackage = ePackage;
+		return me();
+	}
+	
+	public MogwaiATLQueryBuilder targetPackage(EPackage ePackage) {
+		checkNotNull(ePackage, "null package");
+		this.targetPackage = ePackage;
+		return me();
+	}
 
 	@Override
 	protected boolean validate() {
@@ -107,7 +121,7 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 	@Override
 	protected MogwaiATLQuery buildQuery() {
 		Resource atlResource = rSet.getResource(transformationURI, true);
-		return new MogwaiATLQuery(atlResource, inputResource, outputResource, inputMapping, outputMapping);
+		return new MogwaiATLQuery(atlResource, inputResource, outputResource, inputMapping, outputMapping, sourcePackage, targetPackage);
 	}
 
 }

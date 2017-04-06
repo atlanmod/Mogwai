@@ -14,8 +14,8 @@ import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
+import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class MogwaiQueryResult {
 	

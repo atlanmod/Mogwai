@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.reflect.Field;
 
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
@@ -20,8 +21,10 @@ public class MogwaiATLQuery extends MogwaiQuery {
 	private PersistentResource outputResource;
 	private EMFtoGraphMapping inputMapping;
 	private EMFtoGraphMapping outputMapping;
+	private EPackage sourcePackage;
+	private EPackage targetPackage;
 	
-	public MogwaiATLQuery(Resource atlResource, PersistentResource inputResource, PersistentResource outputResource, EMFtoGraphMapping inputMapping, EMFtoGraphMapping outputMapping) {
+	public MogwaiATLQuery(Resource atlResource, PersistentResource inputResource, PersistentResource outputResource, EMFtoGraphMapping inputMapping, EMFtoGraphMapping outputMapping, EPackage sourcePackage, EPackage targetPackage) {
 		super(atlResource);
 		checkNotNull(inputResource, "Null input resource");
 		checkNotNull(outputResource, "Null output resource");
@@ -30,6 +33,8 @@ public class MogwaiATLQuery extends MogwaiQuery {
 		this.outputResource = outputResource;
 		this.inputMapping = inputMapping;
 		this.outputMapping = outputMapping;
+		this.sourcePackage = sourcePackage;
+		this.targetPackage = targetPackage;
 	}
 
 	@Override
@@ -63,6 +68,14 @@ public class MogwaiATLQuery extends MogwaiQuery {
 	
 	public EMFtoGraphMapping getOutputMapping() {
 		return outputMapping;
+	}
+	
+	public EPackage getSourcePackage() {
+		return sourcePackage;
+	}
+	
+	public EPackage getTargetPackage() {
+		return targetPackage;
 	}
 	
 	private BlueprintsPersistenceBackend getInnerGraph(PersistentResource pResource) {

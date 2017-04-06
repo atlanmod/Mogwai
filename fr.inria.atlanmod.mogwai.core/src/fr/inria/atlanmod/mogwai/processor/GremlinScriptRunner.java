@@ -20,7 +20,7 @@ import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
+import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 /**
  * Utility class that runs a Gremlin script on a given database. This feature is in a dedicated class because it
