@@ -25,7 +25,7 @@ import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
+import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 /**
  * This class presents how a gremlin script corresponding to an ATL
@@ -44,7 +44,9 @@ public class TransformationSample {
 	public static void main(String[] args) throws IOException, MogwaiException {
 		
 		NeoLogger.info("Creating sample model");
-		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
+//		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
+//		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
+		MogwaiResource mogResource = ModelUtil.getInstance().getResource(CreateModel.MODEL_LOCATION);
 		NeoLogger.info("Done");
 
 		NeoLogger.info("Initializing mapping");
@@ -68,7 +70,9 @@ public class TransformationSample {
 		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
 		atl2gremlin.enableATLDebug();
 		Resource r = atl2gremlin.transform(URI
-				.createURI(ATL_URI));
+				.createURI(ATL_URI),
+				ClassDiagramPackage.eINSTANCE,
+				ClassDiagramPackage.eINSTANCE);
 		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
 		String textualQuery = printer.print(r.getContents().get(0));
 		
@@ -84,11 +88,26 @@ public class TransformationSample {
 		mogResource.query(gremlinQuery2);
 		
 		NeoLogger.info("Model successfully transformed");
-		// Print the created Tables since they are returned by the script
-		// Note: returning the updated/created objects is not mandatory
+		
+		NeoLogger.info("CreateElement time: {0}ms", TransformationHelper.createTime);
+		NeoLogger.info("NewInstance time: {0}ms", NeoEMFMapping.newInstanceTime);
+		NeoLogger.info("NewInstance setRef time: {0}ms", NeoEMFMapping.newInstanceSetRef);
+		NeoLogger.info("NewInstance getResourceRoot: {0}ms", NeoEMFMapping.newInstanceGetResourceRoot);
+		NeoLogger.info("NewInstance addVertex: {0}ms", NeoEMFMapping.newInstanceAddVertex);
+		NeoLogger.info("NewInstance getMetaClass: {0}ms", NeoEMFMapping.newInstanceGetMetaclass);
+		NeoLogger.info("IsResolvable time: {0}ms", TransformationHelper.isResolvableTime);
+		NeoLogger.info("Resolve time: {0}ms", TransformationHelper.resolveTime);
+		NeoLogger.info("Link time: {0}ms", TransformationHelper.linkTime);
+		NeoLogger.info("Plink time: {0}ms", TransformationHelper.pLinkTime);
+		NeoLogger.info("ResolveProxy time: {0}ms", TransformationHelper.resolveProxyTime);
+		NeoLogger.info("UpdateContainment time: {0}ms", NeoEMFMapping.updateContainmentTime);
+		NeoLogger.info("UpdateContainment loop1 time: {0}ms", NeoEMFMapping.updateContainment1);
+		NeoLogger.info("UpdateContainment loop2 time: {0}ms", NeoEMFMapping.updateContainment2);
 
-		mogResource.save(Collections.emptyMap());
-
+		long beginSave = System.currentTimeMillis();
+		mogResource.save(Collections.emptyMap());	
+		long endSave = System.currentTimeMillis();
+		NeoLogger.info("Save time: {0}ms", (endSave-beginSave));
 		
 		MogwaiQuery outQuery = MogwaiOCLQueryBuilder.newBuilder()
 				.fromString("Table.allInstances()")

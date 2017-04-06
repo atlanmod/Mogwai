@@ -13,4 +13,7 @@ Require-Bundle: fr.inria.atlanmod.neoemf.core;bundle-version="1.0.1",
  org.eclipse.m2m.atl.common;bundle-version="3.8.0",
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.core.emf,
- org.eclipse.m2m.atl.engine.emfvm.launch
+ org.eclipse.m2m.atl.engine.emfvm.launch,
+ fr.inria.atlanmod.neoemf.data.blueprints.neo4j.wrapper;bundle-version="1.0.2",
+ org.eclipse.gmt.modisco.omg.kdm;bundle-version="0.12.2",
+ org.eclipse.gmt.modisco.java;bundle-version="0.12.2"

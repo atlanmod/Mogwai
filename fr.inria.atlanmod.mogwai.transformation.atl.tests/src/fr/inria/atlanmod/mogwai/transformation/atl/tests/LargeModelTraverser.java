@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EObject;
 import ClassDiagram.Attribute;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
+import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class LargeModelTraverser {
 

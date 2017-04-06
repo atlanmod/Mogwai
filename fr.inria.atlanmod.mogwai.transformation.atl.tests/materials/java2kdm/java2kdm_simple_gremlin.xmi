@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gremlin="fr.inria.atlanmod.ocl2query.gremlin">
+  <gremlin:GremlinScript name="javaToKdm">
+    <instructions xsi:type="gremlin:VariableDeclaration" name="gHelper" final="true">
+      <value xsi:type="gremlin:VariableAccess" name="graphHelper"/>
+    </instructions>
+    <instructions xsi:type="gremlin:VariableAccess" name="g">
+      <nextElement xsi:type="gremlin:CustomStep" name="allOfType">
+        <nextElement xsi:type="gremlin:FilterStep">
+          <nextElement xsi:type="gremlin:TransformStep">
+            <nextElement xsi:type="gremlin:CustomMethodCall" name="iterate"/>
+            <closure>
+              <instructions xsi:type="gremlin:VariableDeclaration" name="src">
+                <value xsi:type="gremlin:ClosureIt"/>
+              </instructions>
+              <instructions xsi:type="gremlin:VariableDeclaration" name="tgt">
+                <value xsi:type="gremlin:VariableAccess" name="gHelper">
+                  <nextElement xsi:type="gremlin:CustomMethodCall" name="createElement">
+                    <params xsi:type="gremlin:VariableAccess" name="src"/>
+                    <params xsi:type="gremlin:StringLiteral" value="tgt"/>
+                    <params xsi:type="gremlin:StringLiteral" value="MethodUnit"/>
+                    <params xsi:type="gremlin:StringLiteral" value="http://www.eclipse.org/MoDisco/kdm/code"/>
+                    <params xsi:type="gremlin:StringLiteral" value="OUTROOT"/>
+                  </nextElement>
+                </value>
+              </instructions>
+              <instructions xsi:type="gremlin:VariableAccess" name="gHelper">
+                <nextElement xsi:type="gremlin:CustomMethodCall" name="resolveProxies">
+                  <params xsi:type="gremlin:VariableAccess" name="src"/>
+                  <params xsi:type="gremlin:VariableAccess" name="tgt"/>
+                </nextElement>
+              </instructions>
+              <instructions xsi:type="gremlin:VariableAccess" name="tgt">
+                <nextElement xsi:type="gremlin:CustomStep" name="setAtt">
+                  <params xsi:type="gremlin:StringLiteral" value="kind"/>
+                  <params xsi:type="gremlin:StringLiteral" value="pouet"/>
+                </nextElement>
+              </instructions>
+              <instructions xsi:type="gremlin:VariableAccess" name="tgt">
+                <nextElement xsi:type="gremlin:CustomStep" name="setAtt">
+                  <params xsi:type="gremlin:StringLiteral" value="export"/>
+                  <params xsi:type="gremlin:VariableAccess" name="src"/>
+                </nextElement>
+              </instructions>
+              <instructions xsi:type="gremlin:VariableAccess" name="gHelper">
+                <nextElement xsi:type="gremlin:CustomMethodCall" name="linkReference">
+                  <params xsi:type="gremlin:VariableAccess" name="tgt"/>
+                  <params xsi:type="gremlin:StringLiteral" value="codeElement"/>
+                  <params xsi:type="gremlin:StringLiteral" value=""/>
+                  <params xsi:type="gremlin:BooleanLiteral" value="true"/>
+                </nextElement>
+              </instructions>
+            </closure>
+          </nextElement>
+          <closure>
+            <instructions xsi:type="gremlin:VariableDeclaration" name="src">
+              <value xsi:type="gremlin:ClosureIt"/>
+            </instructions>
+            <instructions xsi:type="gremlin:VariableAccess" name="src">
+              <nextElement xsi:type="gremlin:CustomStep" name="getRef">
+                <nextElement xsi:type="gremlin:IdentityStep"/>
+                <params xsi:type="gremlin:StringLiteral" value="typeParameters"/>
+                <params xsi:type="gremlin:StringLiteral" value=""/>
+                <params xsi:type="gremlin:BooleanLiteral"/>
+              </nextElement>
+            </instructions>
+          </closure>
+        </nextElement>
+        <params xsi:type="gremlin:StringLiteral" value="MethodDeclaration"/>
+      </nextElement>
+    </instructions>
+  </gremlin:GremlinScript>
+  <gremlin:VariableAccess name="src"/>
+</xmi:XMI>

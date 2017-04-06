@@ -39,6 +39,8 @@ import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
+import static java.util.Objects.nonNull;
+import static java.util.Objects.isNull;
 
 import ClassDiagram.ClassDiagramPackage;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
@@ -99,6 +101,10 @@ public class ATLRunner {
 		}
 	}
 	
+	public Resource transform(Resource inputResource) {
+		return this.transform(inputResource, null);
+	}
+	
 	/**
 	 * Transform the input ATL resource into a Gremlin resource containing the script
 	 * to execute to perform the transformation
@@ -106,13 +112,16 @@ public class ATLRunner {
 	 * @param inputResource the resource containing the ATL model to transform
 	 * @return a {@link Resource} containing the Gremlin script corresponding to the transformation
 	 */
-	public Resource transform(Resource inputResource) {
+	public Resource transform(Resource inputResource, Resource outputResource) {
 		try {
 			
 			IModel inputModel = modelFactory.newModel(classDiagramMetamodel);
 			injector.inject(inputModel, inputResource);
 			
 			IModel outModel = modelFactory.newModel(classDiagramMetamodel);
+			if(nonNull(outputResource)) {
+				injector.inject(outModel, outputResource);
+			}
 			
 			transformationLauncher = new EMFVMLauncher();
 			transformationLauncher.initialize(new HashMap<String, Object>());
@@ -121,27 +130,32 @@ public class ATLRunner {
 			transformationLauncher.addOutModel(outModel, "OUT", "RelationalMM");
 			
 			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.toArray());
-			
+			Resource out = null;
 			long begin = System.currentTimeMillis();
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			extractor.extract(outModel, os, null);
-			System.out.println(os.toString());
-			Resource outResource = rSet.createResource(URI.createURI("toutput"));
-			
-			try {
-				outResource.load(new ByteArrayInputStream(os.toByteArray()), null);
-				long end = System.currentTimeMillis();
-				System.out.println("Time to extract created model: " + (end-begin) + "ms");
-			} catch(IOException e) {
-				e.printStackTrace();
+			if(nonNull(outputResource)) {
+				out = outputResource;
+			} else {
+				extractor.extract(outModel, os, null);
+				System.out.println(os.toString());
+				out = rSet.createResource(URI.createURI("toutput"));
+				
+				try {
+					out.load(new ByteArrayInputStream(os.toByteArray()), null);
+					long end = System.currentTimeMillis();
+					System.out.println("Time to extract created model: " + (end-begin) + "ms");
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
 			}
+			
 			/*
 			 * Unload all models and metamodels
 			 */
 			EMFModelFactory emfModelFactory = (EMFModelFactory) modelFactory;
 			emfModelFactory.unload((EMFModel) outModel);
 			emfModelFactory.unload((EMFModel)inputModel);
-			return outResource;
+			return out;
 		} catch(ATLCoreException e) {
 			e.printStackTrace();
 		}

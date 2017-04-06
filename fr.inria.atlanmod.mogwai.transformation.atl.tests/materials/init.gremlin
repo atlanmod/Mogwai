@@ -20,7 +20,7 @@ final t = graphHelper;
 
 
 def log(String msg) {
-	enableDebug = true;
+	enableDebug = false;
 	if(enableDebug) {
 		println(msg);
 	}

@@ -17,7 +17,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
-import fr.inria.atlanmod.neoemf.logging.NeoLogger;
+import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class LargeTransformationSample {
 
