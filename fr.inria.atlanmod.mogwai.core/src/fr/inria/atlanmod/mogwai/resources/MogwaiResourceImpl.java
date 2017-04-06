@@ -44,9 +44,9 @@ public class MogwaiResourceImpl extends DefaultPersistentResource implements Mog
 		
     public MogwaiResourceImpl(URI uri) {
         super(uri);
-        assert this.persistenceBackend instanceof BlueprintsPersistenceBackend;
-        oclProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.persistenceBackend);
-        gremlinProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.persistenceBackend);
+        assert this.backend instanceof BlueprintsPersistenceBackend;
+        oclProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.backend);
+        gremlinProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.backend);
     }
     
     public MogwaiQueryResult query(MogwaiQuery query) {
@@ -65,7 +65,7 @@ public class MogwaiResourceImpl extends DefaultPersistentResource implements Mog
     
     @Override
     public BlueprintsPersistenceBackend getBackend() {
-    	return (BlueprintsPersistenceBackend)persistenceBackend;
+    	return (BlueprintsPersistenceBackend)backend;
     }
     
     // TODO check if this should be moved

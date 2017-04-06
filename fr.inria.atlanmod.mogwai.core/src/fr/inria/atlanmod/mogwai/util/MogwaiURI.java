@@ -22,8 +22,8 @@ public class MogwaiURI extends PersistenceURI {
 
     public final static String MOGWAI_SCHEME = "mogwai";
     
-    protected MogwaiURI(int hashCode, URI internalURI) {
-        super(hashCode, internalURI);
+    protected MogwaiURI(URI internalURI) {
+        super(internalURI);
     }
     
     public static URI createMogwaiURI(URI uri) {
