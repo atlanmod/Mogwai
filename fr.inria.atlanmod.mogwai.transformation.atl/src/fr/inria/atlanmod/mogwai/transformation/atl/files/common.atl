@@ -182,6 +182,8 @@ helper context OclAny def : getComposite() : OclAny =
 		OclUndefined --last operation in a helper
 	else if composite.oclIsKindOf(ATL!BindingStat) then
 		OclUndefined
+	else if composite.oclIsKindOf(ATL!InPattern) then
+		OclUndefined
 	else if composite.oclIsKindOf(ATL!IteratorExp) then
 		if self = composite.source then
 			composite
@@ -190,7 +192,7 @@ helper context OclAny def : getComposite() : OclAny =
 		endif
 	else
 		composite
-	endif endif endif endif endif endif
+	endif endif endif endif endif endif endif
 ;
 	
 -- Retrieve the next operation to transform from a given OCL expression.
