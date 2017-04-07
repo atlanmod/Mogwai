@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.m2m.atl.common.ATL.Module;
 
 import com.sun.istack.internal.Nullable;
 
@@ -16,6 +17,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
+import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 
@@ -57,7 +59,11 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 	}
 	
 	private GremlinScript createGremlinScript(MogwaiATLQuery query) {
-		Resource gremlinResource = transformation.transform(query.getATLResource(), query.getSourcePackage(), query.getTargetPackage());
+		Module atlModule = (Module)query.getATLResource().getContents().get(0);
+		String sourceMMName = atlModule.getInModels().get(0).getMetamodel().getName(); // TODO support multiple input models
+		String targetMMName = atlModule.getOutModels().get(0).getMetamodel().getName(); // TODO support multiple output models
+		NeoLogger.info("SourceMM {0} / TargetMM {1}", sourceMMName, targetMMName);
+		Resource gremlinResource = transformation.transform(query.getATLResource(), sourceMMName, query.getSourcePackage(), targetMMName, query.getTargetPackage());
 		checkArgument(gremlinResource.getContents() != null, "Created resource content is null");
 //		Relax that for debugging purposes
 //		checkArgument(gremlinResource.getContents().size() == 1,

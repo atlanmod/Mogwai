@@ -71,7 +71,9 @@ public class TransformationSample {
 		atl2gremlin.enableATLDebug();
 		Resource r = atl2gremlin.transform(URI
 				.createURI(ATL_URI),
+				"Relational",
 				ClassDiagramPackage.eINSTANCE,
+				"Class",
 				ClassDiagramPackage.eINSTANCE);
 		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
 		String textualQuery = printer.print(r.getContents().get(0));

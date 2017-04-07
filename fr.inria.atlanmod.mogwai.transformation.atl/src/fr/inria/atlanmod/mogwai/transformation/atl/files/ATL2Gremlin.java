@@ -130,7 +130,7 @@ public class ATL2Gremlin {
 		}
 	}
 	
-	public Resource transform(URI atlURI, EPackage sourcePackage, EPackage targetPackage) throws IOException {
+	public Resource transform(URI atlURI, String sourcePackageName, EPackage sourcePackage, String targetPackageName, EPackage targetPackage) throws IOException {
 		ResourceSet rSet = new ResourceSetImpl();
 		EPackage.Registry.INSTANCE.put(ATLPackage.eNS_URI, ATLPackage.eINSTANCE);
 		EPackage.Registry.INSTANCE.put(OCLPackage.eNS_URI, OCLPackage.eINSTANCE);
@@ -150,7 +150,7 @@ public class ATL2Gremlin {
 		xmiResource.save(Collections.EMPTY_MAP);
 		//
 		
-		return transform(atlResource, sourcePackage, targetPackage);
+		return transform(atlResource, sourcePackageName, sourcePackage, targetPackageName, targetPackage);
 	}
 	
 	/**
@@ -160,7 +160,7 @@ public class ATL2Gremlin {
 	 * @param inputResource the resource containing the ATL model to transform
 	 * @return a {@link Resource} containing the Gremlin script corresponding to the transformation
 	 */
-	public Resource transform(Resource inputResource, EPackage sourcePackage, EPackage targetPackage) {
+	public Resource transform(Resource inputResource, String sourcePackageName, EPackage sourcePackage, String targetPackageName, EPackage targetPackage) {
 		try {
 			IModel inputModel = modelFactory.newModel(atlMetamodel);
 			injector.inject(inputModel, inputResource);
@@ -187,8 +187,13 @@ public class ATL2Gremlin {
 			}
 			
 			transformationLauncher.addInModel(inputModel, "IN", "ATL");
+			// register source and target metamodels both:
+			//	- with a general name (SOURCEMM, TARGETMM) => maybe ultimately unnecessary
+			//	- and with the names they have in the transformation
 			transformationLauncher.addInModel(sourceMM, "SOURCEMM", "SourceEcore");
+			transformationLauncher.addInModel(sourceMM, sourcePackageName, "SourceEcore");
 			transformationLauncher.addInModel(targetMM, "TARGETMM", "TargetEcore");
+			transformationLauncher.addInModel(targetMM, targetPackageName, "TargetEcore");
 			transformationLauncher.addOutModel(gModel, "OUT", "Gremlin");
 			
 			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.toArray());

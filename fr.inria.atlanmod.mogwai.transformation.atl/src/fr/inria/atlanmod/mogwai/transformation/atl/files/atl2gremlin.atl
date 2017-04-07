@@ -78,7 +78,7 @@ helper context ATL!Binding def : getBindedElementClass() : String =
 ;
 	
 helper def : getTargetEClassFromString(eClass : String) : TargetEcore!EClass = 
-	TargetEcore!EClass.allInstances()->select(cc | cc.name = eClass)->first()
+	TargetEcore!EClass.allInstancesFrom('TARGETMM')->select(cc | cc.name = eClass)->first().debug(eClass)
 ;
 
 -- Returns true if the binding sets an attribute value, false otherwise

@@ -34,7 +34,9 @@ public class Java2KDM2Gremlin {
 		long start = System.currentTimeMillis();
 		Resource r = atl2gremlin.transform(
 				URI.createURI("materials/java2kdm/java2kdm_simple.atl"),
+				"java",
 				JavaPackage.eINSTANCE, 
+				"kdm",
 				targetPackage);
 		// watch out: KDM contains multiple packages and I don't know how to deal with this
 		long stop = System.currentTimeMillis();

@@ -55,3 +55,17 @@ rule ModelToModel{
 		thisModule.externalModel <- externalModel;
 	}
 }
+
+-- Transforms a package declaration into a package
+rule PackageToPackage {
+	from 
+		src:java!Package
+	to 
+		tgt:kdm!Package(
+			name<-src.name
+			--get the subpackages owned by the matched package
+			,codeElement<-src.ownedPackages
+			--adds classes and interfaces
+			,codeElement<-src.ownedElements				
+		)
+}

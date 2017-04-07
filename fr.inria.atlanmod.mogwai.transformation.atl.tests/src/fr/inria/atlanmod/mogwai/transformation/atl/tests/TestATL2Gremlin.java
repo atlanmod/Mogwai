@@ -25,7 +25,9 @@ public class TestATL2Gremlin {
 		long start = System.currentTimeMillis();
 		Resource r = atl2gremlin.transform(URI
 				.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational-simple.atl"),
+				"Relational",
 				ClassDiagramPackage.eINSTANCE,
+				"Class",
 				ClassDiagramPackage.eINSTANCE);
 		long stop = System.currentTimeMillis();
 		System.out.println("Transformation performed in " + (stop - start) + "ms");
