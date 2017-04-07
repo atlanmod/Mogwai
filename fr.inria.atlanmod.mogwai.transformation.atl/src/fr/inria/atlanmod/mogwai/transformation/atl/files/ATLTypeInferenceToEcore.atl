@@ -1,14 +1,18 @@
 -- @atlcompiler atl2010
 -- ATL Type Inference support for Ecore Platform by Frédéric Jouault
 -- @nsURI ATL=http://www.eclipse.org/gmt/2005/OCL
--- @nsURI SourceEcore=http://www.eclipse.org/emf/2002/Ecore
+-- @nsURI Ecore=http://www.eclipse.org/emf/2002/Ecore
 library ATLTypeInferenceToEcore;
+
+-- Warning: the metamodels used in the analyzed ATL should be loaded as models that have the same names, e.g.:
+--	Given a transformation with : create OUT : TargetMM from IN : SourceMM
+--	The metamodels should be loaded as: SourceMM : Ecore & TargetMM : Ecore.
 
 helper context String def: primitiveType : OclAny =
 	Map {
-		('Boolean', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EBoolean')),
-		('Integer', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EInteger')),
-		('String', SourceEcore!EDataType.allInstancesFrom('SourceEcore')->any(e | e.name = 'EString'))
+		('Boolean', Ecore!EDataType.allInstancesFrom('Ecore')->any(e | e.name = 'EBoolean')),
+		('Integer', Ecore!EDataType.allInstancesFrom('Ecore')->any(e | e.name = 'EInteger')),
+		('String', Ecore!EDataType.allInstancesFrom('Ecore')->any(e | e.name = 'EString'))
 	}.get(self);
 
 --helper context UML!Behavior def: type : UML!Type =
@@ -22,27 +26,27 @@ helper context String def: primitiveType : OclAny =
 --		p.type
 --	endif;
 
-helper context SourceEcore!EClassifier def: ttype : String = OclUndefined;
+helper context Ecore!EClassifier def: ttype : String = OclUndefined;
 
 helper context ATL!OclModelElement def: toPlatform : OclAny =
-	SourceEcore!EClassifier.allInstancesFrom(
+	Ecore!EClassifier.allInstancesFrom(
 		self.model.name
 	)->any(e | 
 		e.name = self.name
 	);
 
-helper context SourceEcore!EClass def: navigableProperties : OrderedSet(OclAny) =
+helper context Ecore!EClass def: navigableProperties : OrderedSet(OclAny) =
 	self.eAllStructuralFeatures;
 
-helper context SourceEcore!EStructuralFeature def: upper : Integer =
+helper context Ecore!EStructuralFeature def: upper : Integer =
 	self.upperBound;
-helper context SourceEcore!EStructuralFeature def: type : Integer =
+helper context Ecore!EStructuralFeature def: type : Integer =
 	self.eType;
-helper context SourceEcore!EAttribute def: type : Integer =
+helper context Ecore!EAttribute def: type : Integer =
 	self.eType.name.primitiveType;
 
 helper context String def: class: OclAny =
-	SourceEcore!EClass.allInstances() -> any(e | e.name = self);
+	Ecore!EClass.allInstances() -> any(e | e.name = self);
 
 --helper context UML!Element def: origin : String =
 --	' from ' + self.eResource().toString();
@@ -76,5 +80,8 @@ helper context ATL!OperationCallExp def: platformSpecificInferredType : OclAny =
 	ret;
 -- TODO: add warning when operation not found
 
-helper context SourceEcore!EModelElement def: origin : String =
+helper context Ecore!EModelElement def: origin : String =
 	' from ' + self.eResource().getURI().toString();
+
+helper context Ecore!EClassifier def: isClass : Boolean =
+	self.oclIsKindOf(Ecore!EClass);
