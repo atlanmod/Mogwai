@@ -353,7 +353,7 @@ rule select2steps {
 
 rule union2steps {
 	from
-		oclUnion : ATL!CollectionOperationCallExp (oclUnion.getOpName() = 'union')
+		oclUnion : ATL!OperationCallExp (oclUnion.getOpName() = 'union')
 	to
 		gremlinUnion : Gremlin!CustomMethodCall(
 			name <- 'union',
@@ -364,7 +364,7 @@ rule union2steps {
 
 rule intersection2steps {
 	from
-		oclIntersection : ATL!CollectionOperationCallExp (oclIntersection.getOpName() = 'intersection')
+		oclIntersection : ATL!OperationCallExp (oclIntersection.getOpName() = 'intersection')
 	to
 		gremlinIntersection : Gremlin!CustomMethodCall(
 			name <- 'intersection',
@@ -514,7 +514,7 @@ rule intersection2steps {
 -- Transforms an excludes operation into equivalent Gremlin retain step.
 rule excludes2steps {
 	from
-		oclExcludes : ATL!CollectionOperationCallExp (oclExcludes.getOpName() = 'excludes')
+		oclExcludes : ATL!OperationCallExp (oclExcludes.getOpName() = 'excludes')
 	to
 		gremlinRetain : Gremlin!RetainStep (
 			collection <- gremlinCollectionDefinition,
@@ -586,7 +586,7 @@ rule includes2steps {
 -- Transforms an includesAll operation into equivalent Gremlin transformation step.
 rule includesAll2steps {
 	from
-		oclIncludesAll : ATL!CollectionOperationCallExp (oclIncludesAll.getOpName() = 'includesAll')
+		oclIncludesAll : ATL!OperationCallExp (oclIncludesAll.getOpName() = 'includesAll')
 	to
 		gremlinGather : Gremlin!GatherStep (
 			nextElement <- gremlinTransform	
@@ -612,7 +612,7 @@ rule includesAll2steps {
 -- Transforms a simple exists operation (withtout iterator) into equivalent Gremlin filter step.
 rule simpleExists2steps {
 	from
-		oclExists : ATL!CollectionOperationCallExp (oclExists.getOpName() = 'exists')
+		oclExists : ATL!OperationCallExp (oclExists.getOpName() = 'exists')
 	to
 		gremlinFilterStep : Gremlin!FilterStep (
 			closure <-  gremlinClosure,
@@ -656,7 +656,7 @@ rule complexExists2steps {
 -- Transforms a simple forAll operation (without iterator) into equivalent Gremlin filter step.
 rule simpleForAll2steps {
 	from
-		oclForAll : ATL!CollectionOperationCallExp (oclForAll.getOpName() = 'forAll')
+		oclForAll : ATL!OperationCallExp (oclForAll.getOpName() = 'forAll')
 	to
 		gremlinFilter : Gremlin!FilterStep (
 			closure <- gremlinClosure,
@@ -737,7 +737,7 @@ rule complexForAll2steps {
 -- TODO Handle size on String
 rule size2steps {
 	from
-		oclSize : ATL!CollectionOperationCallExp(oclSize.getOpName() = 'size')
+		oclSize : ATL!OperationCallExp(oclSize.getOpName() = 'size')
 	to
 		gremlinCountCall : Gremlin!CountCall ()
 }
@@ -756,7 +756,7 @@ rule size2steps {
 -- IsEmpty method is called on the step collection.
 rule isEmpty2steps {
 	from
-		oclIsEmpty : ATL!CollectionOperationCallExp (oclIsEmpty.getOpName() = 'isEmpty')
+		oclIsEmpty : ATL!OperationCallExp (oclIsEmpty.getOpName() = 'isEmpty')
 	to
 		gremlinToListCall : Gremlin!ToListCall(
 			nextElement <- gremlinIsEmptyCall
@@ -770,7 +770,7 @@ rule isEmpty2steps {
 -- First method is called on the step collection.
 rule first2steps {
 	from
-		oclFirst : ATL!CollectionOperationCallExp(oclFirst.getOpName() = 'first')
+		oclFirst : ATL!OperationCallExp(oclFirst.getOpName() = 'first')
 	to
 		gremlinFirstCall : Gremlin!FirstCall(
 			nextElement <- oclFirst.getComposite()
