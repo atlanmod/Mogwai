@@ -4,3 +4,4 @@
 *.asm
 *.launch
 materials/ClassDiagram2Relational/ATLFiles/*.xmi
+materials/java2kdm/*.xmi

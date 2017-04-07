@@ -350,6 +350,7 @@ rule select2steps {
 		)
 }
 
+
 rule union2steps {
 	from
 		oclUnion : ATL!CollectionOperationCallExp (oclUnion.getOpName() = 'union')

@@ -70,7 +70,7 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 			self.source.getFirstInstruction()
 		endif
 	else
-		if self.oclIsTypeOf(ATL!OperationCallExp) then
+		if self.oclIsKindOf(ATL!OperationCallExp) then
 			if(self.getOpName() = 'allInstances') then
 				self
 			else
@@ -149,6 +149,7 @@ helper context ATL!OclExpression def : isLastInBinding() : Boolean =
 
 -- Returns true if the OperationCallExp is an comparison operation.
 helper context ATL!OperationCallExp def : isComparison() : Boolean =
+	-- Not c'est pas vraiment une comparaison hein? les opérateur booléens tout ça 
 	OrderedSet{'=','or','and','>','>=','<','<=','<>','not'}.includes(self.getOpName())
 	;
 	
@@ -162,6 +163,9 @@ helper context OclAny def : getComposite() : OclAny =
 		if(composite.isMathOperation()) then
 			OclUndefined
 		else
+			-- We can put what we did for IteratorExp (this is equivalent: hasInArgument -> OclUndefined
+			-- <-> self = composite.source -> composite
+			-- Warning: hasInArguments looks more complicated than expected
 			if(composite.hasInArguments(self)) then
 				-- The container contains self in its arguments, it has been handled
 --				-- before
@@ -176,9 +180,17 @@ helper context OclAny def : getComposite() : OclAny =
 		OclUndefined
 	else if composite.oclIsKindOf(ATL!Attribute) then
 		OclUndefined --last operation in a helper
+	else if composite.oclIsKindOf(ATL!BindingStat) then
+		OclUndefined
+	else if composite.oclIsKindOf(ATL!IteratorExp) then
+		if self = composite.source then
+			composite
+		else
+			OclUndefined
+		endif
 	else
 		composite
-	endif endif endif endif
+	endif endif endif endif endif endif
 ;
 	
 -- Retrieve the next operation to transform from a given OCL expression.
