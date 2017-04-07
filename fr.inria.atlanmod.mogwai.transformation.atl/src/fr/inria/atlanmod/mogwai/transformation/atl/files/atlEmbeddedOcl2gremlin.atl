@@ -187,3 +187,33 @@ rule oclIsTypeOf2stepsLastInComparison2steps extends oclIsTypeOf2steps {
 		),
 		nextCall : Gremlin!NextCall()
 }
+
+rule if2steps {
+	from
+		s : ATL!IfExp	
+	to
+		t : Gremlin!TernaryOperator(
+			condition <- s.condition.getFirstInstruction(),
+			ifFalse <- s.elseExpression.getFirstInstruction(),
+			ifTrue <- s.thenExpression.getFirstInstruction()
+		)
+	
+	
+}
+
+rule oclIsUndefined2steps {
+	from
+		s : ATL!OperationCallExp (s.getOpName() = 'oclIsUndefined')
+	to
+		t : Gremlin!CustomMethodCall(
+			name <- 'undefined(TODO)',
+			nextElement <- s.getComposite()
+		)
+}
+
+rule oclUndefined2steps {
+	from
+		s : ATL!OclUndefinedExp
+	to
+		t : Gremlin!NullLiteral()
+}

@@ -114,9 +114,15 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 						else
 							self.source.getFirstInstruction()
 						endif
+					else if(self.oclIsKindOf(ATL!IfExp)) then
+						self
+					else if(self.oclIsKindOf(ATL!EnumLiteralExp)) then
+						self
+					else if(self.oclIsKindOf(ATL!OclUndefinedExp)) then
+						self
 					else
 						self.source.getFirstInstruction()
-					endif
+					endif endif endif endif
 				endif
 			endif
 		endif
@@ -184,6 +190,8 @@ helper context OclAny def : getComposite() : OclAny =
 		OclUndefined
 	else if composite.oclIsKindOf(ATL!InPattern) then
 		OclUndefined
+	else if composite.oclIsKindOf(ATL!IfExp) then
+		OclUndefined
 	else if composite.oclIsKindOf(ATL!IteratorExp) then
 		if self = composite.source then
 			composite
@@ -192,7 +200,7 @@ helper context OclAny def : getComposite() : OclAny =
 		endif
 	else
 		composite
-	endif endif endif endif endif endif endif
+	endif endif endif endif endif endif endif endif
 ;
 	
 -- Retrieve the next operation to transform from a given OCL expression.

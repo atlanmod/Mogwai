@@ -93,12 +93,11 @@ abstract rule ASTNodeToAbstractCodeElement {
 	)
 	,sourceRegion : kdm!SourceRegion (
 		language <- 'java'
--- IF support
---		,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
---					src.originalClassFile
---				else
---					src.originalCompilationUnit
---				endif
+		,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					src.originalClassFile
+				else
+					src.originalCompilationUnit
+				endif
 	)
 }
 
@@ -113,66 +112,62 @@ abstract rule BodyDeclarationToAbstractCodeElement extends NamedElementToAbstrac
 	from src :java!BodyDeclaration
 	to tgt :kdm!AbstractCodeElement (
 		-- attributes to store additional information (visibility stays redundant)
--- IF support
---		attribute <- if (src.modifier.oclIsUndefined()) then
---						Sequence{}
---					else
---						src.modifier
---					endif
---		,
+		attribute <- if (src.modifier.oclIsUndefined()) then
+						Sequence{}
+					else
+						src.modifier
+					endif
+		,
 		codeRelation <- src.annotations
 	)
 }
 
+-- See this, collect not mapped, thisModule in ifTrue / ifFalse
 abstract rule AbstractTypeDeclarationToDatatype extends BodyDeclarationToAbstractCodeElement {
 	from src :java!AbstractTypeDeclaration
 	to tgt :kdm!Datatype (
 		-- imports
--- IF support
---		codeRelation <- 
---		if (src.originalCompilationUnit.oclIsUndefined()) then
---					Sequence{}
---				else
---					src.originalCompilationUnit.imports
---				endif
+		codeRelation <- 
+		if (src.originalCompilationUnit.oclIsUndefined()) then
+					Sequence{}
+				else
+					src.originalCompilationUnit.imports
+				endif
 		-- inheritance
--- IF support
---		,codeRelation <- src.superInterfaces->collect(e | 
---			if (src.oclIsTypeOf(java!ClassDeclaration)) then 
---				thisModule.CreateImplements(e)
---			else
---				thisModule.CreateExtends(e)
---			endif) -- end collect
+		,codeRelation <- src.superInterfaces->collect(e | 
+			if (src.oclIsTypeOf(java!ClassDeclaration)) then 
+				thisModule.CreateImplements(e)
+			else
+				thisModule.CreateExtends(e)
+			endif) -- end collect
 		-- annotations
-		--,
+		,
 		codeRelation <- src.annotations
 		-- TODO use superClass
 		-- comments
 		,comment <- src.commentsBeforeBody
 		,comment <- src.commentsAfterBody
 		,comment <- src.comments 
--- IF support
---		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
---						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
---					Sequence{}
---				else -- top level type declaration -> retrieving CU heading comments
---					src.originalCompilationUnit.comments
---				endif
+		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
+						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
+					Sequence{}
+				else -- top level type declaration -> retrieving CU heading comments
+					src.originalCompilationUnit.comments
+				endif
 	)
 }
 
 rule ModifierToAttribute {
 	from src : java!Modifier
 	to tgt : kdm!Attribute (
-			tag <- 'export'--,
---			value <- src.visibility.toString()
--- IF support
---					+
---					 (if (src.inheritance = #none) then
---						''
---					 else
---					 	' ' + src.inheritance.toString()
---					 endif)
+			tag <- 'export',
+			value <- src.visibility.toString()
+					+
+					 (if (src.inheritance = #none) then
+						''
+					 else
+					 	' ' + src.inheritance.toString()
+					 endif)
 					 
 		)
 }
@@ -195,16 +190,15 @@ rule ClassDeclarationToClassUnit extends AbstractTypeDeclarationToDatatype {
 --			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);	
 --	}
 	to tgt: kdm!ClassUnit(
--- IF support
---		isAbstract <- if src.modifier.oclIsUndefined() then
---						OclUndefined
---					else
---						src.modifier.inheritance = 'abstract'
---					endif
+		isAbstract <- if src.modifier.oclIsUndefined() then
+						OclUndefined
+					else
+						src.modifier.inheritance = 'abstract'
+					endif
 		-- attributes
 --		,codeElement <- javaAttributes
 		-- other elements
---		,
+		,
 		codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))	
 	)
 	do {
@@ -218,42 +212,42 @@ rule ClassDeclarationToClassUnit extends AbstractTypeDeclarationToDatatype {
 	}
 }
 
----- Transfoms a class declaration into a class unit
---rule AnonymousClassDeclarationToClassUnit extends ASTNodeToAbstractCodeElement {
---	from src:java!AnonymousClassDeclaration
-----	using{
-----		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
-----		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
-----			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);
-----		originalTypeAccess :java!TypeAccess = src.refImmediateComposite().type;
-----	}
---	to tgt: kdm!ClassUnit(
---		name <- 'Anonymous type'
---		-- attributes
-----		,codeElement <- javaAttributes
---		-- other elements
---		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
---		-- imports
-----		,codeRelation <- if (src.originalCompilationUnit.oclIsUndefined()) then
-----					Sequence{}
-----				else
-----					src.originalCompilationUnit.imports
-----				endif
---		-- inheritance
-----		,codeRelation <- if (originalTypeAccess.oclIsUndefined()) then
-----							Sequence{}
-----						else
-----							thisModule.CreateImplementsForTemplated(tgt, originalTypeAccess)
-----						endif
---			
---		-- TODO use superClass
---		-- comments
---		,comment <- src.comments 
-----		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
-----						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
-----					Sequence{}
-----				else -- top level type declaration -> retrieving CU heading comments
-----					src.originalCompilationUnit.comments
-----				endif
---	)
---}
+-- Transfoms a class declaration into a class unit
+rule AnonymousClassDeclarationToClassUnit extends ASTNodeToAbstractCodeElement {
+	from src:java!AnonymousClassDeclaration
+--	using{
+--		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
+--		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+--			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);
+--		originalTypeAccess :java!TypeAccess = src.refImmediateComposite().type;
+--	}
+	to tgt: kdm!ClassUnit(
+		name <- 'Anonymous type'
+		-- attributes
+--		,codeElement <- javaAttributes
+		-- other elements
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
+		-- imports
+--		,codeRelation <- if (src.originalCompilationUnit.oclIsUndefined()) then
+--					Sequence{}
+--				else
+--					src.originalCompilationUnit.imports
+--				endif
+		-- inheritance
+--		,codeRelation <- if (originalTypeAccess.oclIsUndefined()) then
+--							Sequence{}
+--						else
+--							thisModule.CreateImplementsForTemplated(tgt, originalTypeAccess)
+--						endif
+			
+		-- TODO use superClass
+		-- comments
+		,comment <- src.comments 
+--		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
+--						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
+--					Sequence{}
+--				else -- top level type declaration -> retrieving CU heading comments
+--					src.originalCompilationUnit.comments
+--				endif
+	)
+}

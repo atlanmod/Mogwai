@@ -118,6 +118,6 @@ rule enumLiteral2gremlinString {
 		oclEnumLiteral : ATL!EnumLiteralExp
 	to
 		gremlinStringLiteral : Gremlin!StringLiteral(
-			value <- oclEnumLiteral.referredEnumLiteral.toString()
+			value <- oclEnumLiteral.name
 		)
 }
