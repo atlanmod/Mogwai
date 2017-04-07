@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.gmt.modisco.java.emf.JavaPackage;
-import org.eclipse.gmt.modisco.omg.kdm.action.ActionPackage;
-import org.eclipse.gmt.modisco.omg.kdm.code.CodePackage;
 import org.eclipse.gmt.modisco.omg.kdm.kdm.KdmPackage;
 
 import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
@@ -26,11 +27,15 @@ public class Java2KDM2Gremlin {
 		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
 		atl2gremlin.enableATLDebug();
 
+		ResourceSet rs = new ResourceSetImpl();
+		Resource targetMM = rs.getResource(URI.createFileURI("/home/gdaniel/Bureau/eclipse-mog/eclipse/workspace/org.eclipse.gmt.modisco.omg.kdm/model/kdm.ecore"), true);
+		EPackage targetPackage = (EPackage)targetMM.getContents().get(0);
+
 		long start = System.currentTimeMillis();
 		Resource r = atl2gremlin.transform(
 				URI.createURI("materials/java2kdm/java2kdm_simple.atl"),
 				JavaPackage.eINSTANCE, 
-				CodePackage.eINSTANCE);
+				targetPackage);
 		// watch out: KDM contains multiple packages and I don't know how to deal with this
 		long stop = System.currentTimeMillis();
 		System.out.println("Transformation performed in " + (stop - start) + "ms");
