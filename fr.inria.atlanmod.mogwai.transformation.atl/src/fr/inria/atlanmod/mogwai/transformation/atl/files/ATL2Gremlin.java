@@ -191,9 +191,9 @@ public class ATL2Gremlin {
 			//	- with a general name (SOURCEMM, TARGETMM) => maybe ultimately unnecessary
 			//	- and with the names they have in the transformation
 			transformationLauncher.addInModel(sourceMM, "SOURCEMM", "SourceEcore");
-			transformationLauncher.addInModel(sourceMM, sourcePackageName, "SourceEcore");
+			transformationLauncher.addInModel(sourceMM, sourcePackageName, "Ecore");
 			transformationLauncher.addInModel(targetMM, "TARGETMM", "TargetEcore");
-			transformationLauncher.addInModel(targetMM, targetPackageName, "TargetEcore");
+			transformationLauncher.addInModel(targetMM, targetPackageName, "Ecore");
 			transformationLauncher.addOutModel(gModel, "OUT", "Gremlin");
 			
 			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.toArray());
