@@ -25,7 +25,9 @@ helper context String def: primitiveType : OclAny =
 helper context SourceEcore!EClassifier def: ttype : String = OclUndefined;
 
 helper context ATL!OclModelElement def: toPlatform : OclAny =
-	SourceEcore!EClassifier.allInstances() -> any(e | 
+	SourceEcore!EClassifier.allInstancesFrom(
+		self.model.name
+	)->any(e | 
 		e.name = self.name
 	);
 
@@ -54,9 +56,21 @@ helper context ATL!OperationCallExp def: platformSpecificInferredType : OclAny =
 			else
 				OclUndefined
 			endif
+		else if sourceType = 'String'.primitiveType then
+			if self.operationName = '+' then
+				sourceType
+			else
+				OclUndefined
+			endif
+		else if sourceType.isCollection then
+			if self.operationName = 'union' then
+				sourceType
+			else
+				OclUndefined
+			endif
 		else
 			OclUndefined
-		endif
+		endif endif endif
 	in
 	let _ : String = if ret.oclIsUndefined() and not sourceType.oclIsUndefined() then ('warning: operation "' + self.operationName + '" not found on ' + sourceType.toString()).debug() else '' endif in
 	ret;
