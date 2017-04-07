@@ -19,7 +19,7 @@ helper context ATL!Binding def: feature : Ecore!EStructuralFeature =
 	if cType.oclIsUndefined() then
 		('error: cannot infer type of expression @' + self.refImmediateComposite().type.location).debug()
 	else
-		cType.eAllStructuralFeatures->any(e | e.name = self.propertyName.debug(cType.eResource().toString()))
+		cType.eAllStructuralFeatures->any(e | e.name = self.propertyName)
 	endif
 ;
 			
