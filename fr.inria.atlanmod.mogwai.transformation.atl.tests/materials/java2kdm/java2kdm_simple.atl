@@ -18,16 +18,40 @@
 module javaToKdm; -- Module Template
 create OUT : kdm from IN : java;
 
-rule MethodDeclarationToMethodUnit {
-	from src : java!MethodDeclaration(
-			src.typeParameters.isEmpty()
-	)
-	to tgt : kdm!MethodUnit(
---		kind <- if (src.oclIsKindOf(java!ConstructorDeclaration)) then #constructor else #method endif
-		kind <- 'pouet'
-		,export <- src->getVisibility()
-		-- signature management
-		-- body (block)
-		,codeElement <- thisModule.getBlocks(src)
-	)
+rule ModelToModel{
+	from
+		src : java!Model
+	to
+		kdmModel : kdm!CodeModel(
+			name <- src.name
+			,codeElement <- src.ownedElements->select(e| e.proxy = false)
+			,codeElement <- kdmLanguageUnit
+		)
+		,kdmLanguageUnit : kdm!LanguageUnit(
+			name <- 'Common Java datatypes',
+			codeElement <- src.orphanTypes->select(e| e.oclIsKindOf(java!PrimitiveType)),
+			codeElement <- stringType
+		)
+		,externalModel : kdm!CodeModel (
+			name <- 'externals'
+			,codeElement <- src.ownedElements->select(e| e.proxy = true)
+			,codeElement <- src.orphanTypes->select(e| not e.oclIsKindOf(java!PrimitiveType))
+		)
+		,sourcesModel : kdm!InventoryModel (
+			name <- 'source references',
+			inventoryElement <- src.compilationUnits,
+			inventoryElement <- src.archives
+		)
+		,kdmSegment : kdm!Segment mapsTo src (
+			model <- kdmModel
+			,model <- externalModel
+			,model <- sourcesModel
+		)
+		,stringType : kdm!StringType (
+			name <- 'string'
+		)
+		
+	do {
+		thisModule.externalModel <- externalModel;
+	}
 }
