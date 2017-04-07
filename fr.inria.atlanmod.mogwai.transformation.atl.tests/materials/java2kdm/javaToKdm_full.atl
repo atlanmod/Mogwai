@@ -1,0 +1,2142 @@
+--@atlcompiler atl2006
+--Copyright (c) 2009 Mia-Software.
+--All rights reserved. This program and the accompanying materials
+--are made available under the terms of the Eclipse Public License v1.0
+--which accompanies this distribution, and is available at
+--http://www.eclipse.org/legal/epl-v10.html
+---
+--Contributors:
+--	  Gabriel BARBIER (Mia-Software) - initial API and implementation
+--    Fabien GIQUEL (Mia-Software) - initial API and implementation
+
+--
+-- @nsURI kdm=http://www.eclipse.org/MoDisco/kdm/action
+-- @nsURI java=http://www.eclipse.org/MoDisco/Java/0.2.incubation/java
+--
+--Transform Java Models to KDM models
+
+module javaToKdm; -- Module Template
+create OUT : kdm from IN : java;
+
+rule InitializerToControlElement extends BodyDeclarationToAbstractCodeElement {
+	from src : java!Initializer
+	to tgt : kdm!ControlElement (
+		codeElement <- src.body
+	)
+}
+
+-- helpers --
+
+-- specific case to attach all single elements to root model
+--endpoint rule manageDetachedElements() {
+--
+--  do {
+--  		for (alone in kdm!AbstractCodeElement.allInstances()) {
+--  			if (alone.refImmediateComposite().oclIsUndefined()) {
+--  				thisModule.externalModel.codeElement <- alone;
+--  			}
+--  		}
+--   }
+--} 
+
+helper def: externalModel : kdm!CodeModel = OclUndefined;
+
+
+-- computes name of a generic type
+helper context java!TypeDeclaration def : getGenericName() : String = 
+	self.name + '<' + self.typeParameters
+	->collect(T | if (self.typeParameters->indexOf(T) < self.typeParameters->size()) then T.name  + ', ' else T.name endif)
+	->sum() + '>';
+	
+--returns referenced type, or one created on the fly in case of UnresolvedItem 
+--this is used when creating variables or parameters which are containers for this kind of type in kdm
+helper context java!TypeAccess def : getType() : kdm!Datatype =
+	self.type->getExtendsType();
+
+helper context java!NamedElement def : getExtendsType() : kdm!Datatype =
+	if self.oclIsKindOf(java!UnresolvedItem) then
+		if self.refImmediateComposite().oclIsTypeOf(java!ClassDeclaration) then
+			thisModule->CreateClassUnit(self) -- TODO why ?
+		else
+			thisModule->CreateInterfaceUnit(self)
+		endif
+	else -- java!Type or java!Package
+		self
+	endif;
+
+-- to be able to filter expressions that are not useful, or need to be managed manually
+helper def : filterExpression(expression : java!Expression) : java!Expression =
+	if (expression.oclIsUndefined()) then
+		Sequence{}
+	else
+		if (expression.oclIsKindOf(java!SingleVariableAccess)
+				or expression.oclIsKindOf(java!TypeAccess)
+				or expression.oclIsKindOf(java!UnresolvedItemAccess)) then
+			Sequence{}
+		else 
+			Sequence{expression}
+		endif
+	endif;
+
+-- rules --
+
+-- ===================================================== ---
+--  Rules for the structure of a program
+--  This part gives all the transformations for the structure of a Java program
+-- ===================================================== ---
+
+-- Transforms a Model into a code model
+rule ModelToModel{
+	from
+		src : java!Model
+	to
+		kdmModel : kdm!CodeModel(
+			name <- src.name
+			,codeElement <- src.ownedElements->select(e| e.proxy = false)
+			,codeElement <- kdmLanguageUnit
+		)
+		,kdmLanguageUnit : kdm!LanguageUnit(
+			name <- 'Common Java datatypes',
+			codeElement <- src.orphanTypes->select(e| e.oclIsKindOf(java!PrimitiveType)),
+			codeElement <- stringType
+		)
+		,externalModel : kdm!CodeModel (
+			name <- 'externals'
+			,codeElement <- src.ownedElements->select(e| e.proxy = true)
+			,codeElement <- src.orphanTypes->select(e| not e.oclIsKindOf(java!PrimitiveType))
+		)
+		,sourcesModel : kdm!InventoryModel (
+			name <- 'source references',
+			inventoryElement <- src.compilationUnits,
+			inventoryElement <- src.archives
+		)
+		,kdmSegment : kdm!Segment mapsTo src (
+			model <- kdmModel
+			,model <- externalModel
+			,model <- sourcesModel
+		)
+		,stringType : kdm!StringType (
+			name <- 'string'
+		)
+		
+	do {
+		thisModule.externalModel <- externalModel;
+	}
+
+}
+
+-- Transforms a package declaration into a package
+rule PackageToPackage {
+	from 
+		src:java!Package
+	to 
+		tgt:kdm!Package(
+			name<-src.name
+			--get the subpackages owned by the matched package
+			,codeElement<-src.ownedPackages
+			--adds classes and interfaces
+			,codeElement<-src.ownedElements				
+		)
+}
+
+-- ===================================================== ---
+--
+-- abstract rule to manage source reference in kdm model
+-- in java, corresponding metaclass is ASTNode
+-- in kdm, it is AbstractCodeElement (no better choice)
+--
+-- ===================================================== ---
+
+abstract rule ASTNodeToAbstractCodeElement {
+	from src :java!ASTNode
+	to tgt :kdm!AbstractCodeElement (
+		-- comments
+		comment <- src.comments,
+		-- source file management
+		source <- sourceRef
+	)
+	,sourceRef : kdm!SourceRef (
+		language <- 'java'
+		,region <- sourceRegion
+	)
+	,sourceRegion : kdm!SourceRegion (
+		language <- 'java'
+-- size expensive and redundant with SourceFile information
+--		,path <- if (src.originalCompilationUnit.oclIsUndefined()) then
+--					'internal'
+--				else
+--					src.originalCompilationUnit.originalFilePath
+--				endif
+		,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					src.originalClassFile
+				else
+					src.originalCompilationUnit
+				endif
+	)
+}
+
+abstract rule NamedElementToAbstractCodeElement extends ASTNodeToAbstractCodeElement {
+	from src :java!NamedElement
+	to tgt :kdm!AbstractCodeElement (
+		name <- src.name
+	)
+}
+
+abstract rule BodyDeclarationToAbstractCodeElement extends NamedElementToAbstractCodeElement {
+	from src :java!BodyDeclaration
+	to tgt :kdm!AbstractCodeElement (
+		-- attributes to store additional information (visibility stays redundant)
+		attribute <- if (src.modifier.oclIsUndefined()) then
+						Sequence{}
+					else
+						src.modifier
+					endif
+		-- annotations
+		,codeRelation <- src.annotations
+	)
+}
+
+--done (Q1 + Q2 - abstract)
+abstract rule AbstractTypeDeclarationToDatatype extends BodyDeclarationToAbstractCodeElement {
+	from src :java!AbstractTypeDeclaration
+	to tgt :kdm!Datatype (
+		-- imports
+		codeRelation <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					Sequence{}
+				else
+					src.originalCompilationUnit.imports
+				endif
+		-- inheritance
+		,codeRelation <- src.superInterfaces->collect(e | 
+			if (src.oclIsTypeOf(java!ClassDeclaration)) then 
+				thisModule.CreateImplements(e)
+			else
+				thisModule.CreateExtends(e)
+			endif) -- end collect
+		-- annotations
+		,codeRelation <- src.annotations
+		-- TODO use superClass
+		-- comments
+		,comment <- src.commentsBeforeBody
+		,comment <- src.commentsAfterBody
+		,comment <- src.comments 
+		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
+						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
+					Sequence{}
+				else -- top level type declaration -> retrieving CU heading comments
+					src.originalCompilationUnit.comments
+				endif
+	)
+}
+
+rule ModifierToAttribute {
+	from src : java!Modifier
+	to tgt : kdm!Attribute (
+			tag <- 'export',
+			value <- src.visibility.toString()
+					+
+					 (if (src.inheritance = #none) then
+						''
+					 else
+					 	' ' + src.inheritance.toString()
+					 endif)
+					 
+		)
+}
+
+-- ===================================================== ---
+--  Rules for the classes
+--  This part gives all the transformations for the classes of a Java program
+-- the transformations being quite different when the considered class is generic (Java meaning)
+-- ===================================================== ---
+
+-- On hold (Q2)
+-- Transfoms a class declaration into a class unit
+rule ClassDeclarationToClassUnit extends AbstractTypeDeclarationToDatatype {
+	from src:java!ClassDeclaration (
+			src.typeParameters.isEmpty()
+	)
+	using{
+		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
+		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);	
+	}
+	to tgt: kdm!ClassUnit(
+		isAbstract <- if src.modifier.oclIsUndefined() then
+						OclUndefined
+					else
+						src.modifier.inheritance = 'abstract'
+					endif
+		-- attributes
+		,codeElement <- javaAttributes
+		-- other elements
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))	
+	)
+	do {
+		-- inheritance
+		tgt.codeRelation <- if src.superClass.oclIsUndefined() then
+							Sequence{}
+						else
+							thisModule.CreateExtends(src.superClass)
+						endif;
+		
+	}
+}
+
+-- Transfoms a class declaration into a class unit
+rule AnonymousClassDeclarationToClassUnit extends ASTNodeToAbstractCodeElement {
+	from src:java!AnonymousClassDeclaration
+	using{
+		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
+		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);
+		originalTypeAccess :java!TypeAccess = src.refImmediateComposite().type;
+	}
+	to tgt: kdm!ClassUnit(
+		name <- 'Anonymous type'
+		-- attributes
+		,codeElement <- javaAttributes
+		-- other elements
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
+		-- imports
+		,codeRelation <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					Sequence{}
+				else
+					src.originalCompilationUnit.imports
+				endif
+		-- inheritance
+		,codeRelation <- if (originalTypeAccess.oclIsUndefined()) then
+							Sequence{}
+						else
+							thisModule.CreateImplementsForTemplated(tgt, originalTypeAccess)
+						endif
+			
+		-- TODO use superClass
+		-- comments
+		,comment <- src.comments 
+		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
+						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
+					Sequence{}
+				else -- top level type declaration -> retrieving CU heading comments
+					src.originalCompilationUnit.comments
+				endif
+	)
+}
+
+-- ===================================================== ---
+--  Rules for the interfaces
+--  This part gives all the transformations for the interfaces of a java program
+-- the transformations being quite different when the considered interface is generic (java meaning)
+-- ===================================================== ---
+
+-- Transfoms an interface
+rule InterfaceDeclarationToInterfaceUnit extends AbstractTypeDeclarationToDatatype {
+	from src:java!InterfaceDeclaration (
+			src.typeParameters.isEmpty()
+	)
+	using{
+		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
+		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);	
+	}
+	to tgt:kdm!InterfaceUnit(
+		-- attributes
+		codeElement <- javaAttributes
+		-- other elements
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
+	)
+}
+
+-- ===================================================== ---
+--  Rules for the Enums
+--  This part gives the transformation for the enums of a java programm
+-- ===================================================== ---
+
+-- Transforms a enumerated type
+rule EnumDeclarationToEnumeratedType extends AbstractTypeDeclarationToDatatype {
+	from src : java!EnumDeclaration
+	using{
+		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
+		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);	
+	}
+	to tgt : kdm!EnumeratedType(
+		-- enumerated values
+		value <- src.enumConstants
+		-- TODO not allowed by kdm implementation !
+		-- attributes
+		,codeElement <- javaAttributes
+		-- other elements
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
+	)
+}
+
+-- transforms an array type into an array type
+rule ArrayTypeToArrayType {
+	from src :java!ArrayType
+	to tgt :kdm!ArrayType (
+		name <- src.name
+		-- size attribute will contains dimension information instead of size
+		,size <- src.dimensions
+		,itemUnit <- realType
+		,indexUnit <- indexUnit
+	)
+	, realType :kdm!ItemUnit (
+		type <- src.elementType->getType()
+	)
+	, indexUnit : kdm!IndexUnit (
+		type <- java!PrimitiveTypeInt.allInstances()->first()
+	)
+}
+
+-- transforms a wild card into a TypeUnit (DefinedType)
+rule WildCardTypeToTypeUnit {
+	from src :java!WildCardType
+	to tgt :kdm!TypeUnit (
+		type <- if (src.bound.oclIsUndefined()) then
+					OclUndefined
+				else
+					src.bound->getType()
+				endif
+	)
+}
+
+-- transforms an Annotation type into an InterfaceUnit (with an annotation)
+rule AnnotationTypeDeclarationToInterfaceUnit extends AbstractTypeDeclarationToDatatype {
+	from src :java!AnnotationTypeDeclaration
+	using{
+		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
+		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);	
+	}
+	to tgt :kdm!InterfaceUnit (
+		annotation <- annotation
+		-- specific for annotation types, we have to redefine these initializations ???
+		-- ATL mechanism of extends does not work very well ...
+		,codeRelation <- src.annotations
+		,codeRelation <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					Sequence{}
+				else
+					src.originalCompilationUnit.imports
+				endif
+		-- attributes
+		,codeElement <- javaAttributes
+		-- other elements, it should be AnnotationTypeMemberDeclaration
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
+	)
+	,annotation :kdm!Annotation (
+		text <- 'annotation'
+	)
+}
+-- transforms an AnnotationTypeMemberDeclaration into a MemberUnit
+-- it is here because ATL superimposition does not allow rules extensions.
+rule AnnotationTypeMemberDeclarationToMemberUnit extends BodyDeclarationToAbstractCodeElement {
+	from src :java!AnnotationTypeMemberDeclaration
+	to tgt :kdm!MemberUnit (
+		type <- if (src.type.oclIsUndefined()) then
+						OclUndefined
+					else
+						src.type->getType()
+					endif
+	)
+}
+-- ========================================================
+--  Rules for generic types (class, interface)
+-- ========================================================
+-- Transfoms a type with generic declarations into a TemplateUnit containing a type unit
+abstract rule TypeDeclarationToTemplateUnit {
+	from src : java!TypeDeclaration (
+			not src.typeParameters.isEmpty()
+	)
+	to tgt : kdm!TemplateUnit( -- template parameter should be first
+			name <- src->getGenericName()
+			,codeElement <- src.typeParameters
+			,codeElement <- type
+	)
+	, type : kdm!Datatype (
+		name <- src.name
+		-- imports
+		,codeRelation <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					Sequence{}
+				else
+					src.originalCompilationUnit.imports
+				endif
+		-- inheritance
+		,codeRelation <- src.superInterfaces->collect(e | 
+			if (src.oclIsTypeOf(java!ClassDeclaration)) then 
+				thisModule.CreateImplementsForTemplated(type, e)
+			else
+				thisModule.CreateExtendsForTemplated(type, e)
+			endif) -- end collect
+		-- comments
+		,comment <- src.comments
+		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
+						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
+					Sequence{}
+				else -- top level type declaration -> retrieving CU heading comments
+					src.originalCompilationUnit.comments
+				endif
+		-- source file management
+		,source <- sourceRef
+		-- attributes to store additional informations (visibility stay redundant)
+		,attribute <- if (src.modifier.oclIsUndefined()) then
+						Sequence{}
+					else
+						src.modifier
+					endif
+		-- annotations
+		,codeRelation <- src.annotations
+	)
+	,sourceRef : kdm!SourceRef (
+		language <- 'java'
+		,region <- sourceRegion
+	)
+	,sourceRegion : kdm!SourceRegion (
+		language <- 'java'
+-- size expensive and redundant with SourceFile information
+--		,path <- if (src.originalCompilationUnit.oclIsUndefined()) then
+--					'internal'
+--				else
+--					src.originalCompilationUnit.originalFilePath
+--				endif
+		,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					src.originalClassFile
+				else
+					src.originalCompilationUnit
+				endif
+	)
+}
+-- Transfoms a class with generic declarations into a TemplateUnit containing a class unit
+rule ClassDeclarationToTemplateUnit extends TypeDeclarationToTemplateUnit {
+	from src : java!ClassDeclaration (
+			not src.typeParameters.isEmpty()
+	)
+	using{
+		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage
+		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);	
+	}
+	to tgt : kdm!TemplateUnit()
+	, type : kdm!ClassUnit(
+		isAbstract <- if src.modifier.oclIsUndefined() then
+						OclUndefined
+					else
+						src.modifier.inheritance = 'abstract'
+					endif
+		-- attributes
+		,codeElement <- javaAttributes
+		-- other elements
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
+		
+	)
+	do {
+		-- inheritance
+		type.codeRelation <- if src.superClass.oclIsUndefined() then
+							Sequence{}
+						else
+							thisModule.CreateExtendsForTemplated(type, src.superClass)
+						endif;
+	}
+}
+	
+-- Transfoms a generic interface
+rule InterfaceDeclarationToTemplateUnit extends TypeDeclarationToTemplateUnit {
+	from src : java!InterfaceDeclaration(
+			not src.typeParameters.isEmpty()
+	)
+	using{
+		-- For attributes, we have to separate FieldDeclaration and VaraiableDeclarationFragment usage
+		javaAttributes :java!NamedElement = src.bodyDeclarations->select(e| e.oclIsTypeOf(java!FieldDeclaration))
+			->collect(f| if (f.fragments->isEmpty()) then f else f.fragments endif);	
+	}
+	to tgt : kdm!TemplateUnit()
+	, type : kdm!InterfaceUnit(
+		-- attributes
+		codeElement <- javaAttributes
+		-- other elements
+		,codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
+	)
+}
+
+-- Transforms parameters declared by a generic type
+rule TypeParameterToTemplateParameter {
+	from src : java!TypeParameter
+	to parameter : kdm!TemplateParameter (
+		name <- src.name	
+	)
+}
+
+-- ========================================================
+--  Rules for usage of generic types
+-- ========================================================
+
+-- Transforms ParameterizedType to TemplateType
+-- relationships ParameterTo link generic usage with type arguments
+-- relationship InstanceOf links generic usage with generic type
+rule ParameterizedTypeToTemplateType {
+	from src : java!ParameterizedType
+	to tgt : kdm!TemplateType (
+		name <- src.name
+		,codeRelation <- src.typeArguments->collect(t | thisModule->CreateParameterTo(t))
+		,codeRelation <- typeLink
+	)
+	, typeLink : kdm!InstanceOf (
+		from <- tgt
+		,to <- if (src.type.type->oclIsKindOf(java!UnresolvedTypeDeclaration)) then
+					OclUndefined -- typeParameters does not exist on UnresolvedTypeDeclaration
+				else 
+					if (src.type.type.typeParameters.isEmpty()) then
+						OclUndefined
+					else
+						src.type->getType()
+					endif
+				endif
+	)
+}
+	
+-- ===================================================
+-- CodeRelation section --
+-- here is managed 'use' relations
+-- and inheritance links (extends and implements)
+-- ===================================================
+	
+-- Transforms an import declaration to an import declaration
+rule ImportDeclarationToImports {
+	from src : java!ImportDeclaration (
+		not src.static	
+	)
+	to tgt : kdm!Imports(
+			from <- src.refImmediateComposite().types->at(1),
+			to <- src.importedElement->getExtendsType()
+		)
+}
+
+--create the Extends for class or interface extension
+lazy rule CreateExtends{
+	from
+		javaExtends:java!TypeAccess
+	to
+		kdmExtends:kdm!Extends(
+			from <- javaExtends.refImmediateComposite(),
+			to <- javaExtends->getType()
+		)
+}
+
+lazy rule CreateExtendsForTemplated {
+	from targetFrom :kdm!CodeItem, sourceTo :java!TypeAccess
+	to tgt :kdm!Extends (
+		from <- targetFrom
+		,to <- sourceTo->getType()
+	)
+}
+
+--create the Implements for interface implementation
+lazy rule CreateImplements{
+	from
+		javaImplements:java!TypeAccess
+	to 
+		kdmImplements:kdm!Implements (
+			from <- javaImplements.refImmediateComposite(),
+			to <- javaImplements->getType()
+		)
+}
+
+lazy rule CreateImplementsForTemplated {
+	from targetFrom :kdm!CodeItem, sourceTo :java!TypeAccess
+	to tgt :kdm!Implements (
+		from <- targetFrom
+		,to <- sourceTo->getType()
+	)
+}
+
+-- create a class unit in case of extends relationships
+unique lazy rule CreateClassUnit {
+	from src : java!UnresovedItem
+	to tgt : kdm!ClassUnit (
+		name <- src.name
+		)
+}
+-- create an interface unit in case of extends or implements relationships
+unique lazy rule CreateInterfaceUnit {
+	from src : java!UnresovedItem
+	to tgt : kdm!InterfaceUnit (
+		name <- src.name
+		)
+}
+
+--create the ParameterTo for type arguments of generics usage
+lazy rule CreateParameterTo{
+	from
+		src :java!TypeAccess
+	to 
+		tgt :kdm!ParameterTo (
+			from <- src.refImmediateComposite(),
+			to <- src->getType()
+		)
+}
+
+-- ===================================================== ---
+--  Rules for the primitive types
+--  A primitive type can be translated into different types according to the "name" attribute
+-- ===================================================== ---
+
+--creates the Boolean primitive type
+rule PrimitiveTypeBooleanToBooleanType{
+	from 
+		javaBoolean:java!PrimitiveTypeBoolean
+	to
+		kdmBoolean:kdm!BooleanType(
+			name <- 'boolean'
+		)
+}
+--creates the Byte primitive type
+rule PrimitiveTypeByteToByteType{
+	from 
+		javaByte:java!PrimitiveTypeByte
+	to
+		kdmByte:kdm!OctetType(
+			name <- 'byte'
+		)
+}
+--creates the Char primitive type
+rule PrimitiveTypeCharToCharType{
+	from 
+		javaChar:java!PrimitiveTypeChar
+	to
+		kdmChar:kdm!CharType(
+			name <- 'char'
+		)
+}
+--creates the Double primitive type
+rule PrimitiveTypeDoubleToDoubleType{
+	from 
+		src:java!PrimitiveTypeDouble
+	to
+		kdmFLoat:kdm!FloatType(
+			name <- 'double'
+		)
+}
+--creates the Float primitive type
+rule PrimitiveTypeFloatToFloatType{
+	from 
+		javaFloat:java!PrimitiveTypeFloat
+	to
+		kdmFloat:kdm!FloatType(
+			name <- 'float'
+		)
+}
+--creates the int primitive type
+rule PrimitiveTypeIntToIntType{
+	from 
+		javaInt:java!PrimitiveTypeInt
+	to
+		kdmInteger:kdm!IntegerType(
+			name  <- 'int'
+		)
+}
+--creates the long primitive type
+rule PrimitiveTypeLongToLongType{
+	from 
+		javaLong:java!PrimitiveTypeLong
+	to
+		kdmInteger:kdm!IntegerType(
+			name <- 'long'
+		)
+}
+--creates the short primitive type
+rule PrimitiveTypeShortToShortType{
+	from 
+		javaShort:java!PrimitiveTypeShort
+	to
+		kdmInteger:kdm!IntegerType(
+			name <- 'short'
+		)
+}
+--creates the Void primitive type
+rule PrimitiveTypeVoidToVoidType{
+	from 
+		javaVoid:java!PrimitiveTypeVoid
+	to
+		kdmVoid:kdm!VoidType(
+			name <- 'void'
+		)
+}
+
+-- ===================================================== ---
+--  Rules for the artefacts of a program
+--  
+-- ===================================================== ---
+
+rule CompilationUnitToSourceFile {
+	from src : java!CompilationUnit
+	to tgt : kdm!SourceFile (
+		name <- src.name
+		,language <- 'java'
+		,path <- src.originalFilePath
+	)
+}
+
+rule ArchiveToBinaryFile {
+	from src : java!Archive
+	to tgt : kdm!BinaryFile (
+		path <- src.originalFilePath
+		-- version <- TODO retrieve version from Manifest infos ?
+	)
+}
+
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+
+-- StructureWithMembers
+
+-- helpers --
+
+--returns an element of the ExportKind enumeration to set the visibility of the field or method
+helper context java!BodyDeclaration def : getVisibility() : kdm!ExportKind = 
+		if (self.modifier.oclIsUndefined()) then
+			#unknown
+		else
+			if self.modifier.visibility.oclIsUndefined() then 
+				#unknown
+			else 
+				if (self.modifier.visibility = #public)	then 
+					#public
+				else
+					if (self.modifier.visibility = #protected) then
+						#protected
+					else
+						if (self.modifier.visibility = #none) then
+							if (self.abstractTypeDeclaration.oclIsTypeOf(java!InterfaceDeclaration)) then
+								#public
+							else
+								#protected
+							endif
+						else
+							#private
+						endif
+					endif			
+				endif
+			endif
+		endif;
+
+-- rules --
+
+-- ===================================================
+-- Transformation of attributes : Field, EnumConstant, AnnotationTypeMemberDeclaration
+-- ===================================================
+
+-- ===================================================== ---
+--  Rules for the Fields
+--  This part gives the transformation for the fields of a java type
+-- ===================================================== ---
+
+--create the classes and interface attributes
+-- Hope : kdm does not allow interface attributes ! we have to change it
+rule FieldDeclarationToMemberUnit extends BodyDeclarationToAbstractCodeElement {
+	from src :java!FieldDeclaration (src.fragments->isEmpty())
+	to tgt :kdm!MemberUnit(
+		export <- src->getVisibility()	
+		,type <- if (src.type.oclIsUndefined()) then
+					OclUndefined
+				else
+					src.type->getType()
+				endif
+		,comment<-src.comments
+	)
+}
+
+
+
+-- Transfoms an enumeration constant into a value
+rule EnumConstantDeclarationToValue extends BodyDeclarationToAbstractCodeElement {
+	from src : java!EnumConstantDeclaration
+	to tgt : kdm!Value(
+			name <- 'enum literal'
+			,ext <- src.name
+			,type <- src.refImmediateComposite()
+			-- TODO waiting for a strategy for constant arguments
+	)
+}
+
+
+
+-- ===================================================== ---
+--  Rules for the methods
+--  This part gives all the transformations for the methods
+-- the transformations being quite different when the considered method is generic
+-- ===================================================== ---
+
+-- Transforms a method into a method unit
+rule MethodDeclarationToMethodUnit extends BodyDeclarationToAbstractCodeElement {
+	from src : java!AbstractMethodDeclaration(
+			src.typeParameters.isEmpty()
+		--and
+			-- Anonymous types are not translated in kdm
+			--src.anonymousClassDeclarationOwner.oclIsUndefined()
+	)
+	to tgt : kdm!MethodUnit(
+		kind <- if (src.oclIsKindOf(java!ConstructorDeclaration)) then #constructor else #method endif
+		,export <- src->getVisibility()
+		-- signature management
+		,type <- signature
+		,codeElement <- signature
+		-- body (block)
+		,codeElement <- if (src.body.oclIsUndefined()) then Sequence{} else src.body endif
+	)
+	,signature : kdm!Signature(
+		name <- src.name
+		-- return parameter
+		,parameterUnit <- if (src.oclIsKindOf(java!ConstructorDeclaration)) then
+							Sequence{}
+						  else 
+						  	if (src.returnType.oclIsUndefined()) then
+								Sequence{}
+							else
+								thisModule.CreateReturnParameterUnit(src.returnType)
+							endif
+						endif
+		-- usual parameters
+		,parameterUnit <- src.parameters
+		-- exceptions thrown
+		,parameterUnit <- src.thrownExceptions->collect(e | thisModule.CreateExceptionParameterUnit(e))
+	)
+	do {
+		-- redefinitions / redefined MethodDeclaration
+		tgt.codeRelation <- if (src.oclIsKindOf(java!ConstructorDeclaration)) then
+							Sequence{}
+						else 
+							if (src.redefinedMethodDeclaration.oclIsUndefined()) then
+								Sequence{}
+							else
+								thisModule.CreateImplementationOf(src, src.redefinedMethodDeclaration)
+							endif
+						endif;
+		
+	}
+}
+
+-- Transforms a method into a method unit
+rule MethodDeclarationToTemplateUnit {
+	from src : java!AbstractMethodDeclaration(
+			(not src.typeParameters.isEmpty())
+		--and
+			-- Anonymous types are not translated in kdm
+			--src.anonymousClassDeclarationOwner.oclIsUndefined()
+	)
+	to tgt : kdm!TemplateUnit( -- template parameter should be first
+			name <- src.name
+			,codeElement <- src.typeParameters
+			,codeElement <- method
+	)
+	,method : kdm!MethodUnit(
+			name <- src.name
+			,kind <- if (src.oclIsKindOf(java!ConstructorDeclaration)) then #constructor else #method endif
+			,export <- src->getVisibility()
+			-- signature management
+			,type <- signature
+			,codeElement <- signature
+			-- attributes to store additional information (visibility stay redundant)
+			,attribute <- if (src.modifier.oclIsUndefined()) then
+						Sequence{}
+					else
+						src.modifier
+					endif
+			-- annotations
+			,codeRelation <- src.annotations
+			-- comments
+			,comment <- src.comments
+			-- body (block)
+			,codeElement <- if (src.body.oclIsUndefined()) then Sequence{} else src.body endif
+			-- redefinitions / redefined MethodDeclaration
+			,codeRelation <- if (src.oclIsKindOf(java!ConstructorDeclaration)) then
+								Sequence{}
+							else
+								if (src.redefinedMethodDeclaration.oclIsUndefined()) then
+									Sequence{}
+								else
+									thisModule.CreateImplementationOf(src, src.redefinedMethodDeclaration)
+								endif
+							endif
+			-- source file management
+			,source <- sourceRef
+		)
+		,sourceRef : kdm!SourceRef (
+			language <- 'java'
+			,region <- sourceRegion
+		)
+		,sourceRegion : kdm!SourceRegion (
+			language <- 'java'
+-- size expensive and redundant with SourceFile information
+--		,path <- if (src.originalCompilationUnit.oclIsUndefined()) then
+--					'internal'
+--				else
+--					src.originalCompilationUnit.originalFilePath
+--				endif
+			,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					src.originalClassFile
+				else
+					src.originalCompilationUnit
+				endif
+		)		
+	,signature : kdm!Signature(
+		name <- src.name
+		-- return parameter
+		,parameterUnit <- if (src.oclIsKindOf(java!ConstructorDeclaration)) then
+								Sequence{}
+							else
+								if (src.returnType.oclIsUndefined()) then
+									Sequence{}
+								else
+									thisModule.CreateReturnParameterUnit(src.returnType)
+								endif
+							endif
+		-- usual parameters
+		,parameterUnit <- src.parameters
+		-- exceptions thrown
+		,parameterUnit <- src.thrownExceptions->collect(e | thisModule.CreateExceptionParameterUnit(e))
+	)
+}
+
+-- transforms a Block into a BlockUnit, it is here just to do articulation
+-- between members and statements/expressions.
+rule BlockToBlockUnit extends ASTNodeToAbstractCodeElement {
+	from src : java!Block
+	to tgt : kdm!BlockUnit(
+		codeElement <- if (src.statements->isEmpty()) then Sequence{} else src.statements endif
+	)
+}
+
+rule CommentToCommentUnit {
+	from src : java!Comment (
+		-- Anonymous types are not translated in kdm
+		not src.refImmediateComposite().oclIsTypeOf(java!AnonymousClassDeclaration)
+		and
+		-- kdm!Imports can not own comments
+		not src.refImmediateComposite().oclIsTypeOf(java!ImportDeclaration)
+		and
+		-- Some expressions are not managed
+		not (src.refImmediateComposite().oclIsKindOf(java!Expression)
+			 and thisModule->filterExpression(src.refImmediateComposite())->isEmpty())
+		-- 
+--		not src.refImmediateComposite().oclIsTypeOf(java!TypeAccess)
+--		and
+--		not src.refImmediateComposite().oclIsTypeOf(java!SingleVariableAccess)
+	)
+	to tgt : kdm!CommentUnit(
+		text <- src.content
+	)
+}
+
+-- to explicit relationship between methods
+lazy rule CreateImplementationOf {
+	from src :java!MethodDeclaration
+		, redefined : java!MethodDeclaration
+	to tgt :kdm!ImplementationOf (
+		from <- src
+		,to <- redefined
+	)
+}
+
+-- ===================================================== ---
+--  Rules for the method Parameters
+--  This part gives the transformation for the parameters of a Java method
+-- ===================================================== ---
+
+-- Transforms a method parameter (other cases should be handled in further transformations)
+rule SingleVariableDeclarationToParameterUnit extends NamedElementToAbstractCodeElement {
+	from src : java!SingleVariableDeclaration (
+			-- only for MethodDeclaration !
+			if (src.methodDeclaration.oclIsUndefined()) then
+				false
+			else
+				-- Anonymous types are not translated in kdm
+				--src.methodDeclaration.anonymousClassDeclarationOwner.oclIsUndefined()
+				true
+			endif
+	)
+	to tgt : kdm!ParameterUnit(
+			kind <- #unknown
+			,type <- src.type->getType()
+	)
+}
+
+--create the return Parameter
+lazy rule CreateReturnParameterUnit {
+	from src :java!TypeAccess
+	to kdmParameter:kdm!ParameterUnit (
+			kind <- #return,
+			type <- src->getType()
+			-- source file management
+			,source <- sourceRef
+		)
+		,sourceRef : kdm!SourceRef (
+			language <- 'java'
+			,region <- sourceRegion
+		)
+		,sourceRegion : kdm!SourceRegion (
+			language <- 'java'
+-- size expensive and redundant with SourceFile information
+--		,path <- if (src.originalCompilationUnit.oclIsUndefined()) then
+--					'internal'
+--				else
+--					src.originalCompilationUnit.originalFilePath
+--				endif
+			,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					src.originalClassFile
+				else
+					src.originalCompilationUnit
+				endif
+		)
+}
+
+--create the exception Parameter
+lazy rule CreateExceptionParameterUnit{
+	from src :java!TypeAccess
+	to kdmParameter:kdm!ParameterUnit (
+			kind <- #throws,
+			type <- src->getType()
+			-- source file management
+			,source <- sourceRef
+		)
+		,sourceRef : kdm!SourceRef (
+			language <- 'java'
+			,region <- sourceRegion
+		)
+		,sourceRegion : kdm!SourceRegion (
+			language <- 'java'
+-- size expensive and redundant with SourceFile information
+--		,path <- if (src.originalCompilationUnit.oclIsUndefined()) then
+--					'internal'
+--				else
+--					src.originalCompilationUnit.originalFilePath
+--				endif
+			,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
+					src.originalClassFile
+				else
+					src.originalCompilationUnit
+				endif
+		)
+}
+
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+
+-- Statements
+
+-- helpers --
+
+
+-- rules --
+
+-- handling statements and expressions :
+	-- everything must go through an ActionElement : indeed, "action relationships" can only
+	-- be owned by an ActionElement ...
+	-- alternatively, they can be put in the codeElement collection? Is it correct?
+-- because of this limitation, all expressions will be expressed as ActionElement's also (like statements)
+-- and action relationships will be explicitly created instead of using mapping.
+-- so for each expression we will have one ActionElement and perhaps one or more ActionRelation.
+
+-- ===================================================
+-- Transformation of code in blocks: if, while, for, etc.
+-- There are 23 statements in all, but Block is already handled by the parent transformation
+-- ===================================================
+
+-- AssertStatement
+rule AssertStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!AssertStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'assert'
+		,name <- 'assert'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- if(src.message.oclIsUndefined()) then Sequence{} else Sequence{src.message} endif
+	)
+}
+
+-- BreakStatement
+rule BreakStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!BreakStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'break'
+		-- referenced elements
+		, actionRelation <- if (src.label.oclIsUndefined()) then Sequence{} else thisModule->CreateCallsForLabel(src) endif
+	)
+}
+
+-- create a Calls from a Method invocation (target element is binding with a TemplateUnit and we want a MethodUnit !)
+lazy rule CreateCallsForGenericMethod {
+	from src :java!AbstractMethodInvocation
+	to tgt :kdm!Calls(
+		from <- src
+		,to <- thisModule.resolveTemp(src.method, 'method')
+	)
+}
+
+-- create a Calls from a Method invocation
+lazy rule CreateCalls {
+	from src :java!AbstractMethodInvocation (
+		-- Methods from anonymous types will not be translated
+		-- because they will not have owners in kdm
+		src.method.anonymousClassDeclarationOwner.oclIsUndefined()
+	)
+	to tgt :kdm!Calls(
+		from <- src
+		,to <- src.method
+	)
+}
+
+-- create a Calls from a Label goto
+lazy rule CreateCallsForLabel {
+	from src :java!Statement
+	to tgt :kdm!Calls(
+		from <- src
+		,to <- src.label
+	)
+}
+
+-- CatchClause
+rule CatchClauseToCatchUnit extends ASTNodeToAbstractCodeElement {
+	from src : java!CatchClause
+	to tgt :kdm!CatchUnit(
+		kind <- 'catch'
+		,name <- 'catch'
+		-- referenced elements
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+		,codeElement <- if(src.exception.oclIsUndefined()) then Sequence{} else src.exception endif
+		,actionRelation <- exceptionFlow
+	)
+	,exceptionFlow :kdm!ExceptionFlow (
+		from <- src.refImmediateComposite()
+		,to <- src
+	)
+}
+
+-- Transforms a method parameter (other cases should be handled in further transformations)
+--rule SingleVariableDeclarationToStorableUnit extends NamedElementToAbstractCodeElement {
+--	from src : java!SingleVariableDeclaration (
+--		-- only for CatchClause and EnhancedForStatement !
+--		src.methodDeclaration.oclIsUndefined()
+--	)
+--	to tgt : kdm!StorableUnit(
+--		kind <- #local
+--		-- attributes to store additional information (final, etc.)
+--		,attribute <- if (src.modifier.oclIsUndefined()) then
+--						Sequence{}
+--					else
+--						src.modifier
+--					endif
+--		,type <- src.type->getType()
+--		,codeElement <- if (src.initializer.oclIsUndefined()) then Sequence{} else Sequence{src.initializer} endif	
+--	)
+--}
+
+-- ConstructorInvocation
+rule ConstructorInvocationToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ConstructorInvocation
+	to tgt :kdm!ActionElement(
+		kind <- 'constructor invocation'
+		-- referenced elements
+		,actionRelation <- if (src.method.oclIsUndefined()) then Sequence{} else
+			if (src.method.typeParameters.isEmpty()) then
+									thisModule->CreateCalls(src)
+								else 
+									thisModule->CreateCallsForGenericMethod(src)
+								endif
+			endif
+		,codeElement <- src.arguments
+	)
+}
+
+-- ContinueStatement
+rule ContinueStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ContinueStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'continue'
+		,name <- 'continue'
+		-- referenced elements
+		, actionRelation <- if (src.label.oclIsUndefined()) then Sequence{} else thisModule->CreateCallsForLabel(src) endif
+	)
+}
+
+-- DoStatement
+rule DoStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!DoStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'do'
+		,name <- 'do'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+	)
+}
+
+-- EmptyStatement
+rule EmptyStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!EmptyStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'empty'
+		,name <- 'empty'
+		-- referenced elements
+	)
+}
+
+-- EnhancedForStatement
+rule EnhancedForStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!EnhancedForStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'foreach'
+		,name <- 'foreach'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+		,codeElement <- if(src.parameter.oclIsUndefined()) then Sequence{} else src.parameter endif
+	)
+}
+
+-- ExpressionStatement
+rule ExpressionStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ExpressionStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'expression statement'
+		,name <- 'expression statement'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+	)
+}
+
+-- ForStatement
+rule ForStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ForStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'for'
+		,name <- 'for'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- src.initializers
+		,codeElement <- src.updaters
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+	)
+}
+
+-- IfStatement
+rule IfStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!IfStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'if'
+		,name <- 'if'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- if(src.thenStatement.oclIsUndefined()) then Sequence{} else src.thenStatement endif
+		,codeElement <- if(src.elseStatement.oclIsUndefined()) then Sequence{} else src.elseStatement endif
+	)
+}
+
+-- LabeledStatement
+rule LabeledStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!LabeledStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'label'
+		,name <- 'label'
+		-- referenced elements
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+	)
+}
+
+-- ReturnStatement
+rule ReturnStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ReturnStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'return'
+		,name <- 'return'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+	)
+}
+
+-- SuperConstructorInvocation
+rule SuperConstructorInvocationToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!SuperConstructorInvocation
+	to tgt :kdm!ActionElement(
+		kind <- 'super constructor invocation'
+		,name <- 'super constructor invocation'
+		-- referenced elements
+		,actionRelation <- if (src.method.oclIsUndefined()) then Sequence{} else
+			if (src.method.typeParameters.isEmpty()) then
+									thisModule->CreateCalls(src)
+								else 
+									thisModule->CreateCallsForGenericMethod(src)
+								endif
+			endif
+		,codeElement <- src.arguments->collect(e | thisModule->filterExpression(e))->flatten()
+		,codeElement <- thisModule->filterExpression(src.expression)
+	)
+}
+
+-- SwitchCase
+rule SwitchCaseToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!SwitchCase
+	to tgt :kdm!ActionElement(
+		kind <- 'case'
+		,name <- 'case'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+	)
+}
+
+-- SwitchStatement
+rule SwitchStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!SwitchStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'switch'
+		,name <- 'switch'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- src.statements
+	)
+}
+
+-- SynchronizedStatement
+rule SynchronizedStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!SynchronizedStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'synchronized'
+		,name <- 'synchronized'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+	)
+}
+
+-- ThrowStatement
+rule ThrowStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ThrowStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'throw'
+		,name <- 'throw'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+	)
+}
+
+-- TypeDeclarationStatement
+rule TypeDeclarationStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!TypeDeclarationStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'type declaration'
+		,name <- 'type declaration'
+		-- referenced elements
+		,codeElement <- if(src.declaration.oclIsUndefined()) then Sequence{} else src.declaration endif
+	)
+}
+
+-- TryStatement
+rule TryStatementToTryUnit extends ASTNodeToAbstractCodeElement {
+	from src : java!TryStatement
+	to tgt :kdm!TryUnit(
+		kind <- 'try'
+		,name <- 'try'
+		-- referenced elements
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+		,codeElement <- if(src.finally.oclIsUndefined()) then Sequence{} else src.finally endif
+		,codeElement <- src.catchClauses
+	)
+}
+
+-- VariableDeclarationStatement
+rule VariableDeclarationStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!VariableDeclarationStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'variable declaration'
+		,name <- 'variable declaration'
+		-- referenced elements
+		,codeElement <- src.fragments
+		,codeRelation <- src.annotations
+		-- management of fragments initializers (when it is a class instance creation)
+		,codeElement <- src.fragments->select(fragment | fragment.initializer.oclIsTypeOf(java!ClassInstanceCreation))
+									->collect(fragment | fragment.initializer)
+	)
+}
+
+-- VariableDeclarationFragment
+-- Transforms a local variable
+-- we have to find a solution to store action element potentially
+-- created from initializer.
+-- However, in a storable unit, we cannot contain action elements directly ...
+
+rule VariableDeclarationFragmentInLocalDeclarationToStorableUnit extends NamedElementToAbstractCodeElement {
+	from src : java!VariableDeclarationFragment (
+		-- not for FieldDeclaration !
+		not src.variablesContainer.oclIsKindOf(java!FieldDeclaration)
+	)
+	to tgt : kdm!StorableUnit(
+		name <- src.name
+		,kind <- #local
+		-- attributes to store additional information (final, etc.)
+		,attribute <- if (src.refImmediateComposite().oclIsTypeOf(java!Model)) then -- Unresolved items
+						Sequence{}
+					else
+						if (src.refImmediateComposite().modifier.oclIsUndefined()) then
+							Sequence{}
+						else
+							src.refImmediateComposite().modifier
+						endif
+					endif
+		,type <- if (src.variablesContainer.oclIsUndefined()) then OclUndefined -- Unresolved items
+				 else 
+				 	if (src.variablesContainer.type.oclIsUndefined()) then OclUndefined
+				 	else src.variablesContainer.type->getType() endif
+				 endif
+		,codeRelation <- if (src.initializer.oclIsUndefined()) then Sequence{}
+						else thisModule->CreateHasValue(src, src.initializer) endif
+		-- in some cases, if initializer is a complex expression,
+		-- we don't know how to store created elements in the storable unit
+		
+	)
+}
+
+lazy rule CreateHasValue {
+	from src : java!VariableDeclaration,
+		value : java!Expression
+	to tgt : kdm!HasValue (
+		from <- src
+		,to <- if (value.oclIsTypeOf(java!SingleVariableAccess)) then
+					value.variable
+				else
+					if (value.oclIsTypeOf(java!UnresolvedItemAccess)) then
+						-- TODO add a better management of unresolved items ...
+						thisModule->CreateDatatype(value) -- type of element is java!UnresolvedItem
+					else
+						value
+					endif
+				endif
+	)
+}
+
+lazy rule CreateDatatype {
+	from src : java!UnresolvedItemAccess
+	to tgt : kdm!Datatype (
+		name <- src.element.name
+	)
+}
+-- VariableDeclarationFragment
+-- Transforms a global variable (other cases should be handled in further transformations)
+rule VariableDeclarationFragmentInFieldToStorableUnit extends NamedElementToAbstractCodeElement {
+	from src : java!VariableDeclarationFragment (
+		-- only for FieldDeclaration !
+		src.variablesContainer.oclIsKindOf(java!FieldDeclaration)
+	)
+	to tgt : kdm!StorableUnit(
+		kind <- if (src.variablesContainer.modifier.oclIsUndefined()) then
+					#global
+				else
+					if (src.variablesContainer.modifier.static) then
+						#static
+					else
+						#global
+					endif
+				endif
+		-- attributes to store additional information (final, etc.)
+		,attribute <- if src.variablesContainer.modifier.oclIsUndefined() then
+						Sequence{}
+					else
+						src.variablesContainer.modifier
+					endif
+		,type <- if (src.variablesContainer.type.oclIsUndefined()) then OclUndefined
+					else src.variablesContainer.type->getType() endif
+		-- ok, but how to store action element that will be potentially created from initializer ?
+		,codeRelation <- if (src.initializer.oclIsUndefined()) then Sequence{}
+						else thisModule->CreateHasValue(src, src.initializer) endif
+		,codeRelation <- src.variablesContainer.annotations
+		,comment<-src.variablesContainer.comments
+	)
+}
+
+-- WhileStatement
+rule WhileStatementToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!WhileStatement
+	to tgt :kdm!ActionElement(
+		kind <- 'while'
+		,name <- 'while'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- if(src.body.oclIsUndefined()) then Sequence{} else src.body endif
+	)
+}
+
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+-- ##########################################################################
+
+-- Expressions
+
+-- rules --
+
+
+-- handling statements and expressions :
+	-- everything must go through an ActionElement : indeed, "action relationships" can only
+	-- be owned by an ActionElement ...
+	-- alternatively, they can be put in the codeElement collection? Is it correct?
+-- because of this limitation, all expressions will be expressed as ActionElement's also (like statements)
+-- and action relationships will be explicitly created instead of using mapping.
+-- so for each expression we will have one ActionElement and perhaps one or more ActionRelation.
+
+-- ===================================================
+-- Transformation of code in blocks: if, while, for, etc.
+--
+-- There are 27 statements in all.
+-- But some model elements will also be handled (AnnotationMemberValuePair for example)
+-- ===================================================
+
+-- As explained below, for each expression we will be mapping to an ActionElement
+-- and this is this element that will be able to contain ActionRelation!
+
+-- Annotation
+-- specific case
+-- an annotation is always applied on a body declaration element,
+-- so it should be mapped to a subclass of AbstractCodeRelationship
+--rule AnnotationToActionElement extends ASTNodeToAbstractCodeElement {
+--	from src : java!Annotation
+--	to tgt :kdm!ActionElement(
+--		kind <- 'annotation'
+--		,name <- 'annotation'
+		-- referenced elements
+--		,actionRelation <- if(src.type.oclIsUndefined()) then Sequence{} else thisModule->CreateCreates(src.type) endif
+--		,codeElement <- src.values -- collection
+--	)
+--}
+
+rule AnnotationToHasValue {
+	from src : java!Annotation (
+				-- specific filter for annotation as value of another annotation (single value or array)
+				not src.refImmediateComposite().oclIsTypeOf(java!AnnotationMemberValuePair)
+				--and not src.refImmediateComposite().oclIsTypeOf(java!ArrayInitializer)
+	)
+	to tgt :kdm!HasValue(
+		from <- src->filterRefImmediateCompositeForAnnotation()
+		,to <- src.type->getType()
+		-- specify that it is an annotation
+		,annotation <- annotation
+		-- store parameters as attributes
+		,attribute <- src.values
+	)
+	, annotation :kdm!Annotation(
+		text <- 'annotation'
+	)
+}
+
+-- specific case for field declarations that have an annotation
+-- if the field declaration has fragments, then the HasValue.form should use the fragment.
+helper context java!Annotation def : filterRefImmediateCompositeForAnnotation() : OclAny =
+	if (self.refImmediateComposite().oclIsTypeOf(java!FieldDeclaration)) then
+		if (self.refImmediateComposite().fragments->isEmpty()) then
+			self.refImmediateComposite()
+		else
+			self.refImmediateComposite().fragments->first()
+		endif
+	else
+		if (self.refImmediateComposite().oclIsTypeOf(java!VariableDeclarationStatement)) then
+			self.refImmediateComposite().fragments->first()
+		else
+			if (self.refImmediateComposite().oclIsTypeOf(java!ArrayInitializer)
+					or self.refImmediateComposite().oclIsTypeOf(java!AnnotationMemberValuePair)) then
+				OclUndefined
+			else
+				self.refImmediateComposite()
+			endif
+		endif
+	endif;
+
+lazy rule CreateCreates {
+	from src :java!TypeAccess
+	to tgt :kdm!Creates (
+		from <- src.refImmediateComposite()
+		,to <- src->getType()
+	)
+}
+
+-- AnnotationMemberValuePair
+--rule AnnotationMemberValuePairToActionElement extends NamedElementToAbstractCodeElement {
+--	from src : java!AnnotationMemberValuePair
+--	to tgt :kdm!ActionElement(
+--		kind <- 'annotation member value'
+--		,name <- 'annotation member value'
+--		-- referenced elements
+--		,actionRelation <- if(src.member.oclIsUndefined()) then Sequence{} else thisModule->CreateWritesForAnnotationMember(src) endif
+--		,codeElement <- if(src.value.oclIsUndefined()) then Sequence{} else Sequence{src.value} endif
+--	)
+--}
+
+-- TODO Works only for values which are literals, not values which are code expressions (uncommon use case)
+rule AnnotationMemberValuePairToAttribute {
+	from src : java!AnnotationMemberValuePair
+	to tgt :kdm!Attribute(
+		tag <- if(src.member.oclIsUndefined()) then 'no member' else src.member.name endif
+		,value <- if(src.value.oclIsUndefined()) 
+					then 'no value' 
+					else 
+						if (src.value.oclIsKindOf(java!NumberLiteral)) then
+							src.value.tokenValue.toString()
+						else
+							if (src.value.oclIsKindOf(java!StringLiteral) or 
+									src.value.oclIsKindOf(java!CharacterLiteral)) then
+								src.value.escapedValue
+							else
+								if (src.value.oclIsKindOf(java!BooleanLiteral)) then
+									src.value.value.toString()
+								else
+									if (src.value.oclIsKindOf(java!Annotation)) then
+										src.value.type.type.name
+									else
+										'value expression'
+									endif
+								endif
+							endif
+						endif
+					endif
+	)
+}
+
+lazy rule CreateWritesForAnnotationMember {
+	from src :java!AnnotationMemberValuePair
+	to tgt :kdm!Writes (
+		from <- src
+		,to <- src.member
+	)
+}
+
+lazy rule CreateWritesForVariableAccess {
+	from src :java!SingleVariableAccess
+	to tgt :kdm!Writes (
+		from <- src.refImmediateComposite()
+		,to <- src.variable
+	)
+}
+
+
+-- ArrayAccess
+rule ArrayAccessToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ArrayAccess
+	to tgt :kdm!ActionElement(
+		kind <- 'array access'
+		,name <- 'array access'
+		-- referenced elements
+		-- if attribut "array" is a reference (access), we have to create corresponding relationship
+		,codeElement <- thisModule->filterExpression(src.array)
+		,actionRelation <- if(src.array.oclIsUndefined()) then 
+							Sequence{} 
+						else 
+							if (src.array.oclIsTypeOf(java!SingleVariableAccess)) then
+								thisModule->CreateAddresses(src.array)
+							else
+								Sequence{}
+							endif
+						endif
+		,codeElement <- thisModule->filterExpression(src.index)
+	)
+}
+
+-- ArrayCreation
+rule ArrayCreationToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ArrayCreation
+	to tgt :kdm!ActionElement(
+		kind <- 'array creation'
+		,name <- 'array creation'
+		-- referenced elements
+		,actionRelation <- if(src.type.oclIsUndefined()) then Sequence{} else thisModule->CreateCreates(src.type) endif
+		,codeElement <- src.dimensions->collect(e | thisModule->filterExpression(e))->flatten()
+		,codeElement <- thisModule->filterExpression(src.initializer)
+	)
+}
+
+-- ArrayInitializer
+rule ArrayInitializerToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ArrayInitializer (
+		-- filter initialier of AnnotationMemberValuePair
+		not src.refImmediateComposite().oclIsTypeOf(java!AnnotationMemberValuePair)
+	)
+	to tgt :kdm!ActionElement(
+		kind <- 'array initializer'
+		,name <- 'array initializer'
+		-- referenced elements
+		,codeElement <- src.expressions->select(e | not e.oclIsTypeOf(java!Annotation))
+							->collect(e | thisModule->filterExpression(e))->flatten()
+		-- referenced elements
+		,codeRelation <- src.expressions->select(e | e.oclIsTypeOf(java!Annotation))
+	)
+}
+
+-- ArrayLengthAccess
+rule ArrayLengthAccessToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ArrayLengthAccess
+	to tgt :kdm!ActionElement(
+		kind <- 'array length access'
+		,name <- 'array length access'
+		-- referenced elements
+		-- TODO should we create a Reads object ? the length field doesn't exist, so ...
+		,codeElement <- thisModule->filterExpression(src.array)
+	)
+}
+
+-- Assignment
+rule AssignmentToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!Assignment
+	to tgt :kdm!ActionElement(
+		kind <- 'assignment'
+		-- operator
+		,name <- if (src.operator.oclIsUndefined()) then 'assignment' else src.operator.toString() endif
+		-- referenced elements
+		-- left hand side
+		,actionRelation <- if(src.leftHandSide.oclIsUndefined()) then Sequence{} else 
+							if (src.leftHandSide.oclIsTypeOf(java!SingleVariableAccess)) then
+								thisModule->CreateWritesForVariableAccess(src.leftHandSide)
+							else
+								Sequence{}
+							endif
+						endif
+		,codeElement <- thisModule->filterExpression(src.leftHandSide)
+		-- right hand side
+		,actionRelation <- if(src.rightHandSide.oclIsUndefined()) then Sequence{} else 
+							if (src.rightHandSide.oclIsTypeOf(java!SingleVariableAccess)) then
+								thisModule->CreateReads(src.rightHandSide)
+							else
+								Sequence{}
+							endif
+						endif
+		,codeElement <- thisModule->filterExpression(src.rightHandSide)
+	)
+}
+
+-- generally apply to fields
+lazy rule CreateReads {
+	from src :java!SingleVariableAccess
+	to tgt :kdm!Reads (
+		from <- src.refImmediateComposite()
+		,to <- src.variable
+	)
+}
+
+-- BooleanLiteral
+rule BooleanLiteralToValue extends ASTNodeToAbstractCodeElement {
+	from src : java!BooleanLiteral
+	to tgt :kdm!Value(
+		name <- 'boolean literal'
+		,ext <- if (src.value) then 'true' else 'false' endif
+		--,type <- kdm!BooleanType.allInstances()->first()
+	)
+}
+
+
+-- CastExpression
+rule CastExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!CastExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'cast'
+		,name <- 'cast'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,actionRelation <- if(src.type.oclIsUndefined()) then Sequence{} else thisModule->CreateUsesType(src.type) endif
+	)
+}
+
+-- generally apply to cast or type conversion
+lazy rule CreateUsesType {
+	from src :java!TypeAccess
+	to tgt :kdm!UsesType (
+		from <- src.refImmediateComposite()
+		,to <- src.type
+	)
+}
+
+-- CharacterLiteral
+rule CharacterLiteralToValue extends ASTNodeToAbstractCodeElement {
+	from src : java!CharacterLiteral
+	to tgt :kdm!Value(
+		name <- 'character literal'
+		,ext <- src.escapedValue
+		--,type <- kdm!CharType.allInstances()->first()
+	)
+}
+
+-- ClassInstanceCreation
+rule ClassInstanceCreationToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ClassInstanceCreation
+	to tgt :kdm!ActionElement(
+		kind <- 'class instance creation'
+		,name <- 'class instance creation'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- src.arguments->collect(e | thisModule->filterExpression(e))->flatten()
+		-- anonymous type are contained by class instance creation
+		,codeElement <- if (src.anonymousClassDeclaration.oclIsUndefined()) then Sequence{} else src.anonymousClassDeclaration endif
+		,actionRelation <- if(src.method.oclIsUndefined()) then Sequence{} else thisModule->CreateCalls(src) endif
+		,actionRelation <- if(src.type.oclIsUndefined()) then Sequence{} else thisModule->CreateCreates(src.type) endif
+		
+	)
+}
+
+-- ConditionalExpression
+rule ConditionalExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ConditionalExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'conditional'
+		,name <- 'conditional'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- thisModule->filterExpression(src.thenExpression)
+		,codeElement <- thisModule->filterExpression(src.elseExpression)
+	)
+}
+
+-- FieldAccess
+rule FieldAccessToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!FieldAccess
+	to tgt :kdm!ActionElement(
+		kind <- 'field access'
+		,name <- 'field access'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,actionRelation <- if(src.field.oclIsUndefined()) then Sequence{} else thisModule->CreateAddresses(src.field) endif
+	)
+}
+
+lazy rule CreateAddresses {
+	from src :java!SingleVariableAccess
+	to tgt :kdm!Addresses (
+		from <- src.refImmediateComposite()
+		,to <- src.variable
+	)
+}
+
+-- InfixExpression
+rule InfixExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!InfixExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'infix expression'
+		,name <- src.operator.toString()
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.leftOperand)
+		,codeElement <- thisModule->filterExpression(src.rightOperand)
+		,codeElement <- src.extendedOperands->collect(e | thisModule->filterExpression(e))->flatten()
+	)
+}
+
+-- InstanceofExpression
+rule InstanceofExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!InstanceofExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'instanceof'
+		,name <- 'instanceof'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.leftOperand)
+		,actionRelation <- if(src.rightOperand.oclIsUndefined()) then Sequence{} else thisModule->CreateUsesType(src.rightOperand) endif
+	)
+}
+
+-- MethodInvocation
+rule MethodInvocationToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!MethodInvocation
+	to tgt :kdm!ActionElement(
+		kind <- 'method invocation'
+		,name <- 'method invocation'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+		,codeElement <- src.arguments->collect(e | thisModule->filterExpression(e))->flatten()
+		,actionRelation <- if(src.method.oclIsUndefined()) then
+								Sequence{}
+							else
+								if (src.method.typeParameters.isEmpty()) then
+									thisModule->CreateCalls(src)
+								else 
+									thisModule->CreateCallsForGenericMethod(src)
+								endif
+							endif
+	)
+}
+
+
+-- NullLiteral
+rule NullLiteralToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!NullLiteral
+	to tgt :kdm!ActionElement(
+		kind <- 'null'
+		,name <- 'null'
+	)
+}
+
+-- NumberLiteral
+rule NumberLiteralToValue extends ASTNodeToAbstractCodeElement {
+	from src : java!NumberLiteral
+	to tgt :kdm!Value(
+		name <- 'number literal'
+		,ext <- src.tokenValue
+		-- TODO : find the real type (int, float, ...)
+		--,type <- kdm!IntegerType.allInstances()->first()
+	)
+}
+
+-- ParenthesizedExpression
+rule ParenthesizedExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ParenthesizedExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'parenthesized'
+		,name <- 'parenthesized'
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.expression)
+	)
+}
+
+-- PostfixExpression
+rule PostfixExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!PostfixExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'postfix expression'
+		,name <- src.operator.toString()
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.operand)
+	)
+}
+
+-- PrefixExpression
+rule PrefixExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!PrefixExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'prefix expression'
+		,name <- src.operator.toString()
+		-- referenced elements
+		,codeElement <- thisModule->filterExpression(src.operand)
+	)
+}
+
+-- StringLiteral
+rule StringLiteralToValue extends ASTNodeToAbstractCodeElement {
+	from src : java!StringLiteral (
+			-- TODO waiting for a strategy for storing enum constant arguments
+			not src.refImmediateComposite().oclIsKindOf(java!EnumConstantDeclaration))
+	to tgt :kdm!Value(
+		name <- 'string literal'
+		,ext <- src.escapedValue
+		--,type <- kdm!StringType.allInstances()->first()
+	)
+}
+
+-- SuperFieldAccess
+rule SuperFieldAccessToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!SuperFieldAccess
+	to tgt :kdm!ActionElement(
+		kind <- 'super field access'
+		,name <- 'super field access'
+		-- referenced elements
+		,actionRelation <- if(src.field.oclIsUndefined()) then Sequence{} else thisModule->CreateUsesType(src.field) endif
+		,actionRelation <- if(src.qualifier.oclIsUndefined()) then Sequence{} else
+								if (src.qualifier.oclIsTypeOf(java!SingleVariableAccess)) then
+									thisModule->CreateReads(src.qualifier)
+								else
+									-- because it might apply to a type sometimes
+									-- YourType.super.yourmethod();
+									Sequence{}
+								endif
+							endif
+	)
+}
+
+-- SuperMethodInvocation
+rule SuperMethodInvocationToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!SuperMethodInvocation
+	to tgt :kdm!ActionElement(
+		kind <- 'super method invocation'
+		,name <- 'super method invocation'
+		-- referenced elements
+		,codeElement <- src.arguments->collect(e | thisModule->filterExpression(e))->flatten()
+		,actionRelation <- if(src.method.oclIsUndefined()) then Sequence{} else
+			if (src.method.typeParameters.isEmpty()) then
+									thisModule->CreateCalls(src)
+								else 
+									thisModule->CreateCallsForGenericMethod(src)
+								endif
+			endif
+		,actionRelation <- if(src.qualifier.oclIsUndefined()) then Sequence{} else
+								if (src.qualifier.oclIsTypeOf(java!SingleVariableAccess)) then
+									thisModule->CreateReads(src.qualifier)
+								else
+									-- because it might apply to a type sometimes
+									-- YourType.super.yourmethod();
+									Sequence{}
+								endif
+							endif
+	)
+}
+
+-- ThisExpression
+rule ThisExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!ThisExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'this'
+		,name <- 'this'
+		-- referenced elements
+		,actionRelation <- if(src.qualifier.oclIsUndefined()) then Sequence{} else thisModule->CreateUsesType(src.qualifier) endif
+	)
+}
+
+-- TypeLiteral
+rule TypeLiteralToValue extends ASTNodeToAbstractCodeElement {
+	from src : java!TypeLiteral
+	to tgt :kdm!Value(
+		name <- 'type literal'
+		,type <- src.type->getType()
+	)
+}
+
+-- VariableDeclarationExpression
+rule VariableDeclarationExpressionToActionElement extends ASTNodeToAbstractCodeElement {
+	from src : java!VariableDeclarationExpression
+	to tgt :kdm!ActionElement(
+		kind <- 'variable declaration'
+		,name <- 'variable declaration'
+		-- referenced elements
+		,codeElement <- src.fragments->collect(e | thisModule->filterExpression(e))->flatten()
+		,actionRelation <- if(src.type.oclIsUndefined()) then Sequence{} else thisModule->CreateUsesType(src.type) endif
+	)
+}
