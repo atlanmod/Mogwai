@@ -13,7 +13,7 @@ import org.eclipse.m2m.atl.common.OCL.OCLPackage;
 import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 import org.eclipse.ocl.ecore.impl.EcoreFactoryImpl;
 
-import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
@@ -32,8 +32,8 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 	private URI transformationURI;
 	private PersistentResource inputResource;
 	private PersistentResource outputResource;
-	private EMFtoGraphMapping inputMapping;
-	private EMFtoGraphMapping outputMapping;
+	private ModelMapping<?, ?, ?, ?> inputMapping;
+	private ModelMapping<?, ?, ?, ?> outputMapping;
 	private EPackage sourcePackage;
 	private EPackage targetPackage;
 
@@ -85,13 +85,13 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 		return me();
 	}
 	
-	public MogwaiATLQueryBuilder inMapping(EMFtoGraphMapping mapping) {
+	public MogwaiATLQueryBuilder inMapping(ModelMapping<?, ?, ?, ?> mapping) {
 		checkNotNull(mapping, "null mapping");
 		this.inputMapping = mapping;
 		return me();
 	}
 	
-	public MogwaiATLQueryBuilder outMapping(EMFtoGraphMapping mapping) {
+	public MogwaiATLQueryBuilder outMapping(ModelMapping<?, ?, ?, ?> mapping) {
 		checkNotNull(mapping, "null mapping");
 		this.outputMapping = mapping;
 		return me();

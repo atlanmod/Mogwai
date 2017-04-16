@@ -13,11 +13,12 @@ import java.util.Set;
 import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.GraphHelper;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 
-import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 
 /**
  * A helper used in generated script to execute transformation-related
@@ -62,7 +63,7 @@ public class TransformationHelper {
 	/**
 	 * The mapping used to compute graph operations.
 	 */
-	private EMFtoGraphMapping mapping;
+	private ModelMapping<Graph, Vertex, Edge, Object> mapping;
 
 	/**
 	 * Creates a new {@link TransformationHelper} fusing the provided
@@ -71,8 +72,10 @@ public class TransformationHelper {
 	 * @param mapping
 	 *            the mapping used to compute the graph operations
 	 */
-	public TransformationHelper(EMFtoGraphMapping mapping) {
-		this.mapping = mapping;
+	public TransformationHelper(ModelMapping<?, ?, ?, ?> mapping) {
+		// TODO remove this with an interface for the transformation helper that accepts any kind of mapping
+		// + an abstraction that doesn't use a mapping
+		this.mapping = (ModelMapping<Graph, Vertex, Edge, Object>) mapping;
 	}
 
 	/**

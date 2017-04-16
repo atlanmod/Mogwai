@@ -9,15 +9,16 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import ClassDiagram.Attribute;
 import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Column;
 import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import ClassDiagram.Table;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.data.mapping.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
-import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
-import fr.inria.atlanmod.mogwai.mapping.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
@@ -44,14 +45,53 @@ public class TransformationSample {
 	public static void main(String[] args) throws IOException, MogwaiException {
 		
 		NeoLogger.info("Creating sample model");
-//		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
+		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
 //		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
-		MogwaiResource mogResource = ModelUtil.getInstance().getResource(CreateModel.MODEL_LOCATION);
+//		MogwaiResource mogResource = ModelUtil.getInstance().getResource(CreateModel.MODEL_LOCATION);
 		NeoLogger.info("Done");
+		
+		// Monitoring
+		int classCount = 0;
+		int attributeCount = 0;
+		int multivaluedCount = 0;
+		int singleValuedCount = 0;
+		int datatypeAttribute = 0;
+		int classAttribute = 0;
+		
+		Iterable<EObject> allContents = mogResource::getAllContents;
+		for(EObject e : allContents) {
+			if(e instanceof ClassDiagram.Class) {
+				classCount++;
+			}
+			if(e instanceof Attribute) {
+				attributeCount++;
+				Attribute a = (Attribute)e;
+				if(a.getMultiValued()) {
+					multivaluedCount++;
+				}
+				else {
+					singleValuedCount++;
+				}
+				if(a.getType() instanceof ClassDiagram.Class) {
+					classAttribute++;
+				}
+				else {
+					datatypeAttribute++;
+				}
+			}
+		}
+		
+		System.out.println("Class count: " + classCount);
+		System.out.println("Attribute count: " + attributeCount);
+		System.out.println("multivalued " + multivaluedCount);
+		System.out.println("singlevalued " + singleValuedCount);
+		System.out.println("datatype attribute " + datatypeAttribute);
+		System.out.println("class attribute " + classAttribute);
+		
 
 		NeoLogger.info("Initializing mapping");
-		EMFtoGraphMapping mapping = new NeoEMFMapping();
-		mapping.setGraph(mogResource.getBackend().getGraph());
+		NeoEMFMapping mapping = new NeoEMFMapping();
+		mapping.setDataSource(mogResource.getBackend().getGraph());
 		TransformationHelper helper = new TransformationHelper(mapping);
 
 		NeoLogger.info("Done");
@@ -59,7 +99,7 @@ public class TransformationSample {
 		NeoLogger.info("Initializing the Gremlin engine");
 		MogwaiQuery initQuery = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/init.gremlin"))
-				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
+				.bind(ModelMapping.BINDING_NAME, mapping)
 				.bind("graphHelper", helper)
 				.build();
 
@@ -84,7 +124,7 @@ public class TransformationSample {
 		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromString(textualQuery)
 				.bind("graphHelper", helper)
-				.bind(EMFtoGraphMapping.BINDING_NAME, mapping)
+				.bind(ModelMapping.BINDING_NAME, mapping)
 				.build();
 		
 		mogResource.query(gremlinQuery2);

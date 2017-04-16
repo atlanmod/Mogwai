@@ -108,7 +108,7 @@ public class ModelUtil {
 		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
 				BlueprintsPersistenceBackendFactory.getInstance());
 
-		int classCount = 1000;
+		int classCount = 10;
 		int attributePerClass = 4;
 
 		ResourceSet rSet = new ResourceSetImpl();
@@ -122,6 +122,10 @@ public class ModelUtil {
 
 		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder().autocommit(1000).asMap();
 
+		// Monitoring
+		int multivaluedCount = 0;
+		int singleValuedCount = 0;
+		
 		// Creating new resource
 		neoResource.save(options);
 
@@ -148,8 +152,10 @@ public class ModelUtil {
 				att.setName(UUID.randomUUID().toString());
 				if (Math.random() > 0.5) {
 					att.setMultiValued(true);
+					multivaluedCount++;
 				} else {
 					att.setMultiValued(false);
+					singleValuedCount++;
 				}
 				if (Math.random() > 0.5) {
 					// set datatype attribute
@@ -174,6 +180,9 @@ public class ModelUtil {
 		System.out.println("Class count: " + pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getClass_()).size());
 		System.out.println("Attribute count: "
 				+ pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getAttribute()).size());
+		System.out.println("\tmultivalued: " + multivaluedCount);
+		System.out.println("\tsinglevalued: " + singleValuedCount);
+		System.out.println("DataType count: " + pr.getAllInstances(ClassDiagramPackage.eINSTANCE.getDataType()).size());
 
 		MogwaiResource mogResource = MogwaiResourceFactory.getInstance().decoratePersistentResource(
 				(PersistentResource) neoResource);

@@ -87,7 +87,7 @@ public class ATLRunner {
 			transformationLauncher.initialize(new HashMap<String, Object>());
 			modules = new ArrayList<>();
 			
-			InputStream class2RelationalStream = getFileURL("Class2Relational-simple.asm").openStream();
+			InputStream class2RelationalStream = getFileURL("Class2Relational-base.asm").openStream();
 			
 			modules.add((ASM) transformationLauncher.loadModule(class2RelationalStream));
 			

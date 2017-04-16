@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mapping
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.data.mapping
+Bundle-Version: 1.0.0.qualifier
+Export-Package: fr.inria.atlanmod.mogwai.data.mapping
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

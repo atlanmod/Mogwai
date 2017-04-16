@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.mapping;
+package fr.inria.atlanmod.mogwai.data.mapping;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -6,6 +6,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 
 import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
@@ -16,9 +17,7 @@ import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
 
-import fr.inria.atlanmod.neoemf.core.StringId;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore;
+import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
 
 /**
  * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps
@@ -44,8 +43,18 @@ import fr.inria.atlanmod.neoemf.data.blueprints.store.DirectWriteBlueprintsStore
  * @author Gwendal DANIEL
  *
  */
-public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMapping {
+public final class NeoEMFMapping implements PipeMapping<Graph, Vertex, Edge, Object> {
 
+    private static final String KEY_NAME = "name";
+	
+    private static final String KEY_INSTANCE_OF = "kyanosInstanceOf";
+    
+    private static final String KEY_METACLASSES = "metaclasses";
+    
+    private static final String KEY_ECLASS_NAME = "name";
+    
+    private static final String KEY_EPACKAGE_NSURI = "nsURI";
+    
 	private static final String POSITION_KEY = "position";
 
 	private static final String SEPARATOR = ":";
@@ -74,17 +83,17 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setGraph(final Graph graph) throws IllegalArgumentException {
+	public void setDataSource(final Graph graph) throws IllegalArgumentException {
 		checkNotNull(graph, "No graph provided");
 		checkArgument(graph instanceof IdGraph, "NeoEMFMapping required a KeyIndexableGraph");
 		this.graph = (IdGraph<KeyIndexableGraph>) graph;
-		this.metaclassIndex = this.graph.getIndex(BlueprintsPersistenceBackend.KEY_METACLASSES, Vertex.class);
+		this.metaclassIndex = this.graph.getIndex(KEY_METACLASSES, Vertex.class);
 	}
 
 	@Override
 	public Iterable<Vertex> allOfType(String typeName) {
 		Vertex metaClassVertex = getMetaclassVertex(typeName);
-		return metaClassVertex.getVertices(Direction.IN, BlueprintsPersistenceBackend.KEY_INSTANCE_OF);
+		return metaClassVertex.getVertices(Direction.IN, KEY_INSTANCE_OF);
 	}
 
 	/**
@@ -112,7 +121,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 *             required by NeoEMF to create a new instance of a given type)
 	 */
 	@Override
-	public Object newInstance(final String typeName, final String typePackageNsURI, String resourceName)
+	public Vertex newInstance(final String typeName, final String typePackageNsURI, String resourceName)
 			throws NullPointerException {
 		long begin = System.currentTimeMillis();
 		checkNotNull(graph, "Graph hasn't been initialized, call setGraph before starting graph manipulation");
@@ -128,7 +137,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 		Vertex eClassVertex = getMetaclassVertex(typeName);
 		if (isNull(eClassVertex)) {
 			eClassVertex = createMetaclassVertex(typeName, typePackageNsURI);
-			metaclassIndex.put(BlueprintsPersistenceBackend.KEY_NAME, typeName, eClassVertex);
+			metaclassIndex.put(KEY_NAME, typeName, eClassVertex);
 		}
 		long endGetMetaclass = System.currentTimeMillis();
 		newInstanceGetMetaclass += (endGetMetaclass-endNewVertex);
@@ -136,9 +145,9 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 		 * Don't use setRef to set this edge, we don't need to add the property
 		 * kyanosInstanceof:size in the database
 		 */
-		vertex.addEdge(BlueprintsPersistenceBackend.KEY_INSTANCE_OF, eClassVertex);
+		vertex.addEdge(KEY_INSTANCE_OF, eClassVertex);
 		long begin2 = System.currentTimeMillis();
-		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false); // ça doit chier ici
+		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false);
 		long end = System.currentTimeMillis();
 		newInstanceTime += (end-begin);
 		newInstanceSetRef += (end-begin2);
@@ -229,9 +238,16 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 		return oldVertex;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAtt(Vertex from, String attName) {
-		return from.getProperty(attName);
+	public Iterable<Object> getAtt(Vertex from, String attName) {
+		Object property = from.getProperty(attName);
+		if(property instanceof Iterable) {
+			return (Iterable<Object>)property;
+		}
+		else {
+			return Arrays.asList(property);
+		}
 	}
 
 	@Override
@@ -242,12 +258,12 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 
 	@Override
 	public String getType(Vertex from) {
-		return getMetaclassVertexFor(from).getProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME);
+		return getMetaclassVertexFor(from).getProperty(KEY_ECLASS_NAME);
 	}
 
 	@Override
 	public boolean isTypeOf(Vertex from, String type) {
-		return getMetaclassVertexFor(from).getProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME).equals(type);
+		return getMetaclassVertexFor(from).getProperty(KEY_ECLASS_NAME).equals(type);
 	}
 
 	/**
@@ -281,14 +297,14 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	private Vertex getOrCreateResourceRoot(String resourceName) {
 		Vertex eObjectMetaclass = getMetaclassVertex("EObject");
 		Iterable<Vertex> resourceRoots = eObjectMetaclass.getVertices(Direction.IN,
-				BlueprintsPersistenceBackend.KEY_INSTANCE_OF);
+				KEY_INSTANCE_OF);
 		for (Vertex rRoot : resourceRoots) {
 			if (rRoot.getId().equals(resourceName)) {
 				return rRoot;
 			}
 		}
 		Vertex newResourceRoot = graph.addVertex(resourceName);
-		newResourceRoot.addEdge(BlueprintsPersistenceBackend.KEY_INSTANCE_OF, eObjectMetaclass);
+		newResourceRoot.addEdge(KEY_INSTANCE_OF, eObjectMetaclass);
 		return newResourceRoot;
 	}
 
@@ -304,7 +320,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	private Vertex getMetaclassVertex(final String typeName) {
 		checkNotNull(metaclassIndex,
 				"Metaclass index cannot be found, call setGraph before starting graph manipulation");
-		return Iterables.getOnlyElement(metaclassIndex.get(BlueprintsPersistenceBackend.KEY_NAME, typeName), null);
+		return Iterables.getOnlyElement(metaclassIndex.get(KEY_NAME, typeName), null);
 	}
 
 	/**
@@ -319,9 +335,9 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 * @return the created {@link Vertex}
 	 */
 	private Vertex createMetaclassVertex(final String typeName, final String typePackageNsURI) {
-		Vertex vertex = graph.addVertex(new StringId(typeName + '@' + typePackageNsURI).toString());
-		vertex.setProperty(BlueprintsPersistenceBackend.KEY_ECLASS_NAME, typeName);
-		vertex.setProperty(BlueprintsPersistenceBackend.KEY_EPACKAGE_NSURI, typePackageNsURI);
+		Vertex vertex = graph.addVertex(new StringBuilder(typeName).append('@').append(typePackageNsURI).toString());
+		vertex.setProperty(KEY_ECLASS_NAME, typeName);
+		vertex.setProperty(KEY_EPACKAGE_NSURI, typePackageNsURI);
 		return vertex;
 	}
 
@@ -340,7 +356,7 @@ public final class NeoEMFMapping extends AbstractMapping implements EMFtoGraphMa
 	 */
 	private Vertex getMetaclassVertexFor(final Vertex instanceVertex) throws IllegalStateException {
 		Vertex metaclassVertex = Iterables.getOnlyElement(
-				instanceVertex.getVertices(Direction.OUT, BlueprintsPersistenceBackend.KEY_INSTANCE_OF), null);
+				instanceVertex.getVertices(Direction.OUT, KEY_INSTANCE_OF), null);
 		if (nonNull(metaclassVertex)) {
 			return metaclassVertex;
 		} else {

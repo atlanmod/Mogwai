@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import fr.inria.atlanmod.mogwai.mapping.EMFtoGraphMapping;
+import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.mogwai.resources.MogwaiResourceDecorator;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.DefaultPersistentResource;
@@ -19,12 +19,12 @@ public class MogwaiATLQuery extends MogwaiQuery {
 	private Resource atlResource;
 	private PersistentResource inputResource;
 	private PersistentResource outputResource;
-	private EMFtoGraphMapping inputMapping;
-	private EMFtoGraphMapping outputMapping;
+	private ModelMapping<?, ?, ?, ?> inputMapping;
+	private ModelMapping<?, ?, ?, ?> outputMapping;
 	private EPackage sourcePackage;
 	private EPackage targetPackage;
 	
-	public MogwaiATLQuery(Resource atlResource, PersistentResource inputResource, PersistentResource outputResource, EMFtoGraphMapping inputMapping, EMFtoGraphMapping outputMapping, EPackage sourcePackage, EPackage targetPackage) {
+	public MogwaiATLQuery(Resource atlResource, PersistentResource inputResource, PersistentResource outputResource, ModelMapping<?, ?, ?, ?> inputMapping, ModelMapping<?, ?, ?, ?> outputMapping, EPackage sourcePackage, EPackage targetPackage) {
 		super(atlResource);
 		checkNotNull(inputResource, "Null input resource");
 		checkNotNull(outputResource, "Null output resource");
@@ -62,11 +62,11 @@ public class MogwaiATLQuery extends MogwaiQuery {
 		return getInnerGraph(outputResource);
 	}
 	
-	public EMFtoGraphMapping getInputMapping() {
+	public ModelMapping<?, ?, ?, ?> getInputMapping() {
 		return inputMapping;
 	}
 	
-	public EMFtoGraphMapping getOutputMapping() {
+	public ModelMapping<?, ?, ?, ?> getOutputMapping() {
 		return outputMapping;
 	}
 	
