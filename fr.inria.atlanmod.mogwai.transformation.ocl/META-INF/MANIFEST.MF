@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mogwaï OCL2Gremlin Transformation
-Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation.ocl
 Bundle-Version: 0.0.1.qualifier
 Require-Bundle: org.eclipse.m2m.atl.core;bundle-version="3.8.0",
  org.eclipse.m2m.atl.engine.emfvm;bundle-version="3.8.0",
