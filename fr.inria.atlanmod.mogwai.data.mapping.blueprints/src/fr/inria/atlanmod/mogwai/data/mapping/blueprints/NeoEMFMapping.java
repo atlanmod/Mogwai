@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.data.mapping;
+package fr.inria.atlanmod.mogwai.data.mapping.blueprints;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

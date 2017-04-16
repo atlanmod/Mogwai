@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.mogwai.data.mapping.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;

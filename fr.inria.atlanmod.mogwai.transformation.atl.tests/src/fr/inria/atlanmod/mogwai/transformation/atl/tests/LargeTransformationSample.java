@@ -11,7 +11,7 @@ import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.mogwai.data.mapping.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
