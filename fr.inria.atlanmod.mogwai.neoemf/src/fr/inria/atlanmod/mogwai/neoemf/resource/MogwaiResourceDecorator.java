@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.resources;
+package fr.inria.atlanmod.mogwai.neoemf.resource;
 
 import java.lang.reflect.Field;
 
@@ -8,7 +8,6 @@ import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceDecorator;
@@ -41,7 +40,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 			throw new MogwaiException("Cannot construct a MogwaiResourceDecorator on a "
 					+ "null PersistentResource");
 		}
-		if(!MogwaiUtil.isMogwaiCompatible(resource)) {
+		if(!DefaultMogwaiResource.isMogwaiCompatible(resource)) {
 			throw new MogwaiException("Cannot construct a MogwaiResourceDecorator: resource " 
 					+ resource.toString() + " is not compatible with Mogwaï");
 		}

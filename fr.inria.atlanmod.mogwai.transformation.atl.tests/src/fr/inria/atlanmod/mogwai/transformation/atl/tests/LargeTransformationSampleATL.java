@@ -11,8 +11,8 @@ import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import ClassDiagram.Table;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class LargeTransformationSampleATL {

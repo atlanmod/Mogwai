@@ -8,25 +8,13 @@ import java.io.IOException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 
 public class MogwaiUtil {
 
-	/**
-	 * Returns true if an EMF resource can be used by Mogwaï
-	 * @param resource the resource to check
-	 * @return true if the resource can be used by Mogwaï, false otherwise
-	 */
-	public static boolean isMogwaiCompatible(Resource resource) {
-		return (resource instanceof MogwaiResource) || resource.getURI().scheme().equals(BlueprintsURI.SCHEME);
-	}
-	
 	/**
 	 * Parse the OCL file at the given location and return the {@link Constraint} it contains
 	 * <p>

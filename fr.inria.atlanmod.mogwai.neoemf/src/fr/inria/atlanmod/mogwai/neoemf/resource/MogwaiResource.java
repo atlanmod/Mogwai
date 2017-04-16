@@ -8,7 +8,7 @@
  * Contributors:
  *     Atlanmod INRIA LINA Mines Nantes - initial API and implementation
  *******************************************************************************/
-package fr.inria.atlanmod.mogwai.resources;
+package fr.inria.atlanmod.mogwai.neoemf.resource;
 
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -31,4 +31,5 @@ public interface MogwaiResource extends PersistentResource {
     public void enableATLDebug();
     
     public void disableATLDebug();
+    
 }

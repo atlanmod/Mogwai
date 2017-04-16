@@ -5,10 +5,10 @@ import java.io.IOException;
 
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 
 /**
  * This class shows how additional bindings can be set within the gremlin

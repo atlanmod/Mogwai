@@ -8,7 +8,7 @@
  * Contributors:
  *     Atlanmod INRIA LINA Mines Nantes - initial API and implementation
  *******************************************************************************/
-package fr.inria.atlanmod.mogwai.util;
+package fr.inria.atlanmod.mogwai.neoemf.util;
 
 import java.io.File;
 import java.text.MessageFormat;

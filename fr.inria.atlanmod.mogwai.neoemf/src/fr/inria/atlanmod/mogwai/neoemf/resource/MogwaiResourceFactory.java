@@ -8,14 +8,13 @@
  * Contributors:
  *     Atlanmod INRIA LINA Mines Nantes - initial API and implementation
  *******************************************************************************/
-package fr.inria.atlanmod.mogwai.resources;
+package fr.inria.atlanmod.mogwai.neoemf.resource;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.util.MogwaiURI;
-import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
+import fr.inria.atlanmod.mogwai.neoemf.util.MogwaiURI;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
@@ -33,7 +32,7 @@ public class MogwaiResourceFactory extends PersistentResourceFactory {
     @Override
     public Resource createResource(URI uri) {
         if(uri.scheme().equals(MogwaiURI.MOGWAI_SCHEME) || uri.scheme().equals(BlueprintsURI.SCHEME)) {
-            return new MogwaiResourceImpl(uri);
+            return new DefaultMogwaiResource(uri);
         }
         else {
             return super.createResource(uri);
@@ -42,7 +41,7 @@ public class MogwaiResourceFactory extends PersistentResourceFactory {
 
 	public MogwaiResource decoratePersistentResource(PersistentResource persistentResource)
 			throws MogwaiException {
-		if(MogwaiUtil.isMogwaiCompatible(persistentResource)) {
+		if(DefaultMogwaiResource.isMogwaiCompatible(persistentResource)) {
 			return new MogwaiResourceDecorator(persistentResource);
 		} else {
 			throw new MogwaiException("Resource " + persistentResource.toString() + " is not compatible with Mogwaï");

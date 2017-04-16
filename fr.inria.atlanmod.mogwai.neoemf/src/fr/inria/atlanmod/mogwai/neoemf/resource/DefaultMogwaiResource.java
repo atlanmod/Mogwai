@@ -8,9 +8,10 @@
  * Contributors:
  *     Atlanmod INRIA LINA Mines Nantes - initial API and implementation
  *******************************************************************************/
-package fr.inria.atlanmod.mogwai.resources;
+package fr.inria.atlanmod.mogwai.neoemf.resource;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import com.sun.istack.internal.Nullable;
 
@@ -20,10 +21,20 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
+import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.DefaultPersistentResource;
 
-public class MogwaiResourceImpl extends DefaultPersistentResource implements MogwaiResource {
+public class DefaultMogwaiResource extends DefaultPersistentResource implements MogwaiResource {
 
+	/**
+	 * Returns true if an EMF resource can be used by Mogwaï
+	 * @param resource the resource to check
+	 * @return true if the resource can be used by Mogwaï, false otherwise
+	 */
+	public static boolean isMogwaiCompatible(Resource resource) {
+		return (resource instanceof MogwaiResource) || resource.getURI().scheme().equals(BlueprintsURI.SCHEME);
+	}
+	
 	private static final ThreadLocal<MogwaiOCLProcessor> oclProcessor = 
 		new ThreadLocal<MogwaiOCLProcessor>() {
 			
@@ -42,7 +53,7 @@ public class MogwaiResourceImpl extends DefaultPersistentResource implements Mog
 			}
 		};
 		
-    public MogwaiResourceImpl(URI uri) {
+    public DefaultMogwaiResource(URI uri) {
         super(uri);
         assert this.backend instanceof BlueprintsPersistenceBackend;
         oclProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.backend);

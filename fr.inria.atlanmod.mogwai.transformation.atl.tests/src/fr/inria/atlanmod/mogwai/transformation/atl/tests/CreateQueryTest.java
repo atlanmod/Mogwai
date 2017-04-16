@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.processor.MogwaiATLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiATLQueryBuilder;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
 
 public class CreateQueryTest {
 

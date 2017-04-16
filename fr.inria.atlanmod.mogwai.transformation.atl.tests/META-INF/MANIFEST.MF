@@ -18,4 +18,5 @@ Require-Bundle: fr.inria.atlanmod.neoemf.core;bundle-version="1.0.1",
  org.eclipse.gmt.modisco.omg.kdm;bundle-version="0.12.2",
  org.eclipse.gmt.modisco.java;bundle-version="0.12.2",
  fr.inria.atlanmod.mogwai.data.mapping,
- fr.inria.atlanmod.mogwai.data.mapping.blueprints;bundle-version="1.0.0"
+ fr.inria.atlanmod.mogwai.data.mapping.blueprints;bundle-version="1.0.0",
+ fr.inria.atlanmod.mogwai.neoemf

@@ -1,28 +1,17 @@
 package fr.inria.atlanmod.mogwai.query.builder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.m2m.atl.common.ATL.ATLPackage;
-import org.eclipse.m2m.atl.common.OCL.OCLPackage;
-import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
-import org.eclipse.ocl.ecore.impl.EcoreFactoryImpl;
 
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
-import fr.inria.atlanmod.mogwai.util.MogwaiURI;
-import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
-import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQueryBuilder> {
 
@@ -39,18 +28,18 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 
 	protected MogwaiATLQueryBuilder() {
 		rSet = new ResourceSetImpl();
-		ePackageRegistry.put(ATLPackage.eNS_URI, ATLPackage.eINSTANCE);
-		ePackageRegistry.put(OCLPackage.eNS_URI, OCLPackage.eINSTANCE);
-
-		resourceRegistry.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
-		resourceRegistry.getExtensionToFactoryMap().put("ecore", new EcoreFactoryImpl());
-		resourceRegistry.getExtensionToFactoryMap().put("atl", new AtlResourceFactoryImpl());
-		
-		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME, BlueprintsPersistenceBackendFactory.getInstance());
-		PersistenceBackendFactoryRegistry.register(MogwaiURI.MOGWAI_SCHEME, BlueprintsPersistenceBackendFactory.getInstance());
-		
-		resourceRegistry.getProtocolToFactoryMap().put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
-		resourceRegistry.getProtocolToFactoryMap().put(MogwaiURI.MOGWAI_SCHEME, MogwaiResourceFactory.getInstance());
+//		ePackageRegistry.put(ATLPackage.eNS_URI, ATLPackage.eINSTANCE);
+//		ePackageRegistry.put(OCLPackage.eNS_URI, OCLPackage.eINSTANCE);
+//
+//		resourceRegistry.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+//		resourceRegistry.getExtensionToFactoryMap().put("ecore", new EcoreFactoryImpl());
+//		resourceRegistry.getExtensionToFactoryMap().put("atl", new AtlResourceFactoryImpl());
+//		
+//		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME, BlueprintsPersistenceBackendFactory.getInstance());
+//		PersistenceBackendFactoryRegistry.register(MogwaiURI.MOGWAI_SCHEME, BlueprintsPersistenceBackendFactory.getInstance());
+//		
+//		resourceRegistry.getProtocolToFactoryMap().put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
+//		resourceRegistry.getProtocolToFactoryMap().put(MogwaiURI.MOGWAI_SCHEME, MogwaiResourceFactory.getInstance());
 	}
 
 	public static MogwaiATLQueryBuilder newBuilder() {
