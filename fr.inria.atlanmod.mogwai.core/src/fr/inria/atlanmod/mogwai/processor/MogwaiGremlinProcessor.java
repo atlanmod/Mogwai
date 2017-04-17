@@ -7,26 +7,13 @@ import java.util.Objects;
 import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
-public class MogwaiGremlinProcessor extends MogwaiProcessor<MogwaiGremlinQuery> {
+public class MogwaiGremlinProcessor<D> extends MogwaiProcessor<MogwaiGremlinQuery<D>, D> {
 
 	private static final String NAME = "Gremlin Processor";
 	
-	private BlueprintsPersistenceBackend graphBackend;
-	
 	public MogwaiGremlinProcessor() {
-
-	}
-	
-	public MogwaiGremlinProcessor(BlueprintsPersistenceBackend graphBackend) {
-		this();
-		checkNotNull(graphBackend, "Cannot instanciate a processor without a graph");
-		this.graphBackend = graphBackend;
-	}
-	
-	public void setGraphBackend(BlueprintsPersistenceBackend graphBackend) {
-		this.graphBackend = graphBackend;
+		super();
 	}
 	
 	@Override
@@ -35,19 +22,20 @@ public class MogwaiGremlinProcessor extends MogwaiProcessor<MogwaiGremlinQuery> 
 	}
 
 	@Override
-	public MogwaiQueryResult internalProcess(MogwaiGremlinQuery query, Object arg) {
-		checkNotNull(graphBackend, "Cannot compute a query without a graph");
-		Object result = GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), arg, graphBackend, query.getBindings());
+	public MogwaiQueryResult internalProcess(MogwaiGremlinQuery query, D datastore, Object arg) {
+		checkNotNull(datastore, "Cannot compute a query without a graph");
+		Object result = GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), arg, datastore, query.getBindings());
 		return adaptResult(result, query.getGremlinScript());
 	}
 
 	@Override
-	public boolean accept(MogwaiQuery query) {
+	public boolean accept(MogwaiQuery<D> query) {
 		return !Objects.isNull(query) && query instanceof MogwaiGremlinQuery;
 	}
 	
-	private MogwaiQueryResult adaptResult(Object result, String gremlinQuery) {
-		return new MogwaiQueryResult(result, graphBackend, gremlinQuery);
+	@Override
+	protected MogwaiQueryResult adaptResult(Object result, String gremlinQuery) {
+		return new MogwaiQueryResult(result, gremlinQuery);
 	}
 
 }

@@ -1,20 +1,29 @@
 package fr.inria.atlanmod.mogwai.processor;
 
-import com.sun.istack.internal.Nullable;
-
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 
-public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
-	
+public abstract class MogwaiProcessor<Q extends MogwaiQuery<D>, D> {
+
+	/**
+	 * Stores the last datastore used to compute a query.
+	 * <p>
+	 * This attribute can be used by subclasses that perform additional
+	 * operations after the query computation.
+	 */
+	protected D lastDatastore;
+
 	public abstract String getName();
-	
-	public MogwaiQueryResult process(Q query, @Nullable Object arg) {
-		return internalProcess(query, arg);
+
+	public final MogwaiQueryResult process(Q query, D datastore, Object arg) {
+		lastDatastore = datastore;
+		return internalProcess(query, datastore, arg);
 	}
-	
-	public abstract MogwaiQueryResult internalProcess(Q query, @Nullable Object arg);
-	
-	public abstract boolean accept(MogwaiQuery query);
-	
+
+	public abstract MogwaiQueryResult internalProcess(Q query, D datastore, Object arg);
+
+	public abstract boolean accept(MogwaiQuery<D> query);
+
+	protected abstract MogwaiQueryResult adaptResult(Object result, String gremlinQuery);
+
 }

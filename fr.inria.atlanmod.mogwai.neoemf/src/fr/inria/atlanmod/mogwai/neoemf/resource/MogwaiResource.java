@@ -10,16 +10,16 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.neoemf.resource;
 
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public interface MogwaiResource extends PersistentResource {
     
-	MogwaiQueryResult query(MogwaiQuery query);
+	NeoEMFQueryResult query(MogwaiQuery query);
 	
-    MogwaiQueryResult query(MogwaiQuery query, Object arg);
+    NeoEMFQueryResult query(MogwaiQuery query, Object arg);
     
     /**
      * Convenient method for development purpose, should not be used to modify the underlying

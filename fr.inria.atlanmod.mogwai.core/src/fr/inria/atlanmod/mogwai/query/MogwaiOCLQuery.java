@@ -14,7 +14,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 
-public class MogwaiOCLQuery extends MogwaiQuery {
+public class MogwaiOCLQuery<D> extends MogwaiQuery<D> {
 
 	private Constraint constraint;
 	private EClassifier context;

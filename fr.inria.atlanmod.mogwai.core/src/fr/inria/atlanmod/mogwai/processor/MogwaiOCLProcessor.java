@@ -17,31 +17,19 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
-public class MogwaiOCLProcessor extends MogwaiProcessor<MogwaiOCLQuery> {
+public class MogwaiOCLProcessor<D> extends MogwaiProcessor<MogwaiOCLQuery<D>, D> {
 
 	private static final String NAME = "OCL Processor";
 
 	private final OCL2Gremlin transformation;
-	private BlueprintsPersistenceBackend graphBackend;
 
 	public MogwaiOCLProcessor() {
 		transformation = new OCL2Gremlin();
 	}
 	
-	public MogwaiOCLProcessor(BlueprintsPersistenceBackend graphBackend) {
-		this();
-		checkNotNull(graphBackend, "Cannot instanciate a processor without a graph");
-		this.graphBackend = graphBackend;
-		
-	}
-
 	@Override
 	public String getName() {
 		return NAME;
-	}
-	
-	public void setGraphBackend(BlueprintsPersistenceBackend graphBackend) {
-		this.graphBackend = graphBackend;
 	}
 	
 	public void enableATLDebug() {
@@ -53,19 +41,19 @@ public class MogwaiOCLProcessor extends MogwaiProcessor<MogwaiOCLQuery> {
 	}
 
 	@Override
-	public MogwaiQueryResult internalProcess(MogwaiOCLQuery query, @Nullable Object arg) {
-		checkNotNull(graphBackend, "Cannot compute a query without a graph");
+	public MogwaiQueryResult internalProcess(MogwaiOCLQuery<D> query, D datastore, Object arg) {
+		checkNotNull(datastore, "Cannot compute a query without a graph");
 		GremlinScript gScript = createGremlinScript(query);
-		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, graphBackend, null);
-		return adaptResult(result, gScript);
+		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, datastore, null);
+		return adaptResult(result, gScript.toString());
 	}
 
 	@Override
-	public boolean accept(MogwaiQuery query) {
+	public boolean accept(MogwaiQuery<D> query) {
 		return !Objects.isNull(query) && query instanceof MogwaiOCLQuery;
 	}
 	
-	private GremlinScript createGremlinScript(MogwaiOCLQuery query) {
+	protected GremlinScript createGremlinScript(MogwaiOCLQuery<D> query) {
 		EPackage ePackage = query.getContext().getEPackage();
 		EObject transformedQuery = transformation.transform(ePackage, query.getConstraint());
 		if (transformedQuery instanceof GremlinScript) {
@@ -76,8 +64,10 @@ public class MogwaiOCLProcessor extends MogwaiProcessor<MogwaiOCLQuery> {
 		}
 	}
 	
-	private MogwaiQueryResult adaptResult(Object result, GremlinScript gScript) {
-		return new MogwaiQueryResult(result, graphBackend, gScript);
+
+	@Override
+	protected MogwaiQueryResult adaptResult(Object result, String gremlinQuery) {
+		return new MogwaiQueryResult(result, gremlinQuery);
 	}
 
 }

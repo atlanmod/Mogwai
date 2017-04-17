@@ -13,8 +13,11 @@ package fr.inria.atlanmod.mogwai.neoemf.resource;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import com.sun.istack.internal.Nullable;
+import com.tinkerpop.blueprints.Graph;
 
+import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFGremlinProcessor;
+import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFOCLProcessor;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.processor.MogwaiGremlinProcessor;
 import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -35,41 +38,41 @@ public class DefaultMogwaiResource extends DefaultPersistentResource implements 
 		return (resource instanceof MogwaiResource) || resource.getURI().scheme().equals(BlueprintsURI.SCHEME);
 	}
 	
-	private static final ThreadLocal<MogwaiOCLProcessor> oclProcessor = 
-		new ThreadLocal<MogwaiOCLProcessor>() {
+	private static final ThreadLocal<NeoEMFOCLProcessor> oclProcessor = 
+		new ThreadLocal<NeoEMFOCLProcessor>() {
 			
 			@Override
-			protected MogwaiOCLProcessor initialValue() {
-				return new MogwaiOCLProcessor();
+			protected NeoEMFOCLProcessor initialValue() {
+				return new NeoEMFOCLProcessor();
 			}
 		};
 		
-	private static final ThreadLocal<MogwaiGremlinProcessor> gremlinProcessor = 
-		new ThreadLocal<MogwaiGremlinProcessor>() {
+	private static final ThreadLocal<NeoEMFGremlinProcessor> gremlinProcessor = 
+		new ThreadLocal<NeoEMFGremlinProcessor>() {
 			
 			@Override
-			protected MogwaiGremlinProcessor initialValue() {
-				return new MogwaiGremlinProcessor();
+			protected NeoEMFGremlinProcessor initialValue() {
+				return new NeoEMFGremlinProcessor();
 			}
 		};
 		
     public DefaultMogwaiResource(URI uri) {
         super(uri);
         assert this.backend instanceof BlueprintsPersistenceBackend;
-        oclProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.backend);
-        gremlinProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.backend);
+//        oclProcessor.get().setGraphBackend((BlueprintsPersistenceBackend) this.backend);
+//        gremlinProcessor.get().setDatastore(((BlueprintsPersistenceBackend)this.backend).getGraph());
     }
     
-    public MogwaiQueryResult query(MogwaiQuery query) {
+    public NeoEMFQueryResult query(MogwaiQuery query) {
     	return this.query(query, null);
     }
     
     @Override
-    public MogwaiQueryResult query(MogwaiQuery query, @Nullable Object arg) {
+    public NeoEMFQueryResult query(MogwaiQuery query, Object arg) {
     	if(oclProcessor.get().accept(query)) {
-    		return query.process(oclProcessor.get(), arg);
+    		return (NeoEMFQueryResult)query.process(oclProcessor.get(), getBackend(), arg);
     	} else if(gremlinProcessor.get().accept(query)) {
-    		return query.process(gremlinProcessor.get(), arg);
+    		return (NeoEMFQueryResult)query.process(gremlinProcessor.get(), getBackend(), arg);
     	}
     	throw new MogwaiQueryException("Cannot find a processor for " + query);
     }

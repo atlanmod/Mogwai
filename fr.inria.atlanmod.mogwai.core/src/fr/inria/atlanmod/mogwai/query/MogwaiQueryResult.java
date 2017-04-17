@@ -1,75 +1,127 @@
 package fr.inria.atlanmod.mogwai.query;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 
-import com.tinkerpop.blueprints.Vertex;
+import com.google.common.collect.Iterables;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.neoemf.core.PersistentEObject;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.resource.PersistentResource;
-import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
+import static java.util.Objects.isNull;
 
-public class MogwaiQueryResult {
-	
-	private boolean isReifiable = false;
-	@SuppressWarnings("rawtypes")
-	private Collection collectionResult = null;
-	private Object singleResult = null;
-	private BlueprintsPersistenceBackend graph;
-	private String gremlinScript;
-	
+/**
+ * Wraps the result of a {@link MogwaiQuery} and provides information on the
+ * query execution.
+ * <p>
+ * {@link MogwaiQueryResult} implements {@link Iterable} to ease result
+ * processing in client applications.
+ * 
+ * @author Gwendal DANIEL
+ *
+ */
+public class MogwaiQueryResult implements Iterable<Object> {
+
+	/**
+	 * Stores the result of the query computation.
+	 * <p>
+	 * This collection is used regardless whether the result is multi-valued or
+	 * single-valued.
+	 */
+	protected List<Object> result;
+
+	/**
+	 * Stores the time needed to compute the result of the query.
+	 * <p>
+	 * If the query result is an instance of {@link Iterable} it is iterated to
+	 * create the {@link MogwaiQueryResult}. This can be costly in Gremlin-based
+	 * queries that are computed when they are iterated.
+	 */
+	protected long computationTime = -1;
+
+	/**
+	 * Stores whether the query returned a single result.
+	 */
+	protected boolean isSingleResult = false;
+
+	/**
+	 * The textual representation of the computed query.
+	 */
+	protected String gremlinScript;
+
+	/**
+	 * Constructs a new {@link MogwaiQueryResult} from the given
+	 * {@code engineResult} and literal {@code gremlinScript}.
+	 * <p>
+	 * <b>Note:<b> if {@code engineResult} is an instance of {@link Iterable}
+	 * this constructor iterates it to wrap the results. In case of
+	 * Gremlin-based queries this can be costly because {@link GremlinPipeline}
+	 * content is computed when iterated.
+	 * 
+	 * @param engineResult
+	 *            the result of the query computation
+	 * @param gremlinScript
+	 *            the textual representation of the computed query
+	 */
 	@SuppressWarnings("unchecked")
-	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, String gremlinQuery) {
-		this.graph = graph;
+	public MogwaiQueryResult(Object engineResult, String gremlinQuery) {
 		this.gremlinScript = gremlinQuery;
+		result = new BasicEList<Object>();
 		long begin = System.currentTimeMillis();
-		if(engineResult instanceof GremlinPipeline<?,?>) {
-			collectionResult = new BasicEList<Object>();
-			Iterator<Object> it = ((GremlinPipeline<?,Object>) engineResult).iterator();
-
-			// isReifiable is true only if all results were Vertex instances
-			isReifiable = true;
-			while(it.hasNext()) {
-				final Object next = it.next();
-				isReifiable = isReifiable && next instanceof Vertex;
-				collectionResult.add(next);
-			}
+		if (isNull(engineResult)) {
+			/*
+			 * Creates an empty collection is the engine doesn't return any
+			 * object
+			 */
+			result = Collections.emptyList();
 		}
-		else {
-			if(engineResult instanceof Collection<?>) {
-				collectionResult = (Collection<Object>)engineResult;
-			}
-			else {
-				singleResult = engineResult;
-			}
+		else if (engineResult instanceof GremlinPipeline<?, ?>) {
+			/*
+			 * Forces the iteration of the pipeline, and thus computes the
+			 * query. This operation can be costly if the query hasn't been
+			 * computed before.
+			 */
+			Iterables.addAll(result, (GremlinPipeline<?, Object>) engineResult);
+		} else if (engineResult instanceof Collection<?>) {
+			/*
+			 * The query aimed to return a Collection, copy it to avoid any
+			 * side-effect from the execution engine.
+			 */
+			Iterables.addAll(result, (Collection<Object>) engineResult);
+		} else {
+			/*
+			 * The query aimed to return a single value, store this
+			 * information and add the returned element to the result list
+			 * to avoid any side-effect from the execution engine.
+			 */
+			isSingleResult = true;
+			result.add(engineResult);
 		}
 		long end = System.currentTimeMillis();
-		NeoLogger.info("Result Creation Time: {0}ms", (end-begin));
+		computationTime = (end - begin);
 	}
-	
-	public MogwaiQueryResult(Object engineResult, BlueprintsPersistenceBackend graph, GremlinScript gremlinScript) {
-		this(engineResult, graph, gremlinScript.toString());
-	}
-	
+
 	/**
+	 * Constructs a new {@link MogwaiQueryResult} from the given
+	 * {@code engineResult} and {@code gremlinScript}.
+	 * <p>
+	 * <b>Note:<b> if {@code engineResult} is an instance of {@link Iterable}
+	 * this constructor iterates it to wrap the results. In case of
+	 * Gremlin-based queries this can be costly because {@link GremlinPipeline}
+	 * content is computed when iterated.
 	 * 
-	 * @return the number of objects returned by the query
+	 * @param engineResult
+	 *            the result of the query computation
+	 * @param gremlinScript
+	 *            the {@link GremlinScript} element representing the root of the
+	 *            computed query
 	 */
-	public int resultSize() {
-		if (collectionResult != null) {
-			return collectionResult.size();
-		}
-		else {
-			return 1;
-		}
+	public MogwaiQueryResult(Object engineResult, GremlinScript gremlinScript) {
+		this(engineResult, gremlinScript.toString());
 	}
 
 	/**
@@ -77,61 +129,103 @@ public class MogwaiQueryResult {
 	 * @return true if the query result is a single value
 	 */
 	public boolean isSingleResult() {
-		return singleResult != null;
+		return isSingleResult;
 	}
-	
+
 	/**
+	 * Returns the result of the Mogwai query wrapped in a Collection.
+	 * <p>
+	 * This method always returns a Collection, even if the query doesn't return
+	 * any object. Use it instead of {@link #getResult()} if the query result
+	 * size is not known.
 	 * 
-	 * @return true if the query result is reifiable to EObjects
-	 */
-	public boolean isReifiable() {
-		return isReifiable;
-	}
-	
-	/**
-	 * Reifies result vertices and attach them to the given resource
-	 * @param resource the resource to attach the reified EObjects to
-	 * @return an EList containing the reified EObjects
-	 * @throws MogwaiException if there is no vertex to reify
-	 */
-	@SuppressWarnings("unchecked")
-	public EList<EObject> reifyResults(PersistentResource resource) throws MogwaiException {
-		if(!isReifiable()) {
-			throw new MogwaiException();
-		}
-		EList<EObject> eObjects = new BasicEList<EObject>();
-		for(Vertex vv : (Collection<Vertex>)collectionResult) {
-			PersistentEObject reifiedEObject = graph.reifyVertex(vv);
-			if(reifiedEObject.resource() != resource) {
-				reifiedEObject.resource(resource);
-			}
-			eObjects.add(reifiedEObject);
-		}
-		return eObjects;
-	}
-	
-	/**
 	 * @return the result of the Mogwai query wrapped in a Collection
-	 * @throws MogwaiException if the result is reifiable (reifiable results should not be accessed directly)
 	 */
-	@SuppressWarnings("unchecked")
 	public Collection<Object> getResults() throws MogwaiException {
-		if(collectionResult == null) {
-			throw new MogwaiException();
-		}
-		return collectionResult;
+		return result;
 	}
-	
+
+	/**
+	 * Returns a casted value created from the single query result.
+	 * <p>
+	 * Note: this method throws a {@link MogwaiException} if the query returns
+	 * more than one result, see {@link #getResults() instead}.
+	 * 
+	 * @return a casted value created from the single query result
+	 * @throws MogwaiException
+	 *             if the query returns more than one result
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getResult() throws MogwaiException {
-		if(singleResult == null) {
-			throw new MogwaiException();
+		if (isSingleResult) {
+			return (T) result.get(0);
 		}
-		return (T)singleResult;
+		throw new MogwaiException(
+				"Cannot compute a single result: the query returns multiple records. Use getResults() instead");
 	}
 	
+	/**
+	 * Returns the number of objects returned by the query.
+	 * <p>
+	 * Note: this method returns 1 even if the query result contains only the
+	 * {@code null} value.
+	 * 
+	 * @return the number of objects returned by the query
+	 */
+	public int resultSize() {
+		return result.size();
+	}
+
+	/**
+	 * Returns the textual representation of the computed query.
+	 * 
+	 * @return the textual representation of the computed query
+	 */
 	public String getExecutedQuery() {
 		return gremlinScript;
 	}
-	
+
+	/**
+	 * Returns the duration of the result computation (in milliseconds).
+	 * 
+	 * @return the duration of the result computation (in milliseconds)
+	 */
+	public long getComputationTime() {
+		return computationTime;
+	}
+
+	/**
+	 * Returns a String representation of this {@link MogwaiQueryResult}.
+	 * <p>
+	 * Information displayed in the created String are truncated to ease
+	 * readability. To get the complete values see {@link #getExecutedQuery()}
+	 * and {@link #getComputationTime()}.
+	 * 
+	 * @return a String representation of this {@link MogwaiQueryResult}
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Computed Query: ");
+		if (gremlinScript.length() > 50) {
+			sb.append(gremlinScript.substring(0, 50)).append(" [...]");
+		} else {
+			sb.append(gremlinScript);
+		}
+		sb.append('\n');
+		sb.append("Computation Time: ").append(computationTime).append('\n');
+		sb.append("Result: ").append(result.toString());
+		return sb.toString();
+	}
+
+	/**
+	 * Returns a new {@link Iterator} on the query result.
+	 * 
+	 * @return a new {@link Iterator} on the query result
+	 */
+	@Override
+	public Iterator<Object> iterator() {
+		return result.iterator();
+	}
+
 }

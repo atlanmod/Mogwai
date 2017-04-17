@@ -9,7 +9,7 @@ import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
-public class MogwaiATLQuery extends MogwaiQuery {
+public class MogwaiATLQuery<D> extends MogwaiQuery<D> {
 	
 	private Resource atlResource;
 	private PersistentResource inputResource;

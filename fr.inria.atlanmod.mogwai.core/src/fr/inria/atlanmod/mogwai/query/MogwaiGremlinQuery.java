@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 
-public class MogwaiGremlinQuery extends MogwaiQuery {
+public class MogwaiGremlinQuery<D> extends MogwaiQuery<D> {
 
 	private String literalQuery;
 	private Map<String, Object> bindings;

@@ -29,6 +29,6 @@
 	</configurations>
 	<dependencies>
 		<dependency org="commons-io" name="commons-io" rev="2.5" conf="default->master,compile"/>
-<!--		<dependency org="com.google.guava" name="guava" rev="20.0" conf="default->master,compile"/> -->
+		<dependency org="com.google.guava" name="guava" rev="20.0" conf="default->master,compile"/> 
 	</dependencies>
 </ivy-module>

@@ -28,7 +28,7 @@ import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
  *
  * @author Gwendal DANIEL
  */
-public class GremlinScriptRunner {
+public class GremlinScriptRunner<D> {
 
 	private final ScriptEngine engine;
 	private final Bindings bindings;
@@ -55,27 +55,29 @@ public class GremlinScriptRunner {
 	 * @param customBindings additional bindings needed by the query (usually provided by the calling {@link MogwaiProcessor}
 	 * @return a raw object representing the query result
 	 */
-	public Object runGremlinScript(String literalQuery, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend, @Nullable Map<String, Object> customBindings) {
-		checkNotNull(graphBackend, "Cannot compute a query without a graph");
+	public Object runGremlinScript(String literalQuery, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
+		checkNotNull(datastore, "Cannot compute a query without a graph");
 		checkNotNull(literalQuery, "Null is not a valid query");
 		long begin = System.currentTimeMillis();
 		NeoLogger.info("Computing Gremlin Script \n{0}", literalQuery);
-		bindings.put("g", graphBackend.getGraph());
-		if(!Objects.isNull(arg)) {
-			// TODO handle other variables than self
-			if(arg instanceof PersistentEObject) {
-				bindings.put("self", graphBackend.getVertex(((PersistentEObject) arg).id()));
-			}
-			else if(arg instanceof List) {
-				List<Vertex> selfVertices = new ArrayList<Vertex>();
-			    for(Object a : (List<?>)arg) {
-			        if(a instanceof PersistentEObject) {
-			            selfVertices.add(graphBackend.getVertex(((PersistentEObject) a).id()));
-			        }
-			    }
-			    bindings.put("self", selfVertices);
-			}
-		}
+//		bindings.put("g", graphBackend.getGraph());
+		bindings.put("g", datastore);
+		// This should not be set here, it depends on the implementation (and if we are computing OCL / ATL etc)
+//		if(!Objects.isNull(arg)) {
+//			// TODO handle other variables than self
+//			if(arg instanceof PersistentEObject) {
+//				bindings.put("self", graphBackend.getVertex(((PersistentEObject) arg).id()));
+//			}
+//			else if(arg instanceof List) {
+//				List<Vertex> selfVertices = new ArrayList<Vertex>();
+//			    for(Object a : (List<?>)arg) {
+//			        if(a instanceof PersistentEObject) {
+//			            selfVertices.add(graphBackend.getVertex(((PersistentEObject) a).id()));
+//			        }
+//			    }
+//			    bindings.put("self", selfVertices);
+//			}
+//		}
 		if(customBindings != null) {
 			bindings.putAll(customBindings);
 		}
@@ -97,9 +99,9 @@ public class GremlinScriptRunner {
 		return result;
 	}
 	
-	public Object runGremlinScript(GremlinScript gScript, @Nullable Object arg, BlueprintsPersistenceBackend graphBackend, @Nullable Map<String, Object> customBindings) {
+	public Object runGremlinScript(GremlinScript gScript, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
 		checkNotNull(gScript, "Null is not a valid query");
-		return runGremlinScript(gScript.toString(), arg, graphBackend, customBindings);
+		return runGremlinScript(gScript.toString(), arg, datastore, customBindings);
 	}
 	
 	private static class Holder {

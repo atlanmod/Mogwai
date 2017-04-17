@@ -19,7 +19,7 @@ import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
-public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
+public class MogwaiATLProcessor<D> extends MogwaiProcessor<MogwaiATLQuery<D>, D> {
 
 	private static final String NAME = "ATL Processor";
 
@@ -43,22 +43,22 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 	}
 
 	@Override
-	public MogwaiQueryResult internalProcess(MogwaiATLQuery query, @Nullable Object arg) {
+	public MogwaiQueryResult internalProcess(MogwaiATLQuery<D> query, D datastore, Object arg) {
 		final Map<String, Object> bindings = createQueryBindings(query);
 		GremlinScript gScript = createGremlinScript(query);
 		// for now only input graph is considered (we assume the input and output are created in the same
 		// resource ~= ATL refine mode)
 //		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, query.getInputGraph(), bindings);
 //		return adaptResult(result, gScript);
-		return adaptResult(query, null, gScript);
+		return adaptResult(query, gScript.toString());
 	}
 
 	@Override
-	public boolean accept(MogwaiQuery query) {
+	public boolean accept(MogwaiQuery<D> query) {
 		return !Objects.isNull(query) && query instanceof MogwaiATLQuery;
 	}
 	
-	private GremlinScript createGremlinScript(MogwaiATLQuery query) {
+	private GremlinScript createGremlinScript(MogwaiATLQuery<D> query) {
 		Module atlModule = (Module)query.getATLResource().getContents().get(0);
 		String sourceMMName = atlModule.getInModels().get(0).getMetamodel().getName(); // TODO support multiple input models
 		String targetMMName = atlModule.getOutModels().get(0).getMetamodel().getName(); // TODO support multiple output models
@@ -73,12 +73,12 @@ public class MogwaiATLProcessor extends MogwaiProcessor<MogwaiATLQuery> {
 		return (GremlinScript) gremlinResource.getContents().get(0);
 	}
 	
-	private MogwaiQueryResult adaptResult(MogwaiATLQuery query, Object result, GremlinScript gScript) {
-		// Adapt the result to ATL2Gremlin
-		return new MogwaiQueryResult(result, query.getInputGraph(), gScript);
+	@Override
+	protected MogwaiQueryResult adaptResult(Object result, String gremlinQuery) {
+		return new MogwaiQueryResult(result, gremlinQuery);
 	}
 	
-	private Map<String, Object> createQueryBindings(MogwaiATLQuery query) {
+	private Map<String, Object> createQueryBindings(MogwaiATLQuery<D> query) {
 		Map<String, Object> bindings = new HashMap<>();
 		bindings.put("inHelper", new TransformationHelper(query.getInputMapping()));
 		bindings.put("outHelper", new TransformationHelper(query.getOutputMapping()));
