@@ -12,6 +12,7 @@ import ClassDiagram.NamedElement;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -73,7 +74,7 @@ public class LargeTransformationSample {
 
 	}
 	
-	public static void showResult(MogwaiQueryResult mqr, MogwaiResource mogResource) throws MogwaiException {
+	public static void showResult(NeoEMFQueryResult mqr, MogwaiResource mogResource) throws MogwaiException {
 		if(mqr.isReifiable()) {
 			for(EObject e : mqr.reifyResults(mogResource)) {
 				if(e instanceof NamedElement) {

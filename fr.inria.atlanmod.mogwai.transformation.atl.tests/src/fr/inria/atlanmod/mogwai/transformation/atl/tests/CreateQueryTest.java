@@ -43,7 +43,7 @@ public class CreateQueryTest {
 		newResource.save(Collections.emptyMap());
 		
 		MogwaiATLProcessor processor = new MogwaiATLProcessor();
-		MogwaiQueryResult result = query.process(processor, null);
+		MogwaiQueryResult result = query.process(processor, mogResource.getBackend(), null);
 		
 		System.out.println("Created Script");
 		System.out.println(result.getExecutedQuery());
