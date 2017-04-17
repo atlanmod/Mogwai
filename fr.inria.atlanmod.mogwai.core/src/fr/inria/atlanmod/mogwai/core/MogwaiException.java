@@ -1,15 +1,13 @@
 package fr.inria.atlanmod.mogwai.core;
 
+import java.text.MessageFormat;
+
 public class MogwaiException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-
-	public MogwaiException() {
-		
-	}
 	
-	public MogwaiException(String message) {
-		super(message);
+	public MogwaiException(String message, Object... args) {
+		super(MessageFormat.format(message, args));
 	}
 	
 }
