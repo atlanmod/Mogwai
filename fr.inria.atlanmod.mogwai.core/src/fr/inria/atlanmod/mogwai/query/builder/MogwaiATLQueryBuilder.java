@@ -1,5 +1,7 @@
 package fr.inria.atlanmod.mogwai.query.builder;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -9,9 +11,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
-import fr.inria.atlanmod.neoemf.resource.PersistentResource;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQueryBuilder> {
 
@@ -19,8 +18,8 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 	private Resource.Factory.Registry resourceRegistry = Resource.Factory.Registry.INSTANCE;
 	private ResourceSet rSet;
 	private URI transformationURI;
-	private PersistentResource inputResource;
-	private PersistentResource outputResource;
+	private Object inputDatasource;
+	private Object outputDatasource;
 	private ModelMapping<?, ?, ?, ?> inputMapping;
 	private ModelMapping<?, ?, ?, ?> outputMapping;
 	private EPackage sourcePackage;
@@ -50,29 +49,40 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 		this.transformationURI = transformationURI;
 		return me();
 	}
-
-	public MogwaiATLQueryBuilder input(URI inputURI) {
-		checkNotNull(inputURI, "null input URI");
-		this.inputResource = (PersistentResource) rSet.getResource(inputURI, true);
+	
+	public MogwaiATLQueryBuilder input(Object input) {
+		checkNotNull(input, "null input datastore");
+		this.inputDatasource = input;
 		return me();
 	}
 	
-	public MogwaiATLQueryBuilder input(PersistentResource inputResource) {
-		checkNotNull(inputResource, "null input resource");
-		this.inputResource = inputResource;
+	public MogwaiATLQueryBuilder output(Object output) {
+		checkNotNull(output, "null output datastore");
 		return me();
 	}
 
-	public MogwaiATLQueryBuilder output(URI outputURI) {
-		checkNotNull(outputURI, "null output URI");
-		this.outputResource = (PersistentResource) rSet.createResource(outputURI);
-		return me();
-	}
+//	public MogwaiATLQueryBuilder input(URI inputURI) {
+//		checkNotNull(inputURI, "null input URI");
+//		this.inputResource = (PersistentResource) rSet.getResource(inputURI, true);
+//		return me();
+//	}
 	
-	public MogwaiATLQueryBuilder output(PersistentResource outputResource) {
-		this.outputResource = outputResource;
-		return me();
-	}
+//	public MogwaiATLQueryBuilder input(PersistentResource inputResource) {
+//		checkNotNull(inputResource, "null input resource");
+//		this.inputResource = inputResource;
+//		return me();
+//	}
+
+//	public MogwaiATLQueryBuilder output(URI outputURI) {
+//		checkNotNull(outputURI, "null output URI");
+//		this.outputResource = (PersistentResource) rSet.createResource(outputURI);
+//		return me();
+//	}
+//	
+//	public MogwaiATLQueryBuilder output(PersistentResource outputResource) {
+//		this.outputResource = outputResource;
+//		return me();
+//	}
 	
 	public MogwaiATLQueryBuilder inMapping(ModelMapping<?, ?, ?, ?> mapping) {
 		checkNotNull(mapping, "null mapping");
@@ -110,7 +120,7 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 	@Override
 	protected MogwaiATLQuery buildQuery() {
 		Resource atlResource = rSet.getResource(transformationURI, true);
-		return new MogwaiATLQuery(atlResource, inputResource, outputResource, inputMapping, outputMapping, sourcePackage, targetPackage);
+		return new MogwaiATLQuery(atlResource, inputDatasource, outputDatasource, inputMapping, outputMapping, sourcePackage, targetPackage);
 	}
 
 }

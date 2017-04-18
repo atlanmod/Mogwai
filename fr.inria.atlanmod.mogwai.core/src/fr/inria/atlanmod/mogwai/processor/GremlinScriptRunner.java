@@ -2,6 +2,7 @@ package fr.inria.atlanmod.mogwai.processor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.text.MessageFormat;
 import java.util.Map;
 
 import javax.script.Bindings;
@@ -14,7 +15,6 @@ import com.sun.istack.internal.Nullable;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 /**
  * Utility class that runs a Gremlin script on a given database. This feature is in a dedicated class because it
@@ -53,7 +53,7 @@ public class GremlinScriptRunner<D> {
 		checkNotNull(datastore, "Cannot compute a query without a graph");
 		checkNotNull(literalQuery, "Null is not a valid query");
 		long begin = System.currentTimeMillis();
-		NeoLogger.info("Computing Gremlin Script \n{0}", literalQuery);
+		System.out.println(MessageFormat.format("Computing Gremlin Script \n{0}", literalQuery));
 //		bindings.put("g", graphBackend.getGraph());
 		bindings.put("g", datastore);
 		// This should not be set here, it depends on the implementation (and if we are computing OCL / ATL etc)
@@ -80,16 +80,16 @@ public class GremlinScriptRunner<D> {
 			long beginCompil = System.currentTimeMillis();
 			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(literalQuery);
 			long endCompil = System.currentTimeMillis();
-			NeoLogger.info("Script Compilation Time: {0}ms", (endCompil - beginCompil));
+			System.out.println(MessageFormat.format("Script Compilation Time: {0}ms", (endCompil - beginCompil)));
 			result = compiled.eval(bindings);
 			long endEval = System.currentTimeMillis();
-			NeoLogger.info("Script Evaluation Time: {0}ms", (endEval - endCompil));
+			System.out.println(MessageFormat.format("Script Evaluation Time: {0}ms", (endEval - endCompil)));
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
 		bindings.clear();
 		long end = System.currentTimeMillis();
-		NeoLogger.info("Query Computation Time: {0}ms", (end-begin));
+		System.out.println(MessageFormat.format("Query Computation Time: {0}ms", (end-begin)));
 		return result;
 	}
 	
