@@ -6,26 +6,26 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
-import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public class MogwaiATLQuery<D> extends MogwaiQuery<D> {
 	
 	private Resource atlResource;
-	private PersistentResource inputResource;
-	private PersistentResource outputResource;
+//	private PersistentResource inputResource;
+//	private PersistentResource outputResource;
+	private D inputDatasource;
+	private D outputDatasource;
 	private ModelMapping<?, ?, ?, ?> inputMapping;
 	private ModelMapping<?, ?, ?, ?> outputMapping;
 	private EPackage sourcePackage;
 	private EPackage targetPackage;
 	
-	public MogwaiATLQuery(Resource atlResource, PersistentResource inputResource, PersistentResource outputResource, ModelMapping<?, ?, ?, ?> inputMapping, ModelMapping<?, ?, ?, ?> outputMapping, EPackage sourcePackage, EPackage targetPackage) {
+	public MogwaiATLQuery(Resource atlResource, D inputDatasource, D outputDatasource, ModelMapping<?, ?, ?, ?> inputMapping, ModelMapping<?, ?, ?, ?> outputMapping, EPackage sourcePackage, EPackage targetPackage) {
 		super(atlResource);
-		checkNotNull(inputResource, "Null input resource");
-		checkNotNull(outputResource, "Null output resource");
+		checkNotNull(inputDatasource, "Null input resource");
+		checkNotNull(outputDatasource, "Null output resource");
 		this.atlResource = atlResource;
-		this.inputResource = inputResource;
-		this.outputResource = outputResource;
+		this.inputDatasource = inputDatasource;
+		this.outputDatasource = outputDatasource;
 		this.inputMapping = inputMapping;
 		this.outputMapping = outputMapping;
 		this.sourcePackage = sourcePackage;
@@ -41,20 +41,12 @@ public class MogwaiATLQuery<D> extends MogwaiQuery<D> {
 		return atlResource;
 	}
 	
-	public PersistentResource getInputResource() {
-		return inputResource;
+	public D getInputDatasource() {
+		return inputDatasource;
 	}
 	
-	public PersistentResource getOutputResource() {
-		return outputResource;
-	}
-	
-	public BlueprintsPersistenceBackend getInputGraph() {
-		return getInnerGraph(inputResource);
-	}
-	
-	public BlueprintsPersistenceBackend getOutputGraph() {
-		return getInnerGraph(outputResource);
+	public D getOutputDatasource() {
+		return outputDatasource;
 	}
 	
 	public ModelMapping<?, ?, ?, ?> getInputMapping() {
@@ -73,8 +65,8 @@ public class MogwaiATLQuery<D> extends MogwaiQuery<D> {
 		return targetPackage;
 	}
 	
-	private BlueprintsPersistenceBackend getInnerGraph(PersistentResource pResource) {
-		throw new UnsupportedOperationException("Disabled for refactoring purposes");
+//	private BlueprintsPersistenceBackend getInnerGraph(PersistentResource pResource) {
+//		throw new UnsupportedOperationException("Disabled for refactoring purposes");
 //		checkArgument(pResource instanceof DefaultPersistentResource || pResource instanceof MogwaiResourceDecorator,
 //				"Given resource is not an instance of DefaultPersistentResource or MogwaiResourceDecorator");
 //		try {
@@ -101,6 +93,6 @@ public class MogwaiATLQuery<D> extends MogwaiQuery<D> {
 //			throw new MogwaiQueryException(e.getMessage());
 //		}
 		
-	}
+//	}
 
 }

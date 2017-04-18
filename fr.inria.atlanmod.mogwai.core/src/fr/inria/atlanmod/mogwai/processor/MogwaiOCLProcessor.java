@@ -7,15 +7,12 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
-import com.sun.istack.internal.Nullable;
-
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.query.MogwaiOCLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
 public class MogwaiOCLProcessor<D> extends MogwaiProcessor<MogwaiOCLQuery<D>, D> {
 

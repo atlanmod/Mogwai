@@ -22,7 +22,7 @@ public class MogwaiGremlinProcessor<D> extends MogwaiProcessor<MogwaiGremlinQuer
 	}
 
 	@Override
-	public MogwaiQueryResult internalProcess(MogwaiGremlinQuery query, D datastore, Object arg) {
+	public MogwaiQueryResult internalProcess(MogwaiGremlinQuery<D> query, D datastore, Object arg) {
 		checkNotNull(datastore, "Cannot compute a query without a graph");
 		Object result = GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), arg, datastore, query.getBindings());
 		return adaptResult(result, query.getGremlinScript());

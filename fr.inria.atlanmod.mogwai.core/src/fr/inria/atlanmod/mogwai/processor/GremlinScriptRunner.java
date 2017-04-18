@@ -2,10 +2,7 @@ package fr.inria.atlanmod.mogwai.processor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.script.Bindings;
 import javax.script.CompiledScript;
@@ -14,12 +11,9 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import com.sun.istack.internal.Nullable;
-import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.neoemf.core.PersistentEObject;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 /**
@@ -33,7 +27,7 @@ public class GremlinScriptRunner<D> {
 	private final ScriptEngine engine;
 	private final Bindings bindings;
 	
-	public static GremlinScriptRunner getInstance() {
+	public static <D>GremlinScriptRunner<D> getInstance() {
 		return Holder.INSTANCE;
 	}
 	
