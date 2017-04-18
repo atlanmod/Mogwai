@@ -11,7 +11,7 @@ import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 public class NeoEMFOCLProcessor extends MogwaiOCLProcessor<BlueprintsPersistenceBackend> {
 
 	@Override
-	public NeoEMFQueryResult internalProcess(MogwaiOCLQuery<BlueprintsPersistenceBackend> query,
+	public NeoEMFQueryResult internalProcess(MogwaiOCLQuery query,
 			BlueprintsPersistenceBackend datastore, Object arg) {
 		checkNotNull(datastore, "Cannot compute a query without a graph");
 		GremlinScript gScript = createGremlinScript(query);

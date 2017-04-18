@@ -8,7 +8,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 
-public class MogwaiGremlinProcessor<D> extends MogwaiProcessor<MogwaiGremlinQuery<D>, D> {
+public class MogwaiGremlinProcessor<D> extends MogwaiProcessor<MogwaiGremlinQuery, D> {
 
 	private static final String NAME = "Gremlin Processor";
 	
@@ -22,14 +22,14 @@ public class MogwaiGremlinProcessor<D> extends MogwaiProcessor<MogwaiGremlinQuer
 	}
 
 	@Override
-	public MogwaiQueryResult internalProcess(MogwaiGremlinQuery<D> query, D datastore, Object arg) {
+	public MogwaiQueryResult internalProcess(MogwaiGremlinQuery query, D datastore, Object arg) {
 		checkNotNull(datastore, "Cannot compute a query without a graph");
 		Object result = GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), arg, datastore, query.getBindings());
 		return adaptResult(result, query.getGremlinScript());
 	}
 
 	@Override
-	public boolean accept(MogwaiQuery<D> query) {
+	public boolean accept(MogwaiQuery query) {
 		return !Objects.isNull(query) && query instanceof MogwaiGremlinQuery;
 	}
 	

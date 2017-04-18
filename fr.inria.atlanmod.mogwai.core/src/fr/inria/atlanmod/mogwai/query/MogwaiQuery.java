@@ -2,7 +2,7 @@ package fr.inria.atlanmod.mogwai.query;
 
 import fr.inria.atlanmod.mogwai.processor.MogwaiProcessor;
 
-public abstract class MogwaiQuery<D> {
+public abstract class MogwaiQuery {
 
 	private Object rawInput;
 	
@@ -11,7 +11,7 @@ public abstract class MogwaiQuery<D> {
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"}) 
-	public MogwaiQueryResult process(MogwaiProcessor processor, D datastore, Object arg) throws MogwaiQueryException {
+	public <D>MogwaiQueryResult process(MogwaiProcessor processor, D datastore, Object arg) throws MogwaiQueryException {
 		if(processor.accept(this)) {
 			return processor.process(this, datastore, arg);
 		}

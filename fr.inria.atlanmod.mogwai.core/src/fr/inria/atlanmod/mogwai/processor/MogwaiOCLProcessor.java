@@ -14,7 +14,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
 
-public class MogwaiOCLProcessor<D> extends MogwaiProcessor<MogwaiOCLQuery<D>, D> {
+public class MogwaiOCLProcessor<D> extends MogwaiProcessor<MogwaiOCLQuery, D> {
 
 	private static final String NAME = "OCL Processor";
 
@@ -38,7 +38,7 @@ public class MogwaiOCLProcessor<D> extends MogwaiProcessor<MogwaiOCLQuery<D>, D>
 	}
 
 	@Override
-	public MogwaiQueryResult internalProcess(MogwaiOCLQuery<D> query, D datastore, Object arg) {
+	public MogwaiQueryResult internalProcess(MogwaiOCLQuery query, D datastore, Object arg) {
 		checkNotNull(datastore, "Cannot compute a query without a graph");
 		GremlinScript gScript = createGremlinScript(query);
 		Object result = GremlinScriptRunner.getInstance().runGremlinScript(gScript, arg, datastore, null);
@@ -46,11 +46,11 @@ public class MogwaiOCLProcessor<D> extends MogwaiProcessor<MogwaiOCLQuery<D>, D>
 	}
 
 	@Override
-	public boolean accept(MogwaiQuery<D> query) {
+	public boolean accept(MogwaiQuery query) {
 		return !Objects.isNull(query) && query instanceof MogwaiOCLQuery;
 	}
 	
-	protected GremlinScript createGremlinScript(MogwaiOCLQuery<D> query) {
+	protected GremlinScript createGremlinScript(MogwaiOCLQuery query) {
 		EPackage ePackage = query.getContext().getEPackage();
 		EObject transformedQuery = transformation.transform(ePackage, query.getConstraint());
 		if (transformedQuery instanceof GremlinScript) {

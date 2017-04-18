@@ -51,7 +51,7 @@ public class MogwaiATLProcessor<D> extends MogwaiProcessor<MogwaiATLQuery<D>, D>
 	}
 
 	@Override
-	public boolean accept(MogwaiQuery<D> query) {
+	public boolean accept(MogwaiQuery query) {
 		return !Objects.isNull(query) && query instanceof MogwaiATLQuery;
 	}
 	

@@ -7,8 +7,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 
-public class MogwaiATLQuery<D> extends MogwaiQuery<D> {
+public class MogwaiATLQuery<D> extends MogwaiQuery {
 	
+	// Datastores should be removed
 	private Resource atlResource;
 //	private PersistentResource inputResource;
 //	private PersistentResource outputResource;

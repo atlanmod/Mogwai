@@ -3,7 +3,7 @@ package fr.inria.atlanmod.mogwai.processor;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 
-public abstract class MogwaiProcessor<Q extends MogwaiQuery<D>, D> {
+public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 
 	/**
 	 * Stores the last datastore used to compute a query.
@@ -22,7 +22,7 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery<D>, D> {
 
 	public abstract MogwaiQueryResult internalProcess(Q query, D datastore, Object arg);
 
-	public abstract boolean accept(MogwaiQuery<D> query);
+	public abstract boolean accept(MogwaiQuery query);
 
 	protected abstract MogwaiQueryResult adaptResult(Object result, String gremlinQuery);
 
