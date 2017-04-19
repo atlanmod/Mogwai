@@ -28,8 +28,4 @@ public interface MogwaiResource extends PersistentResource {
      */
     public BlueprintsPersistenceBackend getBackend();
     
-    public void enableATLDebug();
-    
-    public void disableATLDebug();
-    
 }

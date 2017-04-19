@@ -1,18 +1,15 @@
 package fr.inria.atlanmod.mogwai.neoemf.resource;
 
 import java.lang.reflect.Field;
-
-import com.tinkerpop.blueprints.Graph;
+import java.util.HashMap;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFGremlinProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFOCLProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
-import fr.inria.atlanmod.mogwai.processor.MogwaiGremlinProcessor;
-import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceDecorator;
@@ -68,9 +65,11 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	@Override
 	public NeoEMFQueryResult query(MogwaiQuery query, Object arg) {
 		if(oclProcessor.get().accept(query)) {
-			return (NeoEMFQueryResult)query.process(oclProcessor.get(), getBackend(), arg);
+			oclProcessor.get().setBackend(getBackend());
+			return (NeoEMFQueryResult)query.process(oclProcessor.get(), getBackend().getGraph(), new NeoEMFMapping(), new HashMap<String, Object>());
 		} else if(gremlinProcessor.get().accept(query)) {
-			return (NeoEMFQueryResult)query.process(gremlinProcessor.get(), getBackend(), arg);
+			gremlinProcessor.get().setBackend(getBackend());
+			return (NeoEMFQueryResult)query.process(gremlinProcessor.get(), getBackend().getGraph(), new NeoEMFMapping(), new HashMap<String, Object>());
 		}
     	throw new MogwaiQueryException("Cannot find a processor for " + query);
 	}
@@ -78,15 +77,5 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	@Override
 	public BlueprintsPersistenceBackend getBackend() {
 		return persistenceBackend;
-	}
-	
-	@Override
-	public void enableATLDebug() {
-		oclProcessor.get().enableATLDebug();
-	}
-	
-	@Override
-	public void disableATLDebug() {
-		oclProcessor.get().disableATLDebug();
 	}
 }

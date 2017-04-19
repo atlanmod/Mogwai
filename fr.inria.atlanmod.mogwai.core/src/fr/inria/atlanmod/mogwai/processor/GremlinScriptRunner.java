@@ -11,7 +11,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import com.sun.istack.internal.Nullable;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
@@ -22,12 +21,12 @@ import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
  *
  * @author Gwendal DANIEL
  */
-public class GremlinScriptRunner<D> {
+public class GremlinScriptRunner {
 
 	private final ScriptEngine engine;
 	private final Bindings bindings;
 	
-	public static <D>GremlinScriptRunner<D> getInstance() {
+	public static GremlinScriptRunner getInstance() {
 		return Holder.INSTANCE;
 	}
 	
@@ -49,13 +48,14 @@ public class GremlinScriptRunner<D> {
 	 * @param customBindings additional bindings needed by the query (usually provided by the calling {@link MogwaiProcessor}
 	 * @return a raw object representing the query result
 	 */
-	public Object runGremlinScript(String literalQuery, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
-		checkNotNull(datastore, "Cannot compute a query without a graph");
+//	public Object runGremlinScript(String literalQuery, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
+	public Object runGremlinScript(String literalQuery, Map<String, Object> bindings) {
+//		checkNotNull(datastore, "Cannot compute a query without a graph");
 		checkNotNull(literalQuery, "Null is not a valid query");
 		long begin = System.currentTimeMillis();
 		System.out.println(MessageFormat.format("Computing Gremlin Script \n{0}", literalQuery));
 //		bindings.put("g", graphBackend.getGraph());
-		bindings.put("g", datastore);
+//		bindings.put("g", datastore);
 		// This should not be set here, it depends on the implementation (and if we are computing OCL / ATL etc)
 //		if(!Objects.isNull(arg)) {
 //			// TODO handle other variables than self
@@ -72,8 +72,8 @@ public class GremlinScriptRunner<D> {
 //			    bindings.put("self", selfVertices);
 //			}
 //		}
-		if(customBindings != null) {
-			bindings.putAll(customBindings);
+		if(bindings != null) {
+			this.bindings.putAll(bindings);
 		}
 		Object result = null;
 		try {
@@ -81,21 +81,22 @@ public class GremlinScriptRunner<D> {
 			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(literalQuery);
 			long endCompil = System.currentTimeMillis();
 			System.out.println(MessageFormat.format("Script Compilation Time: {0}ms", (endCompil - beginCompil)));
-			result = compiled.eval(bindings);
+			result = compiled.eval(this.bindings);
 			long endEval = System.currentTimeMillis();
 			System.out.println(MessageFormat.format("Script Evaluation Time: {0}ms", (endEval - endCompil)));
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
-		bindings.clear();
+		this.bindings.clear();
 		long end = System.currentTimeMillis();
 		System.out.println(MessageFormat.format("Query Computation Time: {0}ms", (end-begin)));
 		return result;
 	}
 	
-	public Object runGremlinScript(GremlinScript gScript, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
+//	public Object runGremlinScript(GremlinScript gScript, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
+	public Object runGremlinScript(GremlinScript gScript, Map<String, Object> bindings) {
 		checkNotNull(gScript, "Null is not a valid query");
-		return runGremlinScript(gScript.toString(), arg, datastore, customBindings);
+		return runGremlinScript(gScript.toString(), bindings);
 	}
 	
 	private static class Holder {

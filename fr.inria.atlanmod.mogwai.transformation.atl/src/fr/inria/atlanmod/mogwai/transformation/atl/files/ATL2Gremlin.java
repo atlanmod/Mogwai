@@ -42,8 +42,9 @@ import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 
 import ClassDiagram.ClassDiagramPackage;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+import fr.inria.atlanmod.mogwai.transformation.ATLTransformation;
 
-public class ATL2Gremlin {
+public class ATL2Gremlin extends ATLTransformation {
 
 	private ModelFactory modelFactory;
 	private IReferenceModel atlMetamodel;

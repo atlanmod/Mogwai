@@ -40,8 +40,9 @@ import org.eclipse.ocl.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
+import fr.inria.atlanmod.mogwai.transformation.ATLTransformation;
 
-public class OCL2Gremlin {
+public class OCL2Gremlin extends ATLTransformation {
 
 	private ModelFactory modelFactory;
 	private IReferenceModel inputMetamodel;
@@ -196,14 +197,6 @@ public class OCL2Gremlin {
 			// Assume that we aren't running.
 		}
 		return false;
-	}
-	
-	public void enableATLDebug() {
-		ATLLogger.getLogger().setLevel(Level.ALL);
-	}
-	
-	public void disableATLDebug() {
-		ATLLogger.getLogger().setLevel(Level.OFF);
 	}
 	
 }

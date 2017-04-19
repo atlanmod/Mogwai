@@ -17,6 +17,7 @@ import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
 
+import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
 import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
 
 /**
@@ -43,7 +44,7 @@ import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
  * @author Gwendal DANIEL
  *
  */
-public final class NeoEMFMapping implements PipeMapping<Graph, Vertex, Edge, Object> {
+public final class NeoEMFMapping implements ModelMapping<Graph, Vertex, Edge, Object>, PipeMapping<Graph, Vertex, Edge, Object> {
 
     private static final String KEY_NAME = "name";
 	

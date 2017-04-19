@@ -9,4 +9,5 @@ Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.m2m.atl.engine.emfvm,
  fr.inria.atlanmod.mogwai.gremlin;bundle-version="0.0.1",
  org.eclipse.m2m.atl.emftvm.compiler,
- ClassDiagram
+ ClassDiagram,
+ fr.inria.atlanmod.mogwai.transformation;bundle-version="1.0.0"
