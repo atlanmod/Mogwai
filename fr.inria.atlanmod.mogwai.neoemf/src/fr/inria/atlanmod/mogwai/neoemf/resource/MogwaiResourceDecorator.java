@@ -58,11 +58,6 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	}
 
 	@Override
-	public NeoEMFQueryResult query(MogwaiQuery query, Map<String, Object> options) {
-		return this.query(query, null, options);
-	}
-
-	@Override
 	public NeoEMFQueryResult query(MogwaiQuery query, Object arg, Map<String, Object> options) {
 		Map<String, Object> theOptions = options;
 		if (isNull(theOptions)) {

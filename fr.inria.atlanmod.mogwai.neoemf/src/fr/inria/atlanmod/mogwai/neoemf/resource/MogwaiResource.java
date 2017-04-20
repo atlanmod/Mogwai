@@ -10,6 +10,7 @@
  *******************************************************************************/
 package fr.inria.atlanmod.mogwai.neoemf.resource;
 
+import java.util.Collections;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
@@ -19,7 +20,17 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public interface MogwaiResource extends PersistentResource {
     
-	NeoEMFQueryResult query(MogwaiQuery query, Map<String, Object> options);
+	default NeoEMFQueryResult query(MogwaiQuery query) {
+		return this.query(query, null, Collections.emptyMap());
+	}
+	
+	default NeoEMFQueryResult query(MogwaiQuery query, Object arg) {
+		return this.query(query, arg, Collections.emptyMap());
+	}
+	
+	default NeoEMFQueryResult query(MogwaiQuery query, Map<String, Object> options) {
+		return this.query(query, null, options);
+	}
 	
     NeoEMFQueryResult query(MogwaiQuery query, Object arg, Map<String, Object> options);
     
