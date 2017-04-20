@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.URI;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
@@ -33,11 +33,11 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	protected static final String MODEL_MAPPING_BINDING = "mappingHelper";
 
 	public abstract String getName();
-	
+
 	private static final String INIT_SCRIPT_FILE_NAME = "init.gremlin";
-	
+
 	private File initGremlinFile;
-	
+
 	public MogwaiProcessor() {
 		URL url;
 		try {
@@ -100,17 +100,18 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	protected void initGremlinScriptRunner(List<ModelMapping> mappings) {
 		checkArgument(mappings.size() >= 1, "Cannot init the script runner: expected at least 1 mapping, found {0}",
 				mappings.size());
-		
+
 		MogwaiGremlinQuery query = (MogwaiGremlinQuery) MogwaiGremlinQueryBuilder.newBuilder()
-				.fromFile(initGremlinFile)
-				.bind(ModelMapping.BINDING_NAME, mappings.get(0))
-				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance())
-				.build();
-		GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), query.getBindings());
+				.fromFile(initGremlinFile).bind(ModelMapping.BINDING_NAME, mappings.get(0))
+				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance()).build();
+		GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), query.getBindings(),
+				Collections.<String, Object> emptyMap());
 	}
 
 	protected Object runGremlinScript(String gScript, Map<String, Object> bindings, Map<String, Object> options) {
-		return GremlinScriptRunner.getInstance().runGremlinScript(gScript, bindings);
+		Map<String, Object> runnerOptions = new HashMap<>();
+		runnerOptions.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
+		return GremlinScriptRunner.getInstance().runGremlinScript(gScript, bindings, runnerOptions);
 	}
 
 	protected abstract String createGremlinScript(Q query, Map<String, Object> options);
@@ -150,12 +151,12 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 		}
 		return bindings;
 	}
-	
+
 	private static URL getFileURL(String fileName) throws IOException {
 		URL fileURL;
-		if(isEclipseRunning()) {
+		if (isEclipseRunning()) {
 			URL resourceURL = MogwaiProcessor.class.getResource(fileName);
-			if(resourceURL != null) {
+			if (resourceURL != null) {
 				fileURL = FileLocator.toFileURL(resourceURL);
 			} else {
 				fileURL = null;
@@ -163,18 +164,18 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 		} else {
 			fileURL = MogwaiProcessor.class.getResource(fileName);
 		}
-		if(fileURL == null) {
+		if (fileURL == null) {
 			throw new IOException("'" + fileName + "' not found");
 		} else {
 			return fileURL;
 		}
 	}
-	
+
 	private static boolean isEclipseRunning() {
 		try {
 			return Platform.isRunning();
-		} catch(Throwable e) {
-			
+		} catch (Throwable e) {
+
 		}
 		return false;
 	}

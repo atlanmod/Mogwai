@@ -26,6 +26,8 @@ public class GremlinScriptRunner {
 	private final ScriptEngine engine;
 	private final Bindings bindings;
 	
+	public static final String PRINT_SCRIPT_OPTION = "print.script";
+	
 	public static GremlinScriptRunner getInstance() {
 		return Holder.INSTANCE;
 	}
@@ -48,12 +50,16 @@ public class GremlinScriptRunner {
 	 * @param customBindings additional bindings needed by the query (usually provided by the calling {@link MogwaiProcessor}
 	 * @return a raw object representing the query result
 	 */
-//	public Object runGremlinScript(String literalQuery, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
-	public Object runGremlinScript(String literalQuery, Map<String, Object> bindings) {
+	public Object runGremlinScript(String literalQuery, Map<String, Object> bindings, Map<String, Object> options) {
 //		checkNotNull(datastore, "Cannot compute a query without a graph");
-		checkNotNull(literalQuery, "Null is not a valid query");
+		checkNotNull(literalQuery, "{0} is not a valid query", literalQuery);
 		long begin = System.currentTimeMillis();
-		System.out.println(MessageFormat.format("Computing Gremlin Script \n{0}", literalQuery));
+		if(options.containsKey(PRINT_SCRIPT_OPTION)) {
+			boolean print = (boolean)options.get(PRINT_SCRIPT_OPTION);
+			if(print) {
+				System.out.println(MessageFormat.format("Computing Gremlin Script \n{0}", literalQuery));
+			}
+		}
 //		bindings.put("g", graphBackend.getGraph());
 //		bindings.put("g", datastore);
 		// This should not be set here, it depends on the implementation (and if we are computing OCL / ATL etc)
@@ -93,10 +99,9 @@ public class GremlinScriptRunner {
 		return result;
 	}
 	
-//	public Object runGremlinScript(GremlinScript gScript, @Nullable Object arg, D datastore, @Nullable Map<String, Object> customBindings) {
-	public Object runGremlinScript(GremlinScript gScript, Map<String, Object> bindings) {
+	public Object runGremlinScript(GremlinScript gScript, Map<String, Object> bindings, Map<String, Object> options) {
 		checkNotNull(gScript, "Null is not a valid query");
-		return runGremlinScript(gScript.toString(), bindings);
+		return runGremlinScript(gScript.toString(), bindings, options);
 	}
 	
 	private static class Holder {
