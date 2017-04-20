@@ -9,6 +9,8 @@ create OUT: Gremlin from IN: ATL, SOURCEMM:SourceEcore, TARGETMM:TargetEcore;
 
 helper def : resourceName : String = 'OUTROOT';
 
+helper def : transformationHelperBinding : String = 'tHelper';
+
 helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
 	ATL!MatchedRule.allInstances()->asSequence()
 ;
@@ -128,7 +130,7 @@ lazy rule module2graphFinalVar {
 			final <- true
 		),
 		varAccess : Gremlin!VariableAccess (
-			name <- 'graphHelper'	
+			name <- thisModule.transformationHelperBinding	
 		)
 }
 
