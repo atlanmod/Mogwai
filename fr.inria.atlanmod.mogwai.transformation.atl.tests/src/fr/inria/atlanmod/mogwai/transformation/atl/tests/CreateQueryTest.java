@@ -29,8 +29,7 @@ public class CreateQueryTest {
 		URI transformationURI = URI.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational.atl");
 //		URI inputURI = BlueprintsURI.createFileURI(new File("materials/ClassDiagram2Relational/ClassDiagram/sample.graphdb"));
 		
-		MogwaiATLQuery query = (MogwaiATLQuery) MogwaiATLQueryBuilder.newBuilder().transformation(transformationURI).input(mogResource)
-				.output(mogResource).build();
+		MogwaiATLQuery query = (MogwaiATLQuery) MogwaiATLQueryBuilder.newBuilder().fromURI(transformationURI).build();
 		
 		Resource atlResource = query.getATLResource();
 		

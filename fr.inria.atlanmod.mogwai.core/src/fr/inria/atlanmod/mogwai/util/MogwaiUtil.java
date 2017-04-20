@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCLExpression;
 
+import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 
 public class MogwaiUtil {
@@ -33,18 +34,6 @@ public class MogwaiUtil {
 		Constraint constraint = parser.parseTextualOCL(cleanOCLQuery);
 		return constraint;
 	}
-	
-	/**
-	 * Parse the OCL file at the given URI and return the constraints it contains
-	 * @param oclFileURI the URI of the OCL file to parse
-	 * @param resource the Resource containing the model to compute the constraints on
-	 * @return the Constraint contained in the OCL file
-	 * 
-	 * TODO Allow multiple constraints definition in a single OCL file
-	 */
-//	public static Constraint parseOCL(URI oclFileURI, Resource resource) {
-//		return parseOCL(oclFileURI, resource.getContents().get(0).eClass().getEPackage());
-//	}
 	
 	/**
 	 * Parse the OCL file at the given location and return the {@link Constraint} is contains
@@ -79,7 +68,6 @@ public class MogwaiUtil {
 		StringBuffer oclQuery = new StringBuffer();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(oclFileURI.toFileString()));
-			//newFileWriter = new PrintWriter(newFileName);
 			String line;
 			while ((line = br.readLine()) != null) {
 			   if(!line.contains("import")) {
@@ -89,10 +77,10 @@ public class MogwaiUtil {
 			}
 			br.close();
 		}catch(FileNotFoundException e) {
-			System.out.println("Can not find " + oclFileURI.toFileString());
+			MogwaiLogger.error("Cannot find {0}", oclFileURI.toFileString());
 			e.printStackTrace();
 		}catch(IOException e) {
-			System.out.println("Can not read " + oclFileURI.toFileString());
+			MogwaiLogger.error("Cannot read {0}", oclFileURI.toFileString());
 		}
 		return oclQuery.toString();
 	}
