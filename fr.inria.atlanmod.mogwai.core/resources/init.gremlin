@@ -1,0 +1,235 @@
+/**
+ * This script initializes the Mogwai-ATL Gremlin-based engine by adding mapping 
+ * methods to Gremlin metaclasses.
+ * <p>
+ * This script is also responsible of the creation of new Gremlin steps, that can 
+ * be used in the transformation to improve script readability and provide a level 
+ * of abstraction between the transformation engine and the low-level
+ * graph representation.
+ * 
+ * @author Gwendal DANIEL
+ */
+
+// TODO: this initialization script doesn't take into account the case where different mappings
+// are used for input and output models. To handle this it would be necessary to duplicate all 
+// the created methods to allow in/out calls.
+
+// Put the mapping helper in a final variable to allow its access from closures
+final m = mappingHelper;
+final t = gremlinHelper;
+
+
+def log(String msg) {
+	enableDebug = false;
+	if(enableDebug) {
+		println(msg);
+	}
+}
+
+/*
+ * Additional Graph methods
+ */
+
+// g.allOfType("myType");
+Graph.metaClass.allOfType = 
+{ 
+	String typeName -> 
+		log("allOfType(" + typeName + ")"); 
+		m.allOfTypePipeline(typeName); 
+}
+
+// g.allOfKind("myType");
+Graph.metaClass.allOfKind = 
+{ 
+	String typeName -> 
+		log("allOfKind(" + typeName + ")"); 
+		m.allOfKindPipeline(typeName);
+}
+
+/*
+ * Additional Vertex methods 
+ */
+
+// v.getAtt("myAtt");
+Vertex.metaClass.getAtt = 
+{ 
+	String attName -> 
+		log("getAtt(" + attName + ")"); 
+		m.getAtt(delegate, attName); 
+}
+
+// v.getParent();
+Vertex.metaClass.getParent = 
+{
+	->
+		log("getParent()");
+		m.getParent(delegate);
+}
+
+// v.getRef("myRef");
+Vertex.metaClass.getRef = 
+{ 
+	String refName, String oppositeName, boolean isContainer -> 
+		log("getRef(" + refName + "," + oppositeName + "," + isContainer + ")"); 
+		m.getRef(delegate, refName, oppositeName, isContainer); 
+}
+
+// v.setAtt("myAtt", value);
+Vertex.metaClass.setAtt = 
+{ 
+	String attName, Object attValue -> 
+		log("setAtt(" + attName + "," + attValue + ")"); 
+		m.setAtt(delegate, attName, attValue); 
+}
+
+// v1.setRef("myRef", v2, isContainment)
+Vertex.metaClass.setRef =
+{
+	String refName, Vertex otherEnd, boolean isContainment ->
+		log("setRef(" + refName + "," + otherEnd + "," + isContainement + ")");
+		m.setRef(delegate, refName, otherEnd, isContainment);
+}
+
+// v1.removeRef("myRef", v2, isContainment)
+Vertex.metaClass.removeRef = 
+{
+	String refName, Vertex otherEnd, boolean isContainment ->
+		log("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")");
+		m.removeRef(delegate, refName, otherEnd, isContainment);
+}
+
+// v.getType();
+Vertex.metaClass.getType = 
+{
+	-> 
+		log("getType()");
+		m.getType(delegate);
+}
+
+// v.isTypeOf("myType");
+Vertex.metaClass.isTypeOf = 
+{ 
+	String type -> 
+		log("isTypeOf(" + type + ")"); 
+		m.isTypeOf(delegate, type); 
+}
+
+// v.isKindOf("myType");
+Vertex.metaClass.isKindOf =
+{
+	String type ->
+		log("isKindOf(" + type + ")");
+		m.isKindOf(delegate, type);
+}
+
+/*
+ * Additional Gremlin steps
+ */
+
+// Pipe.getAtt("myAtt");
+Gremlin.defineStep("getAtt", [Pipe], 
+	{
+		String attName ->
+			log("getAtt(" + attName + ")[Pipe]");
+			m.getAtt(attName);
+	}	
+)
+
+// Pipe.getParent()
+Gremlin.defineStep("getParent", [Pipe],
+	{
+		->
+			log("getParent()[Pipe]");
+			m.getParent();
+	}	
+)
+
+// Pipe.getRef("myRef");
+Gremlin.defineStep("getRef", [Pipe], 
+	{
+		String refName, String oppositeName, boolean isContainer ->
+			log("getRef(" + refName + "," + oppositeName + "," + isContainer + ")[Pipe]");
+			m.getRef(refName, oppositeName, isContainer);
+	}	
+)
+
+// Pipe.setAtt("myAtt", value);
+Gremlin.defineStep("setAtt", [Pipe],
+	{
+		String attName, Object attValue ->
+			log("setAtt(" + attName + "," + attValue + ")[Pipe]");
+			m.setAtt(attName, attValue);
+	}	
+)
+
+// Pipe.setRef("myRef", v, isContainment)
+Gremlin.defineStep("setRef", [Pipe],
+	{
+		String refName, Vertex otherEnd, boolean isContainment ->
+			log("setRef(" + refName + "," + otherEnd + "," + isContainment + ")[Pipe]");
+			m.setRef(refName, otherEnd, isContainment);
+	}	
+)
+
+// Pipe.removeRef("myRef", v, isContainment)
+Gremlin.defineStep("removeRef", [Pipe],
+	{
+		String refName, Vertex otherEnd, boolean isContainment ->
+			log("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")[Pipe]");
+			m.removeRef(refName, otherEnd, isContainment);
+	}	
+)
+// Pipe.getType();
+Gremlin.defineStep("getType", [Pipe], 
+	{
+		->
+			log("getType()[Pipe]");
+			m.getType();
+	}	
+)
+
+// Pipe.isTypeOf("myType");
+Gremlin.defineStep("isTypeOf", [Pipe],
+	{
+		String typeName ->
+			log("isTypeOf(" + typeName + ")[Pipe]");
+			m.isTypeOf(typeName);
+	}	
+)
+
+// Pipe.isKindOf("myType");
+Gremlin.defineStep("isKindOf", [Pipe], 
+	{
+		String typeName ->
+			log("isKindOf(" + typeName + ")[Pipe]");
+			m.isKindOf(typeName);
+	}	
+)
+
+/*
+ * Additional operations
+ */
+
+// [a,b,c].union([d,e,f]);
+Iterable.metaClass.union = 
+{
+	Iterable right ->
+		log("union");
+		t.union(delegate, right);
+}
+
+// [a,b,c].intersection([d,e,f]);
+Iterable.metaClass.intersection = 
+{
+	Iterable right ->
+		log("intersection");
+		t.intersection(delegate, right);
+}
+
+// [a,b,c].difference([d,e,f]);
+Iterable.metaClass.difference = 
+{
+	Iterable right ->
+		log("difference");
+		t.difference(delegate, right);
+}

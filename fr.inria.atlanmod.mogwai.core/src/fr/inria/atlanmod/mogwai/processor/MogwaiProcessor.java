@@ -3,14 +3,26 @@ package fr.inria.atlanmod.mogwai.processor;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
+
+import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
+import fr.inria.atlanmod.mogwai.util.GremlinHelper;
 
 public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 
@@ -21,6 +33,24 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	protected static final String MODEL_MAPPING_BINDING = "mappingHelper";
 
 	public abstract String getName();
+	
+	private static final String INIT_SCRIPT_FILE_NAME = "init.gremlin";
+	
+	private File initGremlinFile;
+	
+	public MogwaiProcessor() {
+		URL url;
+		try {
+			url = getFileURL(INIT_SCRIPT_FILE_NAME);
+		} catch (IOException e) {
+			throw new MogwaiException("Cannot initialize MogwaiProcessor: {0} not found", INIT_SCRIPT_FILE_NAME);
+		}
+		try {
+			initGremlinFile = new File(url.toURI());
+		} catch (URISyntaxException e) {
+			initGremlinFile = new File(url.getPath());
+		}
+	}
 
 	@SuppressWarnings("rawtypes")
 	public final MogwaiQueryResult process(Q query, D datastore, ModelMapping mapping) {
@@ -41,7 +71,12 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	public MogwaiQueryResult process(Q query, List<D> datastores, List<ModelMapping> mappings,
 			Map<String, Object> options) {
 		checkNotNull(query, "Cannot process the query: {0}", query);
+		checkArgument(datastores.size() >= 1, "Cannot process the query: expected at least 1 datastore, found {0}",
+				datastores.size());
+		checkArgument(mappings.size() >= 1, "Cannot process the query: expected at least 1 mapping, found {0}",
+				mappings.size());
 		linkMappings(datastores, mappings);
+		initGremlinScriptRunner(mappings);
 		Map<String, Object> bindings = createBindings(datastores, mappings, options);
 		String gScript = createGremlinScript(query, options);
 		Object result = runGremlinScript(gScript, bindings, options);
@@ -53,13 +88,26 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 		checkArgument(datastores.size() == mappings.size(),
 				"Cannot link mappings to the datastores: found {0} datastores for {1} mappings", datastores.size(),
 				mappings.size());
-		for(int i = 0; i < datastores.size(); i++) {
+		for (int i = 0; i < datastores.size(); i++) {
 			mappings.get(i).setDataSource(datastores.get(i));
 		}
 
 	}
 
 	public abstract boolean accept(MogwaiQuery query);
+
+	@SuppressWarnings("rawtypes")
+	protected void initGremlinScriptRunner(List<ModelMapping> mappings) {
+		checkArgument(mappings.size() >= 1, "Cannot init the script runner: expected at least 1 mapping, found {0}",
+				mappings.size());
+		
+		MogwaiGremlinQuery query = (MogwaiGremlinQuery) MogwaiGremlinQueryBuilder.newBuilder()
+				.fromFile(initGremlinFile)
+				.bind(ModelMapping.BINDING_NAME, mappings.get(0))
+				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance())
+				.build();
+		GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), query.getBindings());
+	}
 
 	protected Object runGremlinScript(String gScript, Map<String, Object> bindings, Map<String, Object> options) {
 		return GremlinScriptRunner.getInstance().runGremlinScript(gScript, bindings);
@@ -101,6 +149,34 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 			throw new UnsupportedOperationException("Multiple mappings are not supported for now");
 		}
 		return bindings;
+	}
+	
+	private static URL getFileURL(String fileName) throws IOException {
+		URL fileURL;
+		if(isEclipseRunning()) {
+			URL resourceURL = MogwaiProcessor.class.getResource(fileName);
+			if(resourceURL != null) {
+				fileURL = FileLocator.toFileURL(resourceURL);
+			} else {
+				fileURL = null;
+			}
+		} else {
+			fileURL = MogwaiProcessor.class.getResource(fileName);
+		}
+		if(fileURL == null) {
+			throw new IOException("'" + fileName + "' not found");
+		} else {
+			return fileURL;
+		}
+	}
+	
+	private static boolean isEclipseRunning() {
+		try {
+			return Platform.isRunning();
+		} catch(Throwable e) {
+			
+		}
+		return false;
 	}
 
 }
