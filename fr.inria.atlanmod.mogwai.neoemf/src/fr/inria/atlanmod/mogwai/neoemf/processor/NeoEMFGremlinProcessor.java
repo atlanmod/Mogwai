@@ -16,10 +16,18 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
-public class NeoEMFGremlinProcessor extends MogwaiGremlinProcessor<Graph> {
+public class NeoEMFGremlinProcessor extends MogwaiGremlinProcessor<Graph> implements NeoEMFProcessor {
 
+	/**
+	 * The {@code backend} used to reify query results.
+	 */
 	private BlueprintsPersistenceBackend backend;
 	
+	/**
+	 * {@inheritDoc}
+	 * @param backend
+	 */
+	@Override
 	public void setBackend(BlueprintsPersistenceBackend backend) {
 		this.backend = backend;
 	}
