@@ -7,7 +7,7 @@ Require-Bundle: org.eclipse.ocl.ecore;bundle-version="3.3.100";visibility:=reexp
  fr.inria.atlanmod.mogwai.transformation.ocl;bundle-version="0.0.1";visibility:=reexport,
  org.eclipse.m2m.atl.common;bundle-version="3.8.0",
  org.eclipse.m2m.atl.emftvm.compiler;bundle-version="3.8.0",
- fr.inria.atlanmod.mogwai.transformation.atl,
+ fr.inria.atlanmod.mogwai.transformation.atl;visibility:=reexport,
  org.eclipse.m2m.atl.engine;bundle-version="3.8.0",
  org.eclipse.m2m.atl.dsls;bundle-version="3.8.0",
  org.eclipse.m2m.atl.emftvm;bundle-version="3.8.0",

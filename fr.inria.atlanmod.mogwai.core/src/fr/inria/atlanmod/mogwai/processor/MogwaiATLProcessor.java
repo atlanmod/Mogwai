@@ -17,7 +17,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 
-public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery<D>, D> {
+public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, D> {
 
 	public static final String TRANSFORMATION_HELPER_KEY = "transformation.helper";
 
@@ -25,10 +25,13 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery<D
 
 	private static final String NAME = "ATL Processor";
 
-	private final ATL2Gremlin transformation;
-
 	public MogwaiATLProcessor() {
 		transformation = new ATL2Gremlin();
+	}
+	
+	@Override
+	protected ATL2Gremlin getTransformation() {
+		return (ATL2Gremlin) transformation;
 	}
 
 	@Override
@@ -38,7 +41,7 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery<D
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiATLQuery<D> query, List<D> datastores, List<ModelMapping> mappings,
+	public MogwaiQueryResult process(MogwaiATLQuery query, List<D> datastores, List<ModelMapping> mappings,
 			Map<String, Object> options) {
 		checkArgument(options.containsKey(TRANSFORMATION_HELPER_KEY),
 				"MogwaiATLProcessor requires a TransformationHelper to compute the transformation");
@@ -60,7 +63,7 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery<D
 	}
 	
 	@Override
-	protected String createGremlinScript(MogwaiATLQuery<D> query, Map<String, Object> options) {
+	protected String createGremlinScript(MogwaiATLQuery query, Map<String, Object> options) {
 		Module atlModule = (Module) query.getATLResource().getContents().get(0);
 		/*
 		 * TODO support multiple input models
@@ -71,7 +74,7 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery<D
 		 */
 		String targetMMName = atlModule.getOutModels().get(0).getMetamodel().getName();
 		
-		Resource gremlinResource = transformation.transform(query.getATLResource(), sourceMMName,
+		Resource gremlinResource = getTransformation().transform(query.getATLResource(), sourceMMName,
 				query.getSourcePackage(), targetMMName, query.getTargetPackage());
 		checkArgument(gremlinResource.getContents() != null, "Created resource content is null");
 		// Relax that for debugging purposes
