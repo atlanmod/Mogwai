@@ -3,7 +3,9 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -21,8 +23,11 @@ import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
 import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
+import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
+import fr.inria.atlanmod.mogwai.processor.MogwaiProcessor;
+import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.MogwaiATLQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
@@ -97,38 +102,56 @@ public class TransformationSample {
 
 		NeoLogger.info("Done");
 		
-		NeoLogger.info("Initializing the Gremlin engine");
-		MogwaiQuery initQuery = MogwaiGremlinQueryBuilder.newBuilder()
-				.fromFile(new File("materials/init.gremlin"))
-				.bind(ModelMapping.BINDING_NAME, mapping)
-				.bind("graphHelper", helper)
-				.build();
-
-		mogResource.query(initQuery);
-		NeoLogger.info("Gremlin engine initialized");
+//		NeoLogger.info("Initializing the Gremlin engine");
+//		MogwaiQuery initQuery = MogwaiGremlinQueryBuilder.newBuilder()
+//				.fromFile(new File("materials/init.gremlin"))
+////				.bind(ModelMapping.BINDING_NAME, mapping)
+////				.bind("graphHelper", helper)
+//				.build();
+//		
+//		Map<String, Object> options = new HashMap<>();
+//		Map<String, Object> bindings = new HashMap<>();
+//		bindings.put(ModelMapping.BINDING_NAME, mapping);
+//		bindings.put("graphHelper", helper);
+//		options.put(MogwaiProcessor.BINDINGS_KEY, bindings);
+//
+//		mogResource.query(initQuery);
+//		NeoLogger.info("Gremlin engine initialized");
+		NeoLogger.info("Creating ATL query");
 		
-		NeoLogger.info("Translating ATL file (" + ATL_URI + ")");;
-		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
-		atl2gremlin.enableATLDebug();
-		Resource r = atl2gremlin.transform(URI
-				.createURI(ATL_URI),
-				"Relational",
-				ClassDiagramPackage.eINSTANCE,
-				"Class",
-				ClassDiagramPackage.eINSTANCE);
-		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
-		String textualQuery = printer.print(r.getContents().get(0));
+		MogwaiQuery query = MogwaiATLQueryBuilder.newBuilder()
+			.fromURI(URI.createURI(ATL_URI))
+			.sourcePackage(ClassDiagramPackage.eINSTANCE)
+			.targetPackage(ClassDiagramPackage.eINSTANCE)
+			.build();
 		
-		NeoLogger.info("Generated Gremlin Script: \n{0}", textualQuery);
+		mogResource.transform(query, new HashMap<>());
 		
-		// Create Tables from Classes
-		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
-				.fromString(textualQuery)
-				.bind("graphHelper", helper)
-				.bind(ModelMapping.BINDING_NAME, mapping)
-				.build();
-		
-		mogResource.query(gremlinQuery2);
+//		NeoLogger.info("Translating ATL file (" + ATL_URI + ")");;
+//		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
+//		atl2gremlin.enableATLDebug();
+//		Resource r = atl2gremlin.transform(URI
+//				.createURI(ATL_URI),
+//				"Relational",
+//				ClassDiagramPackage.eINSTANCE,
+//				"Class",
+//				ClassDiagramPackage.eINSTANCE);
+//		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
+//		String textualQuery = printer.print(r.getContents().get(0));
+//		
+//		NeoLogger.info("Generated Gremlin Script: \n{0}", textualQuery);
+//		
+//		// Create Tables from Classes
+//		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
+//				.fromString(textualQuery)
+//				.bind("graphHelper", helper)
+//				.bind(ModelMapping.BINDING_NAME, mapping)
+//				.build();
+//		
+//		Map<String, Object> options = new HashMap<>();
+//		options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
+//		
+//		mogResource.query(gremlinQuery2, options);
 		
 		NeoLogger.info("Model successfully transformed");
 		
