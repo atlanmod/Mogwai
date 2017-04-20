@@ -100,7 +100,6 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	protected void initGremlinScriptRunner(List<ModelMapping> mappings) {
 		checkArgument(mappings.size() >= 1, "Cannot init the script runner: expected at least 1 mapping, found {0}",
 				mappings.size());
-
 		MogwaiGremlinQuery query = (MogwaiGremlinQuery) MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(initGremlinFile).bind(ModelMapping.BINDING_NAME, mappings.get(0))
 				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance()).build();
@@ -109,9 +108,7 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	}
 
 	protected Object runGremlinScript(String gScript, Map<String, Object> bindings, Map<String, Object> options) {
-		Map<String, Object> runnerOptions = new HashMap<>();
-		runnerOptions.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
-		return GremlinScriptRunner.getInstance().runGremlinScript(gScript, bindings, runnerOptions);
+		return GremlinScriptRunner.getInstance().runGremlinScript(gScript, bindings, options);
 	}
 
 	protected abstract String createGremlinScript(Q query, Map<String, Object> options);
