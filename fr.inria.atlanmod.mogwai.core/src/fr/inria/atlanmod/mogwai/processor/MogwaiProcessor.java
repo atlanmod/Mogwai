@@ -118,18 +118,25 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
 		checkArgument(!datastores.isEmpty(), "Cannot create default bindings: no datastore provided");
 		Map<String, Object> bindings = new HashMap<>();
 		if (datastores.size() == 1) {
+			/*
+			 * TODO:
+			 * This should not be needed: we don't have to bind the real
+			 * datastore, but the current OCL implementation relies on the
+			 * low-level graph API, and doesn't use the mapping. In addition,
+			 * the init.gremlin script binds Pipes to Graph instead of a more
+			 * generic ModelDatastore type.
+			 */
 			bindings.put(DATASTORE_BINDING, datastores.get(0).getDataSource());
 		} else {
 			// Multiple datastores
 			throw new UnsupportedOperationException("Multiple datastores are not supported for now");
 		}
-		 if (datastores.size() == 1) {
-			 bindings.put(MODEL_MAPPING_BINDING, datastores.get(0));
-		 } else {
-		 // Multiple mappings
-		 throw new
-		 	UnsupportedOperationException("Multiple mappings are not supported for now");
-		 }
+		if (datastores.size() == 1) {
+			bindings.put(MODEL_MAPPING_BINDING, datastores.get(0));
+		} else {
+			// Multiple mappings
+			throw new UnsupportedOperationException("Multiple mappings are not supported for now");
+		}
 		return bindings;
 	}
 
