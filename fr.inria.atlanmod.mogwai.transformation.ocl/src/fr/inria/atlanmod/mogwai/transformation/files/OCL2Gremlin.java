@@ -42,6 +42,7 @@ import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 import fr.inria.atlanmod.mogwai.transformation.ATLTransformation;
 
+@SuppressWarnings("restriction")
 public class OCL2Gremlin extends ATLTransformation {
 
 	private ModelFactory modelFactory;
@@ -112,7 +113,6 @@ public class OCL2Gremlin extends ATLTransformation {
 		
 	}
 	
-	@SuppressWarnings("restriction")
 	public EObject transform(EPackage packageInOcl, Constraint exp) {
 		try {
 			

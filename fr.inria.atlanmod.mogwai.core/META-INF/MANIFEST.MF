@@ -22,7 +22,6 @@ Export-Package: fr.inria.atlanmod.mogwai.core,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 DynamicImport-Package: *
 Bundle-ClassPath: .,
- target/classes/,
  lib/ant-1.8.3.jar,
  lib/ant-launcher-1.8.3.jar,
  lib/antlr-2.7.7.jar,

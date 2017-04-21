@@ -5,12 +5,9 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
@@ -72,6 +69,7 @@ public class TransformationHelper {
 	 * @param mapping
 	 *            the mapping used to compute the graph operations
 	 */
+	@SuppressWarnings("unchecked")
 	public TransformationHelper(ModelDatastore<?, ?, ?, ?> mapping) {
 		// TODO remove this with an interface for the transformation helper that accepts any kind of mapping
 		// + an abstraction that doesn't use a mapping
