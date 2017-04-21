@@ -18,8 +18,8 @@ import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import ClassDiagram.Table;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
@@ -96,7 +96,7 @@ public class TransformationSample {
 		
 
 		NeoLogger.info("Initializing mapping");
-		NeoEMFMapping mapping = new NeoEMFMapping();
+		NeoEMFGraphDatastore mapping = new NeoEMFGraphDatastore();
 		mapping.setDataSource(mogResource.getBackend().getGraph());
 		TransformationHelper helper = new TransformationHelper(mapping);
 
@@ -156,19 +156,19 @@ public class TransformationSample {
 		NeoLogger.info("Model successfully transformed");
 		
 		NeoLogger.info("CreateElement time: {0}ms", TransformationHelper.createTime);
-		NeoLogger.info("NewInstance time: {0}ms", NeoEMFMapping.newInstanceTime);
-		NeoLogger.info("NewInstance setRef time: {0}ms", NeoEMFMapping.newInstanceSetRef);
-		NeoLogger.info("NewInstance getResourceRoot: {0}ms", NeoEMFMapping.newInstanceGetResourceRoot);
-		NeoLogger.info("NewInstance addVertex: {0}ms", NeoEMFMapping.newInstanceAddVertex);
-		NeoLogger.info("NewInstance getMetaClass: {0}ms", NeoEMFMapping.newInstanceGetMetaclass);
+		NeoLogger.info("NewInstance time: {0}ms", NeoEMFGraphDatastore.newInstanceTime);
+		NeoLogger.info("NewInstance setRef time: {0}ms", NeoEMFGraphDatastore.newInstanceSetRef);
+		NeoLogger.info("NewInstance getResourceRoot: {0}ms", NeoEMFGraphDatastore.newInstanceGetResourceRoot);
+		NeoLogger.info("NewInstance addVertex: {0}ms", NeoEMFGraphDatastore.newInstanceAddVertex);
+		NeoLogger.info("NewInstance getMetaClass: {0}ms", NeoEMFGraphDatastore.newInstanceGetMetaclass);
 		NeoLogger.info("IsResolvable time: {0}ms", TransformationHelper.isResolvableTime);
 		NeoLogger.info("Resolve time: {0}ms", TransformationHelper.resolveTime);
 		NeoLogger.info("Link time: {0}ms", TransformationHelper.linkTime);
 		NeoLogger.info("Plink time: {0}ms", TransformationHelper.pLinkTime);
 		NeoLogger.info("ResolveProxy time: {0}ms", TransformationHelper.resolveProxyTime);
-		NeoLogger.info("UpdateContainment time: {0}ms", NeoEMFMapping.updateContainmentTime);
-		NeoLogger.info("UpdateContainment loop1 time: {0}ms", NeoEMFMapping.updateContainment1);
-		NeoLogger.info("UpdateContainment loop2 time: {0}ms", NeoEMFMapping.updateContainment2);
+		NeoLogger.info("UpdateContainment time: {0}ms", NeoEMFGraphDatastore.updateContainmentTime);
+		NeoLogger.info("UpdateContainment loop1 time: {0}ms", NeoEMFGraphDatastore.updateContainment1);
+		NeoLogger.info("UpdateContainment loop2 time: {0}ms", NeoEMFGraphDatastore.updateContainment2);
 
 		long beginSave = System.currentTimeMillis();
 		mogResource.save(Collections.emptyMap());	

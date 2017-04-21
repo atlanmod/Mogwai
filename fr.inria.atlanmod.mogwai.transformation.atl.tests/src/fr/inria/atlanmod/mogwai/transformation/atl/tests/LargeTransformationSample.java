@@ -10,8 +10,8 @@ import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -27,7 +27,7 @@ public class LargeTransformationSample {
 		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
 		long end = System.currentTimeMillis();
 		
-		ModelMapping mapping = new NeoEMFMapping();
+		ModelDatastore mapping = new NeoEMFGraphDatastore();
 		mapping.setDataSource(mogResource.getBackend().getGraph());
 		
 		NeoLogger.info("Created large instance in {0}ms", (end-begin));

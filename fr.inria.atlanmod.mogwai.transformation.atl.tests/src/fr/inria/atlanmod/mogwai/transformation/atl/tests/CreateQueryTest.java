@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 
-import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.processor.MogwaiATLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
@@ -44,7 +44,7 @@ public class CreateQueryTest {
 		newResource.save(Collections.emptyMap());
 		
 		MogwaiATLProcessor processor = new MogwaiATLProcessor();
-		MogwaiQueryResult result = query.process(processor, mogResource.getBackend(), new NeoEMFMapping(), null);
+		MogwaiQueryResult result = query.process(processor, mogResource.getBackend(), new NeoEMFGraphDatastore(), null);
 		
 		System.out.println("Created Script");
 		System.out.println(result.getExecutedQuery());

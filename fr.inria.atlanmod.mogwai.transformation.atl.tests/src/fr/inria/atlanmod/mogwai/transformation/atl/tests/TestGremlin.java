@@ -3,8 +3,8 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 import java.io.File;
 import java.io.IOException;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -34,13 +34,13 @@ public class TestGremlin {
 	public static void main(String[] args) throws IOException {
 		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
 
-		ModelMapping mapping = new NeoEMFMapping();
+		ModelDatastore mapping = new NeoEMFGraphDatastore();
 		// Mandatory for now
 		mapping.setDataSource(mogResource.getBackend().getGraph());
 
 		MogwaiQuery gremlinInit = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/init.gremlin"))
-				.bind(ModelMapping.BINDING_NAME, mapping)
+				.bind(ModelDatastore.BINDING_NAME, mapping)
 				.build();
 
 		mogResource.query(gremlinInit);
@@ -48,7 +48,7 @@ public class TestGremlin {
 
 		MogwaiQuery gremlinQuery = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/test.gremlin"))
-				.bind(ModelMapping.BINDING_NAME, mapping)
+				.bind(ModelDatastore.BINDING_NAME, mapping)
 				.build();
 
 		MogwaiQueryResult result = mogResource.query(gremlinQuery);
