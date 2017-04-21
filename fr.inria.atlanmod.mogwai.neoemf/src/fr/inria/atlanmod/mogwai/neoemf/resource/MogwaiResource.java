@@ -13,7 +13,7 @@ package fr.inria.atlanmod.mogwai.neoemf.resource;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
@@ -40,7 +40,7 @@ public interface MogwaiResource extends PersistentResource {
 	 * the underlying database storing the NeoEMF resource is directly updated
 	 * with the result of the transformation. To compute a transformation that
 	 * stores its output in another datastore see 
-	 * {@link #transform(MogwaiQuery, Object, ModelMapping, Map)}.
+	 * {@link #transform(MogwaiQuery, Object, ModelDatastore, Map)}.
 	 * 
 	 * @param transformation
 	 *            the {@link MogwaiQuery} representing the transformation to
@@ -54,7 +54,7 @@ public interface MogwaiResource extends PersistentResource {
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 * 
-	 * @see #transform(MogwaiQuery, Object, ModelMapping, Map)
+	 * @see #transform(MogwaiQuery, Object, ModelDatastore, Map)
 	 */
 	NeoEMFQueryResult transform(MogwaiQuery transformation, Map<String, Object> options) throws MogwaiQueryException;
 
@@ -75,7 +75,7 @@ public interface MogwaiResource extends PersistentResource {
 	 * @param datastore
 	 *            the datastore containing the ouptut of the transformation
 	 * @param mapping
-	 *            the {@link ModelMapping} used to access the ouput
+	 *            the {@link ModelDatastore} used to access the ouput
 	 *            {@code datastore}
 	 * @param options
 	 *            the execution options used to parameterize the underlying
@@ -89,7 +89,7 @@ public interface MogwaiResource extends PersistentResource {
 	 * @see #transform(MogwaiQuery, Map)
 	 */
 	@SuppressWarnings("rawtypes")
-	<D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelMapping mapping,
+	<D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelDatastore mapping,
 			Map<String, Object> options) throws MogwaiQueryException;
 
 	/**

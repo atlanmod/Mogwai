@@ -7,8 +7,8 @@ import java.util.Map;
 
 import com.tinkerpop.blueprints.Graph;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiOCLQuery;
@@ -33,11 +33,11 @@ public class NeoEMFOCLProcessor extends MogwaiOCLProcessor<Graph> implements Neo
 	@SuppressWarnings("rawtypes")
 	@Override
 	public MogwaiQueryResult process(MogwaiOCLQuery query, List<Graph> datastores,
-			List<ModelMapping> mappings, Map<String, Object> options) {
+			List<ModelDatastore> mappings, Map<String, Object> options) {
 		checkArgument(datastores.size() == 1, "Cannot process the query: expected 1 datastore, found {0}",
 				datastores.size());
 		checkArgument(mappings.size() == 1, "Cannot process the query: expected 1 mapping, found {0}", mappings.size());
-		checkArgument(mappings.get(0) instanceof NeoEMFMapping,
+		checkArgument(mappings.get(0) instanceof NeoEMFGraphDatastore,
 				"Cannot process the query: expected NeoEMFMapping instance, found {0}", mappings.get(0).getClass()
 						.getName());
 		return super.process(query, datastores, mappings, options);

@@ -3,7 +3,7 @@ package fr.inria.atlanmod.mogwai.processor;
 import java.util.List;
 import java.util.Map;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.Transformation;
@@ -22,7 +22,7 @@ public abstract class AbstractATLProcessor<Q extends MogwaiQuery, D> extends Mog
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(Q query, List<D> datastores, List<ModelMapping> mappings,
+	public MogwaiQueryResult process(Q query, List<D> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		handleATLOptions(options);
 		return super.process(query, datastores, mappings, options);

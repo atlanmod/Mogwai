@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.data.mapping.pipes;
+package fr.inria.atlanmod.mogwai.datastore.pipes;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -12,19 +12,19 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 
 /**
  * An utility class that creates new {@link Pipeline}s from {@link Iterables},
  * and initialize {@link Pipe}s with a given {@link Function}.
  * <p>
- * This class is used by {@link PipeMapping} to create Pipes' construct wrapping
- * the default {@link ModelMapping} interface.
+ * This class is used by {@link PipesDatastore} to create Pipes' construct wrapping
+ * the default {@link ModelDatastore} interface.
  * 
  * @author Gwendal DANIEL
  *
  */
-public class PipeUtils {
+public class PipesUtils {
 
 	/**
 	 * Creates a new {@link Pipeline} initialized with the provided

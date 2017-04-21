@@ -5,7 +5,7 @@ import static java.util.Objects.isNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.inria.atlanmod.mogwai.data.mapping.blueprints.NeoEMFMapping;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFATLProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFGremlinProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFOCLProcessor;
@@ -50,12 +50,12 @@ public class NeoEMFMogwai {
 		}
 		if (oclProcessor.get().accept(query)) {
 			oclProcessor.get().setBackend(datastore);
-			return (NeoEMFQueryResult) query.process(oclProcessor.get(), datastore.getGraph(), new NeoEMFMapping(),
+			return (NeoEMFQueryResult) query.process(oclProcessor.get(), datastore.getGraph(), new NeoEMFGraphDatastore(),
 					theOptions);
 		} else if (gremlinProcessor.get().accept(query)) {
 			gremlinProcessor.get().setBackend(datastore);
 			return (NeoEMFQueryResult) query.process(gremlinProcessor.get(), datastore.getGraph(),
-					new NeoEMFMapping(), theOptions);
+					new NeoEMFGraphDatastore(), theOptions);
 		}
 		throw new MogwaiQueryException("Cannot find a processor for " + query);
 	}
@@ -67,7 +67,7 @@ public class NeoEMFMogwai {
 		}
 		if(atlProcessor.get().accept(transformation)) {
 			atlProcessor.get().setBackend(datastore);
-			return (NeoEMFQueryResult) transformation.process(atlProcessor.get(), datastore.getGraph(), new NeoEMFMapping(), theOptions);
+			return (NeoEMFQueryResult) transformation.process(atlProcessor.get(), datastore.getGraph(), new NeoEMFGraphDatastore(), theOptions);
 		}
 		throw new MogwaiQueryException("Cannot find a processor for " + transformation);
 	}

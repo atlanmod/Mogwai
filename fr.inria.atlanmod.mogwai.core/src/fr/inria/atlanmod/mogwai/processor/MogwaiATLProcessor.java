@@ -9,7 +9,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.atl.common.ATL.Module;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -41,7 +41,7 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, 
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiATLQuery query, List<D> datastores, List<ModelMapping> mappings,
+	public MogwaiQueryResult process(MogwaiATLQuery query, List<D> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		checkArgument(options.containsKey(TRANSFORMATION_HELPER_KEY),
 				"MogwaiATLProcessor requires a TransformationHelper to compute the transformation");
@@ -50,7 +50,7 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, 
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	protected Map<String, Object> createBindings(List<D> datastores, List<ModelMapping> mappings,
+	protected Map<String, Object> createBindings(List<D> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		Map<String, Object> bindings = super.createBindings(datastores, mappings, options);
 		bindings.put(TRANSFORMATION_HELPER_BINDING, (TransformationHelper) options.get(TRANSFORMATION_HELPER_KEY));

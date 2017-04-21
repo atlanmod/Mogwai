@@ -15,7 +15,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFMogwai;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -55,7 +55,7 @@ public class DefaultMogwaiResource extends DefaultPersistentResource implements 
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public <D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelMapping mapping,
+	public <D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelDatastore mapping,
 			Map<String, Object> options) {
 		throw new MogwaiQueryException("Multi-backend transformations are not supported for the moment");
 	}

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.tinkerpop.blueprints.Graph;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.processor.MogwaiATLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
@@ -30,7 +30,7 @@ public class NeoEMFATLProcessor extends MogwaiATLProcessor<Graph> implements Neo
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiATLQuery query, List<Graph> datastores, List<ModelMapping> mappings,
+	public MogwaiQueryResult process(MogwaiATLQuery query, List<Graph> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		if(!options.containsKey(TRANSFORMATION_HELPER_KEY)) {
 			options.put(TRANSFORMATION_HELPER_KEY, new TransformationHelper(mappings.get(0)));

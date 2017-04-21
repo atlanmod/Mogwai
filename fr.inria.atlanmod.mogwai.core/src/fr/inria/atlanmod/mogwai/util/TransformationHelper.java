@@ -18,7 +18,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.GraphHelper;
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 
 /**
  * A helper used in generated script to execute transformation-related
@@ -63,7 +63,7 @@ public class TransformationHelper {
 	/**
 	 * The mapping used to compute graph operations.
 	 */
-	private ModelMapping<Graph, Vertex, Edge, Object> mapping;
+	private ModelDatastore<Graph, Vertex, Edge, Object> mapping;
 
 	/**
 	 * Creates a new {@link TransformationHelper} fusing the provided
@@ -72,10 +72,10 @@ public class TransformationHelper {
 	 * @param mapping
 	 *            the mapping used to compute the graph operations
 	 */
-	public TransformationHelper(ModelMapping<?, ?, ?, ?> mapping) {
+	public TransformationHelper(ModelDatastore<?, ?, ?, ?> mapping) {
 		// TODO remove this with an interface for the transformation helper that accepts any kind of mapping
 		// + an abstraction that doesn't use a mapping
-		this.mapping = (ModelMapping<Graph, Vertex, Edge, Object>) mapping;
+		this.mapping = (ModelDatastore<Graph, Vertex, Edge, Object>) mapping;
 	}
 
 	/**

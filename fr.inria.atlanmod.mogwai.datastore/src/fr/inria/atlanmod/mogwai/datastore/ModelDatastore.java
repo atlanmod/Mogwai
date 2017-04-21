@@ -1,6 +1,6 @@
-package fr.inria.atlanmod.mogwai.data.mapping;
+package fr.inria.atlanmod.mogwai.datastore;
 
-import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
+import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
 
 /**
  * Defines the methods that should be implemented to manipulate a
@@ -11,10 +11,10 @@ import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
  * {@code data source}. They are inspired from the ones defined in the ATL API.
  * <p>
  * This mapping provides a low-level API to manipulate the model. It can be
- * combined with other mappings such as {@link PipeMapping} to provide a rich
+ * combined with other mappings such as {@link PipesDatastore} to provide a rich
  * model navigation API depending developer's needs.
  * <p>
- * A custom {@link ModelMapping} can be provided to the Mogwai engine using the
+ * A custom {@link ModelDatastore} can be provided to the Mogwai engine using the
  * following code:
  * 
  * <pre>
@@ -39,9 +39,9 @@ import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
  * @param <P>
  *            the type representing {@code attributes' value}
  * 
- * @see PipeMapping
+ * @see PipesDatastore
  */
-public interface ModelMapping<D, E, R, A> {
+public interface ModelDatastore<D, E, R, A> {
 	/*
 	 * TODO add option type parameters instead of complex method signatures This
 	 * would ease future extension (for example to support transient EReference,
@@ -49,7 +49,7 @@ public interface ModelMapping<D, E, R, A> {
 	 */
 
 	/**
-	 * The String literal used to bind a {@link ModelMapping} implementation to
+	 * The String literal used to bind a {@link ModelDatastore} implementation to
 	 * a {@link MogwaiProcessor}.
 	 */
 	public static final String BINDING_NAME = "mappingHelper";

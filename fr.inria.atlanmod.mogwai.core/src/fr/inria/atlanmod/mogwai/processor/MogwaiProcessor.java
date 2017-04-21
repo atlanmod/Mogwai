@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -53,22 +53,22 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public final MogwaiQueryResult process(Q query, D datastore, ModelMapping mapping) {
+	public final MogwaiQueryResult process(Q query, D datastore, ModelDatastore mapping) {
 		return process(query, datastore, mapping, new HashMap<String, Object>());
 	}
 
 	@SuppressWarnings("rawtypes")
-	public final MogwaiQueryResult process(Q query, D datastore, ModelMapping mapping, Map<String, Object> options) {
+	public final MogwaiQueryResult process(Q query, D datastore, ModelDatastore mapping, Map<String, Object> options) {
 		return process(query, Arrays.asList(datastore), Arrays.asList(mapping), options);
 	}
 
 	@SuppressWarnings("rawtypes")
-	public final MogwaiQueryResult process(Q query, List<D> datastores, List<ModelMapping> mappings) {
+	public final MogwaiQueryResult process(Q query, List<D> datastores, List<ModelDatastore> mappings) {
 		return process(query, datastores, mappings, new HashMap<String, Object>());
 	}
 
 	@SuppressWarnings("rawtypes")
-	public MogwaiQueryResult process(Q query, List<D> datastores, List<ModelMapping> mappings,
+	public MogwaiQueryResult process(Q query, List<D> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		checkNotNull(query, "Cannot process the query: {0}", query);
 		checkArgument(datastores.size() >= 1, "Cannot process the query: expected at least 1 datastore, found {0}",
@@ -84,7 +84,7 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected void linkMappings(List<D> datastores, List<ModelMapping> mappings) {
+	protected void linkMappings(List<D> datastores, List<ModelDatastore> mappings) {
 		checkArgument(datastores.size() == mappings.size(),
 				"Cannot link mappings to the datastores: found {0} datastores for {1} mappings", datastores.size(),
 				mappings.size());
@@ -97,11 +97,11 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	public abstract boolean accept(MogwaiQuery query);
 
 	@SuppressWarnings("rawtypes")
-	protected void initGremlinScriptRunner(List<ModelMapping> mappings) {
+	protected void initGremlinScriptRunner(List<ModelDatastore> mappings) {
 		checkArgument(mappings.size() >= 1, "Cannot init the script runner: expected at least 1 mapping, found {0}",
 				mappings.size());
 		MogwaiGremlinQuery query = (MogwaiGremlinQuery) MogwaiGremlinQueryBuilder.newBuilder()
-				.fromFile(initGremlinFile).bind(ModelMapping.BINDING_NAME, mappings.get(0))
+				.fromFile(initGremlinFile).bind(ModelDatastore.BINDING_NAME, mappings.get(0))
 				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance()).build();
 		GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), query.getBindings(),
 				Collections.<String, Object> emptyMap());
@@ -118,7 +118,7 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected Map<String, Object> createBindings(List<D> datastores, List<ModelMapping> mappings,
+	protected Map<String, Object> createBindings(List<D> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		Map<String, Object> bindings;
 		if (options.containsKey(BINDINGS_KEY)) {
@@ -130,7 +130,7 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery, D> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected Map<String, Object> createDefaultBindings(List<D> datastores, List<ModelMapping> mappings) {
+	protected Map<String, Object> createDefaultBindings(List<D> datastores, List<ModelDatastore> mappings) {
 		checkArgument(!datastores.isEmpty(), "Cannot create default bindings: no datastore provided");
 		checkArgument(!mappings.isEmpty(), "Cannot create default bindings: no mapping provided");
 		Map<String, Object> bindings = new HashMap<>();

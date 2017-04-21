@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Blueprints
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.datastore.blueprints
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: fr.inria.atlanmod.mogwai.datastore;bundle-version="1.0.0";visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: fr.inria.atlanmod.mogwai.datastore.blueprints

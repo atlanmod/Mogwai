@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>fr.inria.atlanmod.mogwai.data.mapping</name>
+	<name>fr.inria.atlanmod.mogwai.datastore.blueprints</name>
 	<comment></comment>
 	<projects>
 	</projects>

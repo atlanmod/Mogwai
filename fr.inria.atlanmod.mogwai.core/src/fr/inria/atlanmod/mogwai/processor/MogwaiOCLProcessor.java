@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.query.MogwaiOCLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -37,7 +37,7 @@ public class MogwaiOCLProcessor<D> extends AbstractATLProcessor<MogwaiOCLQuery, 
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiOCLQuery query, List<D> datastores, List<ModelMapping> mappings,
+	public MogwaiQueryResult process(MogwaiOCLQuery query, List<D> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		checkArgument(!datastores.isEmpty(), "Cannot process the query: no datastore provided");
 		checkArgument(!mappings.isEmpty(), "Cannot process the query: no mapping provided");

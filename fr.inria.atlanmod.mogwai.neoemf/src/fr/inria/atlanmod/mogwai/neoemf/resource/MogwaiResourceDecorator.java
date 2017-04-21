@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFMogwai;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -59,7 +59,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public <D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelMapping mapping,
+	public <D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelDatastore mapping,
 			Map<String, Object> options) throws MogwaiQueryException {
 		throw new MogwaiQueryException("Multi-backend transformations are not supported for the moment");
 	}

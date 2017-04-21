@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.data.mapping.blueprints;
+package fr.inria.atlanmod.mogwai.datastore.blueprints;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -17,8 +17,8 @@ import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
-import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
 
 /**
  * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps
@@ -44,7 +44,7 @@ import fr.inria.atlanmod.mogwai.data.mapping.pipes.PipeMapping;
  * @author Gwendal DANIEL
  *
  */
-public final class NeoEMFMapping implements ModelMapping<Graph, Vertex, Edge, Object>, PipeMapping<Graph, Vertex, Edge, Object> {
+public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge, Object>, PipesDatastore<Graph, Vertex, Edge, Object> {
 
     private static final String KEY_NAME = "name";
 	

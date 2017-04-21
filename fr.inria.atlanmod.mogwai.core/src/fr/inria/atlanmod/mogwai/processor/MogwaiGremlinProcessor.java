@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import fr.inria.atlanmod.mogwai.data.mapping.ModelMapping;
+import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -26,7 +26,7 @@ public class MogwaiGremlinProcessor<D> extends MogwaiProcessor<MogwaiGremlinQuer
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiGremlinQuery query, List<D> datastores, List<ModelMapping> mappings,
+	public MogwaiQueryResult process(MogwaiGremlinQuery query, List<D> datastores, List<ModelDatastore> mappings,
 			Map<String, Object> options) {
 		checkArgument(!datastores.isEmpty(), "Cannot process the query: no datastore provided");
 		checkArgument(!mappings.isEmpty(), "Cannot process the query: no mapping provided");
