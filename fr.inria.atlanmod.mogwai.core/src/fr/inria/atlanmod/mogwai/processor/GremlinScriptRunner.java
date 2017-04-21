@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.mogwai.processor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.nonNull;
 
 import java.util.Map;
 
@@ -14,6 +15,8 @@ import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 
 import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
+import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinter;
+import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
 
 /**
  * Utility class that runs a Gremlin script on a given database. This feature is
@@ -27,6 +30,8 @@ public class GremlinScriptRunner {
 	private final Bindings bindings;
 
 	public static final String PRINT_SCRIPT_OPTION = "print.script";
+	
+	public static final String PRINTER_OPTION = "printer";
 
 	public static GremlinScriptRunner getInstance() {
 		return Holder.INSTANCE;
@@ -57,27 +62,27 @@ public class GremlinScriptRunner {
 	 *            the calling {@link MogwaiProcessor}
 	 * @return a raw object representing the query result
 	 */
-	public Object runGremlinScript(String literalQuery, Map<String, Object> bindings, Map<String, Object> options) {
-		// checkNotNull(datastore, "Cannot compute a query without a graph");
-		checkNotNull(literalQuery, "{0} is not a valid query", literalQuery);
+	public Object runGremlinScript(GremlinScript script, Map<String, Object> bindings, Map<String, Object> options) {
+		checkNotNull(script, "{0} is not a valid query", script);
 		boolean print = getPrintOption(options);
 		if (print) {
-			MogwaiLogger.info("Computing Gremlin Script \n{0}", literalQuery);
+			printGremlinScript(script, options);
 		}
 		if (bindings != null) {
 			this.bindings.putAll(bindings);
 		}
+		String literalScript = script.toString();
 		Object result = null;
 		try {
 			long beginCompil = System.currentTimeMillis();
-			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(literalQuery);
+			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(literalScript);
 			long endCompil = System.currentTimeMillis();
-			if (print) {
+			if(print) {
 				MogwaiLogger.info("Script compiled in {0}ms", (endCompil - beginCompil));
 			}
 			result = compiled.eval(this.bindings);
 			long endEval = System.currentTimeMillis();
-			if (print) {
+			if(print) {
 				MogwaiLogger.info("Query computed in {0}ms", (endEval - endCompil));
 			}
 		} catch (ScriptException e) {
@@ -87,9 +92,18 @@ public class GremlinScriptRunner {
 		return result;
 	}
 
-	public Object runGremlinScript(GremlinScript gScript, Map<String, Object> bindings, Map<String, Object> options) {
-		checkNotNull(gScript, "Null is not a valid query");
-		return runGremlinScript(gScript.toString(), bindings, options);
+	public void printGremlinScript(GremlinScript script, Map<String, Object> options) {
+		boolean print = getPrintOption(options);
+		if(print) {
+			GremlinPrinter printer;
+			if(nonNull(getPrinterOption(options))) {
+				printer = GremlinPrinterFactory.getPrinter(getPrinterOption(options));
+			}
+			else {
+				printer = GremlinPrinterFactory.getDefaultPrinter();
+			}
+			MogwaiLogger.info("Computing Gremlin Script \n{0}", printer.print(script));
+		}
 	}
 
 	private boolean getPrintOption(Map<String, Object> options) {
@@ -98,6 +112,14 @@ public class GremlinScriptRunner {
 			print = (boolean) options.get(PRINT_SCRIPT_OPTION);
 		}
 		return print;
+	}
+	
+	private String getPrinterOption(Map<String, Object> options) {
+		String printerId = null;
+		if(options.containsKey(PRINTER_OPTION)) {
+			printerId = (String) options.get(PRINTER_OPTION);
+		}
+		return printerId;
 	}
 
 	private static class Holder {

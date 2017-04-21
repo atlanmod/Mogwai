@@ -20,6 +20,7 @@ import ClassDiagram.Table;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
+import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
 import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;

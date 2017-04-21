@@ -18,6 +18,8 @@ import org.eclipse.core.runtime.Platform;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
+import fr.inria.atlanmod.mogwai.gremlin.impl.GremlinScriptImpl;
 import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -72,9 +74,10 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
 		checkNotNull(query, "Cannot process the query: {0}", query);
 		checkArgument(datastores.size() >= 1, "Cannot process the query: expected at least 1 datastore, found {0}",
 				datastores.size());
+		adaptOptions(options);
 		initGremlinScriptRunner(datastores);
 		Map<String, Object> bindings = createBindings(datastores, options);
-		String gScript = createGremlinScript(query, options);
+		GremlinScript gScript = createGremlinScript(query, options);
 		Object result = runGremlinScript(gScript, bindings, options);
 		return adaptResult(result, gScript, options);
 	}
@@ -88,17 +91,21 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
 		MogwaiGremlinQuery query = (MogwaiGremlinQuery) MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(initGremlinFile).bind(ModelDatastore.BINDING_NAME, datastores.get(0))
 				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance()).build();
-		GremlinScriptRunner.getInstance().runGremlinScript(query.getGremlinScript(), query.getBindings(),
+		GremlinScriptRunner.getInstance().runGremlinScript(new GremlinStringWrapper(query.getGremlinScript()), query.getBindings(),
 				Collections.<String, Object> emptyMap());
 	}
 
-	protected Object runGremlinScript(String gScript, Map<String, Object> bindings, Map<String, Object> options) {
+	protected Object runGremlinScript(GremlinScript gScript, Map<String, Object> bindings, Map<String, Object> options) {
 		return GremlinScriptRunner.getInstance().runGremlinScript(gScript, bindings, options);
 	}
+	
+	protected void adaptOptions(Map<String, Object> options) {
+		
+	}
 
-	protected abstract String createGremlinScript(Q query, Map<String, Object> options);
+	protected abstract GremlinScript createGremlinScript(Q query, Map<String, Object> options);
 
-	protected MogwaiQueryResult adaptResult(Object result, String gremlinScript, Map<String, Object> options) {
+	protected MogwaiQueryResult adaptResult(Object result, GremlinScript gremlinScript, Map<String, Object> options) {
 		return new MogwaiQueryResult(result, gremlinScript);
 	}
 
@@ -166,6 +173,21 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
 
 		}
 		return false;
+	}
+	
+	protected class GremlinStringWrapper extends GremlinScriptImpl {
+		
+		private String textualScript;
+		
+		public GremlinStringWrapper(String textualScript) {
+			super();
+			this.textualScript = textualScript;
+		}
+		
+		@Override
+		public String toString() {
+			return textualScript;
+		}
 	}
 
 }

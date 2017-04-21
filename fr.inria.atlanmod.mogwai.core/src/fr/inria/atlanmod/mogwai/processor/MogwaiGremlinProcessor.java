@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
+import fr.inria.atlanmod.mogwai.gremlin.impl.GremlinScriptImpl;
 import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -38,8 +40,8 @@ public class MogwaiGremlinProcessor extends MogwaiProcessor<MogwaiGremlinQuery> 
 	}
 
 	@Override
-	protected String createGremlinScript(MogwaiGremlinQuery query, Map<String, Object> options) {
-		return query.getGremlinScript();
+	protected GremlinScript createGremlinScript(MogwaiGremlinQuery query, Map<String, Object> options) {
+		return new GremlinStringWrapper(query.getGremlinScript());
 	}
 
 }

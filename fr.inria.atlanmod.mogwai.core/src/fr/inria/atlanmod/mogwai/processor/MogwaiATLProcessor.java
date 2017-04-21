@@ -11,6 +11,7 @@ import org.eclipse.m2m.atl.common.ATL.Module;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
+import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
@@ -55,13 +56,31 @@ public class MogwaiATLProcessor extends AbstractATLProcessor<MogwaiATLQuery> {
 		return bindings;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Adds ATL Gremlin printer in the options if it contains the print option
+	 * but no printer.
+	 */
+	@Override
+	protected void adaptOptions(Map<String, Object> options) {
+		if (options.containsKey(GremlinScriptRunner.PRINT_SCRIPT_OPTION)) {
+			boolean print = (boolean) options.get(GremlinScriptRunner.PRINT_SCRIPT_OPTION);
+			if (print) {
+				if (!options.containsKey(GremlinScriptRunner.PRINTER_OPTION)) {
+					options.put(GremlinScriptRunner.PRINTER_OPTION, GremlinPrinterFactory.ATL_GREMLIN_PRINTER);
+				}
+			}
+		}
+	}
+
 	@Override
 	public boolean accept(MogwaiQuery query) {
 		return !Objects.isNull(query) && query instanceof MogwaiATLQuery;
 	}
 
 	@Override
-	protected String createGremlinScript(MogwaiATLQuery query, Map<String, Object> options) {
+	protected GremlinScript createGremlinScript(MogwaiATLQuery query, Map<String, Object> options) {
 		Module atlModule = (Module) query.getATLResource().getContents().get(0);
 		/*
 		 * TODO support multiple input models
@@ -81,6 +100,6 @@ public class MogwaiATLProcessor extends AbstractATLProcessor<MogwaiATLQuery> {
 		// gremlinResource.getContents().size());
 		checkArgument(gremlinResource.getContents().get(0) instanceof GremlinScript,
 				"Created resource does not contain a GremlinScript element");
-		return ((GremlinScript) gremlinResource.getContents().get(0)).toString();
+		return ((GremlinScript) gremlinResource.getContents().get(0));
 	}
 }

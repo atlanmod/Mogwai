@@ -7,7 +7,6 @@ import fr.inria.atlanmod.mogwai.gremlin.CustomStep;
 import fr.inria.atlanmod.mogwai.gremlin.FilterStep;
 import fr.inria.atlanmod.mogwai.gremlin.Instruction;
 import fr.inria.atlanmod.mogwai.gremlin.TransformStep;
-import fr.inria.atlanmod.mogwai.gremlin.TraversalElement;
 
 public class MogwaiATLGremlinPrinter extends DefaultGremlinPrinter {
 

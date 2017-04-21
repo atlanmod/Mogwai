@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.processor.MogwaiATLProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
@@ -36,7 +37,7 @@ public class NeoEMFATLProcessor extends MogwaiATLProcessor implements NeoEMFProc
 	}
 
 	@Override
-	protected NeoEMFQueryResult adaptResult(Object result, String gremlinScript, Map<String, Object> options) {
+	protected NeoEMFQueryResult adaptResult(Object result, GremlinScript gremlinScript, Map<String, Object> options) {
 		return new NeoEMFQueryResult(result, backend, gremlinScript);
 	}
 }

@@ -48,11 +48,11 @@ public class MogwaiOCLProcessor extends AbstractATLProcessor<MogwaiOCLQuery> {
 	}
 
 	@Override
-	protected String createGremlinScript(MogwaiOCLQuery query, Map<String, Object> options) {
+	protected GremlinScript createGremlinScript(MogwaiOCLQuery query, Map<String, Object> options) {
 		EPackage ePackage = query.getContext().getEPackage();
 		EObject transformedQuery = getTransformation().transform(ePackage, query.getConstraint());
 		if (transformedQuery instanceof GremlinScript) {
-			return ((GremlinScript) transformedQuery).toString();
+			return ((GremlinScript) transformedQuery);
 		} else {
 			throw new MogwaiException(
 					"An error in the transformation occured, enable ATL debugging for further informations");
