@@ -13,7 +13,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 
-public class MogwaiGremlinProcessor extends MogwaiProcessor<MogwaiGremlinQuery> {
+public class MogwaiGremlinProcessor extends AbstractMogwaiProcessor<MogwaiGremlinQuery> {
 
 	private static final String NAME = "Gremlin Processor";
 

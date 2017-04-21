@@ -26,7 +26,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.util.GremlinHelper;
 
-public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
+public abstract class AbstractMogwaiProcessor<Q extends MogwaiQuery> {
 
 	public static final String BINDINGS_KEY = "bindings";
 
@@ -40,7 +40,7 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
 
 	private File initGremlinFile;
 
-	public MogwaiProcessor() {
+	public AbstractMogwaiProcessor() {
 		URL url;
 		try {
 			url = getFileURL(INIT_SCRIPT_FILE_NAME);
@@ -150,14 +150,14 @@ public abstract class MogwaiProcessor<Q extends MogwaiQuery> {
 	private static URL getFileURL(String fileName) throws IOException {
 		URL fileURL;
 		if (isEclipseRunning()) {
-			URL resourceURL = MogwaiProcessor.class.getResource(fileName);
+			URL resourceURL = AbstractMogwaiProcessor.class.getResource(fileName);
 			if (resourceURL != null) {
 				fileURL = FileLocator.toFileURL(resourceURL);
 			} else {
 				fileURL = null;
 			}
 		} else {
-			fileURL = MogwaiProcessor.class.getResource(fileName);
+			fileURL = AbstractMogwaiProcessor.class.getResource(fileName);
 		}
 		if (fileURL == null) {
 			throw new IOException("'" + fileName + "' not found");

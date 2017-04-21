@@ -25,7 +25,7 @@ import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
-import fr.inria.atlanmod.mogwai.processor.MogwaiProcessor;
+import fr.inria.atlanmod.mogwai.processor.AbstractMogwaiProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.builder.MogwaiATLQueryBuilder;

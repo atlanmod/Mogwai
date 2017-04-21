@@ -11,7 +11,7 @@ import com.tinkerpop.blueprints.Vertex;
 
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.mogwai.processor.MogwaiProcessor;
+import fr.inria.atlanmod.mogwai.processor.AbstractMogwaiProcessor;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
@@ -22,9 +22,9 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResource;
  * utility methods to reify datastore query result and return {@link EObject}s
  * that can be used within a NeoEMF-based application.
  * <p>
- * This class is used by the dedicated NeoEMF {@link MogwaiProcessor}s to ease
+ * This class is used by the dedicated NeoEMF {@link AbstractMogwaiProcessor}s to ease
  * the integration of Mogwai in existing EMF-based applications. Note that
- * NeoEMF {@link MogwaiProcessor}s only support a {@code graph} backend that
+ * NeoEMF {@link AbstractMogwaiProcessor}s only support a {@code graph} backend that
  * stores model elements according to the {@code NeoEMFMapping}.
  * 
  * @see MogwaiQueryResult

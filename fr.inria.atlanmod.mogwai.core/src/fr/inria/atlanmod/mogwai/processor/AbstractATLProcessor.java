@@ -8,7 +8,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.Transformation;
 
-public abstract class AbstractATLProcessor<Q extends MogwaiQuery> extends MogwaiProcessor<Q> {
+public abstract class AbstractATLProcessor<Q extends MogwaiQuery> extends AbstractMogwaiProcessor<Q> {
 
 	public static final String ATL_DEBUG_KEY = "atl.debug";
 
