@@ -3,12 +3,12 @@ package fr.inria.atlanmod.mogwai.neoemf.resource;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
+import fr.inria.atlanmod.mogwai.query.QueryException;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceDecorator;
@@ -17,13 +17,13 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 
 	protected BlueprintsPersistenceBackend persistenceBackend;
 
-	public MogwaiResourceDecorator(PersistentResource resource) throws MogwaiException {
+	public MogwaiResourceDecorator(PersistentResource resource) throws MogwaiCoreException {
 		super(resource);
 		if (resource == null) {
-			throw new MogwaiException("Cannot construct a MogwaiResourceDecorator on a " + "null PersistentResource");
+			throw new MogwaiCoreException("Cannot construct a MogwaiResourceDecorator on a " + "null PersistentResource");
 		}
 		if (!DefaultMogwaiResource.isMogwaiCompatible(resource)) {
-			throw new MogwaiException("Cannot construct a MogwaiResourceDecorator: resource " + resource.toString()
+			throw new MogwaiCoreException("Cannot construct a MogwaiResourceDecorator: resource " + resource.toString()
 					+ " is not compatible with Mogwaï");
 		}
 		// Retrieve the PersistenceBackend defined in the base resource
@@ -33,7 +33,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 			persistenceBackendField.setAccessible(true);
 			persistenceBackend = (BlueprintsPersistenceBackend) persistenceBackendField.get(resource);
 		} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-			throw new MogwaiException(e.getMessage());
+			throw new MogwaiCoreException(e.getMessage());
 		}
 	}
 
@@ -50,7 +50,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	 */
 	@Override
 	public NeoEMFQueryResult transform(MogwaiQuery transformation, Map<String, Object> options)
-			throws MogwaiQueryException {
+			throws QueryException {
 		return NeoEMFQueryHandler.getInstance().transform(transformation, getBackend(), options);
 	}
 	
@@ -60,8 +60,8 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	@SuppressWarnings("rawtypes")
 	@Override
 	public <D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelDatastore mapping,
-			Map<String, Object> options) throws MogwaiQueryException {
-		throw new MogwaiQueryException("Multi-backend transformations are not supported for the moment");
+			Map<String, Object> options) throws QueryException {
+		throw new QueryException("Multi-backend transformations are not supported for the moment");
 	}
 
 	/**

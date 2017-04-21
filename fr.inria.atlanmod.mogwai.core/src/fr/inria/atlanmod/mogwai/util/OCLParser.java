@@ -12,7 +12,7 @@ import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.helper.OCLHelper;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 
 
 class OCLParser {
@@ -61,12 +61,12 @@ class OCLParser {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public OCLExpression parseInlineOCL(String oclExpression, EClassifier context) throws MogwaiException {
+	public OCLExpression parseInlineOCL(String oclExpression, EClassifier context) throws MogwaiCoreException {
 		oclHelper.setContext(context);
 		try {
 			return (OCLExpression) oclHelper.createQuery(oclExpression);
 		} catch (ParserException e) {
-			throw new MogwaiException(e.getMessage());
+			throw new MogwaiCoreException(e.getMessage());
 		}
 	}
 	

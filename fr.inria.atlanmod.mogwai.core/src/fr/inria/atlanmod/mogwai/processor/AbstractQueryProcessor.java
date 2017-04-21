@@ -16,17 +16,17 @@ import java.util.Map;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.gremlin.impl.GremlinScriptImpl;
-import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
+import fr.inria.atlanmod.mogwai.query.GremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.GremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.util.GremlinHelper;
 
-public abstract class AbstractMogwaiProcessor<Q extends MogwaiQuery> {
+public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 
 	public static final String BINDINGS_KEY = "bindings";
 
@@ -40,12 +40,12 @@ public abstract class AbstractMogwaiProcessor<Q extends MogwaiQuery> {
 
 	private File initGremlinFile;
 
-	public AbstractMogwaiProcessor() {
+	public AbstractQueryProcessor() {
 		URL url;
 		try {
 			url = getFileURL(INIT_SCRIPT_FILE_NAME);
 		} catch (IOException e) {
-			throw new MogwaiException("Cannot initialize MogwaiProcessor: {0} not found", INIT_SCRIPT_FILE_NAME);
+			throw new MogwaiCoreException("Cannot initialize MogwaiProcessor: {0} not found", INIT_SCRIPT_FILE_NAME);
 		}
 		try {
 			initGremlinFile = new File(url.toURI());
@@ -55,22 +55,22 @@ public abstract class AbstractMogwaiProcessor<Q extends MogwaiQuery> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public final MogwaiQueryResult process(Q query, ModelDatastore datastore) {
+	public final QueryResult process(Q query, ModelDatastore datastore) {
 		return process(query, datastore, new HashMap<String, Object>());
 	}
 
 	@SuppressWarnings("rawtypes")
-	public final MogwaiQueryResult process(Q query, ModelDatastore datastore, Map<String, Object> options) {
+	public final QueryResult process(Q query, ModelDatastore datastore, Map<String, Object> options) {
 		return process(query, Arrays.asList(datastore), options);
 	}
 
 	@SuppressWarnings("rawtypes")
-	public final MogwaiQueryResult process(Q query, List<ModelDatastore> datastores) {
+	public final QueryResult process(Q query, List<ModelDatastore> datastores) {
 		return process(query, datastores, new HashMap<String, Object>());
 	}
 
 	@SuppressWarnings("rawtypes")
-	public MogwaiQueryResult process(Q query, List<ModelDatastore> datastores, Map<String, Object> options) {
+	public QueryResult process(Q query, List<ModelDatastore> datastores, Map<String, Object> options) {
 		checkNotNull(query, "Cannot process the query: {0}", query);
 		checkArgument(datastores.size() >= 1, "Cannot process the query: expected at least 1 datastore, found {0}",
 				datastores.size());
@@ -88,7 +88,7 @@ public abstract class AbstractMogwaiProcessor<Q extends MogwaiQuery> {
 	protected void initGremlinScriptRunner(List<ModelDatastore> datastores) {
 		checkArgument(datastores.size() >= 1,
 				"Cannot init the script runner: expected at least 1 datastore, found {0}", datastores.size());
-		MogwaiGremlinQuery query = (MogwaiGremlinQuery) MogwaiGremlinQueryBuilder.newBuilder()
+		GremlinQuery query = (GremlinQuery) GremlinQueryBuilder.newBuilder()
 				.fromFile(initGremlinFile).bind(ModelDatastore.BINDING_NAME, datastores.get(0))
 				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance()).build();
 		GremlinScriptRunner.getInstance().runGremlinScript(new GremlinStringWrapper(query.getGremlinScript()), query.getBindings(),
@@ -105,8 +105,8 @@ public abstract class AbstractMogwaiProcessor<Q extends MogwaiQuery> {
 
 	protected abstract GremlinScript createGremlinScript(Q query, Map<String, Object> options);
 
-	protected MogwaiQueryResult adaptResult(Object result, GremlinScript gremlinScript, Map<String, Object> options) {
-		return new MogwaiQueryResult(result, gremlinScript);
+	protected QueryResult adaptResult(Object result, GremlinScript gremlinScript, Map<String, Object> options) {
+		return new QueryResult(result, gremlinScript);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -150,14 +150,14 @@ public abstract class AbstractMogwaiProcessor<Q extends MogwaiQuery> {
 	private static URL getFileURL(String fileName) throws IOException {
 		URL fileURL;
 		if (isEclipseRunning()) {
-			URL resourceURL = AbstractMogwaiProcessor.class.getResource(fileName);
+			URL resourceURL = AbstractQueryProcessor.class.getResource(fileName);
 			if (resourceURL != null) {
 				fileURL = FileLocator.toFileURL(resourceURL);
 			} else {
 				fileURL = null;
 			}
 		} else {
-			fileURL = AbstractMogwaiProcessor.class.getResource(fileName);
+			fileURL = AbstractQueryProcessor.class.getResource(fileName);
 		}
 		if (fileURL == null) {
 			throw new IOException("'" + fileName + "' not found");

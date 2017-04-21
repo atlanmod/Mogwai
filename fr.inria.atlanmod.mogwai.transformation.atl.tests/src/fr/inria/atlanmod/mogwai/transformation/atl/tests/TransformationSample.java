@@ -17,7 +17,7 @@ import ClassDiagram.Column;
 import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import ClassDiagram.Table;
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
@@ -25,12 +25,12 @@ import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
-import fr.inria.atlanmod.mogwai.processor.AbstractMogwaiProcessor;
-import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
+import fr.inria.atlanmod.mogwai.processor.AbstractQueryProcessor;
+import fr.inria.atlanmod.mogwai.query.GremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiATLQueryBuilder;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
+import fr.inria.atlanmod.mogwai.query.builder.ATLQueryBuilder;
+import fr.inria.atlanmod.mogwai.query.builder.GremlinQueryBuilder;
+import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
@@ -49,7 +49,7 @@ public class TransformationSample {
 	
 	private static String ATL_URI = "materials/ClassDiagram2Relational/ATLFiles/Class2Relational-simple.atl";
 
-	public static void main(String[] args) throws IOException, MogwaiException {
+	public static void main(String[] args) throws IOException, MogwaiCoreException {
 		
 		NeoLogger.info("Creating sample model");
 		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
@@ -119,7 +119,7 @@ public class TransformationSample {
 //		NeoLogger.info("Gremlin engine initialized");
 		NeoLogger.info("Creating ATL query");
 		
-		MogwaiQuery query = MogwaiATLQueryBuilder.newBuilder()
+		MogwaiQuery query = ATLQueryBuilder.newBuilder()
 			.fromURI(URI.createURI(ATL_URI))
 			.sourcePackage(ClassDiagramPackage.eINSTANCE)
 			.targetPackage(ClassDiagramPackage.eINSTANCE)
@@ -178,14 +178,14 @@ public class TransformationSample {
 		long endSave = System.currentTimeMillis();
 		NeoLogger.info("Save time: {0}ms", (endSave-beginSave));
 		
-		MogwaiQuery outQuery = MogwaiOCLQueryBuilder.newBuilder()
+		MogwaiQuery outQuery = OCLQueryBuilder.newBuilder()
 				.fromString("Table.allInstances()")
 				.context(ClassDiagramPackage.eINSTANCE.getClass_())
 				.build();
 		NeoLogger.info("AllInstances(Table): (OCL)");
 		showResult(mogResource.query(outQuery), mogResource);
 
-		MogwaiQuery attQuery = MogwaiOCLQueryBuilder.newBuilder()
+		MogwaiQuery attQuery = OCLQueryBuilder.newBuilder()
 				.fromString("Column.allInstances()")
 				.context(ClassDiagramPackage.eINSTANCE.getColumn())
 				.build();
@@ -214,7 +214,7 @@ public class TransformationSample {
 		mogResource.close();
 	}
 
-	public static void showResult(NeoEMFQueryResult mqr, MogwaiResource mogResource) throws MogwaiException {
+	public static void showResult(NeoEMFQueryResult mqr, MogwaiResource mogResource) throws MogwaiCoreException {
 		if (mqr.isReifiable()) {
 			for (EObject e : mqr.reifyResults(mogResource)) {
 				if (e instanceof NamedElement) {
@@ -236,7 +236,7 @@ public class TransformationSample {
 						NeoLogger.info(o.toString());
 					}
 				}
-			} catch (MogwaiException e) {
+			} catch (MogwaiCoreException e) {
 				// Need a fix, Mogwai-ATL can return null
 				NeoLogger.info("The query didn't return any object");
 			}

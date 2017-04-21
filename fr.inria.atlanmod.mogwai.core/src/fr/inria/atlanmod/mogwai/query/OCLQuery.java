@@ -14,7 +14,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 
-public class MogwaiOCLQuery extends MogwaiQuery {
+public class OCLQuery extends MogwaiQuery {
 
 	private Constraint constraint;
 	private EClassifier context;
@@ -30,7 +30,7 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 	 *            an optional parameter that specifies the context of the OCL
 	 *            query.
 	 */
-	public MogwaiOCLQuery(Object input, EClassifier context) {
+	public OCLQuery(Object input, EClassifier context) {
 		super(input);
 		// The context has not been set by a parent call
 		this.context = context;
@@ -43,7 +43,7 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 		} else if (input instanceof OCLExpression) {
 			fromOCLExpression((OCLExpression) input);
 		} else {
-			throw new MogwaiQueryException("Unknown input type " + input);
+			throw new QueryException("Unknown input type " + input);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 		this.constraint = (Constraint) constraint;
 		EClassifier constraintContext = constraint.getSpecification().getContextVariable().getType();
 		if (context != null && !Objects.equals(context, constraintContext)) {
-			throw new MogwaiQueryException("Conflicting context types: " + context.getName() + " vs. "
+			throw new QueryException("Conflicting context types: " + context.getName() + " vs. "
 					+ constraintContext.getName());
 		} else {
 			this.context = constraintContext;

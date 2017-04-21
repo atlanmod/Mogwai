@@ -14,10 +14,10 @@ import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
-import fr.inria.atlanmod.mogwai.processor.MogwaiATLProcessor;
-import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiATLQueryBuilder;
+import fr.inria.atlanmod.mogwai.processor.ATLQueryProcessor;
+import fr.inria.atlanmod.mogwai.query.ATLQuery;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.ATLQueryBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
 public class CreateQueryTest {
@@ -29,7 +29,7 @@ public class CreateQueryTest {
 		URI transformationURI = URI.createURI("materials/ClassDiagram2Relational/ATLFiles/Class2Relational.atl");
 //		URI inputURI = BlueprintsURI.createFileURI(new File("materials/ClassDiagram2Relational/ClassDiagram/sample.graphdb"));
 		
-		MogwaiATLQuery query = (MogwaiATLQuery) MogwaiATLQueryBuilder.newBuilder().fromURI(transformationURI).build();
+		ATLQuery query = (ATLQuery) ATLQueryBuilder.newBuilder().fromURI(transformationURI).build();
 		
 		Resource atlResource = query.getATLResource();
 		
@@ -43,8 +43,8 @@ public class CreateQueryTest {
 		
 		newResource.save(Collections.emptyMap());
 		
-		MogwaiATLProcessor processor = new MogwaiATLProcessor();
-		MogwaiQueryResult result = query.process(processor, new NeoEMFGraphDatastore(mogResource.getBackend().getGraph()), null);
+		ATLQueryProcessor processor = new ATLQueryProcessor();
+		QueryResult result = query.process(processor, new NeoEMFGraphDatastore(mogResource.getBackend().getGraph()), null);
 		
 		System.out.println("Created Script");
 		System.out.println(result.getExecutedQuery());

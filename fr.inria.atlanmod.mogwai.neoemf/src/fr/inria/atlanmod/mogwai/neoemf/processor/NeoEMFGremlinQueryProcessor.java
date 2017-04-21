@@ -9,12 +9,12 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
-import fr.inria.atlanmod.mogwai.processor.MogwaiGremlinProcessor;
-import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.processor.GremlinQueryProcessor;
+import fr.inria.atlanmod.mogwai.query.GremlinQuery;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
-public class NeoEMFGremlinProcessor extends MogwaiGremlinProcessor implements NeoEMFProcessor {
+public class NeoEMFGremlinQueryProcessor extends GremlinQueryProcessor implements NeoEMFQueryProcessor {
 
 	/**
 	 * The {@code backend} used to reify query results.
@@ -33,7 +33,7 @@ public class NeoEMFGremlinProcessor extends MogwaiGremlinProcessor implements Ne
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiGremlinQuery query, List<ModelDatastore> datastores,
+	public QueryResult process(GremlinQuery query, List<ModelDatastore> datastores,
 			Map<String, Object> options) {
 		checkArgument(datastores.size() == 1, "Cannot process the query: expected 1 datastore, found {0}",
 				datastores.size());

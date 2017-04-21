@@ -9,30 +9,30 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import com.tinkerpop.blueprints.Vertex;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.mogwai.processor.AbstractMogwaiProcessor;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.processor.AbstractQueryProcessor;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
 import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 /**
- * A NeoEMF-based implementation of {@link MogwaiQueryResult} that provides
+ * A NeoEMF-based implementation of {@link QueryResult} that provides
  * utility methods to reify datastore query result and return {@link EObject}s
  * that can be used within a NeoEMF-based application.
  * <p>
- * This class is used by the dedicated NeoEMF {@link AbstractMogwaiProcessor}s to ease
+ * This class is used by the dedicated NeoEMF {@link AbstractQueryProcessor}s to ease
  * the integration of Mogwai in existing EMF-based applications. Note that
- * NeoEMF {@link AbstractMogwaiProcessor}s only support a {@code graph} backend that
+ * NeoEMF {@link AbstractQueryProcessor}s only support a {@code graph} backend that
  * stores model elements according to the {@code NeoEMFMapping}.
  * 
- * @see MogwaiQueryResult
+ * @see QueryResult
  * 
  * @author Gwendal DANIEL
  *
  */
-public class NeoEMFQueryResult extends MogwaiQueryResult {
+public class NeoEMFQueryResult extends QueryResult {
 
 	/**
 	 * The {@link BlueprintsPersistenceBackend} used to reify results.
@@ -119,17 +119,17 @@ public class NeoEMFQueryResult extends MogwaiQueryResult {
 	 *            the {@link Resource} to attach the reified {@link EObject}s to
 	 * 
 	 * @return a {@link List} containing the reified {@link EObject}s
-	 * @throws MogwaiException
+	 * @throws MogwaiCoreException
 	 *             if the query result cannot be reified by the backend
 	 */
-	public List<EObject> reifyResults(PersistentResource resource) throws MogwaiException {
+	public List<EObject> reifyResults(PersistentResource resource) throws MogwaiCoreException {
 		if (!isReifiable()) {
-			throw new MogwaiException("Query result is not reifiable");
+			throw new MogwaiCoreException("Query result is not reifiable");
 		}
 		List<EObject> eObjects = new BasicEList<EObject>();
 		for (Object o : result) {
 			if (!(o instanceof Vertex)) {
-				throw new MogwaiException("Cannot reify {0}, expected an instance of Vertex, found {1}", o, o
+				throw new MogwaiCoreException("Cannot reify {0}, expected an instance of Vertex, found {1}", o, o
 						.getClass().getName());
 			}
 			PersistentEObject reifiedEObject = graph.reifyVertex((Vertex) o);

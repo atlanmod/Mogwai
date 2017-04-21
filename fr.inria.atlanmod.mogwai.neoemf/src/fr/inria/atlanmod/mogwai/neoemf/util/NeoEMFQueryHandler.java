@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
-import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFATLProcessor;
-import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFGremlinProcessor;
-import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFOCLProcessor;
+import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFATLQueryProcessor;
+import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFGremlinQueryProcessor;
+import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFOCLQueryProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
+import fr.inria.atlanmod.mogwai.query.QueryException;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
 public class NeoEMFQueryHandler {
@@ -20,31 +20,31 @@ public class NeoEMFQueryHandler {
 		return Holder.INSTANCE;
 	}
 
-	private static final ThreadLocal<NeoEMFOCLProcessor> oclProcessor = new ThreadLocal<NeoEMFOCLProcessor>() {
+	private static final ThreadLocal<NeoEMFOCLQueryProcessor> oclProcessor = new ThreadLocal<NeoEMFOCLQueryProcessor>() {
 
 		@Override
-		protected NeoEMFOCLProcessor initialValue() {
-			return new NeoEMFOCLProcessor();
+		protected NeoEMFOCLQueryProcessor initialValue() {
+			return new NeoEMFOCLQueryProcessor();
 		}
 	};
 
-	private static final ThreadLocal<NeoEMFGremlinProcessor> gremlinProcessor = new ThreadLocal<NeoEMFGremlinProcessor>() {
+	private static final ThreadLocal<NeoEMFGremlinQueryProcessor> gremlinProcessor = new ThreadLocal<NeoEMFGremlinQueryProcessor>() {
 
 		@Override
-		protected NeoEMFGremlinProcessor initialValue() {
-			return new NeoEMFGremlinProcessor();
+		protected NeoEMFGremlinQueryProcessor initialValue() {
+			return new NeoEMFGremlinQueryProcessor();
 		}
 	};
 
-	private static final ThreadLocal<NeoEMFATLProcessor> atlProcessor = new ThreadLocal<NeoEMFATLProcessor>() {
+	private static final ThreadLocal<NeoEMFATLQueryProcessor> atlProcessor = new ThreadLocal<NeoEMFATLQueryProcessor>() {
 
-		protected NeoEMFATLProcessor initialValue() {
-			return new NeoEMFATLProcessor();
+		protected NeoEMFATLQueryProcessor initialValue() {
+			return new NeoEMFATLQueryProcessor();
 		};
 	};
 
 	public NeoEMFQueryResult query(MogwaiQuery query, Object arg, BlueprintsPersistenceBackend datastore,
-			Map<String, Object> options) throws MogwaiQueryException {
+			Map<String, Object> options) throws QueryException {
 		Map<String, Object> theOptions = options;
 		if (isNull(theOptions)) {
 			theOptions = new HashMap<>();
@@ -58,11 +58,11 @@ public class NeoEMFQueryHandler {
 			return (NeoEMFQueryResult) query.process(gremlinProcessor.get(),
 					new NeoEMFGraphDatastore(datastore.getGraph()), theOptions);
 		}
-		throw new MogwaiQueryException("Cannot find a processor for " + query);
+		throw new QueryException("Cannot find a processor for " + query);
 	}
 
 	public NeoEMFQueryResult transform(MogwaiQuery transformation, BlueprintsPersistenceBackend datastore,
-			Map<String, Object> options) throws MogwaiQueryException {
+			Map<String, Object> options) throws QueryException {
 		Map<String, Object> theOptions = options;
 		if (isNull(theOptions)) {
 			theOptions = new HashMap<>();
@@ -72,7 +72,7 @@ public class NeoEMFQueryHandler {
 			return (NeoEMFQueryResult) transformation.process(atlProcessor.get(),
 					new NeoEMFGraphDatastore(datastore.getGraph()), theOptions);
 		}
-		throw new MogwaiQueryException("Cannot find a processor for " + transformation);
+		throw new QueryException("Cannot find a processor for " + transformation);
 	}
 
 	private static class Holder {

@@ -8,13 +8,13 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 
 import ClassDiagram.Attribute;
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class LargeModelTraverser {
 
-	public static void main(String[] args) throws IOException, MogwaiException {
+	public static void main(String[] args) throws IOException, MogwaiCoreException {
 		long begin = System.currentTimeMillis();
 		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
 		long end = System.currentTimeMillis();

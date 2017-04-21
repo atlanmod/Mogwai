@@ -12,7 +12,7 @@ import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 
 public class MogwaiUtil {
 
@@ -51,7 +51,7 @@ public class MogwaiUtil {
 		return constraint;
 	}
 	
-	public static OCLExpression parseInlineOCL(String oclExpression, EClassifier context) throws MogwaiException {
+	public static OCLExpression parseInlineOCL(String oclExpression, EClassifier context) throws MogwaiCoreException {
 		OCLParser parser = new OCLParser(context.getEPackage());
 		return parser.parseInlineOCL(oclExpression, context);
 	}

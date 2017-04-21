@@ -1,20 +1,18 @@
 package fr.inria.atlanmod.mogwai.neoemf.processor;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.List;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
-import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
-import fr.inria.atlanmod.mogwai.processor.MogwaiOCLProcessor;
-import fr.inria.atlanmod.mogwai.query.MogwaiOCLQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.processor.ATLQueryProcessor;
+import fr.inria.atlanmod.mogwai.query.ATLQuery;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
+import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
-public class NeoEMFOCLProcessor extends MogwaiOCLProcessor implements NeoEMFProcessor {
+public class NeoEMFATLQueryProcessor extends ATLQueryProcessor implements NeoEMFQueryProcessor {
 
 	/**
 	 * The {@code backend} used to reify query results.
@@ -31,12 +29,10 @@ public class NeoEMFOCLProcessor extends MogwaiOCLProcessor implements NeoEMFProc
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiOCLQuery query, List<ModelDatastore> datastores, Map<String, Object> options) {
-		checkArgument(datastores.size() == 1, "Cannot process the query: expected 1 datastore, found {0}",
-				datastores.size());
-		checkArgument(datastores.get(0) instanceof NeoEMFGraphDatastore,
-				"Cannot process the query: expected NeoEMFGraphDatastore instance, found {0}", datastores.get(0)
-						.getClass().getName());
+	public QueryResult process(ATLQuery query, List<ModelDatastore> datastores, Map<String, Object> options) {
+		if (!options.containsKey(TRANSFORMATION_HELPER_KEY)) {
+			options.put(TRANSFORMATION_HELPER_KEY, new TransformationHelper(datastores.get(0)));
+		}
 		return super.process(query, datastores, options);
 	}
 
@@ -44,5 +40,4 @@ public class NeoEMFOCLProcessor extends MogwaiOCLProcessor implements NeoEMFProc
 	protected NeoEMFQueryResult adaptResult(Object result, GremlinScript gremlinScript, Map<String, Object> options) {
 		return new NeoEMFQueryResult(result, backend, gremlinScript);
 	}
-
 }

@@ -13,7 +13,7 @@ package fr.inria.atlanmod.mogwai.neoemf.resource;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.neoemf.util.MogwaiURI;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
@@ -40,11 +40,11 @@ public class MogwaiResourceFactory extends PersistentResourceFactory {
     }
 
 	public MogwaiResource decoratePersistentResource(PersistentResource persistentResource)
-			throws MogwaiException {
+			throws MogwaiCoreException {
 		if(DefaultMogwaiResource.isMogwaiCompatible(persistentResource)) {
 			return new MogwaiResourceDecorator(persistentResource);
 		} else {
-			throw new MogwaiException("Resource " + persistentResource.toString() + " is not compatible with Mogwaï");
+			throw new MogwaiCoreException("Resource " + persistentResource.toString() + " is not compatible with Mogwaï");
 		}
 	}
 	

@@ -7,7 +7,7 @@ import java.util.Collections;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.neo4j.kernel.impl.util.FileUtils;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
@@ -16,7 +16,7 @@ import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class TestATL {
 
-	public static void main(String[] args) throws IOException, MogwaiException {
+	public static void main(String[] args) throws IOException, MogwaiCoreException {
 		long begin = System.currentTimeMillis();
 //		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
 //		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();

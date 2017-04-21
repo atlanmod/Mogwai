@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import org.neo4j.kernel.impl.util.FileUtils;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptions;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
@@ -16,7 +16,7 @@ public class CreateModel {
 	
 	public final static String MODEL_LOCATION = "materials/large-class.graphdb";
 
-	public static void main(String[] args) throws IOException, MogwaiException {
+	public static void main(String[] args) throws IOException, MogwaiCoreException {
 		long begin = System.currentTimeMillis();
 		FileUtils.deleteRecursively(new File(MODEL_LOCATION));
 		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel(MODEL_LOCATION);

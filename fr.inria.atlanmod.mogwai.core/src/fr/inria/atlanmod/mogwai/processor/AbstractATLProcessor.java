@@ -5,10 +5,10 @@ import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
 import fr.inria.atlanmod.mogwai.transformation.Transformation;
 
-public abstract class AbstractATLProcessor<Q extends MogwaiQuery> extends AbstractMogwaiProcessor<Q> {
+public abstract class AbstractATLProcessor<Q extends MogwaiQuery> extends AbstractQueryProcessor<Q> {
 
 	public static final String ATL_DEBUG_KEY = "atl.debug";
 
@@ -22,7 +22,7 @@ public abstract class AbstractATLProcessor<Q extends MogwaiQuery> extends Abstra
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(Q query, List<ModelDatastore> datastores, Map<String, Object> options) {
+	public QueryResult process(Q query, List<ModelDatastore> datastores, Map<String, Object> options) {
 		handleATLOptions(options);
 		return super.process(query, datastores, options);
 	}

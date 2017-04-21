@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
-import fr.inria.atlanmod.mogwai.processor.AbstractMogwaiProcessor;
+import fr.inria.atlanmod.mogwai.processor.AbstractQueryProcessor;
 
 public abstract class MogwaiQuery {
 
@@ -16,18 +16,18 @@ public abstract class MogwaiQuery {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public MogwaiQueryResult process(AbstractMogwaiProcessor<? extends MogwaiQuery> processor, ModelDatastore datastore,
-			Map<String, Object> options) throws MogwaiQueryException {
+	public QueryResult process(AbstractQueryProcessor<? extends MogwaiQuery> processor, ModelDatastore datastore,
+			Map<String, Object> options) throws QueryException {
 		return process(processor, Arrays.asList(datastore), options);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public MogwaiQueryResult process(AbstractMogwaiProcessor processor, List<ModelDatastore> datastores,
-			Map<String, Object> options) throws MogwaiQueryException {
+	public QueryResult process(AbstractQueryProcessor processor, List<ModelDatastore> datastores,
+			Map<String, Object> options) throws QueryException {
 		if (processor.accept(this)) {
 			return processor.process(this, datastores, options);
 		} else {
-			throw new MogwaiQueryException("Processor " + processor.getName() + " cannot compute " + this.toString());
+			throw new QueryException("Processor " + processor.getName() + " cannot compute " + this.toString());
 		}
 	}
 

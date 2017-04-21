@@ -3,13 +3,13 @@ package fr.inria.atlanmod.mogwai.query;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
-public class MogwaiATLQuery extends MogwaiQuery {
+public class ATLQuery extends MogwaiQuery {
 
 	private Resource atlResource;
 	private EPackage sourcePackage;
 	private EPackage targetPackage;
 
-	public MogwaiATLQuery(Resource atlResource, EPackage sourcePackage, EPackage targetPackage) {
+	public ATLQuery(Resource atlResource, EPackage sourcePackage, EPackage targetPackage) {
 		super(atlResource);
 		this.atlResource = atlResource;
 		this.sourcePackage = sourcePackage;

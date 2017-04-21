@@ -20,7 +20,7 @@ import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
 
 /**
  * Utility class that runs a Gremlin script on a given database. This feature is
- * in a dedicated class because it is used by several {@link AbstractMogwaiProcessor}.
+ * in a dedicated class because it is used by several {@link AbstractQueryProcessor}.
  *
  * @author Gwendal DANIEL
  */
@@ -59,7 +59,7 @@ public class GremlinScriptRunner {
 	 *            the database to compute the query against
 	 * @param customBindings
 	 *            additional bindings needed by the query (usually provided by
-	 *            the calling {@link AbstractMogwaiProcessor}
+	 *            the calling {@link AbstractQueryProcessor}
 	 * @return a raw object representing the query result
 	 */
 	public Object runGremlinScript(GremlinScript script, Map<String, Object> bindings, Map<String, Object> options) {

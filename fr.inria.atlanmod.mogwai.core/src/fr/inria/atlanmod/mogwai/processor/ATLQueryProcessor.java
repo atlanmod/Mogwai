@@ -12,13 +12,13 @@ import org.eclipse.m2m.atl.common.ATL.Module;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
-import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
+import fr.inria.atlanmod.mogwai.query.ATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 
-public class MogwaiATLProcessor extends AbstractATLProcessor<MogwaiATLQuery> {
+public class ATLQueryProcessor extends AbstractATLProcessor<ATLQuery> {
 
 	public static final String TRANSFORMATION_HELPER_KEY = "transformation.helper";
 
@@ -26,7 +26,7 @@ public class MogwaiATLProcessor extends AbstractATLProcessor<MogwaiATLQuery> {
 
 	private static final String NAME = "ATL Processor";
 
-	public MogwaiATLProcessor() {
+	public ATLQueryProcessor() {
 		transformation = new ATL2Gremlin();
 	}
 
@@ -42,7 +42,7 @@ public class MogwaiATLProcessor extends AbstractATLProcessor<MogwaiATLQuery> {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiATLQuery query, List<ModelDatastore> datastores, Map<String, Object> options) {
+	public QueryResult process(ATLQuery query, List<ModelDatastore> datastores, Map<String, Object> options) {
 		checkArgument(options.containsKey(TRANSFORMATION_HELPER_KEY),
 				"MogwaiATLProcessor requires a TransformationHelper to compute the transformation");
 		return super.process(query, datastores, options);
@@ -76,11 +76,11 @@ public class MogwaiATLProcessor extends AbstractATLProcessor<MogwaiATLQuery> {
 
 	@Override
 	public boolean accept(MogwaiQuery query) {
-		return !Objects.isNull(query) && query instanceof MogwaiATLQuery;
+		return !Objects.isNull(query) && query instanceof ATLQuery;
 	}
 
 	@Override
-	protected GremlinScript createGremlinScript(MogwaiATLQuery query, Map<String, Object> options) {
+	protected GremlinScript createGremlinScript(ATLQuery query, Map<String, Object> options) {
 		Module atlModule = (Module) query.getATLResource().getContents().get(0);
 		/*
 		 * TODO support multiple input models

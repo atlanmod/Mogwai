@@ -16,7 +16,7 @@ import java.util.Map;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
+import fr.inria.atlanmod.mogwai.query.QueryException;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
@@ -50,13 +50,13 @@ public interface MogwaiResource extends PersistentResource {
 	 *            engine
 	 * @return a {@link NeoEMFQueryResult} representing the result of the
 	 *         transformation execution
-	 * @throws MogwaiQueryException
+	 * @throws QueryException
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 * 
 	 * @see #transform(MogwaiQuery, Object, ModelDatastore, Map)
 	 */
-	NeoEMFQueryResult transform(MogwaiQuery transformation, Map<String, Object> options) throws MogwaiQueryException;
+	NeoEMFQueryResult transform(MogwaiQuery transformation, Map<String, Object> options) throws QueryException;
 
 	/**
 	 * Computes the provided {@code transformation} with the provided
@@ -82,7 +82,7 @@ public interface MogwaiResource extends PersistentResource {
 	 *            engine
 	 * @return a {@link NeoEMFQueryResult} representing the result of the
 	 *         transformation execution
-	 * @throws MogwaiQueryException
+	 * @throws QueryException
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 * 
@@ -90,7 +90,7 @@ public interface MogwaiResource extends PersistentResource {
 	 */
 	@SuppressWarnings("rawtypes")
 	<D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelDatastore mapping,
-			Map<String, Object> options) throws MogwaiQueryException;
+			Map<String, Object> options) throws QueryException;
 
 	/**
 	 * Computes the provided {@code query}.
@@ -102,13 +102,13 @@ public interface MogwaiResource extends PersistentResource {
 	 *            the {@link MogwaiQuery} to compute
 	 * @return a {@link NeoEMFQueryResult} representing the result of the query
 	 *         execution
-	 * @throws MogwaiQueryException
+	 * @throws QueryException
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 * 
 	 * @see #query(MogwaiQuery, Object, Map)
 	 */
-	default NeoEMFQueryResult query(MogwaiQuery query) throws MogwaiQueryException {
+	default NeoEMFQueryResult query(MogwaiQuery query) throws QueryException {
 		return this.query(query, null, new HashMap<>());
 	}
 
@@ -124,13 +124,13 @@ public interface MogwaiResource extends PersistentResource {
 	 *            the values to bind to the query parameters
 	 * @return a {@link NeoEMFQueryResult} representing the result of the query
 	 *         execution
-	 * @throws MogwaiQueryException
+	 * @throws QueryException
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 * 
 	 * @see #query(MogwaiQuery, Object, Map)
 	 */
-	default NeoEMFQueryResult query(MogwaiQuery query, Object parameters) throws MogwaiQueryException {
+	default NeoEMFQueryResult query(MogwaiQuery query, Object parameters) throws QueryException {
 		return this.query(query, parameters, new HashMap<>());
 	}
 
@@ -147,13 +147,13 @@ public interface MogwaiResource extends PersistentResource {
 	 *            engine
 	 * @return a {@link NeoEMFQueryResult} representing the result of the query
 	 *         execution
-	 * @throws MogwaiQueryException
+	 * @throws QueryException
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 * 
 	 * @see #query(MogwaiQuery, Object, Map)
 	 */
-	default NeoEMFQueryResult query(MogwaiQuery query, Map<String, Object> options) throws MogwaiQueryException {
+	default NeoEMFQueryResult query(MogwaiQuery query, Map<String, Object> options) throws QueryException {
 		return this.query(query, null, options);
 	}
 
@@ -170,12 +170,12 @@ public interface MogwaiResource extends PersistentResource {
 	 *            engine
 	 * @return a {@link NeoEMFQueryResult} representing the result of the query
 	 *         execution
-	 * @throws MogwaiQueryException
+	 * @throws QueryException
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 */
 	NeoEMFQueryResult query(MogwaiQuery query, Object parameters, Map<String, Object> options)
-			throws MogwaiQueryException;
+			throws QueryException;
 
 	/**
 	 * Convenient method for development purpose, should not be used to modify

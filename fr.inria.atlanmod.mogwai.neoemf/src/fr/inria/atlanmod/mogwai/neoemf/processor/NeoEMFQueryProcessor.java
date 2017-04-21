@@ -9,7 +9,7 @@ import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
  * @author Gwendal DANIEL
  *
  */
-public interface NeoEMFProcessor {
+public interface NeoEMFQueryProcessor {
 
 	/**
 	 * Set the {@code backend} used to reify query results.

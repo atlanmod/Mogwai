@@ -5,7 +5,7 @@ import java.io.File;
 import org.eclipse.emf.common.util.URI;
 
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
+import fr.inria.atlanmod.mogwai.query.QueryException;
 
 public abstract class AbstractMogwaiQueryBuilder<B extends AbstractMogwaiQueryBuilder<B>> {
 
@@ -46,7 +46,7 @@ public abstract class AbstractMogwaiQueryBuilder<B extends AbstractMogwaiQueryBu
 		if (validate()) {
 			return buildQuery();
 		} else {
-			throw new MogwaiQueryException("An error occured when creating the query with the provided parameters");
+			throw new QueryException("An error occured when creating the query with the provided parameters");
 		}
 	}
 

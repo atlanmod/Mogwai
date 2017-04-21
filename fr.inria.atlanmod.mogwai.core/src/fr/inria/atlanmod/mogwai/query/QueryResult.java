@@ -10,7 +10,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import com.google.common.collect.Iterables;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import static java.util.Objects.isNull;
 
@@ -18,13 +18,13 @@ import static java.util.Objects.isNull;
  * Wraps the result of a {@link MogwaiQuery} and provides information on the
  * query execution.
  * <p>
- * {@link MogwaiQueryResult} implements {@link Iterable} to ease result
+ * {@link QueryResult} implements {@link Iterable} to ease result
  * processing in client applications.
  * 
  * @author Gwendal DANIEL
  *
  */
-public class MogwaiQueryResult implements Iterable<Object> {
+public class QueryResult implements Iterable<Object> {
 
 	/**
 	 * Stores the result of the query computation.
@@ -38,7 +38,7 @@ public class MogwaiQueryResult implements Iterable<Object> {
 	 * Stores the time needed to compute the result of the query.
 	 * <p>
 	 * If the query result is an instance of {@link Iterable} it is iterated to
-	 * create the {@link MogwaiQueryResult}. This can be costly in Gremlin-based
+	 * create the {@link QueryResult}. This can be costly in Gremlin-based
 	 * queries that are computed when they are iterated.
 	 */
 	protected long computationTime = -1;
@@ -54,7 +54,7 @@ public class MogwaiQueryResult implements Iterable<Object> {
 	protected String gremlinScript;
 
 	/**
-	 * Constructs a new {@link MogwaiQueryResult} from the given
+	 * Constructs a new {@link QueryResult} from the given
 	 * {@code engineResult} and literal {@code gremlinScript}.
 	 * <p>
 	 * <b>Note:<b> if {@code engineResult} is an instance of {@link Iterable}
@@ -68,7 +68,7 @@ public class MogwaiQueryResult implements Iterable<Object> {
 	 *            the textual representation of the computed query
 	 */
 	@SuppressWarnings("unchecked")
-	public MogwaiQueryResult(Object engineResult, String gremlinQuery) {
+	public QueryResult(Object engineResult, String gremlinQuery) {
 		this.gremlinScript = gremlinQuery;
 		result = new BasicEList<Object>();
 		long begin = System.currentTimeMillis();
@@ -105,7 +105,7 @@ public class MogwaiQueryResult implements Iterable<Object> {
 	}
 
 	/**
-	 * Constructs a new {@link MogwaiQueryResult} from the given
+	 * Constructs a new {@link QueryResult} from the given
 	 * {@code engineResult} and {@code gremlinScript}.
 	 * <p>
 	 * <b>Note:<b> if {@code engineResult} is an instance of {@link Iterable}
@@ -119,7 +119,7 @@ public class MogwaiQueryResult implements Iterable<Object> {
 	 *            the {@link GremlinScript} element representing the root of the
 	 *            computed query
 	 */
-	public MogwaiQueryResult(Object engineResult, GremlinScript gremlinScript) {
+	public QueryResult(Object engineResult, GremlinScript gremlinScript) {
 		this(engineResult, gremlinScript.toString());
 	}
 
@@ -140,26 +140,26 @@ public class MogwaiQueryResult implements Iterable<Object> {
 	 * 
 	 * @return the result of the Mogwai query wrapped in a Collection
 	 */
-	public Collection<Object> getResults() throws MogwaiException {
+	public Collection<Object> getResults() throws MogwaiCoreException {
 		return result;
 	}
 
 	/**
 	 * Returns a casted value created from the single query result.
 	 * <p>
-	 * Note: this method throws a {@link MogwaiException} if the query returns
+	 * Note: this method throws a {@link MogwaiCoreException} if the query returns
 	 * more than one result, see {@link #getResults() instead}.
 	 * 
 	 * @return a casted value created from the single query result
-	 * @throws MogwaiException
+	 * @throws MogwaiCoreException
 	 *             if the query returns more than one result
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getResult() throws MogwaiException {
+	public <T> T getResult() throws MogwaiCoreException {
 		if (isSingleResult) {
 			return (T) result.get(0);
 		}
-		throw new MogwaiException(
+		throw new MogwaiCoreException(
 				"Cannot compute a single result: the query returns multiple records. Use getResults() instead");
 	}
 
@@ -194,13 +194,13 @@ public class MogwaiQueryResult implements Iterable<Object> {
 	}
 
 	/**
-	 * Returns a String representation of this {@link MogwaiQueryResult}.
+	 * Returns a String representation of this {@link QueryResult}.
 	 * <p>
 	 * Information displayed in the created String are truncated to ease
 	 * readability. To get the complete values see {@link #getExecutedQuery()}
 	 * and {@link #getComputationTime()}.
 	 * 
-	 * @return a String representation of this {@link MogwaiQueryResult}
+	 * @return a String representation of this {@link QueryResult}
 	 */
 	@Override
 	public String toString() {

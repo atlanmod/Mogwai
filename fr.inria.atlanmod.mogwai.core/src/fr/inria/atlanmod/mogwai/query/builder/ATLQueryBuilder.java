@@ -12,31 +12,31 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 
-import fr.inria.atlanmod.mogwai.query.MogwaiATLQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
+import fr.inria.atlanmod.mogwai.query.ATLQuery;
+import fr.inria.atlanmod.mogwai.query.QueryException;
 
-public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQueryBuilder> {
+public class ATLQueryBuilder extends AbstractMogwaiQueryBuilder<ATLQueryBuilder> {
 
 	private ResourceSet rSet;
 	private EPackage sourcePackage;
 	private EPackage targetPackage;
 
-	protected MogwaiATLQueryBuilder() {
+	protected ATLQueryBuilder() {
 		rSet = new ResourceSetImpl();
 		rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("atl", new AtlResourceFactoryImpl());
 	}
 
-	public static MogwaiATLQueryBuilder newBuilder() {
-		return new MogwaiATLQueryBuilder();
+	public static ATLQueryBuilder newBuilder() {
+		return new ATLQueryBuilder();
 	}
 
-	public MogwaiATLQueryBuilder sourcePackage(EPackage ePackage) {
+	public ATLQueryBuilder sourcePackage(EPackage ePackage) {
 		checkNotNull(ePackage, "null ePackage");
 		this.sourcePackage = ePackage;
 		return me();
 	}
 	
-	public MogwaiATLQueryBuilder targetPackage(EPackage ePackage) {
+	public ATLQueryBuilder targetPackage(EPackage ePackage) {
 		checkNotNull(ePackage, "null package");
 		this.targetPackage = ePackage;
 		return me();
@@ -45,14 +45,14 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 	@Override
 	protected boolean validate() {
 		if (isNull(input)) {
-			throw new MogwaiQueryException("No transformation provided");
+			throw new QueryException("No transformation provided");
 		} else {
 			return true;
 		}
 	}
 
 	@Override
-	protected MogwaiATLQuery buildQuery() {
+	protected ATLQuery buildQuery() {
 		Resource atlResource;
 		if(input instanceof URI) {
 			atlResource = rSet.getResource((URI) input, true);
@@ -64,9 +64,9 @@ public class MogwaiATLQueryBuilder extends AbstractMogwaiQueryBuilder<MogwaiATLQ
 			atlResource = rSet.getResource(URI.createURI((String) input), true);
 		}
 		else {
-			throw new MogwaiQueryException("Cannot find the ATL resource at " + input);
+			throw new QueryException("Cannot find the ATL resource at " + input);
 		}
-		return new MogwaiATLQuery(atlResource, sourcePackage, targetPackage);
+		return new ATLQuery(atlResource, sourcePackage, targetPackage);
 	}
 
 }

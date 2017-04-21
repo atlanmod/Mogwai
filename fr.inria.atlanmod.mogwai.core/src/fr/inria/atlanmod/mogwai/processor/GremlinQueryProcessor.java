@@ -8,16 +8,15 @@ import java.util.Objects;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
-import fr.inria.atlanmod.mogwai.gremlin.impl.GremlinScriptImpl;
-import fr.inria.atlanmod.mogwai.query.MogwaiGremlinQuery;
+import fr.inria.atlanmod.mogwai.query.GremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
 
-public class MogwaiGremlinProcessor extends AbstractMogwaiProcessor<MogwaiGremlinQuery> {
+public class GremlinQueryProcessor extends AbstractQueryProcessor<GremlinQuery> {
 
 	private static final String NAME = "Gremlin Processor";
 
-	public MogwaiGremlinProcessor() {
+	public GremlinQueryProcessor() {
 		super();
 	}
 
@@ -28,7 +27,7 @@ public class MogwaiGremlinProcessor extends AbstractMogwaiProcessor<MogwaiGremli
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiGremlinQuery query, List<ModelDatastore> datastores,
+	public QueryResult process(GremlinQuery query, List<ModelDatastore> datastores,
 			Map<String, Object> options) {
 		checkArgument(!datastores.isEmpty(), "Cannot process the query: no datastore provided");
 		return super.process(query, datastores, options);
@@ -36,11 +35,11 @@ public class MogwaiGremlinProcessor extends AbstractMogwaiProcessor<MogwaiGremli
 
 	@Override
 	public boolean accept(MogwaiQuery query) {
-		return !Objects.isNull(query) && query instanceof MogwaiGremlinQuery;
+		return !Objects.isNull(query) && query instanceof GremlinQuery;
 	}
 
 	@Override
-	protected GremlinScript createGremlinScript(MogwaiGremlinQuery query, Map<String, Object> options) {
+	protected GremlinScript createGremlinScript(GremlinQuery query, Map<String, Object> options) {
 		return new GremlinStringWrapper(query.getGremlinScript());
 	}
 

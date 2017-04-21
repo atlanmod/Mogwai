@@ -9,20 +9,20 @@ import org.eclipse.emf.ecore.EObject;
 import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.GremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class LargeTransformationSample {
 
-	public static void main(String[] args) throws IOException, MogwaiException {
+	public static void main(String[] args) throws IOException, MogwaiCoreException {
 		long begin = System.currentTimeMillis();
 		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
 		long end = System.currentTimeMillis();
@@ -51,7 +51,7 @@ public class LargeTransformationSample {
 		TransformationHelper helper = new TransformationHelper(mapping);
 		
 		// Create Tables from Classes
-		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
+		MogwaiQuery gremlinQuery2 = GremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin"))
 				.bind("graphHelper", helper)
 				.build();
@@ -74,7 +74,7 @@ public class LargeTransformationSample {
 
 	}
 	
-	public static void showResult(NeoEMFQueryResult mqr, MogwaiResource mogResource) throws MogwaiException {
+	public static void showResult(NeoEMFQueryResult mqr, MogwaiResource mogResource) throws MogwaiCoreException {
 		if(mqr.isReifiable()) {
 			for(EObject e : mqr.reifyResults(mogResource)) {
 				if(e instanceof NamedElement) {

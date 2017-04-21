@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 
-public class MogwaiGremlinQuery extends MogwaiQuery {
+public class GremlinQuery extends MogwaiQuery {
 
 	private String literalQuery;
 	private Map<String, Object> bindings;
 
-	public MogwaiGremlinQuery(Object input, Map<String, Object> bindings) throws MogwaiQueryException {
+	public GremlinQuery(Object input, Map<String, Object> bindings) throws QueryException {
 		super(input);
 		this.bindings = bindings;
 		if (input instanceof String) {
@@ -25,7 +25,7 @@ public class MogwaiGremlinQuery extends MogwaiQuery {
 		} else if (input instanceof File) {
 			fromFile((File) input);
 		} else {
-			throw new MogwaiQueryException("Unknown input type " + input);
+			throw new QueryException("Unknown input type " + input);
 		}
 	}
 
@@ -46,13 +46,13 @@ public class MogwaiGremlinQuery extends MogwaiQuery {
 		try {
 			reader = new BufferedReader(new FileReader(fileString));
 		} catch (FileNotFoundException e) {
-			throw new MogwaiQueryException(e.getMessage());
+			throw new QueryException(e.getMessage());
 		}
 		this.literalQuery = reader.lines().collect(Collectors.joining("\n"));
 		try {
 			reader.close();
 		} catch (IOException e) {
-			throw new MogwaiQueryException(e.getMessage());
+			throw new QueryException(e.getMessage());
 		}
 	}
 

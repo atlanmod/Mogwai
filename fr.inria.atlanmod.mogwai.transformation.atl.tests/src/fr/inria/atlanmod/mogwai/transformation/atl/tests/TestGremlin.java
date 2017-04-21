@@ -7,8 +7,8 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiGremlinQueryBuilder;
+import fr.inria.atlanmod.mogwai.query.QueryResult;
+import fr.inria.atlanmod.mogwai.query.builder.GremlinQueryBuilder;
 
 /**
  * This class shows how additional bindings can be set within the gremlin
@@ -36,7 +36,7 @@ public class TestGremlin {
 
 		ModelDatastore mapping = new NeoEMFGraphDatastore(mogResource.getBackend().getGraph());
 
-		MogwaiQuery gremlinInit = MogwaiGremlinQueryBuilder.newBuilder()
+		MogwaiQuery gremlinInit = GremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/init.gremlin"))
 				.bind(ModelDatastore.BINDING_NAME, mapping)
 				.build();
@@ -44,12 +44,12 @@ public class TestGremlin {
 		mogResource.query(gremlinInit);
 		System.out.println("Init done");
 
-		MogwaiQuery gremlinQuery = MogwaiGremlinQueryBuilder.newBuilder()
+		MogwaiQuery gremlinQuery = GremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/test.gremlin"))
 				.bind(ModelDatastore.BINDING_NAME, mapping)
 				.build();
 
-		MogwaiQueryResult result = mogResource.query(gremlinQuery);
+		QueryResult result = mogResource.query(gremlinQuery);
 		System.out.println(result.getResults());
 	}
 
