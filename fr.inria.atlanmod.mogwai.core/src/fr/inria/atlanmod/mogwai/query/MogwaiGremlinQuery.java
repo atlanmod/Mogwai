@@ -14,25 +14,25 @@ public class MogwaiGremlinQuery extends MogwaiQuery {
 
 	private String literalQuery;
 	private Map<String, Object> bindings;
-	
+
 	public MogwaiGremlinQuery(Object input, Map<String, Object> bindings) throws MogwaiQueryException {
 		super(input);
 		this.bindings = bindings;
-		if(input instanceof String) {
+		if (input instanceof String) {
 			fromString((String) input);
-		} else if(input instanceof URI) {
+		} else if (input instanceof URI) {
 			fromURI((URI) input);
-		} else if(input instanceof File) {
+		} else if (input instanceof File) {
 			fromFile((File) input);
 		} else {
 			throw new MogwaiQueryException("Unknown input type " + input);
 		}
 	}
-	
+
 	protected void fromString(String string) {
 		this.literalQuery = string;
 	}
-	
+
 	protected void fromFile(File file) {
 		fromFileString(file.getAbsolutePath());
 	}
@@ -40,12 +40,12 @@ public class MogwaiGremlinQuery extends MogwaiQuery {
 	protected void fromURI(URI uri) {
 		fromFileString(uri.toFileString());
 	}
-	
+
 	private void fromFileString(String fileString) {
 		BufferedReader reader;
 		try {
 			reader = new BufferedReader(new FileReader(fileString));
-		} catch(FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new MogwaiQueryException(e.getMessage());
 		}
 		this.literalQuery = reader.lines().collect(Collectors.joining("\n"));
@@ -55,11 +55,11 @@ public class MogwaiGremlinQuery extends MogwaiQuery {
 			throw new MogwaiQueryException(e.getMessage());
 		}
 	}
-	
+
 	public String getGremlinScript() {
 		return literalQuery;
 	}
-	
+
 	public Map<String, Object> getBindings() {
 		return bindings;
 	}

@@ -17,7 +17,7 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 import fr.inria.atlanmod.mogwai.util.TransformationHelper;
 
-public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, D> {
+public class MogwaiATLProcessor extends AbstractATLProcessor<MogwaiATLQuery> {
 
 	public static final String TRANSFORMATION_HELPER_KEY = "transformation.helper";
 
@@ -28,7 +28,7 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, 
 	public MogwaiATLProcessor() {
 		transformation = new ATL2Gremlin();
 	}
-	
+
 	@Override
 	protected ATL2Gremlin getTransformation() {
 		return (ATL2Gremlin) transformation;
@@ -41,18 +41,16 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, 
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiATLQuery query, List<D> datastores, List<ModelDatastore> mappings,
-			Map<String, Object> options) {
+	public MogwaiQueryResult process(MogwaiATLQuery query, List<ModelDatastore> datastores, Map<String, Object> options) {
 		checkArgument(options.containsKey(TRANSFORMATION_HELPER_KEY),
 				"MogwaiATLProcessor requires a TransformationHelper to compute the transformation");
-		return super.process(query, datastores, mappings, options);
+		return super.process(query, datastores, options);
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@Override
-	protected Map<String, Object> createBindings(List<D> datastores, List<ModelDatastore> mappings,
-			Map<String, Object> options) {
-		Map<String, Object> bindings = super.createBindings(datastores, mappings, options);
+	protected Map<String, Object> createBindings(List<ModelDatastore> datastores, Map<String, Object> options) {
+		Map<String, Object> bindings = super.createBindings(datastores, options);
 		bindings.put(TRANSFORMATION_HELPER_BINDING, (TransformationHelper) options.get(TRANSFORMATION_HELPER_KEY));
 		return bindings;
 	}
@@ -61,19 +59,19 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, 
 	public boolean accept(MogwaiQuery query) {
 		return !Objects.isNull(query) && query instanceof MogwaiATLQuery;
 	}
-	
+
 	@Override
 	protected String createGremlinScript(MogwaiATLQuery query, Map<String, Object> options) {
 		Module atlModule = (Module) query.getATLResource().getContents().get(0);
 		/*
 		 * TODO support multiple input models
 		 */
-		String sourceMMName = atlModule.getInModels().get(0).getMetamodel().getName(); 
+		String sourceMMName = atlModule.getInModels().get(0).getMetamodel().getName();
 		/*
 		 * TODO support multiple output models
 		 */
 		String targetMMName = atlModule.getOutModels().get(0).getMetamodel().getName();
-		
+
 		Resource gremlinResource = getTransformation().transform(query.getATLResource(), sourceMMName,
 				query.getSourcePackage(), targetMMName, query.getTargetPackage());
 		checkArgument(gremlinResource.getContents() != null, "Created resource content is null");
@@ -85,16 +83,4 @@ public class MogwaiATLProcessor<D> extends AbstractATLProcessor<MogwaiATLQuery, 
 				"Created resource does not contain a GremlinScript element");
 		return ((GremlinScript) gremlinResource.getContents().get(0)).toString();
 	}
-
-	
-	// private Map<String, Object> createQueryBindings(MogwaiATLQuery<D> query)
-	// {
-	// Map<String, Object> bindings = new HashMap<>();
-	// bindings.put("inHelper", new
-	// TransformationHelper(query.getInputMapping()));
-	// bindings.put("outHelper", new
-	// TransformationHelper(query.getOutputMapping()));
-	// return bindings;
-	// }
-
 }

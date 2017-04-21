@@ -96,8 +96,7 @@ public class TransformationSample {
 		
 
 		NeoLogger.info("Initializing mapping");
-		NeoEMFGraphDatastore mapping = new NeoEMFGraphDatastore();
-		mapping.setDataSource(mogResource.getBackend().getGraph());
+		NeoEMFGraphDatastore mapping = new NeoEMFGraphDatastore(mogResource.getBackend().getGraph());
 		TransformationHelper helper = new TransformationHelper(mapping);
 
 		NeoLogger.info("Done");
@@ -125,7 +124,10 @@ public class TransformationSample {
 			.targetPackage(ClassDiagramPackage.eINSTANCE)
 			.build();
 		
-		mogResource.transform(query, new HashMap<>());
+		Map<String, Object> options = new HashMap<>();
+		options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
+		
+		mogResource.transform(query, options);
 		
 //		NeoLogger.info("Translating ATL file (" + ATL_URI + ")");;
 //		ATL2Gremlin atl2gremlin = new ATL2Gremlin();

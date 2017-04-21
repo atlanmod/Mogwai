@@ -14,12 +14,12 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
-public class NeoEMFMogwai {
+public class NeoEMFQueryHandler {
 
-	public static NeoEMFMogwai getInstance() {
+	public static NeoEMFQueryHandler getInstance() {
 		return Holder.INSTANCE;
 	}
-	
+
 	private static final ThreadLocal<NeoEMFOCLProcessor> oclProcessor = new ThreadLocal<NeoEMFOCLProcessor>() {
 
 		@Override
@@ -42,40 +42,43 @@ public class NeoEMFMogwai {
 			return new NeoEMFATLProcessor();
 		};
 	};
-	
-	public NeoEMFQueryResult query(MogwaiQuery query, Object arg, BlueprintsPersistenceBackend datastore, Map<String, Object> options) throws MogwaiQueryException {
+
+	public NeoEMFQueryResult query(MogwaiQuery query, Object arg, BlueprintsPersistenceBackend datastore,
+			Map<String, Object> options) throws MogwaiQueryException {
 		Map<String, Object> theOptions = options;
 		if (isNull(theOptions)) {
 			theOptions = new HashMap<>();
 		}
 		if (oclProcessor.get().accept(query)) {
 			oclProcessor.get().setBackend(datastore);
-			return (NeoEMFQueryResult) query.process(oclProcessor.get(), datastore.getGraph(), new NeoEMFGraphDatastore(),
-					theOptions);
+			return (NeoEMFQueryResult) query.process(oclProcessor.get(),
+					new NeoEMFGraphDatastore(datastore.getGraph()), theOptions);
 		} else if (gremlinProcessor.get().accept(query)) {
 			gremlinProcessor.get().setBackend(datastore);
-			return (NeoEMFQueryResult) query.process(gremlinProcessor.get(), datastore.getGraph(),
-					new NeoEMFGraphDatastore(), theOptions);
+			return (NeoEMFQueryResult) query.process(gremlinProcessor.get(),
+					new NeoEMFGraphDatastore(datastore.getGraph()), theOptions);
 		}
 		throw new MogwaiQueryException("Cannot find a processor for " + query);
 	}
-	
-	public NeoEMFQueryResult transform(MogwaiQuery transformation, BlueprintsPersistenceBackend datastore, Map<String, Object> options) throws MogwaiQueryException {
+
+	public NeoEMFQueryResult transform(MogwaiQuery transformation, BlueprintsPersistenceBackend datastore,
+			Map<String, Object> options) throws MogwaiQueryException {
 		Map<String, Object> theOptions = options;
-		if(isNull(theOptions)) {
+		if (isNull(theOptions)) {
 			theOptions = new HashMap<>();
 		}
-		if(atlProcessor.get().accept(transformation)) {
+		if (atlProcessor.get().accept(transformation)) {
 			atlProcessor.get().setBackend(datastore);
-			return (NeoEMFQueryResult) transformation.process(atlProcessor.get(), datastore.getGraph(), new NeoEMFGraphDatastore(), theOptions);
+			return (NeoEMFQueryResult) transformation.process(atlProcessor.get(),
+					new NeoEMFGraphDatastore(datastore.getGraph()), theOptions);
 		}
 		throw new MogwaiQueryException("Cannot find a processor for " + transformation);
 	}
-	
+
 	private static class Holder {
-		
-		private static final NeoEMFMogwai INSTANCE = new NeoEMFMogwai();
-		
+
+		private static final NeoEMFQueryHandler INSTANCE = new NeoEMFQueryHandler();
+
 	}
-	
+
 }

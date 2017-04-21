@@ -14,8 +14,8 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * combined with other mappings such as {@link PipesDatastore} to provide a rich
  * model navigation API depending developer's needs.
  * <p>
- * A custom {@link ModelDatastore} can be provided to the Mogwai engine using the
- * following code:
+ * A custom {@link ModelDatastore} can be provided to the Mogwai engine using
+ * the following code:
  * 
  * <pre>
  * {@code
@@ -49,21 +49,27 @@ public interface ModelDatastore<D, E, R, A> {
 	 */
 
 	/**
-	 * The String literal used to bind a {@link ModelDatastore} implementation to
-	 * a {@link MogwaiProcessor}.
+	 * The String literal used to bind a {@link ModelDatastore} implementation
+	 * to a {@link MogwaiProcessor}.
 	 */
 	public static final String BINDING_NAME = "mappingHelper";
 
 	/**
 	 * Sets the {@code dataSource} to apply this mapping on.
 	 * <p>
-	 * <b>Note:</b> this method has to be called before any data manipulation
-	 * method.
+	 * <b>Note:</b> the previous datastore will not be accessible anymore.
 	 * 
 	 * @param dataSource
 	 *            the {@code dataSource} to apply this mapping on
 	 */
 	void setDataSource(D dataSource);
+
+	/**
+	 * Returns the underlying {@code dataSource}.
+	 * 
+	 * @return the underlying {@code dataSource}
+	 */
+	D getDataSource();
 
 	/**
 	 * Returns an {@link Iterable} containing all the elements of the type

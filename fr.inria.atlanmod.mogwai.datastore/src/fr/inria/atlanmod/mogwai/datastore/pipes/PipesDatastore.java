@@ -8,8 +8,8 @@ import com.tinkerpop.pipes.util.Pipeline;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 
 /**
- * Refines {@link ModelDatastore} by providing methods that should be implemented
- * to manipulate a {@code data source} as a model streamed in the <a
+ * Refines {@link ModelDatastore} by providing methods that should be
+ * implemented to manipulate a {@code data source} as a model streamed in the <a
  * href="https://github.com/tinkerpop/pipes">Pipes framework</a>.
  * <p>
  * This mapping is used by the Mogwaï-ATL engine to navigate a model and compute

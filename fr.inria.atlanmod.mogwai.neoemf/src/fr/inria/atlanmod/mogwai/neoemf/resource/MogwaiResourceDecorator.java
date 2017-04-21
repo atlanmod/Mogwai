@@ -6,7 +6,7 @@ import java.util.Map;
 import fr.inria.atlanmod.mogwai.core.MogwaiException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
-import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFMogwai;
+import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryException;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
@@ -42,7 +42,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	 */
 	@Override
 	public NeoEMFQueryResult query(MogwaiQuery query, Object arg, Map<String, Object> options) {
-		return NeoEMFMogwai.getInstance().query(query, arg, getBackend(), options);
+		return NeoEMFQueryHandler.getInstance().query(query, arg, getBackend(), options);
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	@Override
 	public NeoEMFQueryResult transform(MogwaiQuery transformation, Map<String, Object> options)
 			throws MogwaiQueryException {
-		return NeoEMFMogwai.getInstance().transform(transformation, getBackend(), options);
+		return NeoEMFQueryHandler.getInstance().transform(transformation, getBackend(), options);
 	}
 	
 	/**

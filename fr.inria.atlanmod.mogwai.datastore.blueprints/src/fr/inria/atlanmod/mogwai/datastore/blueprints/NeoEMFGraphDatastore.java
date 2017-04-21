@@ -44,18 +44,19 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * @author Gwendal DANIEL
  *
  */
-public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge, Object>, PipesDatastore<Graph, Vertex, Edge, Object> {
+public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge, Object>,
+		PipesDatastore<Graph, Vertex, Edge, Object> {
 
-    private static final String KEY_NAME = "name";
-	
-    private static final String KEY_INSTANCE_OF = "kyanosInstanceOf";
-    
-    private static final String KEY_METACLASSES = "metaclasses";
-    
-    private static final String KEY_ECLASS_NAME = "name";
-    
-    private static final String KEY_EPACKAGE_NSURI = "nsURI";
-    
+	private static final String KEY_NAME = "name";
+
+	private static final String KEY_INSTANCE_OF = "kyanosInstanceOf";
+
+	private static final String KEY_METACLASSES = "metaclasses";
+
+	private static final String KEY_ECLASS_NAME = "name";
+
+	private static final String KEY_EPACKAGE_NSURI = "nsURI";
+
 	private static final String POSITION_KEY = "position";
 
 	private static final String SEPARATOR = ":";
@@ -71,6 +72,21 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	private IdGraph<KeyIndexableGraph> graph;
 
 	private Index<Vertex> metaclassIndex;
+
+	/**
+	 * Constructs a new {@link NeoEMFGraphDatastore} wrapping the provided
+	 * {@code Graph}.
+	 * 
+	 * @param graph
+	 *            the underlying {@link Graph} used to store the NeoEMF model
+	 */
+	@SuppressWarnings("unchecked")
+	public NeoEMFGraphDatastore(Graph graph) {
+		checkNotNull(graph, "No graph provided");
+		checkArgument(graph instanceof IdGraph, "NeoEMFMapping required a KeyIndexableGraph");
+		this.graph = (IdGraph<KeyIndexableGraph>) graph;
+		this.metaclassIndex = this.graph.getIndex(KEY_METACLASSES, Vertex.class);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -90,7 +106,17 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		this.graph = (IdGraph<KeyIndexableGraph>) graph;
 		this.metaclassIndex = this.graph.getIndex(KEY_METACLASSES, Vertex.class);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public Graph getDataSource() {
+		return graph;
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Iterable<Vertex> allOfType(String typeName) {
 		Vertex metaClassVertex = getMetaclassVertex(typeName);
@@ -130,18 +156,18 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		long beginGetR = System.currentTimeMillis();
 		Vertex resourceRoot = getOrCreateResourceRoot(resourceName);
 		long endGetR = System.currentTimeMillis();
-		newInstanceGetResourceRoot += (endGetR-beginGetR);
-//		Vertex vertex = graph.addVertex(StringId.generate().toString());
+		newInstanceGetResourceRoot += (endGetR - beginGetR);
+		// Vertex vertex = graph.addVertex(StringId.generate().toString());
 		Vertex vertex = graph.addVertex(null);
 		long endNewVertex = System.currentTimeMillis();
-		newInstanceAddVertex += (endNewVertex-endGetR);
+		newInstanceAddVertex += (endNewVertex - endGetR);
 		Vertex eClassVertex = getMetaclassVertex(typeName);
 		if (isNull(eClassVertex)) {
 			eClassVertex = createMetaclassVertex(typeName, typePackageNsURI);
 			metaclassIndex.put(KEY_NAME, typeName, eClassVertex);
 		}
 		long endGetMetaclass = System.currentTimeMillis();
-		newInstanceGetMetaclass += (endGetMetaclass-endNewVertex);
+		newInstanceGetMetaclass += (endGetMetaclass - endNewVertex);
 		/*
 		 * Don't use setRef to set this edge, we don't need to add the property
 		 * kyanosInstanceof:size in the database
@@ -150,40 +176,49 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		long begin2 = System.currentTimeMillis();
 		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false);
 		long end = System.currentTimeMillis();
-		newInstanceTime += (end-begin);
-		newInstanceSetRef += (end-begin2);
+		newInstanceTime += (end - begin);
+		newInstanceSetRef += (end - begin2);
 		return vertex;
 	}
-	
+
 	public static long newInstanceTime = 0;
 	public static long newInstanceSetRef = 0;
 	public static long newInstanceGetResourceRoot = 0;
 	public static long newInstanceAddVertex = 0;
 	public static long newInstanceGetMetaclass = 0;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Vertex getParent(Vertex from) {
 		return Iterables.getOnlyElement(from.getVertices(Direction.OUT, CONTAINER_LABEL), null);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Iterable<Vertex> getRef(Vertex from, String refName, String oppositeName, boolean isContainer) {
 		Iterable<Vertex> result = null;
-		if(isContainer && nonNull(oppositeName) && !oppositeName.equals("")) {
+		if (isContainer && nonNull(oppositeName) && !oppositeName.equals("")) {
 			/*
-			 * NeoEMF doesn't store containment features with an opposite as edges,
-			 * so we need to navigate the opposite to find the container of from.
-			 * We can also navigate the eContainer edge, but this implies a property check to
-			 * ensure the eContainer has the right type which is more expensive.
+			 * NeoEMF doesn't store containment features with an opposite as
+			 * edges, so we need to navigate the opposite to find the container
+			 * of from. We can also navigate the eContainer edge, but this
+			 * implies a property check to ensure the eContainer has the right
+			 * type which is more expensive.
 			 */
 			result = from.getVertices(Direction.IN, oppositeName);
-		}
-		else {
+		} else {
 			result = from.getVertices(Direction.OUT, refName);
 		}
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Edge setRef(Vertex from, String refName, String oppositeName, Vertex to, boolean isContainment) {
 		/*
@@ -193,13 +228,13 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		 */
 		if (isContainment) {
 			updateContainment(from, refName, to);
-		}
-		else {
+		} else {
 			// NeoEMF stores opposites if they are not eContainers
-			if(nonNull(oppositeName) && !oppositeName.equals("")) {
+			if (nonNull(oppositeName) && !oppositeName.equals("")) {
 				/*
-				 *  We don't give an opposite to setRef to avoid infinite recursion.
-				 *  Note that the opposite reference cannot be a containment.
+				 * We don't give an opposite to setRef to avoid infinite
+				 * recursion. Note that the opposite reference cannot be a
+				 * containment.
 				 */
 				setRef(to, oppositeName, null, from, false);
 			}
@@ -212,6 +247,9 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		return newEdge;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Vertex removeRef(Vertex from, String refName, Vertex to, boolean isContainment) {
 		int size = getSize(from, refName);
@@ -239,29 +277,40 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		return oldVertex;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<Object> getAtt(Vertex from, String attName) {
 		Object property = from.getProperty(attName);
-		if(property instanceof Iterable) {
-			return (Iterable<Object>)property;
-		}
-		else {
+		if (property instanceof Iterable) {
+			return (Iterable<Object>) property;
+		} else {
 			return Arrays.asList(property);
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Vertex setAtt(Vertex from, String attName, Object attValue) {
 		from.setProperty(attName, attValue);
 		return from;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getType(Vertex from) {
 		return getMetaclassVertexFor(from).getProperty(KEY_ECLASS_NAME);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isTypeOf(Vertex from, String type) {
 		return getMetaclassVertexFor(from).getProperty(KEY_ECLASS_NAME).equals(type);
@@ -279,7 +328,7 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 */
 	@Override
 	public boolean isKindOf(Vertex from, String type) {
-//		NeoLogger.warn("NeoEMFMapping doesn't support isKindOf mapping, computing isTypeOf instead");
+		// NeoLogger.warn("NeoEMFMapping doesn't support isKindOf mapping, computing isTypeOf instead");
 		return isTypeOf(from, type);
 	}
 
@@ -297,8 +346,7 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 */
 	private Vertex getOrCreateResourceRoot(String resourceName) {
 		Vertex eObjectMetaclass = getMetaclassVertex("EObject");
-		Iterable<Vertex> resourceRoots = eObjectMetaclass.getVertices(Direction.IN,
-				KEY_INSTANCE_OF);
+		Iterable<Vertex> resourceRoots = eObjectMetaclass.getVertices(Direction.IN, KEY_INSTANCE_OF);
 		for (Vertex rRoot : resourceRoots) {
 			if (rRoot.getId().equals(resourceName)) {
 				return rRoot;
@@ -356,8 +404,8 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 *             metaclass
 	 */
 	private Vertex getMetaclassVertexFor(final Vertex instanceVertex) throws IllegalStateException {
-		Vertex metaclassVertex = Iterables.getOnlyElement(
-				instanceVertex.getVertices(Direction.OUT, KEY_INSTANCE_OF), null);
+		Vertex metaclassVertex = Iterables.getOnlyElement(instanceVertex.getVertices(Direction.OUT, KEY_INSTANCE_OF),
+				null);
 		if (nonNull(metaclassVertex)) {
 			return metaclassVertex;
 		} else {
@@ -422,7 +470,7 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 			break;
 		}
 		long end1 = System.currentTimeMillis();
-		
+
 		// Remove eContents edges if the element is a top-level element
 		long begin2 = System.currentTimeMillis();
 		for (Edge edge : to.getEdges(Direction.IN, CONTENTS_LABEL)) {
@@ -433,11 +481,11 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		Edge edge = to.addEdge(CONTAINER_LABEL, from);
 		edge.setProperty(CONTAINING_FEATURE_KEY, refName);
 		long end = System.currentTimeMillis();
-		updateContainmentTime += (end-begin);
-		updateContainment1 += (end1-begin1);
-		updateContainment2 += (end2-begin2);
+		updateContainmentTime += (end - begin);
+		updateContainment1 += (end1 - begin1);
+		updateContainment2 += (end2 - begin2);
 	}
-	
+
 	public static long updateContainmentTime = 0;
 	public static long updateContainment1 = 0;
 	public static long updateContainment2 = 0;

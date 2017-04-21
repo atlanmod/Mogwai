@@ -4,11 +4,11 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
 public class MogwaiATLQuery extends MogwaiQuery {
-	
+
 	private Resource atlResource;
 	private EPackage sourcePackage;
 	private EPackage targetPackage;
-	
+
 	public MogwaiATLQuery(Resource atlResource, EPackage sourcePackage, EPackage targetPackage) {
 		super(atlResource);
 		this.atlResource = atlResource;
@@ -20,15 +20,15 @@ public class MogwaiATLQuery extends MogwaiQuery {
 	public String getInput() {
 		return atlResource.toString();
 	}
-	
+
 	public Resource getATLResource() {
 		return atlResource;
 	}
-	
+
 	public EPackage getSourcePackage() {
 		return sourcePackage;
 	}
-	
+
 	public EPackage getTargetPackage() {
 		return targetPackage;
 	}

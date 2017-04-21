@@ -19,7 +19,7 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 	private Constraint constraint;
 	private EClassifier context;
 	private EcoreFactory eFactory = EcoreFactory.eINSTANCE;
-	
+
 	/**
 	 * Create a new MogwaiOCLQuery instance
 	 * 
@@ -34,26 +34,26 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 		super(input);
 		// The context has not been set by a parent call
 		this.context = context;
-		if(input instanceof String) {
+		if (input instanceof String) {
 			fromString((String) input);
-		} else if(input instanceof URI) {
+		} else if (input instanceof URI) {
 			fromURI((URI) input);
-		} else if(input instanceof Constraint) {
+		} else if (input instanceof Constraint) {
 			fromConstraint((Constraint) input);
-		} else if(input instanceof OCLExpression) {
+		} else if (input instanceof OCLExpression) {
 			fromOCLExpression((OCLExpression) input);
 		} else {
 			throw new MogwaiQueryException("Unknown input type " + input);
 		}
 	}
-	
+
 	/**
 	 * @return the context of the query
 	 */
 	public EClassifier getContext() {
 		return context;
 	}
-	
+
 	/**
 	 * @return the constraint embedded in the query
 	 */
@@ -69,26 +69,27 @@ public class MogwaiOCLQuery extends MogwaiQuery {
 	protected void fromURI(URI uri) {
 		fromConstraint(MogwaiUtil.parseOCL(uri));
 	}
-	
+
 	private void fromConstraint(Constraint constraint) {
 		this.constraint = (Constraint) constraint;
 		EClassifier constraintContext = constraint.getSpecification().getContextVariable().getType();
-		if(context != null && !Objects.equals(context, constraintContext)) {
-			throw new MogwaiQueryException("Conflicting context types: " + context.getName() + " vs. " + constraintContext.getName());
+		if (context != null && !Objects.equals(context, constraintContext)) {
+			throw new MogwaiQueryException("Conflicting context types: " + context.getName() + " vs. "
+					+ constraintContext.getName());
 		} else {
 			this.context = constraintContext;
 		}
 	}
-	
+
 	private void fromOCLExpression(OCLExpression oclExpression) {
 		checkNotNull(context, "Cannot build an OCLExpression based MogwaiOCLQuery without an explicit context");
 		constraint = eFactory.createConstraint();
-    	ExpressionInOCL mockExp = eFactory.createExpressionInOCL();
-    	constraint.setSpecification(mockExp);
-    	constraint.setName(UUID.randomUUID().toString());
-    	mockExp.setBodyExpression((OCLExpression) oclExpression);
+		ExpressionInOCL mockExp = eFactory.createExpressionInOCL();
+		constraint.setSpecification(mockExp);
+		constraint.setName(UUID.randomUUID().toString());
+		mockExp.setBodyExpression((OCLExpression) oclExpression);
 	}
-	
+
 	@Override
 	public String getInput() {
 		return constraint.toString();

@@ -34,9 +34,7 @@ public class TestGremlin {
 	public static void main(String[] args) throws IOException {
 		MogwaiResource mogResource = ModelUtil.getInstance().createSampleModel();
 
-		ModelDatastore mapping = new NeoEMFGraphDatastore();
-		// Mandatory for now
-		mapping.setDataSource(mogResource.getBackend().getGraph());
+		ModelDatastore mapping = new NeoEMFGraphDatastore(mogResource.getBackend().getGraph());
 
 		MogwaiQuery gremlinInit = MogwaiGremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/init.gremlin"))

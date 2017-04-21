@@ -44,7 +44,7 @@ public class CreateQueryTest {
 		newResource.save(Collections.emptyMap());
 		
 		MogwaiATLProcessor processor = new MogwaiATLProcessor();
-		MogwaiQueryResult result = query.process(processor, mogResource.getBackend(), new NeoEMFGraphDatastore(), null);
+		MogwaiQueryResult result = query.process(processor, new NeoEMFGraphDatastore(mogResource.getBackend().getGraph()), null);
 		
 		System.out.println("Created Script");
 		System.out.println(result.getExecutedQuery());

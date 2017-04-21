@@ -10,29 +10,31 @@ import fr.inria.atlanmod.mogwai.processor.MogwaiProcessor;
 public abstract class MogwaiQuery {
 
 	private Object rawInput;
-	
+
 	public MogwaiQuery(Object input) {
 		this.rawInput = input;
 	}
-	
-	public <D>MogwaiQueryResult process(MogwaiProcessor processor, D datastore, ModelDatastore mapping, Map<String, Object> options) throws MogwaiQueryException {
-		return process(processor, Arrays.asList(datastore), Arrays.asList(mapping), options);
+
+	@SuppressWarnings("rawtypes")
+	public MogwaiQueryResult process(MogwaiProcessor<? extends MogwaiQuery> processor, ModelDatastore datastore,
+			Map<String, Object> options) throws MogwaiQueryException {
+		return process(processor, Arrays.asList(datastore), options);
 	}
-	
-	@SuppressWarnings({"rawtypes", "unchecked"}) 
-	public <D>MogwaiQueryResult process(MogwaiProcessor processor, List<D> datastores, List<ModelDatastore> mappings, Map<String, Object> options) throws MogwaiQueryException {
-		if(processor.accept(this)) {
-			return processor.process(this, datastores, mappings, options);
-		}
-		else {
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public MogwaiQueryResult process(MogwaiProcessor processor, List<ModelDatastore> datastores,
+			Map<String, Object> options) throws MogwaiQueryException {
+		if (processor.accept(this)) {
+			return processor.process(this, datastores, options);
+		} else {
 			throw new MogwaiQueryException("Processor " + processor.getName() + " cannot compute " + this.toString());
 		}
 	}
-	
+
 	public Object getRawInput() {
 		return rawInput;
 	}
-	
+
 	public abstract String getInput();
-	
+
 }

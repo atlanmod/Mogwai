@@ -27,7 +27,7 @@ public class LargeTransformationSample {
 		MogwaiResource mogResource = ModelUtil.getInstance().createLargeSampleModel();
 		long end = System.currentTimeMillis();
 		
-		ModelDatastore mapping = new NeoEMFGraphDatastore();
+		ModelDatastore mapping = new NeoEMFGraphDatastore(mogResource.getBackend().getGraph());
 		mapping.setDataSource(mogResource.getBackend().getGraph());
 		
 		NeoLogger.info("Created large instance in {0}ms", (end-begin));

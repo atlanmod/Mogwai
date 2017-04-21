@@ -9,5 +9,5 @@ public class MogwaiQueryException extends MogwaiException {
 	public MogwaiQueryException(String message) {
 		super(message);
 	}
-	
+
 }

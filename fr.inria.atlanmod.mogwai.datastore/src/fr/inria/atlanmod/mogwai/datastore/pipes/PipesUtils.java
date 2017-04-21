@@ -18,8 +18,8 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
  * An utility class that creates new {@link Pipeline}s from {@link Iterables},
  * and initialize {@link Pipe}s with a given {@link Function}.
  * <p>
- * This class is used by {@link PipesDatastore} to create Pipes' construct wrapping
- * the default {@link ModelDatastore} interface.
+ * This class is used by {@link PipesDatastore} to create Pipes' construct
+ * wrapping the default {@link ModelDatastore} interface.
  * 
  * @author Gwendal DANIEL
  *

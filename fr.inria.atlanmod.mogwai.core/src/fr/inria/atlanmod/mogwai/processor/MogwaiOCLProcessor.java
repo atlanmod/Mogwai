@@ -17,19 +17,19 @@ import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
 import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
 
-public class MogwaiOCLProcessor<D> extends AbstractATLProcessor<MogwaiOCLQuery, D> {
+public class MogwaiOCLProcessor extends AbstractATLProcessor<MogwaiOCLQuery> {
 
 	private static final String NAME = "OCL Processor";
 
 	public MogwaiOCLProcessor() {
 		transformation = new OCL2Gremlin();
 	}
-	
+
 	@Override
 	public String getName() {
 		return NAME;
 	}
-	
+
 	@Override
 	protected OCL2Gremlin getTransformation() {
 		return (OCL2Gremlin) transformation;
@@ -37,18 +37,16 @@ public class MogwaiOCLProcessor<D> extends AbstractATLProcessor<MogwaiOCLQuery, 
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public MogwaiQueryResult process(MogwaiOCLQuery query, List<D> datastores, List<ModelDatastore> mappings,
-			Map<String, Object> options) {
+	public MogwaiQueryResult process(MogwaiOCLQuery query, List<ModelDatastore> datastores, Map<String, Object> options) {
 		checkArgument(!datastores.isEmpty(), "Cannot process the query: no datastore provided");
-		checkArgument(!mappings.isEmpty(), "Cannot process the query: no mapping provided");
-		return super.process(query, datastores, mappings, options);
+		return super.process(query, datastores, options);
 	}
 
 	@Override
 	public boolean accept(MogwaiQuery query) {
 		return !Objects.isNull(query) && query instanceof MogwaiOCLQuery;
 	}
-	
+
 	@Override
 	protected String createGremlinScript(MogwaiOCLQuery query, Map<String, Object> options) {
 		EPackage ePackage = query.getContext().getEPackage();
@@ -60,5 +58,5 @@ public class MogwaiOCLProcessor<D> extends AbstractATLProcessor<MogwaiOCLQuery, 
 					"An error in the transformation occured, enable ATL debugging for further informations");
 		}
 	}
-	
+
 }

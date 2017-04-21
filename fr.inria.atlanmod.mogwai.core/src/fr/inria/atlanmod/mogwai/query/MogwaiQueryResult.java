@@ -78,8 +78,7 @@ public class MogwaiQueryResult implements Iterable<Object> {
 			 * object
 			 */
 			result = Collections.emptyList();
-		}
-		else if (engineResult instanceof GremlinPipeline<?, ?>) {
+		} else if (engineResult instanceof GremlinPipeline<?, ?>) {
 			/*
 			 * Forces the iteration of the pipeline, and thus computes the
 			 * query. This operation can be costly if the query hasn't been
@@ -94,9 +93,9 @@ public class MogwaiQueryResult implements Iterable<Object> {
 			Iterables.addAll(result, (Collection<Object>) engineResult);
 		} else {
 			/*
-			 * The query aimed to return a single value, store this
-			 * information and add the returned element to the result list
-			 * to avoid any side-effect from the execution engine.
+			 * The query aimed to return a single value, store this information
+			 * and add the returned element to the result list to avoid any
+			 * side-effect from the execution engine.
 			 */
 			isSingleResult = true;
 			result.add(engineResult);
@@ -163,7 +162,7 @@ public class MogwaiQueryResult implements Iterable<Object> {
 		throw new MogwaiException(
 				"Cannot compute a single result: the query returns multiple records. Use getResults() instead");
 	}
-	
+
 	/**
 	 * Returns the number of objects returned by the query.
 	 * <p>
