@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Mapping
+Bundle-Name: Mogwai Datastore Definition
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.datastore
 Bundle-Version: 1.0.0.qualifier
 Export-Package: fr.inria.atlanmod.mogwai.datastore,
  fr.inria.atlanmod.mogwai.datastore.pipes
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: AtlanMod - Inria

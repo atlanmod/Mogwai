@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Neoemf
+Bundle-Name: NeoEMF Mogwai Integration
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.neoemf
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: fr.inria.atlanmod.neoemf.core,
- fr.inria.atlanmod.mogwai.core;bundle-version="0.0.1",
+Require-Bundle: fr.inria.atlanmod.neoemf.core;bundle-version="1.0.2",
+ fr.inria.atlanmod.mogwai.core;bundle-version="1.0.0",
  fr.inria.atlanmod.neoemf.data.blueprints.core;bundle-version="1.0.2",
  fr.inria.atlanmod.mogwai.datastore.blueprints;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -12,3 +12,4 @@ Export-Package: fr.inria.atlanmod.mogwai.neoemf.processor,
  fr.inria.atlanmod.mogwai.neoemf.query,
  fr.inria.atlanmod.mogwai.neoemf.resource,
  fr.inria.atlanmod.mogwai.neoemf.util
+Bundle-Vendor: AtlanMod - Inria

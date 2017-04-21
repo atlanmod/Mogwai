@@ -1,17 +1,17 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Mogwai Core
+Bundle-Name: Mogwai Core Component
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.core
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.ocl.ecore;bundle-version="3.3.100";visibility:=reexport,
- fr.inria.atlanmod.mogwai.transformation.ocl;bundle-version="0.0.1";visibility:=reexport,
- org.eclipse.m2m.atl.common;bundle-version="3.8.0",
- org.eclipse.m2m.atl.emftvm.compiler;bundle-version="3.8.0",
- fr.inria.atlanmod.mogwai.transformation.atl;visibility:=reexport,
- org.eclipse.m2m.atl.engine;bundle-version="3.8.0",
- org.eclipse.m2m.atl.dsls;bundle-version="3.8.0",
- org.eclipse.m2m.atl.emftvm;bundle-version="3.8.0",
- fr.inria.atlanmod.mogwai.datastore,
+ fr.inria.atlanmod.mogwai.transformation.ocl;bundle-version="1.0.0";visibility:=reexport,
+ org.eclipse.m2m.atl.common,
+ org.eclipse.m2m.atl.emftvm.compiler,
+ fr.inria.atlanmod.mogwai.transformation.atl;bundle-version="1.0.0";visibility:=reexport,
+ org.eclipse.m2m.atl.engine,
+ org.eclipse.m2m.atl.dsls,
+ org.eclipse.m2m.atl.emftvm,
+ fr.inria.atlanmod.mogwai.datastore;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.transformation;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.common;bundle-version="1.0.0"
 Export-Package: fr.inria.atlanmod.mogwai.core,
@@ -51,4 +51,4 @@ Bundle-ClassPath: .,
  lib/jline-0.9.94.jar,
  lib/pipes-2.6.0.jar,
  lib/stax-api-1.0.1.jar
-Bundle-Vendor: AtlanMod
+Bundle-Vendor: AtlanMod - Inria

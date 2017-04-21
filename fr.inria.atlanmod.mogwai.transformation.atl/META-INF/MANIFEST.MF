@@ -1,14 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Atl
+Bundle-Name: Mogwai ATL Transformation Implementation
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation.atl
 Bundle-Version: 1.0.0.qualifier
 Export-Package: fr.inria.atlanmod.mogwai.transformation.atl.files
 Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.engine.emfvm,
- fr.inria.atlanmod.mogwai.gremlin;bundle-version="0.0.1",
+ fr.inria.atlanmod.mogwai.gremlin;bundle-version="1.0.0",
  org.eclipse.m2m.atl.emftvm.compiler,
  ClassDiagram,
- fr.inria.atlanmod.mogwai.transformation;bundle-version="1.0.0"
+ fr.inria.atlanmod.mogwai.transformation;bundle-version="1.0.0";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: AtlanMod - Inria
