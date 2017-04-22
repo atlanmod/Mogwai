@@ -1,5 +1,6 @@
 package fr.inria.atlanmod.mogwai.transformation.atl.helper;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 
 /**
@@ -23,6 +24,40 @@ public abstract class InPlaceATLTransformationHelper<E> extends AbstractATLTrans
 	 */
 	public InPlaceATLTransformationHelper(ModelDatastore<?, E, ?, ?> datastore) {
 		super(datastore, datastore);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Overrides the default implementation by using
+	 * {@link #isSourceElement(Object)} and {@link #isTargetElement(Object)} to
+	 * check if an element is in the source or the target model.
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void linkReference(E from, Object to, String label, String oppositeLabel, boolean isContainment) {
+		checkNotNull(from, "Cannot create a reference from the provided element {0}", from);
+		checkNotNull(to, "Cannot create a reference to the provided element {0}", to);
+		checkNotNull("Cannot create a reference with the provided label {0}", label);
+		try {
+			E toElement = (E) to;
+			if (isSourceElement(toElement)) {
+				if (isResolvable(toElement)) {
+					createConcreteLink(from, resolve(toElement), label, oppositeLabel, isContainment);
+				} else {
+					createProxyLink(from, toElement, label, oppositeLabel, isContainment);
+				}
+			} else {
+				createConcreteLink(from, toElement, label, oppositeLabel, isContainment);
+			}
+		} catch (ClassCastException e) {
+			/*
+			 * The to element is not in the source or target model, this should
+			 * not happen.
+			 */
+			throw new IllegalArgumentException("Cannot create reference: " + to
+					+ " is not contained in the source or target model");
+		}
 	}
 
 	/**

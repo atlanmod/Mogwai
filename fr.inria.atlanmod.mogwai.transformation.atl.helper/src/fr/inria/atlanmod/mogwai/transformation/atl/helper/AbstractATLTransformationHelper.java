@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.mogwai.transformation.atl.helper;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Defines the ATL primitives that should be implemented to support ATL
@@ -53,6 +54,10 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 	 */
 	public AbstractATLTransformationHelper(ModelDatastore<?, ES, ?, ?> sourceDatastore,
 			ModelDatastore<?, ET, ?, ?> targetDatastore) {
+		checkNotNull(sourceDatastore, "Cannot create {0} with the provided source datastore {1}", this.getClass()
+				.getName(), sourceDatastore);
+		checkNotNull(targetDatastore, "Cannot create {0} with the provided target datastore {1}", this.getClass()
+				.getName(), targetDatastore);
 		this.sourceDatastore = sourceDatastore;
 		this.targetDatastore = targetDatastore;
 	}
@@ -92,6 +97,12 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 	 * {@link #createProxyLink(Object, Object, String, String, boolean)}) is
 	 * created that will be resolved later (see
 	 * {@link #resolveProxies(Object, Object)}).
+	 * <p>
+	 * The default implementation of this method checks if {@code to} is in the
+	 * source or target model. If it is part of the source model it checks
+	 * whether the element can be resolved and creates a concrete/proxy link
+	 * accordingly. If the element is part of the target model a concrete link
+	 * is created.
 	 * 
 	 * @param from
 	 *            the tail (in the target model) of the link to create
@@ -108,7 +119,37 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 	 * 
 	 * @see #linkReference(Object, Iterable, String, String, boolean)
 	 */
-	public abstract void linkReference(ET from, Object to, String label, String oppositeLabel, boolean isContainment);
+	@SuppressWarnings("unchecked")
+	public void linkReference(ET from, Object to, String label, String oppositeLabel, boolean isContainment) {
+		checkNotNull(from, "Cannot create a reference from the provided element {0}", from);
+		checkNotNull(to, "Cannot create a reference to the provided element {0}", to);
+		checkNotNull("Cannot create a reference with the provided label {0}", label);
+		try {
+			ES sourceProxy = (ES) to;
+			if (isResolvable(sourceProxy)) {
+				createConcreteLink(from, resolve(sourceProxy), label, oppositeLabel, isContainment);
+			} else {
+				createProxyLink(from, sourceProxy, label, oppositeLabel, isContainment);
+			}
+		} catch (ClassCastException e) {
+			/*
+			 * to is not part of the source model, we have to catch the
+			 * exception because instanceof checks cannot be performed on
+			 * generic type.
+			 */
+			try {
+				ET targetElement = (ET) to;
+				createConcreteLink(from, targetElement, label, oppositeLabel, isContainment);
+			} catch (ClassCastException e1) {
+				/*
+				 * to is not part of the target model, this should not happen.
+				 */
+				throw new IllegalArgumentException("Cannot create reference: " + to
+						+ " is not contained in the source or target model");
+			}
+		}
+
+	}
 
 	/**
 	 * Links {@code from} to all the elements in {@code to} by creating mapped
@@ -122,6 +163,10 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 	 * {@link #createProxyLink(Object, Object, String, String, boolean)}) is
 	 * created that will be resolved later (see
 	 * {@link #resolveProxies(Object, Object)}).
+	 * <p>
+	 * The default implementation of this method simply delegates to
+	 * {@link #linkReference(Object, Object, String, String, boolean)} by
+	 * iterating in the provided {@code to} {@link Iterable}.
 	 * 
 	 * @param from
 	 *            the tail (in the target model) of the links to create
@@ -138,8 +183,11 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 	 * 
 	 * @see #linkReference(Object, Object, String, String, boolean)
 	 */
-	public abstract void linkReference(ET from, Iterable<Object> to, String label, String oppositeLabel,
-			boolean isContainment);
+	public void linkReference(ET from, Iterable<Object> to, String label, String oppositeLabel, boolean isContainment) {
+		for (Object o : to) {
+			this.linkReference(from, o, label, oppositeLabel, isContainment);
+		}
+	}
 
 	/**
 	 * Creates a concrete link between {@code from} and {@code to}.
@@ -149,6 +197,10 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 	 * {@code to} element in the target model. It creates a concrete mapped
 	 * reference in the target model between the two elements {@code from} and
 	 * {@code to} by using the internal target {@link ModelDatastore}.
+	 * <p>
+	 * The default implementation of this method delegates the reference
+	 * creation to the underlying target {@link ModelDatastore}. It can be
+	 * extended to add transformation specific behavior.
 	 * 
 	 * @param from
 	 *            the tail (in the target model) of the link to create
@@ -165,7 +217,12 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 	 * @see #linkReference(Object, Object, String, String, boolean)
 	 * @see #linkReference(Object, Iterable, String, String, boolean)
 	 */
-	protected abstract void createConcreteLink(ET from, ET to, String label, String oppositeLabel, boolean isContainment);
+	protected void createConcreteLink(ET from, ET to, String label, String oppositeLabel, boolean isContainment) {
+		checkNotNull(from, "Cannot create a link from the provided element {0}", from);
+		checkNotNull(to, "Cannot create a link to the provided element {0}", to);
+		checkNotNull(label, "Cannot create a link with the provided label {0}", label);
+		targetDatastore.setRef(from, label, oppositeLabel, to, isContainment);
+	}
 
 	/**
 	 * Creates a proxy link between {@code from} and {@code to}.

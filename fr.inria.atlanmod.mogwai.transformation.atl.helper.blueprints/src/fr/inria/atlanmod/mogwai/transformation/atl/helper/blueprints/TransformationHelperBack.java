@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.transformation.atl.helper;
+package fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Objects.isNull;
