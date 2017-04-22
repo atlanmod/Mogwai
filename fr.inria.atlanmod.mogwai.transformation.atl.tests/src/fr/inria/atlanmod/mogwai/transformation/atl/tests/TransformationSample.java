@@ -32,7 +32,7 @@ import fr.inria.atlanmod.mogwai.query.builder.ATLQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.GremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
-import fr.inria.atlanmod.mogwai.util.TransformationHelper;
+import fr.inria.atlanmod.mogwai.transformation.atl.helper.TransformationHelper;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 /**

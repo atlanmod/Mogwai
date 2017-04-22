@@ -9,7 +9,7 @@ import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.processor.ATLQueryProcessor;
 import fr.inria.atlanmod.mogwai.query.ATLQuery;
 import fr.inria.atlanmod.mogwai.query.QueryResult;
-import fr.inria.atlanmod.mogwai.util.TransformationHelper;
+import fr.inria.atlanmod.mogwai.transformation.atl.helper.TransformationHelper;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
 public class NeoEMFATLQueryProcessor extends ATLQueryProcessor implements NeoEMFQueryProcessor {

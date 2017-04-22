@@ -1,7 +1,5 @@
 package fr.inria.atlanmod.mogwai.datastore;
 
-import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
-
 /**
  * Defines the methods that should be implemented to manipulate a
  * {@code data source} as a model.
@@ -11,8 +9,8 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * {@code data source}. They are inspired from the ones defined in the ATL API.
  * <p>
  * This mapping provides a low-level API to manipulate the model. It can be
- * combined with other mappings such as {@link PipesDatastore} to provide a rich
- * model navigation API depending developer's needs.
+ * combined with other mappings such as to provide a rich model navigation API
+ * depending developer's needs.
  * <p>
  * A custom {@link ModelDatastore} can be provided to the Mogwai engine using
  * the following code:
@@ -27,8 +25,6 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * 	.build();
  * }
  * </pre>
- * 
- * @author Gwendal DANIEL
  *
  * @param <D>
  *            the type of the {@code data source} to use
@@ -39,7 +35,8 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * @param <P>
  *            the type representing {@code attributes' value}
  * 
- * @see PipesDatastore
+ * @author Gwendal DANIEL
+ * 
  */
 public interface ModelDatastore<D, E, R, A> {
 	/*
@@ -50,7 +47,7 @@ public interface ModelDatastore<D, E, R, A> {
 
 	/**
 	 * The String literal used to bind a {@link ModelDatastore} implementation
-	 * to a {@link MogwaiProcessor}.
+	 * in the generated script.
 	 */
 	public static final String BINDING_NAME = "mappingHelper";
 

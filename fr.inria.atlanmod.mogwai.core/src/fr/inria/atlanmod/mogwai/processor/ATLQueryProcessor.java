@@ -16,13 +16,11 @@ import fr.inria.atlanmod.mogwai.query.ATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.QueryResult;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
-import fr.inria.atlanmod.mogwai.util.TransformationHelper;
+import fr.inria.atlanmod.mogwai.transformation.atl.helper.AbstractATLTransformationHelper;
 
 public class ATLQueryProcessor extends AbstractATLProcessor<ATLQuery> {
 
 	public static final String TRANSFORMATION_HELPER_KEY = "transformation.helper";
-
-	private static final String TRANSFORMATION_HELPER_BINDING = "tHelper";
 
 	private static final String NAME = "ATL Processor";
 
@@ -52,7 +50,7 @@ public class ATLQueryProcessor extends AbstractATLProcessor<ATLQuery> {
 	@Override
 	protected Map<String, Object> createBindings(List<ModelDatastore> datastores, Map<String, Object> options) {
 		Map<String, Object> bindings = super.createBindings(datastores, options);
-		bindings.put(TRANSFORMATION_HELPER_BINDING, (TransformationHelper) options.get(TRANSFORMATION_HELPER_KEY));
+		bindings.put(AbstractATLTransformationHelper.BINDING_NAME, (AbstractATLTransformationHelper) options.get(TRANSFORMATION_HELPER_KEY));
 		return bindings;
 	}
 

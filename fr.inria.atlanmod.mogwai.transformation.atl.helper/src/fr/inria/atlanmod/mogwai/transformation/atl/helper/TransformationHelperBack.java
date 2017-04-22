@@ -1,4 +1,4 @@
-package fr.inria.atlanmod.mogwai.util;
+package fr.inria.atlanmod.mogwai.transformation.atl.helper;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Objects.isNull;
@@ -31,7 +31,7 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
  * @author Gwendal DANIEL
  *
  */
-public class TransformationHelper {
+public class TransformationHelperBack {
 
 	/**
 	 * The label used to represent proxy links.
@@ -63,14 +63,14 @@ public class TransformationHelper {
 	private ModelDatastore<Graph, Vertex, Edge, Object> mapping;
 
 	/**
-	 * Creates a new {@link TransformationHelper} fusing the provided
+	 * Creates a new {@link TransformationHelperBack} fusing the provided
 	 * {@link EMFtoGraphMapping}.
 	 * 
 	 * @param mapping
 	 *            the mapping used to compute the graph operations
 	 */
 	@SuppressWarnings("unchecked")
-	public TransformationHelper(ModelDatastore<?, ?, ?, ?> mapping) {
+	public TransformationHelperBack(ModelDatastore<?, ?, ?, ?> mapping) {
 		// TODO remove this with an interface for the transformation helper that accepts any kind of mapping
 		// + an abstraction that doesn't use a mapping
 		this.mapping = (ModelDatastore<Graph, Vertex, Edge, Object>) mapping;
