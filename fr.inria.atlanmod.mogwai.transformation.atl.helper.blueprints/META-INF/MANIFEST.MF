@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mogwai ATL Transformation Blueprints Helpers
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: AtlanMod - Inria
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: fr.inria.atlanmod.mogwai.transformation.atl.helper;bundle-version="1.0.0"
