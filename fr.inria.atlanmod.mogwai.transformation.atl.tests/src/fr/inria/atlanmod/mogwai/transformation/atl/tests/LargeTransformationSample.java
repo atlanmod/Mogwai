@@ -15,9 +15,8 @@ import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.QueryResult;
 import fr.inria.atlanmod.mogwai.query.builder.GremlinQueryBuilder;
-import fr.inria.atlanmod.mogwai.transformation.atl.helper.TransformationHelper;
+import fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints.InPlaceBlueprintsTransformationHelper;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class LargeTransformationSample {
@@ -48,7 +47,7 @@ public class LargeTransformationSample {
 //		
 //		showResult(mqr2, mogResource);
 		
-		TransformationHelper helper = new TransformationHelper(mapping);
+		InPlaceBlueprintsTransformationHelper helper = new InPlaceBlueprintsTransformationHelper(mapping);
 		
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = GremlinQueryBuilder.newBuilder()

@@ -5,4 +5,6 @@ Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprin
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: AtlanMod - Inria
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: fr.inria.atlanmod.mogwai.transformation.atl.helper;bundle-version="1.0.0"
+Require-Bundle: fr.inria.atlanmod.mogwai.transformation.atl.helper;bundle-version="1.0.0";visibility:=reexport,
+ fr.inria.atlanmod.mogwai.datastore;bundle-version="1.0.0"
+Export-Package: fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints

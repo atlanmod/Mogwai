@@ -1,6 +1,5 @@
 package fr.inria.atlanmod.mogwai.transformation.atl.tests;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 
 import ClassDiagram.Attribute;
 import ClassDiagram.ClassDiagramPackage;
@@ -18,21 +16,14 @@ import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
 import ClassDiagram.Table;
 import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
-import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
-import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
-import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
-import fr.inria.atlanmod.mogwai.processor.AbstractQueryProcessor;
-import fr.inria.atlanmod.mogwai.query.GremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.builder.ATLQueryBuilder;
-import fr.inria.atlanmod.mogwai.query.builder.GremlinQueryBuilder;
 import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
-import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
-import fr.inria.atlanmod.mogwai.transformation.atl.helper.TransformationHelper;
+import fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints.InPlaceBlueprintsTransformationHelper;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 /**
@@ -96,27 +87,6 @@ public class TransformationSample {
 		System.out.println("class attribute " + classAttribute);
 		
 
-		NeoLogger.info("Initializing mapping");
-		NeoEMFGraphDatastore mapping = new NeoEMFGraphDatastore(mogResource.getBackend().getGraph());
-		TransformationHelper helper = new TransformationHelper(mapping);
-
-		NeoLogger.info("Done");
-		
-//		NeoLogger.info("Initializing the Gremlin engine");
-//		MogwaiQuery initQuery = MogwaiGremlinQueryBuilder.newBuilder()
-//				.fromFile(new File("materials/init.gremlin"))
-////				.bind(ModelMapping.BINDING_NAME, mapping)
-////				.bind("graphHelper", helper)
-//				.build();
-//		
-//		Map<String, Object> options = new HashMap<>();
-//		Map<String, Object> bindings = new HashMap<>();
-//		bindings.put(ModelMapping.BINDING_NAME, mapping);
-//		bindings.put("graphHelper", helper);
-//		options.put(MogwaiProcessor.BINDINGS_KEY, bindings);
-//
-//		mogResource.query(initQuery);
-//		NeoLogger.info("Gremlin engine initialized");
 		NeoLogger.info("Creating ATL query");
 		
 		MogwaiQuery query = ATLQueryBuilder.newBuilder()
@@ -128,47 +98,23 @@ public class TransformationSample {
 		Map<String, Object> options = new HashMap<>();
 		options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
 		
-		mogResource.transform(query, options);
+		NeoLogger.info("Done");
 		
-//		NeoLogger.info("Translating ATL file (" + ATL_URI + ")");;
-//		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
-//		atl2gremlin.enableATLDebug();
-//		Resource r = atl2gremlin.transform(URI
-//				.createURI(ATL_URI),
-//				"Relational",
-//				ClassDiagramPackage.eINSTANCE,
-//				"Class",
-//				ClassDiagramPackage.eINSTANCE);
-//		MogwaiATLGremlinPrinter printer = new MogwaiATLGremlinPrinter();
-//		String textualQuery = printer.print(r.getContents().get(0));
-//		
-//		NeoLogger.info("Generated Gremlin Script: \n{0}", textualQuery);
-//		
-//		// Create Tables from Classes
-//		MogwaiQuery gremlinQuery2 = MogwaiGremlinQueryBuilder.newBuilder()
-//				.fromString(textualQuery)
-//				.bind("graphHelper", helper)
-//				.bind(ModelMapping.BINDING_NAME, mapping)
-//				.build();
-//		
-//		Map<String, Object> options = new HashMap<>();
-//		options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
-//		
-//		mogResource.query(gremlinQuery2, options);
+		mogResource.transform(query, options);
 		
 		NeoLogger.info("Model successfully transformed");
 		
-		NeoLogger.info("CreateElement time: {0}ms", TransformationHelper.createTime);
+		NeoLogger.info("CreateElement time: {0}ms", InPlaceBlueprintsTransformationHelper.createTime);
 		NeoLogger.info("NewInstance time: {0}ms", NeoEMFGraphDatastore.newInstanceTime);
 		NeoLogger.info("NewInstance setRef time: {0}ms", NeoEMFGraphDatastore.newInstanceSetRef);
 		NeoLogger.info("NewInstance getResourceRoot: {0}ms", NeoEMFGraphDatastore.newInstanceGetResourceRoot);
 		NeoLogger.info("NewInstance addVertex: {0}ms", NeoEMFGraphDatastore.newInstanceAddVertex);
 		NeoLogger.info("NewInstance getMetaClass: {0}ms", NeoEMFGraphDatastore.newInstanceGetMetaclass);
-		NeoLogger.info("IsResolvable time: {0}ms", TransformationHelper.isResolvableTime);
-		NeoLogger.info("Resolve time: {0}ms", TransformationHelper.resolveTime);
-		NeoLogger.info("Link time: {0}ms", TransformationHelper.linkTime);
-		NeoLogger.info("Plink time: {0}ms", TransformationHelper.pLinkTime);
-		NeoLogger.info("ResolveProxy time: {0}ms", TransformationHelper.resolveProxyTime);
+		NeoLogger.info("IsResolvable time: {0}ms", InPlaceBlueprintsTransformationHelper.isResolvableTime);
+		NeoLogger.info("Resolve time: {0}ms", InPlaceBlueprintsTransformationHelper.resolveTime);
+		NeoLogger.info("Link time: {0}ms", InPlaceBlueprintsTransformationHelper.linkTime);
+		NeoLogger.info("Plink time: {0}ms", InPlaceBlueprintsTransformationHelper.pLinkTime);
+		NeoLogger.info("ResolveProxy time: {0}ms", InPlaceBlueprintsTransformationHelper.resolveProxyTime);
 		NeoLogger.info("UpdateContainment time: {0}ms", NeoEMFGraphDatastore.updateContainmentTime);
 		NeoLogger.info("UpdateContainment loop1 time: {0}ms", NeoEMFGraphDatastore.updateContainment1);
 		NeoLogger.info("UpdateContainment loop2 time: {0}ms", NeoEMFGraphDatastore.updateContainment2);
