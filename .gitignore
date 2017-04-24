@@ -16,3 +16,6 @@ hs_err_pid*
 
 # Tmp Linux files
 *~
+
+# Generated Documentation
+documentation/*
