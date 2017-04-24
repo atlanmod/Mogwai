@@ -173,15 +173,15 @@ rule oclIsKindOf2steps {
 		)
 }
 
-rule oclIsKinOf2stepsLastInComparison2steps extends oclIsKindOf2steps {
-	from
-		ok : ATL!OperationCallExp (ok.getOpName() = 'oclIsKindOf' and ok.isLastInComparison())
-	to
-		koStep : Gremlin!CustomStep (
-			nextElement <- nextCall	
-		),
-		nextCall : Gremlin!NextCall()
-}
+--rule oclIsKinOf2stepsLastInComparison2steps extends oclIsKindOf2steps {
+--	from
+--		ok : ATL!OperationCallExp (ok.getOpName() = 'oclIsKindOf' and ok.isLastInComparison())
+--	to
+--		koStep : Gremlin!CustomStep (
+--			nextElement <- nextCall	
+--		),
+--		nextCall : Gremlin!NextCall()
+--}
 
 rule oclIsTypeOf2steps {
 	from
@@ -197,15 +197,15 @@ rule oclIsTypeOf2steps {
 		)
 }
 
-rule oclIsTypeOf2stepsLastInComparison2steps extends oclIsTypeOf2steps {
-	from
-		ot : ATL!OperationCallExp (ot.getOpName() = 'oclIsTypeOf' and ot.isLastInComparison())
-	to
-		toStep : Gremlin!CustomStep (
-			nextElement <- nextCall	
-		),
-		nextCall : Gremlin!NextCall()
-}
+--rule oclIsTypeOf2stepsLastInComparison2steps extends oclIsTypeOf2steps {
+--	from
+--		ot : ATL!OperationCallExp (ot.getOpName() = 'oclIsTypeOf' and ot.isLastInComparison())
+--	to
+--		toStep : Gremlin!CustomStep (
+--			nextElement <- nextCall	
+--		),
+--		nextCall : Gremlin!NextCall()
+--}
 
 rule if2steps {
 	from
@@ -247,7 +247,7 @@ rule oclIsUndefined2steps {
 		s : ATL!OperationCallExp (s.getOpName() = 'oclIsUndefined')
 	to
 		t : Gremlin!CustomMethodCall(
-			name <- 'undefined(TODO)',
+			name <- 'undefined',
 			nextElement <- s.getComposite()
 		)
 }
