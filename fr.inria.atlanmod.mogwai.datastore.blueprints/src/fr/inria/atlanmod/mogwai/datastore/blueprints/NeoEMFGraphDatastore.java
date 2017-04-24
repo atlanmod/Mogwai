@@ -17,6 +17,7 @@ import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
 
+import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
 
@@ -135,8 +136,8 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 */
 	@Override
 	public Iterable<Vertex> allOfKind(String typeName) {
-		throw new UnsupportedOperationException(
-				"NeoEMFMapping doesn't support allOfKind mapping, use multiple allOfType instead");
+		MogwaiLogger.warn("{0} doesn't support allOfKind mapping, computing allOfType instead", this.getClass().getName());
+		return allOfType(typeName);
 	}
 
 	/**
@@ -328,7 +329,6 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 */
 	@Override
 	public boolean isKindOf(Vertex from, String type) {
-		// NeoLogger.warn("NeoEMFMapping doesn't support isKindOf mapping, computing isTypeOf instead");
 		return isTypeOf(from, type);
 	}
 
