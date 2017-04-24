@@ -18,6 +18,17 @@
 module javaToKdm; -- Module Template
 create OUT : kdm from IN : java;
 
+--create the Extends for class or interface extension
+lazy rule CreateExtends{
+	from
+		javaExtends:java!TypeAccess
+	to
+		kdmExtends:kdm!Extends(
+			from <- javaExtends.refImmediateComposite(),
+			to <- javaExtends->getType()
+		)
+}
+
 rule ModelToModel{
 	from
 		src : java!Model

@@ -12,7 +12,11 @@ helper def : resourceName : String = 'OUTROOT';
 helper def : transformationHelperBinding : String = 'tHelper';
 
 helper context ATL!Module def: getMatchedRules() : Sequence(ATL!MatchedRule) =
-	ATL!MatchedRule.allInstances()->asSequence()
+	ATL!MatchedRule.allInstances()->select(e | e.oclIsTypeOf(ATL!MatchedRule))->asSequence()
+;
+
+helper context ATL!Module def: getLazyRules() : Sequence(ATL!LazyMatchedRule) =
+	ATL!LazyMatchedRule.allInstances()->asSequence()
 ;
 
 helper context ATL!Module def: getHelpers() : Sequence(ATL!Helper) =
@@ -114,6 +118,7 @@ rule module2script {
 			name <- mm.name,
 			instructions <- Sequence{thisModule.module2graphFinalVar(mm)}
 				->union(mm.getHelpers())
+				->union(mm.getLazyRules())
 				->union(mm.getMatchedRules())
 		)
 }
@@ -154,7 +159,10 @@ rule globalHelper2function {
 -- the transformation of the bindings themselves.
 rule matchedRule2transform {
 	from
-		mm : ATL!MatchedRule
+		mm : ATL!MatchedRule (
+			-- We don't want to match lazy rules here
+			mm.oclIsTypeOf(ATL!MatchedRule)
+		)
 	to
 		varAccess : Gremlin!VariableAccess(
 			name <- 'g',
