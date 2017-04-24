@@ -29,6 +29,16 @@ lazy rule CreateExtends{
 		)
 }
 
+lazy rule CreateImplements{
+	from
+		javaImplements:java!TypeAccess
+	to 
+		kdmImplements:kdm!Implements (
+			from <- javaImplements.refImmediateComposite(),
+			to <- javaImplements->getType()
+		)
+}
+
 rule ModelToModel{
 	from
 		src : java!Model
