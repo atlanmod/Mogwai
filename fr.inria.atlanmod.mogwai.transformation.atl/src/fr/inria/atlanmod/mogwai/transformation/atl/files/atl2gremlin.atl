@@ -162,6 +162,7 @@ rule matchedRule2transform {
 		mm : ATL!MatchedRule (
 			-- We don't want to match lazy rules here
 			mm.oclIsTypeOf(ATL!MatchedRule)
+			and not(mm.isAbstract)
 		)
 	to
 		varAccess : Gremlin!VariableAccess(

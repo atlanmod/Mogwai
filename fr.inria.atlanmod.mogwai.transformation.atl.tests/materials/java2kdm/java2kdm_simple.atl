@@ -143,7 +143,6 @@ abstract rule BodyDeclarationToAbstractCodeElement extends NamedElementToAbstrac
 	)
 }
 
--- See this, collect not mapped, thisModule in ifTrue / ifFalse
 abstract rule AbstractTypeDeclarationToDatatype extends BodyDeclarationToAbstractCodeElement {
 	from src :java!AbstractTypeDeclaration
 	to tgt :kdm!Datatype (
@@ -220,7 +219,7 @@ rule ClassDeclarationToClassUnit extends AbstractTypeDeclarationToDatatype {
 --		,codeElement <- javaAttributes
 		-- other elements
 		,
-		codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))	
+		codeElement <- src.bodyDeclarations->select(e | not e.oclIsTypeOf(java!FieldDeclaration))
 	)
 	do {
 		-- inheritance
