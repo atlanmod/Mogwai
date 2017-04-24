@@ -32,7 +32,7 @@ helper context ATL!VariableExp def : isThisModuleVar() : Boolean =
 -- Returns true if a navigation represent a global helper invocation, false otherwise.
 -- This helper is used to match global helper invocation and stop first instruction recursion
 -- (the source 'thisModule' variable of a global helper invocation is not translated)
-helper context ATL!NavigationOrAttributeCallExp def : isGlobalHelperInvocation() : Boolean =
+helper context ATL!PropertyCallExp def : isGlobalHelperInvocation() : Boolean =
 	if(self.source.oclIsTypeOf(ATL!VariableExp)) then
 		self.source.referredVariable.varName = 'thisModule'
 	else 
@@ -73,9 +73,11 @@ helper context ATL!OclExpression def : getFirstInstruction() : ATL!OclExpression
 		if self.oclIsKindOf(ATL!OperationCallExp) then
 			if(self.getOpName() = 'allInstances') then
 				self
+			else if(self.isGlobalHelperInvocation()) then
+				self
 			else
 				self.source.getFirstInstruction()
-			endif
+			endif endif
 		else
 			if self.oclIsTypeOf(ATL!IteratorExp) then
 				self.source.getFirstInstruction()

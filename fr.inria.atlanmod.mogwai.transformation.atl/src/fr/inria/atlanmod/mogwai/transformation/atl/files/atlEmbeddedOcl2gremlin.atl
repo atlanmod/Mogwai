@@ -24,12 +24,20 @@ helper context ATL!Binding def: feature : Ecore!EStructuralFeature =
 ;
 			
 
-helper context ATL!NavigationOrAttributeCallExp def : isAttributeNavigation() : Boolean = 
-	self.feature.oclIsKindOf(SourceEcore!EAttribute)
+helper context ATL!PropertyCallExp def : isAttributeNavigation() : Boolean = 
+	if(self.oclIsKindOf(ATL!NavigationOrAttributeCallExp)) then
+		self.feature.oclIsKindOf(SourceEcore!EAttribute)
+	else
+		false
+	endif
 ;
 
-helper context ATL!NavigationOrAttributeCallExp def : isReferenceNavigation() : Boolean = 
-	self.feature.oclIsKindOf(SourceEcore!EReference)
+helper context ATL!PropertyCallExp def : isReferenceNavigation() : Boolean = 
+	if(self.oclIsKindOf(ATL!NavigationOrAttributeCallExp)) then
+		self.feature.oclIsKindOf(SourceEcore!EReference)
+	else
+		false
+	endif
 ;
 
 helper context SourceEcore!EAttribute def : getOpposite() : String =
@@ -110,7 +118,7 @@ rule referenceNavigationOrAttributeCallExp2steps {
 		)
 }
 
-rule globalHelperNavigation2steps {
+rule globalPropertyNavigation2steps {
 	from
 		nav : ATL!NavigationOrAttributeCallExp (
 				not nav.isAttributeNavigation() 
@@ -119,6 +127,17 @@ rule globalHelperNavigation2steps {
 	to
 		mc : Gremlin!CustomMethodCall (
 			name <- nav.name
+		)
+}
+
+rule globalHelperCall2steps {
+	from
+		s : ATL!OperationCallExp (
+			s.isGlobalHelperInvocation()	
+		)
+	to
+		t : Gremlin!CustomMethodCall (
+			name <- s.operationName	
 		)
 }
 
