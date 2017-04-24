@@ -12,3 +12,23 @@ hs_err_pid*
 
 # Eclipse setting directories
 .settings
+
+# Linux tmp files
+*~
+
+# Dev
+ClassDiagram
+benchmarks
+fr.inria.atlanmod.mogwai.common
+fr.inria.atlanmod.mogwai.core
+fr.inria.atlanmod.mogwai.datastore.blueprints
+fr.inria.atlanmod.mogwai.datastore
+fr.inria.atlanmod.mogwai.gremlin
+fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints
+fr.inria.atlanmod.mogwai.transformation.atl.helper
+fr.inria.atlanmod.mogwai.transformation.atl.tests
+fr.inria.atlanmod.mogwai.transformation.atl
+fr.inria.atlanmod.mogwai.transformation.ocl
+fr.inria.atlanmod.mogwai.transformation
+fr.inria.atlanmod.mogwai.update
+fr.inria.atlanmod.mogwai.neoemf
