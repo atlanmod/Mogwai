@@ -1,4 +1,5 @@
 fr.inria.atlanmod.mogwai.common.logging
+fr.inria.atlanmod.mogwai.common.util
 fr.inria.atlanmod.mogwai.core
 fr.inria.atlanmod.mogwai.datastore
 fr.inria.atlanmod.mogwai.datastore.blueprints
