@@ -56,6 +56,7 @@ import fr.inria.atlanmod.mogwai.gremlin.PlusExpression;
 import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
 import fr.inria.atlanmod.mogwai.gremlin.RetainAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
+import fr.inria.atlanmod.mogwai.gremlin.ReturnStatement;
 import fr.inria.atlanmod.mogwai.gremlin.ScatterStep;
 import fr.inria.atlanmod.mogwai.gremlin.SetDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.SizeCall;
@@ -103,6 +104,13 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 * @generated
 	 */
 	private EClass instructionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass returnStatementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -684,6 +692,33 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 	 */
 	public EClass getInstruction() {
 		return instructionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getReturnStatement() {
+		return returnStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getReturnStatement_Value() {
+		return (EAttribute)returnStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getReturnStatement__ToString() {
+		return returnStatementEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -2368,6 +2403,10 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 
 		instructionEClass = createEClass(INSTRUCTION);
 
+		returnStatementEClass = createEClass(RETURN_STATEMENT);
+		createEAttribute(returnStatementEClass, RETURN_STATEMENT__VALUE);
+		createEOperation(returnStatementEClass, RETURN_STATEMENT___TO_STRING);
+
 		methodDeclarationEClass = createEClass(METHOD_DECLARATION);
 		createEAttribute(methodDeclarationEClass, METHOD_DECLARATION__NAME);
 		createEAttribute(methodDeclarationEClass, METHOD_DECLARATION__PARAMETERS);
@@ -2648,6 +2687,7 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		returnStatementEClass.getESuperTypes().add(this.getInstruction());
 		methodDeclarationEClass.getESuperTypes().add(this.getInstruction());
 		typeDeclarationEClass.getESuperTypes().add(this.getInstruction());
 		listDeclarationEClass.getESuperTypes().add(this.getTypeDeclaration());
@@ -2725,6 +2765,11 @@ public class GremlinPackageImpl extends EPackageImpl implements GremlinPackage {
 		initEOperation(getGremlinScript__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(instructionEClass, Instruction.class, "Instruction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(returnStatementEClass, ReturnStatement.class, "ReturnStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getReturnStatement_Value(), ecorePackage.getEString(), "value", null, 0, 1, ReturnStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getReturnStatement__ToString(), ecorePackage.getEString(), "toString", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(methodDeclarationEClass, MethodDeclaration.class, "MethodDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMethodDeclaration_Name(), ecorePackage.getEString(), "name", null, 1, 1, MethodDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

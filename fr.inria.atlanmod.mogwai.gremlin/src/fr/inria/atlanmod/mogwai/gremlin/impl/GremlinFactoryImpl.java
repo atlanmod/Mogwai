@@ -57,6 +57,7 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case GremlinPackage.GREMLIN_SCRIPT: return createGremlinScript();
+			case GremlinPackage.RETURN_STATEMENT: return createReturnStatement();
 			case GremlinPackage.METHOD_DECLARATION: return createMethodDeclaration();
 			case GremlinPackage.LIST_DECLARATION: return createListDeclaration();
 			case GremlinPackage.SET_DECLARATION: return createSetDeclaration();
@@ -134,6 +135,16 @@ public class GremlinFactoryImpl extends EFactoryImpl implements GremlinFactory {
 	public GremlinScript createGremlinScript() {
 		GremlinScriptImpl gremlinScript = new GremlinScriptImpl();
 		return gremlinScript;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ReturnStatement createReturnStatement() {
+		ReturnStatementImpl returnStatement = new ReturnStatementImpl();
+		return returnStatement;
 	}
 
 	/**

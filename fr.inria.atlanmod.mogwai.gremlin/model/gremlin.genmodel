@@ -13,6 +13,10 @@
       <genOperations ecoreOperation="gremlin.ecore#//GremlinScript/toString"/>
     </genClasses>
     <genClasses image="false" ecoreClass="gremlin.ecore#//Instruction"/>
+    <genClasses ecoreClass="gremlin.ecore#//ReturnStatement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//ReturnStatement/value"/>
+      <genOperations ecoreOperation="gremlin.ecore#//ReturnStatement/toString"/>
+    </genClasses>
     <genClasses ecoreClass="gremlin.ecore#//MethodDeclaration">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//MethodDeclaration/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gremlin.ecore#//MethodDeclaration/parameters"/>

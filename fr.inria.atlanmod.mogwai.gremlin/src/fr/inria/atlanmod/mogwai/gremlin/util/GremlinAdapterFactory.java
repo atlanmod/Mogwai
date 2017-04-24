@@ -76,6 +76,10 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 				return createInstructionAdapter();
 			}
 			@Override
+			public Adapter caseReturnStatement(ReturnStatement object) {
+				return createReturnStatementAdapter();
+			}
+			@Override
 			public Adapter caseMethodDeclaration(MethodDeclaration object) {
 				return createMethodDeclarationAdapter();
 			}
@@ -392,6 +396,20 @@ public class GremlinAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createInstructionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link fr.inria.atlanmod.mogwai.gremlin.ReturnStatement <em>Return Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see fr.inria.atlanmod.mogwai.gremlin.ReturnStatement
+	 * @generated
+	 */
+	public Adapter createReturnStatementAdapter() {
 		return null;
 	}
 

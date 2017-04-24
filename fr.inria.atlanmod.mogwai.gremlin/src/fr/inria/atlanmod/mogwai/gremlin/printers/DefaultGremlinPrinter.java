@@ -50,6 +50,7 @@ import fr.inria.atlanmod.mogwai.gremlin.PlusExpression;
 import fr.inria.atlanmod.mogwai.gremlin.PropertyStep;
 import fr.inria.atlanmod.mogwai.gremlin.RetainAllCall;
 import fr.inria.atlanmod.mogwai.gremlin.RetainStep;
+import fr.inria.atlanmod.mogwai.gremlin.ReturnStatement;
 import fr.inria.atlanmod.mogwai.gremlin.ScatterStep;
 import fr.inria.atlanmod.mogwai.gremlin.SetDeclaration;
 import fr.inria.atlanmod.mogwai.gremlin.SizeCall;
@@ -88,6 +89,14 @@ public class DefaultGremlinPrinter extends GremlinSwitch<String> implements Grem
 			result = o.toString();
 		}
 		return result;
+	}
+	
+	@Override
+	public String caseReturnStatement(ReturnStatement o) {
+		StringBuffer res = new StringBuffer();
+		res.append("return ");
+		res.append(o.getValue());
+		return res.toString();
 	}
 
 	@Override
