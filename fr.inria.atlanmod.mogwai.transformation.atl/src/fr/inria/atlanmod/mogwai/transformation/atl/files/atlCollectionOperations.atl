@@ -436,29 +436,29 @@ rule intersection2steps {
 -- the OperationCallExp. This rule maps the collect operation returned by the helper 
 -- from the last OCL expression in the body into an IdentityStep to make it available as a step
 -- input (in case the collect body is not transformed to a Gremlin step).
---rule collect2steps {
---	from 
---		oclCollect : OCL!IteratorExp (oclCollect.getOpName() = 'collect')
---	to
---		transformStep : Gremlin!TransformStep(
---			closure <- closure,
---			nextElement <- lastColStep
---		),
---		lastColStep : Gremlin!ScatterStep(
---			nextElement <- oclCollect.getComposite()	
---		),
---		closure : Gremlin!Closure(
---			instructions <- OrderedSet{}
---				.append(
---					-- Transform the iterator into a variable definition
---					thisModule.varIterator2def(oclCollect.iterator.first())
---				)
---				.append(
---					-- Add the transformed body
---					oclCollect.body.getFirstInstruction()
---				)
---		)
---}
+rule collect2steps {
+	from 
+		oclCollect : ATL!IteratorExp (oclCollect.getOpName() = 'collect')
+	to
+		transformStep : Gremlin!TransformStep(
+			closure <- closure,
+			nextElement <- lastColStep
+		),
+		lastColStep : Gremlin!ScatterStep(
+			nextElement <- oclCollect.getComposite()	
+		),
+		closure : Gremlin!Closure(
+			instructions <- OrderedSet{}
+				.append(
+					-- Transform the iterator into a variable definition
+					thisModule.createDefForVarIterator(oclCollect.iterators.first())
+				)
+				.append(
+					-- Add the transformed body
+					oclCollect.body.getFirstInstruction()
+				)
+		)
+}
 
 -- Transforms an excluding operation into equivalent Gremlin except step.
 -- Excepted elements are computed from excluding argument and put in a vector.
