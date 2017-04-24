@@ -201,6 +201,28 @@ rule if2steps {
 	
 }
 
+rule refImmediateComposite2steps {
+	from
+		s : ATL!OperationCallExp (s.getOpName() = 'refImmediateComposite')
+	to
+		t : Gremlin!CustomStep(
+			name <- 'getParent',
+			nextElement <- s.getComposite()
+		)
+}
+
+rule toString2steps {
+	from
+		s : ATL!OperationCallExp (s.getOpName() = 'toString')
+	to
+		t : Gremlin!CustomMethodCall(
+			-- Don't use toString here, it is overriden in Pipe and 
+			-- cannot be called in a generic way
+			name <- 'getString',
+			nextElement <- s.getComposite()
+		)
+}
+
 rule oclIsUndefined2steps {
 	from
 		s : ATL!OperationCallExp (s.getOpName() = 'oclIsUndefined')

@@ -15,7 +15,9 @@
 // the created methods to allow in/out calls.
 
 // Put the mapping helper in a final variable to allow its access from closures
+// mappingHelper instanceof ModelDatastore
 final m = mappingHelper;
+// gremlinHelper instanceof GremlinHelper
 final t = gremlinHelper;
 
 
@@ -232,4 +234,15 @@ Iterable.metaClass.difference =
 	Iterable right ->
 		log("difference");
 		t.difference(delegate, right);
+}
+
+Iterable.metaClass.getString = 
+{
+	->
+		log("toString");
+		String value = delegate.next().toString();
+		if(delegate.hasNext()) {
+			throw new IllegalStateException("Calling toString on an Iterable that contain more than one element");
+		}
+		value;
 }
