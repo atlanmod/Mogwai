@@ -169,7 +169,7 @@ rule matchedRule2transform {
 			nextElement <- allOfTypeStep
 		),
 		allOfTypeStep : Gremlin!CustomStep(
-			name <- 'allOfType',
+			name <- 'allOfKind',
 			params <- typeLiteral,
 			nextElement <- transform
 		),
