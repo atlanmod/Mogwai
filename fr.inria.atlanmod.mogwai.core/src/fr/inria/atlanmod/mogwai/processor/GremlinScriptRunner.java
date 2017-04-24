@@ -20,7 +20,8 @@ import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
 
 /**
  * Utility class that runs a Gremlin script on a given database. This feature is
- * in a dedicated class because it is used by several {@link AbstractQueryProcessor}.
+ * in a dedicated class because it is used by several
+ * {@link AbstractQueryProcessor}.
  *
  * @author Gwendal DANIEL
  */
@@ -30,7 +31,7 @@ public class GremlinScriptRunner {
 	private final Bindings bindings;
 
 	public static final String PRINT_SCRIPT_OPTION = "print.script";
-	
+
 	public static final String PRINTER_OPTION = "printer";
 
 	public static GremlinScriptRunner getInstance() {
@@ -50,16 +51,12 @@ public class GremlinScriptRunner {
 	 * Run the provided query on the given backend using a dedicated Gremlin
 	 * script engine.
 	 * 
-	 * @param literalQuery
-	 *            the query to execute
-	 * @param arg
-	 *            an argument representing the current element if relevant (can
-	 *            be null for global queries)
-	 * @param graphBackend
-	 *            the database to compute the query against
-	 * @param customBindings
-	 *            additional bindings needed by the query (usually provided by
-	 *            the calling {@link AbstractQueryProcessor}
+	 * @param script
+	 *            the {@link GremlinScript} to execute
+	 * @param bindings
+	 *            the variables to bind in the executed query
+	 * @param options
+	 *            a {@link Map} containing execution options
 	 * @return a raw object representing the query result
 	 */
 	public Object runGremlinScript(GremlinScript script, Map<String, Object> bindings, Map<String, Object> options) {
@@ -77,12 +74,12 @@ public class GremlinScriptRunner {
 			long beginCompil = System.currentTimeMillis();
 			CompiledScript compiled = ((GremlinGroovyScriptEngine) engine).compile(literalScript);
 			long endCompil = System.currentTimeMillis();
-			if(print) {
+			if (print) {
 				MogwaiLogger.info("Script compiled in {0}ms", (endCompil - beginCompil));
 			}
 			result = compiled.eval(this.bindings);
 			long endEval = System.currentTimeMillis();
-			if(print) {
+			if (print) {
 				MogwaiLogger.info("Query computed in {0}ms", (endEval - endCompil));
 			}
 		} catch (ScriptException e) {
@@ -94,12 +91,11 @@ public class GremlinScriptRunner {
 
 	public void printGremlinScript(GremlinScript script, Map<String, Object> options) {
 		boolean print = getPrintOption(options);
-		if(print) {
+		if (print) {
 			GremlinPrinter printer;
-			if(nonNull(getPrinterOption(options))) {
+			if (nonNull(getPrinterOption(options))) {
 				printer = GremlinPrinterFactory.getPrinter(getPrinterOption(options));
-			}
-			else {
+			} else {
 				printer = GremlinPrinterFactory.getDefaultPrinter();
 			}
 			MogwaiLogger.info("Computing Gremlin Script \n{0}", printer.print(script));
@@ -113,10 +109,10 @@ public class GremlinScriptRunner {
 		}
 		return print;
 	}
-	
+
 	private String getPrinterOption(Map<String, Object> options) {
 		String printerId = null;
-		if(options.containsKey(PRINTER_OPTION)) {
+		if (options.containsKey(PRINTER_OPTION)) {
 			printerId = (String) options.get(PRINTER_OPTION);
 		}
 		return printerId;

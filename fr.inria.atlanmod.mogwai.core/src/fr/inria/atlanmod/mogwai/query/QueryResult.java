@@ -18,8 +18,8 @@ import static java.util.Objects.isNull;
  * Wraps the result of a {@link MogwaiQuery} and provides information on the
  * query execution.
  * <p>
- * {@link QueryResult} implements {@link Iterable} to ease result
- * processing in client applications.
+ * {@link QueryResult} implements {@link Iterable} to ease result processing in
+ * client applications.
  * 
  * @author Gwendal DANIEL
  *
@@ -54,17 +54,17 @@ public class QueryResult implements Iterable<Object> {
 	protected String gremlinScript;
 
 	/**
-	 * Constructs a new {@link QueryResult} from the given
-	 * {@code engineResult} and literal {@code gremlinScript}.
+	 * Constructs a new {@link QueryResult} from the given {@code engineResult}
+	 * and literal {@code gremlinScript}.
 	 * <p>
-	 * <b>Note:<b> if {@code engineResult} is an instance of {@link Iterable}
+	 * <b>Note:</b> if {@code engineResult} is an instance of {@link Iterable}
 	 * this constructor iterates it to wrap the results. In case of
 	 * Gremlin-based queries this can be costly because {@link GremlinPipeline}
 	 * content is computed when iterated.
 	 * 
 	 * @param engineResult
 	 *            the result of the query computation
-	 * @param gremlinScript
+	 * @param gremlinQuery
 	 *            the textual representation of the computed query
 	 */
 	@SuppressWarnings("unchecked")
@@ -105,10 +105,10 @@ public class QueryResult implements Iterable<Object> {
 	}
 
 	/**
-	 * Constructs a new {@link QueryResult} from the given
-	 * {@code engineResult} and {@code gremlinScript}.
+	 * Constructs a new {@link QueryResult} from the given {@code engineResult}
+	 * and {@code gremlinScript}.
 	 * <p>
-	 * <b>Note:<b> if {@code engineResult} is an instance of {@link Iterable}
+	 * <b>Note:</b> if {@code engineResult} is an instance of {@link Iterable}
 	 * this constructor iterates it to wrap the results. In case of
 	 * Gremlin-based queries this can be costly because {@link GremlinPipeline}
 	 * content is computed when iterated.
@@ -147,12 +147,16 @@ public class QueryResult implements Iterable<Object> {
 	/**
 	 * Returns a casted value created from the single query result.
 	 * <p>
-	 * Note: this method throws a {@link MogwaiCoreException} if the query returns
-	 * more than one result, see {@link #getResults() instead}.
+	 * Note: this method throws a {@link MogwaiCoreException} if the query
+	 * returns more than one result, see {@link #getResults() instead}.
 	 * 
+	 * @param <T>
+	 *            the type to cast the result of the query
 	 * @return a casted value created from the single query result
 	 * @throws MogwaiCoreException
 	 *             if the query returns more than one result
+	 * @throws ClassCastException
+	 *             if the result cannot be cast to {@code <T>}
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getResult() throws MogwaiCoreException {
