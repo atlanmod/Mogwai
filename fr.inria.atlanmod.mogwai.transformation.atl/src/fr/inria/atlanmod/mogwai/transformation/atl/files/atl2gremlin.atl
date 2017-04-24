@@ -194,6 +194,24 @@ rule matchedRule2transform {
 		)
 }
 
+rule lazyRule2transform {
+	from 
+		s : ATL!LazyMatchedRule
+	to
+		f : Gremlin!MethodDeclaration (
+			name <- s.name,
+			parameters <- Sequence{s.inPattern.elements->first().varName},
+			instructions <- Sequence{}
+				.union(s.outPattern.elements)
+				.append(thisModule.createResolveProxyCall(s))
+				.union(s.outPattern.elements->collect(e | e.bindings))
+				.append(ret)
+		),
+		ret : Gremlin!ReturnStatement (
+			value <- s.outPattern.elements->first().varName
+		)
+}
+
 -- Translates a matched rule that defines a guard into a sequence of steps.
 -- The OCL guard is translated into a FilterStep that filters allInstances result
 -- according to the guard.
