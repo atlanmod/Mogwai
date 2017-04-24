@@ -21,44 +21,36 @@ import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOpti
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
-public class BaseJava2KDM {
+public class JavaModelCreator {
 
 	public static void main(String[] args) throws IOException {
-		Java2KDMRunner runner = new Java2KDMRunner();
-		runner.enableATLDebug();
+		createMogwaiResource(URI.createURI("materials/java/set1.xmi"));
+	}
+
+	public static void createMogwaiResource(URI xmiURI) throws IOException {
 		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
 				BlueprintsPersistenceBackendFactory.getInstance());
-
-		ResourceSet rs = new ResourceSetImpl();
-		Resource targetMM = rs
-				.getResource(
-						URI.createFileURI("/home/gdaniel/Bureau/eclipse-mog/eclipse/workspace/org.eclipse.gmt.modisco.omg.kdm/model/kdm.ecore"),
-						true);
-		EPackage targetPackage = (EPackage) targetMM.getContents().get(0);
-		EPackage.Registry.INSTANCE.put(targetPackage.getNsURI(), targetPackage);
-		for (EPackage subPackage : targetPackage.getESubpackages()) {
-			EPackage.Registry.INSTANCE.put(subPackage.getNsURI(), subPackage);
-		}
 		EPackage.Registry.INSTANCE.put(JavaPackage.eINSTANCE.getNsURI(), JavaPackage.eINSTANCE);
-
+		String resourceName = xmiURI.segment(xmiURI.segmentCount() - 1);
+		resourceName = resourceName.substring(0, resourceName.indexOf('.'));
+		System.out.println(resourceName);
 		ResourceSet rSet = new ResourceSetImpl();
-		rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 		rSet.getResourceFactoryRegistry().getProtocolToFactoryMap()
 				.put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
-//		Resource input = rSet.createResource(URI.createURI("materials/java/set1.xmi"));
-//		input.load(Collections.emptyMap());
-		Resource input = rSet.createResource(BlueprintsURI.createFileURI(new File("materials/java/neoemf/set1.graphdb")));
+		rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+		Resource xmiResource = rSet.createResource(xmiURI);
+		xmiResource.load(Collections.emptyMap());
+
+		MogwaiLogger.info("XMI size: {0}", size(xmiResource));
+
+		Resource neoemfResource = rSet.createResource(BlueprintsURI.createFileURI(new File("materials/java/neoemf/" + resourceName
+				+ ".graphdb")));
 		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder().autocommit().asMap();
-		input.load(options);
-		
-		long begin = System.currentTimeMillis();
-		Resource out = runner.transform(input);
-		out.setURI(URI.createURI("materials/kdm/set1.xmi"));
-		out.save(Collections.emptyMap());
-		long end = System.currentTimeMillis();
-		MogwaiLogger.info("Input size: {0}", size(input));
-		MogwaiLogger.info("Output size: {0}", size(out));
-		MogwaiLogger.info("Execution time: {0}ms", (end-begin));
+		neoemfResource.save(options);
+		neoemfResource.getContents().addAll(xmiResource.getContents());
+		neoemfResource.save(options);
+
+		MogwaiLogger.info("NeoEMF size: {0}", size(neoemfResource));
 	}
 
 	private static int size(Resource r) {
@@ -69,5 +61,4 @@ public class BaseJava2KDM {
 		}
 		return size;
 	}
-
 }

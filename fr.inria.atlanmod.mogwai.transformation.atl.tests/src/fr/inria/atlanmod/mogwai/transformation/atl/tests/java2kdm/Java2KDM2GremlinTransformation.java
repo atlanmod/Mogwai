@@ -8,20 +8,13 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.gmt.modisco.java.emf.JavaPackage;
-import org.eclipse.gmt.modisco.omg.kdm.kdm.KdmPackage;
+import org.eclipse.gmt.modisco.java.JavaPackage;
 
 import fr.inria.atlanmod.mogwai.gremlin.printers.MogwaiATLGremlinPrinter;
 import fr.inria.atlanmod.mogwai.transformation.atl.files.ATL2Gremlin;
 
-public class Java2KDM2Gremlin {
+public class Java2KDM2GremlinTransformation {
 
-	/***
-	 * Compile Class2Relational into a Gremlin resource
-	 * 
-	 * @param args
-	 * @throws IOException
-	 */
 	public static void main(String[] args) throws IOException {
 
 		ATL2Gremlin atl2gremlin = new ATL2Gremlin();
