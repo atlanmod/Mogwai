@@ -28,11 +28,11 @@ package fr.inria.atlanmod.mogwai.datastore;
  *
  * @param <D>
  *            the type of the {@code data source} to use
- * @param <T>
+ * @param <E>
  *            the type representing {@code model elements}
- * @param <L>
+ * @param <R>
  *            the type representing {@code references}
- * @param <P>
+ * @param <A>
  *            the type representing {@code attributes' value}
  * 
  * @author Gwendal DANIEL
@@ -223,7 +223,7 @@ public interface ModelDatastore<D, E, R, A> {
 	 * <p>
 	 * <b>Note:</b> this method only checks if {@code from} is a strict instance
 	 * of the {@code type}. To check if {@code from} is an instance of
-	 * {@code type} or any of its subclasses see {@link #isKindOf(E, String)}.
+	 * {@code type} or any of its subclasses see {@link #isKindOf(Object, String)}.
 	 * 
 	 * @param from
 	 *            the element to check the type of

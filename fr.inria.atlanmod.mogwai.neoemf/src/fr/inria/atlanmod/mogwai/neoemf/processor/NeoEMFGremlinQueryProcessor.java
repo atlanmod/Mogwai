@@ -25,6 +25,8 @@ public class NeoEMFGremlinQueryProcessor extends GremlinQueryProcessor implement
 	 * {@inheritDoc}
 	 * 
 	 * @param backend
+	 *            the {@link BlueprintsPersistenceBackend} used to reify the
+	 *            results
 	 */
 	@Override
 	public void setBackend(BlueprintsPersistenceBackend backend) {
@@ -33,8 +35,7 @@ public class NeoEMFGremlinQueryProcessor extends GremlinQueryProcessor implement
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public QueryResult process(GremlinQuery query, List<ModelDatastore> datastores,
-			Map<String, Object> options) {
+	public QueryResult process(GremlinQuery query, List<ModelDatastore> datastores, Map<String, Object> options) {
 		checkArgument(datastores.size() == 1, "Cannot process the query: expected 1 datastore, found {0}",
 				datastores.size());
 		checkArgument(datastores.get(0) instanceof NeoEMFGraphDatastore,

@@ -69,6 +69,8 @@ public interface MogwaiResource extends PersistentResource {
 	 * compute a transformation in-place see
 	 * {@link #transform(MogwaiQuery, Map)}.
 	 * 
+	 * @param <D>
+	 *            the datastore where to store the results of the transformation
 	 * @param transformation
 	 *            the {@link MogwaiQuery} representing the transformation to
 	 *            compute
@@ -174,8 +176,7 @@ public interface MogwaiResource extends PersistentResource {
 	 *             if the resource is not able to compute the provided
 	 *             {@code query}
 	 */
-	NeoEMFQueryResult query(MogwaiQuery query, Object parameters, Map<String, Object> options)
-			throws QueryException;
+	NeoEMFQueryResult query(MogwaiQuery query, Object parameters, Map<String, Object> options) throws QueryException;
 
 	/**
 	 * Convenient method for development purpose, should not be used to modify
