@@ -6,7 +6,10 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
@@ -121,7 +124,12 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	@Override
 	public Iterable<Vertex> allOfType(String typeName) {
 		Vertex metaClassVertex = getMetaclassVertex(typeName);
-		return metaClassVertex.getVertices(Direction.IN, KEY_INSTANCE_OF);
+		if(nonNull(metaClassVertex)) {
+			return metaClassVertex.getVertices(Direction.IN, KEY_INSTANCE_OF);
+		}
+		else {
+			return Collections.emptyList();
+		}
 	}
 
 	/**
@@ -288,7 +296,18 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		if (property instanceof Iterable) {
 			return (Iterable<Object>) property;
 		} else {
-			return Arrays.asList(property);
+			System.out.println(attName + ": " + property);
+			if(isNull(property)) { 
+				if(attName.equals("visibility")) {
+					property = "none";
+				}
+				if(attName.equals("inheritance")) {
+					property = "none";
+				}
+			}
+			List<Object> l = Arrays.asList(property);
+			System.out.println(l.toString());
+			return l;
 		}
 	}
 
@@ -297,7 +316,14 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 */
 	@Override
 	public Vertex setAtt(Vertex from, String attName, Object attValue) {
-		from.setProperty(attName, attValue);
+		if(isNull(attValue)) {
+			if(attName.equals("isAbstract")) {
+				from.setProperty(attName, false);
+			}
+		}
+		else {
+			from.setProperty(attName, attValue);
+		}
 		return from;
 	}
 
