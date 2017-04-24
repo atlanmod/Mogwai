@@ -22,7 +22,7 @@ final t = gremlinHelper;
 
 
 def log(String msg) {
-	enableDebug = false;
+	enableDebug = true;
 	if(enableDebug) {
 		println(msg);
 	}
@@ -80,7 +80,7 @@ Vertex.metaClass.getRef =
 Vertex.metaClass.setAtt = 
 { 
 	String attName, Object attValue -> 
-		log("setAtt(" + attName + "," + attValue + ")"); 
+		log("setAtt(" + attName + ", " + attValue + ")"); 
 		m.setAtt(delegate, attName, attValue); 
 }
 
@@ -239,10 +239,24 @@ Iterable.metaClass.difference =
 Iterable.metaClass.getString = 
 {
 	->
-		log("toString");
-		String value = delegate.next().toString();
-		if(delegate.hasNext()) {
+		log("getString");
+		Iterator i = delegate.iterator();
+		String value = i.next().toString();
+		log("getString result: " + value);
+		if(i.hasNext()) {
 			throw new IllegalStateException("Calling toString on an Iterable that contain more than one element");
 		}
 		value;
+}
+
+Iterable.metaClass.undefined = 
+{
+	->
+		log("undefined");
+		Iterator i = delegate.iterator();
+		boolean result = true;
+		if(i.hasNext()) {
+			result = i.next() != null;
+		}
+		result;
 }
