@@ -19,25 +19,25 @@ module javaToKdm; -- Module Template
 create OUT : kdm from IN : java;
 
 --create the Extends for class or interface extension
-lazy rule CreateExtends{
-	from
-		javaExtends:java!TypeAccess
-	to
-		kdmExtends:kdm!Extends(
-			from <- javaExtends.refImmediateComposite(),
-			to <- javaExtends->getType()
-		)
-}
-
-lazy rule CreateImplements{
-	from
-		javaImplements:java!TypeAccess
-	to 
-		kdmImplements:kdm!Implements (
-			from <- javaImplements.refImmediateComposite(),
-			to <- javaImplements->getType()
-		)
-}
+--lazy rule CreateExtends{
+--	from
+--		javaExtends:java!TypeAccess
+--	to
+--		kdmExtends:kdm!Extends(
+--			from <- javaExtends.refImmediateComposite(),
+--			to <- javaExtends->getType()
+--		)
+--}
+--
+--lazy rule CreateImplements{
+--	from
+--		javaImplements:java!TypeAccess
+--	to 
+--		kdmImplements:kdm!Implements (
+--			from <- javaImplements.refImmediateComposite(),
+--			to <- javaImplements->getType()
+--		)
+--}
 
 rule ModelToModel{
 	from
@@ -100,82 +100,82 @@ rule PackageToPackage {
 --
 -- ===================================================== ---
 
-abstract rule ASTNodeToAbstractCodeElement {
-	from src :java!ASTNode
-	to tgt :kdm!AbstractCodeElement (
-		-- comments
-		comment <- src.comments,
-		-- source file management
-		source <- sourceRef
-	)
-	,sourceRef : kdm!SourceRef (
-		language <- 'java'
-		,region <- sourceRegion
-	)
-	,sourceRegion : kdm!SourceRegion (
-		language <- 'java'
-		,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
-					src.originalClassFile
-				else
-					src.originalCompilationUnit
-				endif
-	)
-}
+--abstract rule ASTNodeToAbstractCodeElement {
+--	from src :java!ASTNode
+--	to tgt :kdm!AbstractCodeElement (
+--		-- comments
+--		comment <- src.comments,
+--		-- source file management
+--		source <- sourceRef
+--	)
+--	,sourceRef : kdm!SourceRef (
+--		language <- 'java'
+--		,region <- sourceRegion
+--	)
+--	,sourceRegion : kdm!SourceRegion (
+--		language <- 'java'
+--		,file <- if (src.originalCompilationUnit.oclIsUndefined()) then
+--					src.originalClassFile
+--				else
+--					src.originalCompilationUnit
+--				endif
+--	)
+--}
 
-abstract rule NamedElementToAbstractCodeElement extends ASTNodeToAbstractCodeElement {
-	from src :java!NamedElement
-	to tgt :kdm!AbstractCodeElement (
-		name <- src.name
-	)
-}
+--abstract rule NamedElementToAbstractCodeElement extends ASTNodeToAbstractCodeElement {
+--	from src :java!NamedElement
+--	to tgt :kdm!AbstractCodeElement (
+--		name <- src.name
+--	)
+--}
+--
+--abstract rule BodyDeclarationToAbstractCodeElement extends NamedElementToAbstractCodeElement {
+--	from src :java!BodyDeclaration
+--	to tgt :kdm!AbstractCodeElement (
+--		-- attributes to store additional information (visibility stays redundant)
+--		attribute <- if (src.modifier.oclIsUndefined()) then
+--						Sequence{}
+--					else
+--						src.modifier
+--					endif
+--		,
+--		codeRelation <- src.annotations
+--	)
+--}
 
-abstract rule BodyDeclarationToAbstractCodeElement extends NamedElementToAbstractCodeElement {
-	from src :java!BodyDeclaration
-	to tgt :kdm!AbstractCodeElement (
-		-- attributes to store additional information (visibility stays redundant)
-		attribute <- if (src.modifier.oclIsUndefined()) then
-						Sequence{}
-					else
-						src.modifier
-					endif
-		,
-		codeRelation <- src.annotations
-	)
-}
-
-abstract rule AbstractTypeDeclarationToDatatype extends BodyDeclarationToAbstractCodeElement {
-	from src :java!AbstractTypeDeclaration
-	to tgt :kdm!Datatype (
-		-- imports
-		codeRelation <- 
-		if (src.originalCompilationUnit.oclIsUndefined()) then
-					Sequence{}
-				else
-					src.originalCompilationUnit.imports
-				endif
-		-- inheritance
-		,codeRelation <- src.superInterfaces->collect(e | 
-			if (src.oclIsTypeOf(java!ClassDeclaration)) then 
-				thisModule.CreateImplements(e)
-			else
-				thisModule.CreateExtends(e)
-			endif) -- end collect
-		-- annotations
-		,
-		codeRelation <- src.annotations
-		-- TODO use superClass
-		-- comments
-		,comment <- src.commentsBeforeBody
-		,comment <- src.commentsAfterBody
-		,comment <- src.comments 
-		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
-						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
-					Sequence{}
-				else -- top level type declaration -> retrieving CU heading comments
-					src.originalCompilationUnit.comments
-				endif
-	)
-}
+--abstract rule AbstractTypeDeclarationToDatatype extends BodyDeclarationToAbstractCodeElement {
+--	from src :java!AbstractTypeDeclaration
+--	to tgt :kdm!Datatype (
+--		-- imports
+--		codeRelation <- 
+--		if (src.originalCompilationUnit.oclIsUndefined()) then
+--					Sequence{}
+--				else
+--					src.originalCompilationUnit.imports
+--				endif
+--		-- inheritance
+--		,codeRelation <- src.superInterfaces->collect(e | 
+--			if (src.oclIsTypeOf(java!ClassDeclaration)) then 
+--				thisModule.CreateImplements(e)
+--			else
+--				thisModule.CreateExtends(e)
+--			endif) -- end collect
+--		-- annotations
+--		,
+--		codeRelation <- src.annotations
+--		-- TODO use superClass
+--		-- comments
+--		,comment <- src.commentsBeforeBody
+--		,comment <- src.commentsAfterBody
+--		,comment <- src.comments 
+--		,comment <- if (src.originalCompilationUnit.oclIsUndefined()
+--						or not src.refImmediateComposite().oclIsTypeOf(java!Package)) then
+--					Sequence{}
+--				else -- top level type declaration -> retrieving CU heading comments
+--					src.originalCompilationUnit.comments
+--				endif
+--	)
+--}
 
 rule ModifierToAttribute {
 	from src : java!Modifier
@@ -200,7 +200,7 @@ rule ModifierToAttribute {
 
 -- On hold (Q2)
 -- Transfoms a class declaration into a class unit
-rule ClassDeclarationToClassUnit extends AbstractTypeDeclarationToDatatype {
+rule ClassDeclarationToClassUnit { --extends AbstractTypeDeclarationToDatatype {
 	from src:java!ClassDeclaration (
 			src.typeParameters.isEmpty()
 	)
@@ -233,7 +233,7 @@ rule ClassDeclarationToClassUnit extends AbstractTypeDeclarationToDatatype {
 }
 
 -- Transfoms a class declaration into a class unit
-rule AnonymousClassDeclarationToClassUnit extends ASTNodeToAbstractCodeElement {
+rule AnonymousClassDeclarationToClassUnit { -- extends ASTNodeToAbstractCodeElement {
 	from src:java!AnonymousClassDeclaration
 --	using{
 --		-- For attributes, we have to separate FieldDeclaration and VariableDeclarationFragment usage

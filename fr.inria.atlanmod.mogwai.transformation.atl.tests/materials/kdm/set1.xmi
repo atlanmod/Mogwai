@@ -7,33 +7,13 @@
           <codeElement xsi:type="code:Package" name="atlanmod">
             <codeElement xsi:type="code:Package" name="kyanos">
               <codeElement xsi:type="code:Package" name="tests">
-                <codeElement xsi:type="code:ClassUnit" name="TestCreateResource" isAbstract="false">
-                  <attribute tag="export" value="public"/>
-                  <source language="java">
-                    <region language="java"/>
-                  </source>
-                </codeElement>
-                <codeElement xsi:type="code:ClassUnit" name="TestXmi" isAbstract="false">
-                  <attribute tag="export" value="public"/>
-                  <source language="java">
-                    <region language="java"/>
-                  </source>
-                </codeElement>
-                <codeElement xsi:type="code:ClassUnit" name="KyanosTestsPlugin" isAbstract="false">
-                  <attribute tag="export" value="public"/>
-                  <source language="java">
-                    <region language="java"/>
-                  </source>
-                  <codeRelation xsi:type="code:Implements" from="/0/@model.0/@codeElement.0/@codeElement.0/@codeElement.0/@codeElement.0/@codeElement.0/@codeElement.2"/>
-                </codeElement>
+                <codeElement xsi:type="code:ClassUnit" isAbstract="false"/>
+                <codeElement xsi:type="code:ClassUnit" isAbstract="false"/>
+                <codeElement xsi:type="code:ClassUnit" isAbstract="false"/>
               </codeElement>
               <codeElement xsi:type="code:Package" name="core"/>
               <codeElement xsi:type="code:Package" name="util">
-                <codeElement xsi:type="code:ClassUnit" name="KyanosURI">
-                  <source language="java">
-                    <region language="java"/>
-                  </source>
-                </codeElement>
+                <codeElement xsi:type="code:ClassUnit"/>
               </codeElement>
             </codeElement>
           </codeElement>
@@ -46,93 +26,29 @@
     <model xsi:type="code:CodeModel" name="externals">
       <codeElement xsi:type="code:Package" name="java">
         <codeElement xsi:type="code:Package" name="io">
-          <codeElement xsi:type="code:ClassUnit" name="File">
-            <source language="java">
-              <region language="java"/>
-            </source>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.0/@codeElement.0"/>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.0/@codeElement.0"/>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="IOException">
-            <source language="java">
-              <region language="java"/>
-            </source>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="OutputStream">
-            <source language="java">
-              <region language="java"/>
-            </source>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.0/@codeElement.2"/>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.0/@codeElement.2"/>
-          </codeElement>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
         </codeElement>
         <codeElement xsi:type="code:Package" name="lang">
-          <codeElement xsi:type="code:ClassUnit" name="Exception">
-            <source language="java">
-              <region language="java"/>
-            </source>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="Throwable">
-            <source language="java">
-              <region language="java"/>
-            </source>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.1/@codeElement.1"/>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="String">
-            <source language="java">
-              <region language="java"/>
-            </source>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.1/@codeElement.2"/>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.1/@codeElement.2"/>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.1/@codeElement.2"/>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="Object">
-            <source language="java">
-              <region language="java"/>
-            </source>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="System">
-            <source language="java">
-              <region language="java"/>
-            </source>
-          </codeElement>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
         </codeElement>
         <codeElement xsi:type="code:Package" name="nio">
           <codeElement xsi:type="code:Package" name="file">
-            <codeElement xsi:type="code:ClassUnit" name="Paths">
-              <source language="java">
-                <region language="java"/>
-              </source>
-            </codeElement>
+            <codeElement xsi:type="code:ClassUnit"/>
           </codeElement>
         </codeElement>
         <codeElement xsi:type="code:Package" name="text">
-          <codeElement xsi:type="code:ClassUnit" name="MessageFormat">
-            <source language="java">
-              <region language="java"/>
-            </source>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="Format">
-            <source language="java">
-              <region language="java"/>
-            </source>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.3/@codeElement.1"/>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.3/@codeElement.1"/>
-          </codeElement>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
         </codeElement>
         <codeElement xsi:type="code:Package" name="util">
-          <codeElement xsi:type="code:ClassUnit" name="Collections">
-            <source language="java">
-              <region language="java"/>
-            </source>
-          </codeElement>
-          <codeElement xsi:type="code:ClassUnit" name="UUID">
-            <source language="java">
-              <region language="java"/>
-            </source>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.4/@codeElement.1"/>
-            <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.0/@codeElement.4/@codeElement.1"/>
-          </codeElement>
+          <codeElement xsi:type="code:ClassUnit"/>
+          <codeElement xsi:type="code:ClassUnit"/>
         </codeElement>
       </codeElement>
       <codeElement xsi:type="code:Package" name="org">
@@ -140,62 +56,31 @@
           <codeElement xsi:type="code:Package" name="emf">
             <codeElement xsi:type="code:Package" name="common">
               <codeElement xsi:type="code:Package" name="util">
-                <codeElement xsi:type="code:ClassUnit" name="URI">
-                  <source language="java">
-                    <region language="java"/>
-                  </source>
-                </codeElement>
+                <codeElement xsi:type="code:ClassUnit"/>
               </codeElement>
               <codeElement xsi:type="code:Package" name="notify">
                 <codeElement xsi:type="code:Package" name="impl">
-                  <codeElement xsi:type="code:ClassUnit" name="NotifierImpl">
-                    <source language="java">
-                      <region language="java"/>
-                    </source>
-                  </codeElement>
-                  <codeElement xsi:type="code:ClassUnit" name="BasicNotifierImpl">
-                    <source language="java">
-                      <region language="java"/>
-                    </source>
-                    <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.1/@codeElement.0/@codeElement.0/@codeElement.0/@codeElement.1/@codeElement.0/@codeElement.1"/>
-                  </codeElement>
+                  <codeElement xsi:type="code:ClassUnit"/>
+                  <codeElement xsi:type="code:ClassUnit"/>
                 </codeElement>
               </codeElement>
             </codeElement>
             <codeElement xsi:type="code:Package" name="ecore">
               <codeElement xsi:type="code:Package" name="resource">
                 <codeElement xsi:type="code:Package" name="impl">
-                  <codeElement xsi:type="code:ClassUnit" name="ResourceSetImpl">
-                    <source language="java">
-                      <region language="java"/>
-                    </source>
-                    <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.1/@codeElement.0/@codeElement.0/@codeElement.1/@codeElement.0/@codeElement.0/@codeElement.0"/>
-                  </codeElement>
+                  <codeElement xsi:type="code:ClassUnit"/>
                 </codeElement>
               </codeElement>
               <codeElement xsi:type="code:Package" name="util">
-                <codeElement xsi:type="code:ClassUnit" name="EcoreUtil">
-                  <source language="java">
-                    <region language="java"/>
-                  </source>
-                </codeElement>
+                <codeElement xsi:type="code:ClassUnit"/>
               </codeElement>
             </codeElement>
           </codeElement>
         </codeElement>
         <codeElement xsi:type="code:Package" name="junit">
           <codeElement xsi:type="code:Package" name="rules">
-            <codeElement xsi:type="code:ClassUnit" name="TemporaryFolder">
-              <source language="java">
-                <region language="java"/>
-              </source>
-            </codeElement>
-            <codeElement xsi:type="code:ClassUnit" name="ExternalResource">
-              <source language="java">
-                <region language="java"/>
-              </source>
-              <codeRelation xsi:type="code:Implements" from="/0/@model.1/@codeElement.1/@codeElement.1/@codeElement.0/@codeElement.1"/>
-            </codeElement>
+            <codeElement xsi:type="code:ClassUnit"/>
+            <codeElement xsi:type="code:ClassUnit"/>
           </codeElement>
         </codeElement>
         <codeElement xsi:type="code:Package" name="osgi">
@@ -211,6 +96,7 @@
   <kdm:Attribute tag="export" value="public"/>
   <kdm:Attribute tag="export" value="public"/>
   <kdm:Attribute tag="export" value="public"/>
+  <kdm:Attribute tag="export" value="public"/>
   <kdm:Attribute tag="export" value="none"/>
   <kdm:Attribute tag="export" value="none"/>
   <kdm:Attribute tag="export" value="none"/>
@@ -226,6 +112,7 @@
   <kdm:Attribute tag="export" value="public"/>
   <kdm:Attribute tag="export" value="public"/>
   <kdm:Attribute tag="export" value="public"/>
+  <kdm:Attribute tag="export" value="public"/>
   <kdm:Attribute tag="export" value="none"/>
   <kdm:Attribute tag="export" value="none"/>
   <kdm:Attribute tag="export" value="none"/>
@@ -233,6 +120,7 @@
   <kdm:Attribute tag="export" value="none"/>
   <kdm:Attribute tag="export" value="none"/>
   <kdm:Attribute tag="export" value="none"/>
+  <kdm:Attribute tag="export" value="public"/>
   <kdm:Attribute tag="export" value="public final"/>
   <kdm:Attribute tag="export" value="private"/>
   <kdm:Attribute tag="export" value="none"/>
