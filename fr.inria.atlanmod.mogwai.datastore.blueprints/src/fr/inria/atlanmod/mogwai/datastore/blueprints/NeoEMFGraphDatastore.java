@@ -107,7 +107,7 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		this.graph = (IdGraph<KeyIndexableGraph>) graph;
 		this.metaclassIndex = this.graph.getIndex(KEY_METACLASSES, Vertex.class);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -129,14 +129,14 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 * <p>
 	 * This method is not implemented in NeoEMF mapping because class hierarchy
 	 * is not stored at the database level. This will be fixed in a future
-	 * release of <a href="www.neoemf.com">NeoEMF</a>.
-	 * 
-	 * @throws UnsupportedOperationException
-	 *             when called, will be fixed in a future release of NeoEMF
+	 * release of <a href="www.neoemf.com">NeoEMF</a>. The current
+	 * implementation delegates to {@link #allOfType(String)} and logs a
+	 * warning.
 	 */
 	@Override
 	public Iterable<Vertex> allOfKind(String typeName) {
-		MogwaiLogger.warn("{0} doesn't support allOfKind mapping, computing allOfType instead", this.getClass().getName());
+		MogwaiLogger.warn("{0} doesn't support allOfKind mapping, computing allOfType instead", this.getClass()
+				.getName());
 		return allOfType(typeName);
 	}
 
