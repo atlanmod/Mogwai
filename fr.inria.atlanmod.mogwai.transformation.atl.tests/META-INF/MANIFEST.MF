@@ -21,6 +21,7 @@ Require-Bundle: fr.inria.atlanmod.neoemf.core;bundle-version="1.0.2",
  fr.inria.atlanmod.mogwai.neoemf;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.common;bundle-version="1.0.0",
- org.eclipse.gmt.modisco.java;bundle-version="1.0.0"
+ org.eclipse.gmt.modisco.java;bundle-version="1.0.0",
+ kdm.neoemf;bundle-version="0.1.0"
 Bundle-Vendor: AtlanMod - Inria
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

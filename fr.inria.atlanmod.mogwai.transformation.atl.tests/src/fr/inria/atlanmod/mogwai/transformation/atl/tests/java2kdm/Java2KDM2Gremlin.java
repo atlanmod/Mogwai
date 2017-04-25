@@ -43,7 +43,7 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class Java2KDM2Gremlin {
 
-	private static String ATL_URI = "materials/java2kdm/java2kdm_simple.atl";
+	public static String ATL_URI = "materials/java2kdm/java2kdm_simple.atl";
 
 	public static void main(String[] args) throws IOException {
 
@@ -84,9 +84,6 @@ public class Java2KDM2Gremlin {
 		mogwaiResource.transform(query, options);
 		
 		mogwaiResource.save(neoOpts);
-		
-		EObject root = mogwaiResource.getEObject("OUTROOT");
-		System.out.println(root);
 		
 		mogwaiResource.close();
 
