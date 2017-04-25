@@ -111,6 +111,48 @@ rule equality2steps2 {
 		)
 }
 
+rule leftBooleanEquality2steps extends equality2steps2 {
+	from
+		oclEquals : ATL!OperatorCallExp (
+			oclEquals.getOpName() = '='
+			and oclEquals.source.oclIsKindOf(ATL!BooleanExp)
+		)
+	to
+		eqExp : Gremlin!EqualityExpression(
+			left <- oclEquals.source.getFirstInstruction(),
+			right <- gHelper
+		),
+		gHelper : Gremlin!VariableAccess(
+			name <- 'gHelper',
+			nextElement <- bFromCall
+		),
+		bFromCall : Gremlin!CustomMethodCall(
+			name <- 'booleanFrom',
+			params <- oclEquals.source.getFirstInstruction()
+		)
+}
+
+rule rightBooleanEquality2steps extends equality2steps2 {
+	from
+		oclEquals : ATL!OperatorCallExp (
+			oclEquals.getOpName() = '='
+			and oclEquals.arguments->first().oclIsKindOf(ATL!BooleanExp)
+		)
+	to
+		eqExp : Gremlin!EqualityExpression(
+			left <- gHelper,
+			right <- oclEquals.arguments->first().getFirstInstruction()
+		),
+		gHelper : Gremlin!VariableAccess(
+			name <- 'gHelper',
+			nextElement <- bFromCall
+		),
+		bFromCall : Gremlin!CustomMethodCall(
+			name <- 'booleanFrom',
+			params <- oclEquals.source.getFirstInstruction()
+		)
+}
+
 rule plus2steps {
 	from
 		oclPlus : ATL!OperatorCallExp(
