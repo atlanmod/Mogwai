@@ -294,7 +294,7 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		if (property instanceof Iterable) {
 			return (Iterable<Object>) property;
 		} else {
-			System.out.println(attName + ": " + property);
+//			System.out.println(attName + ": " + property);
 			if (isNull(property)) {
 				if (attName.equals("visibility")) {
 					property = "none";
@@ -307,7 +307,7 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 				}
 			}
 			List<Object> l = Arrays.asList(property);
-			System.out.println(l.toString());
+//			System.out.println(l.toString());
 			return l;
 		}
 	}
