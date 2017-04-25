@@ -304,6 +304,9 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 				if(attName.equals("inheritance")) {
 					property = "none";
 				}
+				if(attName.equals("proxy")) {
+					property = "false";
+				}
 			}
 			List<Object> l = Arrays.asList(property);
 			System.out.println(l.toString());
