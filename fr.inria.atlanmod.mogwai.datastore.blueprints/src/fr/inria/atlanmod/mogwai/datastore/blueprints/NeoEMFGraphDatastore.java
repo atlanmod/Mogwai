@@ -6,7 +6,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +47,7 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * @author Gwendal DANIEL
  *
  */
-public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge, Object>,
+public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge, Object>,
 		PipesDatastore<Graph, Vertex, Edge, Object> {
 
 	private static final String KEY_NAME = "name";
@@ -123,11 +122,10 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 */
 	@Override
 	public Iterable<Vertex> allOfType(String typeName) {
-		Vertex metaClassVertex = getMetaclassVertex(typeName);
-		if(nonNull(metaClassVertex)) {
+		Vertex metaClassVertex = getMetaclassVertex(typeName, null);
+		if (nonNull(metaClassVertex)) {
 			return metaClassVertex.getVertices(Direction.IN, KEY_INSTANCE_OF);
-		}
-		else {
+		} else {
 			return Collections.emptyList();
 		}
 	}
@@ -170,7 +168,7 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 		Vertex vertex = graph.addVertex(null);
 		long endNewVertex = System.currentTimeMillis();
 		newInstanceAddVertex += (endNewVertex - endGetR);
-		Vertex eClassVertex = getMetaclassVertex(typeName);
+		Vertex eClassVertex = getMetaclassVertex(typeName, typePackageNsURI);
 		if (isNull(eClassVertex)) {
 			eClassVertex = createMetaclassVertex(typeName, typePackageNsURI);
 			metaclassIndex.put(KEY_NAME, typeName, eClassVertex);
@@ -297,14 +295,14 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 			return (Iterable<Object>) property;
 		} else {
 			System.out.println(attName + ": " + property);
-			if(isNull(property)) { 
-				if(attName.equals("visibility")) {
+			if (isNull(property)) {
+				if (attName.equals("visibility")) {
 					property = "none";
 				}
-				if(attName.equals("inheritance")) {
+				if (attName.equals("inheritance")) {
 					property = "none";
 				}
-				if(attName.equals("proxy")) {
+				if (attName.equals("proxy")) {
 					property = "false";
 				}
 			}
@@ -319,12 +317,11 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 */
 	@Override
 	public Vertex setAtt(Vertex from, String attName, Object attValue) {
-		if(isNull(attValue)) {
-			if(attName.equals("isAbstract")) {
+		if (isNull(attValue)) {
+			if (attName.equals("isAbstract")) {
 				from.setProperty(attName, false);
 			}
-		}
-		else {
+		} else {
 			from.setProperty(attName, attValue);
 		}
 		return from;
@@ -374,7 +371,7 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 	 *         a new {@link Vertex} if it doesn't exist
 	 */
 	private Vertex getOrCreateResourceRoot(String resourceName) {
-		Vertex eObjectMetaclass = getMetaclassVertex("EObject");
+		Vertex eObjectMetaclass = getMetaclassVertex("EObject", null);
 		Iterable<Vertex> resourceRoots = eObjectMetaclass.getVertices(Direction.IN, KEY_INSTANCE_OF);
 		for (Vertex rRoot : resourceRoots) {
 			if (rRoot.getId().equals(resourceName)) {
@@ -388,17 +385,33 @@ public final class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex,
 
 	/**
 	 * Returns the {@link Vertex} containing the metaclass information for
-	 * {@code typeName}.
+	 * {@code typeName} and {@code typePackageNsURI}.
+	 * <p>
+	 * If the provided {@code typePackageNsURI} is {@code null} the first
+	 * metaclass matching the provided {@code typeName} is returned.
 	 * 
 	 * @param typeName
 	 *            the name of the metaclass to search
+	 * @param typePackageNsURI
+	 *            the {@code nsURI} of the {@code EPackage} containing the
+	 *            metaclass to search
 	 * @return a {@link Vertex} corresponding to the metaclass, or {@code null}
 	 *         if it doesn't exist in the graph
 	 */
-	private Vertex getMetaclassVertex(final String typeName) {
+	private Vertex getMetaclassVertex(final String typeName, final String typePackageNsURI) {
 		checkNotNull(metaclassIndex,
 				"Metaclass index cannot be found, call setGraph before starting graph manipulation");
-		return Iterables.getOnlyElement(metaclassIndex.get(KEY_NAME, typeName), null);
+		if (isNull(typePackageNsURI)) {
+			return Iterables.getOnlyElement(metaclassIndex.get(KEY_NAME, typeName), null);
+		} else {
+			Iterable<Vertex> metaclasses = metaclassIndex.get(KEY_NAME, typeName);
+			for (Vertex mm : metaclasses) {
+				if (mm.getProperty(KEY_EPACKAGE_NSURI).equals(typePackageNsURI)) {
+					return mm;
+				}
+			}
+			return null;
+		}
 	}
 
 	/**
