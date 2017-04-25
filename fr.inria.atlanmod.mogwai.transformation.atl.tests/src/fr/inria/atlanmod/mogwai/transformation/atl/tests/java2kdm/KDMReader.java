@@ -42,6 +42,14 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class KDMReader {
 	
+	public static final String SET1 = "set1";
+	public static final String SET2 = "set2";
+	public static final String SET3 = "set3";
+	public static final String SET4 = "set4";
+	public static final String SET5 = "set5";
+	
+	public static String THE_SET = SET4;
+	
 	public static void main(String[] args) throws IOException {
 		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
 				BlueprintsPersistenceBackendFactory.getInstance());
@@ -70,7 +78,7 @@ public class KDMReader {
 				.put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
 
 		Resource neoResource = rSet.createResource(BlueprintsURI.createFileURI(new File(
-				"materials/java/neoemf/set1.graphdb")));
+				"materials/java/neoemf/"+THE_SET+".graphdb")));
 		Map<String, Object> neoOpts= BlueprintsNeo4jOptionsBuilder.newBuilder().autocommit().asMap();
 		neoResource.load(neoOpts);
 		

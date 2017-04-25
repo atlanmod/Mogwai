@@ -2,26 +2,11 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests.java2kdm;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAnnotation;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -29,6 +14,8 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.gmt.modisco.java.JavaPackage;
 
+import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.AutocommitNeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResourceFactory;
 import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
@@ -45,6 +32,14 @@ public class Java2KDM2Gremlin {
 
 	public static String ATL_URI = "materials/java2kdm/java2kdm_simple.atl";
 
+	public static final String SET1 = "set1";
+	public static final String SET2 = "set2";
+	public static final String SET3 = "set3";
+	public static final String SET4 = "set4";
+	public static final String SET5 = "set5";
+	
+	public static String THE_SET = SET4;
+	
 	public static void main(String[] args) throws IOException {
 
 		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
@@ -71,11 +66,8 @@ public class Java2KDM2Gremlin {
 		MogwaiQuery query = ATLQueryBuilder.newBuilder().fromURI(URI.createURI(ATL_URI))
 				.sourcePackage(JavaPackage.eINSTANCE).targetPackage(targetPackage).build();
 
-		Map<String, Object> options = new HashMap<>();
-		options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
-
 		Resource neoResource = rSet.createResource(BlueprintsURI.createFileURI(new File(
-				"materials/java/neoemf/set1.graphdb")));
+				"materials/java/neoemf/"+THE_SET+".graphdb")));
 		Map<String, Object> neoOpts= BlueprintsNeo4jOptionsBuilder.newBuilder()
 				.autocommit()
 				.weakCache()
@@ -84,12 +76,47 @@ public class Java2KDM2Gremlin {
 		
 		MogwaiResource mogwaiResource = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)neoResource);
 		
+		Map<String, Object> options = new HashMap<>();
+		options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
+		/*
+		 * Set this option when manipulating large graphs, this enable operation auto commit
+		 * that reduces the memory consumption by committing changes every n operations
+		 */
+		options.put(MogwaiResource.NEOEMF_MODEL_DATASTORE, new AutocommitNeoEMFGraphDatastore(mogwaiResource
+				.getBackend().getGraph(), 100000));
+
+		long beginMem = getMem();
+		MogwaiLogger.info("Start Memory: {0}MB", beginMem);
 		mogwaiResource.transform(query, options);
 		
+		
+		long begin = System.currentTimeMillis();
 		mogwaiResource.save(neoOpts);
+		long end = System.currentTimeMillis();
+		long endMem = getMem();
+		MogwaiLogger.info("Saving done in {0}ms", (end-begin));
+		MogwaiLogger.info("End Memory: {0}MB", endMem);
+		MogwaiLogger.info("Memory Consumption: {0}MB", (endMem - beginMem));
 		
 		mogwaiResource.close();
 
+	}
+	
+	private static final int MB = 1024*1024;
+	
+	private static long getMem() {
+		for(int i = 0; i < 5; i++) {
+			System.gc();
+		}
+		try {
+			Object[] t = new Object[200000000];
+		} catch(Throwable e) {
+			MogwaiLogger.info("Memory cleaned");
+		}
+		for(int i = 0; i < 5; i++) {
+			System.gc();
+		}
+		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / MB;
 	}
 
 }

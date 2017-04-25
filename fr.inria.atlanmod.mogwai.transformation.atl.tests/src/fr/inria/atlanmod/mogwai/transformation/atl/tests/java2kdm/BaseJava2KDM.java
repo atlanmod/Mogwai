@@ -81,7 +81,14 @@ public class BaseJava2KDM {
 //		Resource input = rSet.createResource(URI.createURI("materials/java/set1.xmi"));
 //		input.load(Collections.emptyMap());
 		Resource input = rSet.createResource(BlueprintsURI.createFileURI(new File("materials/java/neoemf/"+THE_SET+".graphdb")));
-		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder().autocommit().asMap();
+		Map<String, Object> options = BlueprintsNeo4jOptionsBuilder.newBuilder()
+				/*
+				 *  Having a high autocommit chunk makes the VM crash if we have a big
+				 *  output model.
+				 */
+				.autocommit(1000)
+//				.autocommit()
+				.asMap();
 		input.load(options);
 		
 		Resource neoOutput = rSet.createResource(BlueprintsURI.createFileURI(new File("materials/kdm/neoemf/"+THE_SET+".graphdb")));
@@ -96,15 +103,18 @@ public class BaseJava2KDM {
 //		out.save(Collections.emptyMap());
 		MogwaiLogger.info("Saving output");
 		long beginSave = System.currentTimeMillis();
+//		long midMem = getMem();
 		neoOutput.getContents().addAll(out.getContents());
+		neoOutput.save(options);
 		long end = System.currentTimeMillis();
 		long endMem = getMem();
 		MogwaiLogger.info("Input size: {0}", size(input));
-		MogwaiLogger.info("Output size: {0}", size(out));
+		MogwaiLogger.info("Output size: {0}", size(neoOutput));
 		MogwaiLogger.info("Execution time: {0}ms", (end-begin));
 		MogwaiLogger.info("Save() time: {0}ms", (end-beginSave));
 		MogwaiLogger.info("Memory used: {0}MB", endMem);
 		MogwaiLogger.info("Memory Consumption: {0}MB", endMem - beginMem);
+//		MogwaiLogger.info("Memory Consumption (middle): {0}MB", midMem - beginMem);
 	}
 
 	private static void register(EPackage ePackage) {

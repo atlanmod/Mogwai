@@ -1,5 +1,6 @@
 package fr.inria.atlanmod.mogwai.transformation.atl.tests.java2kdm;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.stream.StreamSupport;
@@ -19,7 +20,6 @@ import kdm.source.SourcePackage;
 import kdm.structure.StructurePackage;
 import kdm.ui.UiPackage;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -36,6 +36,14 @@ import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class ATLKDMReader {
+	
+	public static final String SET1 = "set1";
+	public static final String SET2 = "set2";
+	public static final String SET3 = "set3";
+	public static final String SET4 = "set4";
+	public static final String SET5 = "set5";
+	
+	public static String THE_SET = SET3;
 	
 	public static void main(String[] args) throws IOException {
 		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
@@ -64,7 +72,7 @@ public class ATLKDMReader {
 		rSet.getResourceFactoryRegistry().getProtocolToFactoryMap()
 				.put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
 
-		Resource r = rSet.createResource(URI.createURI("materials/kdm/set1.xmi"));
+		Resource r = rSet.createResource(BlueprintsURI.createFileURI(new File("materials/kdm/neoemf/"+THE_SET+".graphdb")));
 		r.load(Collections.emptyMap());
 		
 		
