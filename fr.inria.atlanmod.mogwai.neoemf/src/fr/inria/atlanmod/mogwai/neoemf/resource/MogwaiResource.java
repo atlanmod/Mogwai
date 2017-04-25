@@ -33,6 +33,11 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 public interface MogwaiResource extends PersistentResource {
 
 	/**
+	 * The options key used to specify the NeoEMF model datastore to use.
+	 */
+	public static final String NEOEMF_MODEL_DATASTORE = "neoemf.model.datastore";
+	
+	/**
 	 * Computes the provided {@code transformation} with the given
 	 * {@code options}.
 	 * <p>
