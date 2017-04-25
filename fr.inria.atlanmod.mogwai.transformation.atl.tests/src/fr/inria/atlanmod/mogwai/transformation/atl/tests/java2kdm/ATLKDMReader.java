@@ -2,10 +2,12 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests.java2kdm;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.stream.StreamSupport;
 
 import kdm.action.ActionPackage;
 import kdm.build.BuildPackage;
 import kdm.code.CodePackage;
+import kdm.code.Package;
 import kdm.conceptual.ConceptualPackage;
 import kdm.core.CorePackage;
 import kdm.data.DataPackage;
@@ -65,16 +67,43 @@ public class ATLKDMReader {
 		Resource r = rSet.createResource(URI.createURI("materials/kdm/set1.xmi"));
 		r.load(Collections.emptyMap());
 		
+		
+		
 		EObject top = r.getContents().get(0);
 		MogwaiLogger.info("Found {0}", top.eClass().getName());
 		
 		Segment s = (Segment)top;
+		Iterable<EObject> allContents = s::eAllContents;
+		MogwaiLogger.info("Resource contains {0} elements", StreamSupport.stream(allContents.spliterator(), false).count());
 		MogwaiLogger.info("Segment content size: {0}", s.eContents().size());
 		for(EObject e : s.eContents()) {
 			MogwaiLogger.info("\t{0}", e);
 			MogwaiLogger.info("\teContents size: {0}", e.eContents().size());
 			for(EObject ee : e.eContents()) {
-				MogwaiLogger.info("\t\t{0}", ee);
+				if(ee instanceof Package) {
+					MogwaiLogger.info("\t\tPackage {0}", ((Package) ee).getName());
+				}
+				else { 
+					MogwaiLogger.info("\t\t{0}", ee);
+				}
+				MogwaiLogger.info("\t\teContents size: {0}", ee.eContents().size());
+				for(EObject eee : ee.eContents()) {
+					if(eee instanceof Package) {
+						MogwaiLogger.info("\t\t\tPackage {0}", ((Package) eee).getName());
+					}
+					else {
+						MogwaiLogger.info("\t\t\t{0}", eee);
+					}
+					MogwaiLogger.info("\t\t\teContents size: {0}", eee.eContents().size());
+					for(EObject eeee : eee.eContents()) {
+						if(eeee instanceof Package) {
+							MogwaiLogger.info("\t\t\t\tPackage {0}", ((Package) eeee).getName());
+						}
+						else {
+							MogwaiLogger.info("\t\t\t{0}", eeee);
+						}
+					}
+				}
 			}
 		}
 		

@@ -76,7 +76,10 @@ public class Java2KDM2Gremlin {
 
 		Resource neoResource = rSet.createResource(BlueprintsURI.createFileURI(new File(
 				"materials/java/neoemf/set1.graphdb")));
-		Map<String, Object> neoOpts= BlueprintsNeo4jOptionsBuilder.newBuilder().autocommit().asMap();
+		Map<String, Object> neoOpts= BlueprintsNeo4jOptionsBuilder.newBuilder()
+				.autocommit()
+				.weakCache()
+				.asMap();
 		neoResource.load(neoOpts);
 		
 		MogwaiResource mogwaiResource = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)neoResource);

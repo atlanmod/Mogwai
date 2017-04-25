@@ -23,8 +23,16 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class JavaModelCreator {
 
+	public static final String SET1 = "materials/java/set1.xmi";
+	public static final String SET2 = "materials/java/set2.xmi";
+	public static final String SET3 = "materials/java/set3.xmi";
+	public static final String SET4 = "materials/java/set4.xmi";
+	public static final String SET5 = "materials/java/set5.xmi";
+	
+	public static String THE_SET = SET4;
+	
 	public static void main(String[] args) throws IOException {
-		createMogwaiResource(URI.createURI("materials/java/set1.xmi"));
+		createMogwaiResource(URI.createURI(THE_SET));
 	}
 
 	public static void createMogwaiResource(URI xmiURI) throws IOException {

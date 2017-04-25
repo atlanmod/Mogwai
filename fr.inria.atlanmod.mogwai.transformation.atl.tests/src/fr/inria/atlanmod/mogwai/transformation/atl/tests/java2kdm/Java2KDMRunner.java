@@ -142,7 +142,7 @@ public class Java2KDMRunner {
 				out = outputResource;
 			} else {
 				extractor.extract(outModel, os, null);
-				System.out.println(os.toString());
+//				System.out.println(os.toString());
 				out = rSet.createResource(URI.createURI("toutput"));
 				
 				try {

@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.StreamSupport;
 
 import kdm.action.ActionPackage;
 import kdm.build.BuildPackage;
 import kdm.code.CodePackage;
+import kdm.code.Package;
 import kdm.conceptual.ConceptualPackage;
 import kdm.core.CorePackage;
 import kdm.data.DataPackage;
@@ -86,9 +88,37 @@ public class KDMReader {
 			MogwaiLogger.info("\t{0}", e);
 			MogwaiLogger.info("\teContents size: {0}", e.eContents().size());
 			for(EObject ee : e.eContents()) {
-				MogwaiLogger.info("\t\t{0}", ee);
+				if(ee instanceof Package) {
+					MogwaiLogger.info("\t\tPackage {0}", ((Package) ee).getName());
+				}
+				else { 
+					MogwaiLogger.info("\t\t{0}", ee);
+				}
+				MogwaiLogger.info("\t\teContents size: {0}", ee.eContents().size());
+				for(EObject eee : ee.eContents()) {
+					if(eee instanceof kdm.code.Package) {
+						MogwaiLogger.info("\t\t\tPackage {0}", ((kdm.code.Package) eee).getName());
+					}
+					else {
+						MogwaiLogger.info("\t\t\t{0}", eee);
+					}
+					MogwaiLogger.info("\t\t\teContents size: {0}", eee.eContents().size());
+					for(EObject eeee : eee.eContents()) {
+						if(eeee instanceof Package) {
+							MogwaiLogger.info("\t\t\t\tPackage {0}", ((Package) eeee).getName());
+						}
+						else {
+							MogwaiLogger.info("\t\t\t{0}", eeee);
+						}
+					}
+				}
 			}
 		}
+		
+		MogwaiLogger.info("Resource: {0}", s.eResource());
+		Iterable<EObject> allContents = s::eAllContents;
+		long allContentsSize = StreamSupport.stream(allContents.spliterator(), false).count();
+		MogwaiLogger.info("Resource allContents size: {0}", allContentsSize);
 		
 //		List<EObject> allCodeModels = mogwaiResource.getAllInstances(CodePackage.eINSTANCE.getCodeModel());
 //		long cmSize = StreamSupport.stream(allCodeModels.spliterator(), false).filter(e -> e.eClass().getEPackage().getNsURI().contains("kdm")).count();
