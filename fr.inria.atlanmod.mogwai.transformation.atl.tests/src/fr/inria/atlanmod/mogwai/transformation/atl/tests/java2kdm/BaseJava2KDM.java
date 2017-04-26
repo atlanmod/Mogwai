@@ -2,7 +2,6 @@ package fr.inria.atlanmod.mogwai.transformation.atl.tests.java2kdm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
 
 import kdm.action.ActionPackage;
@@ -18,7 +17,6 @@ import kdm.source.SourcePackage;
 import kdm.structure.StructurePackage;
 import kdm.ui.UiPackage;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -32,6 +30,7 @@ import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 public class BaseJava2KDM {
@@ -86,7 +85,7 @@ public class BaseJava2KDM {
 				 *  Having a high autocommit chunk makes the VM crash if we have a big
 				 *  output model.
 				 */
-				.autocommit(1000)
+				.autocommit(100)
 //				.autocommit()
 				.asMap();
 		input.load(options);
@@ -101,10 +100,13 @@ public class BaseJava2KDM {
 		Resource out = runner.transform(input);
 //		out.setURI(URI.createURI("materials/kdm/set1.xmi"));
 //		out.save(Collections.emptyMap());
-		MogwaiLogger.info("Saving output");
+		MogwaiLogger.info("Closing input");
+		((PersistentResource)input).close();
+		MogwaiLogger.info("Moving output");
 		long beginSave = System.currentTimeMillis();
 //		long midMem = getMem();
 		neoOutput.getContents().addAll(out.getContents());
+		MogwaiLogger.info("Saving output");
 		neoOutput.save(options);
 		long end = System.currentTimeMillis();
 		long endMem = getMem();
