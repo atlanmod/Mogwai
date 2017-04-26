@@ -13,7 +13,7 @@ import org.eclipse.ocl.ecore.ExpressionInOCL;
 import org.eclipse.ocl.ecore.OCLExpression;
 
 import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
-import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
+import fr.inria.atlanmod.mogwai.util.OCLImporter;
 
 /**
  * A {@link MogwaiQuery} implementation that wraps an OCL query to compute.
@@ -127,7 +127,7 @@ public class OCLQuery extends MogwaiQuery {
 	 */
 	protected void fromString(String string) {
 		checkNotNull(context, "Cannot build a String based MogwaiOCLQuery without explicit context");
-		fromOCLExpression(MogwaiUtil.parseInlineOCL(string, context));
+		fromOCLExpression(OCLImporter.parseInlineOCL(string, context));
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class OCLQuery extends MogwaiQuery {
 	 * @see OCLQuery#OCLQuery(Object, EClassifier)
 	 */
 	protected void fromURI(URI uri) {
-		fromConstraint(MogwaiUtil.parseOCL(uri));
+		fromConstraint(OCLImporter.parseOCL(uri));
 	}
 
 	/**
