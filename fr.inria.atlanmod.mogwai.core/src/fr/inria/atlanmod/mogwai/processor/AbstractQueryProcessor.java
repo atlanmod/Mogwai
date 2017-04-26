@@ -246,11 +246,12 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 	protected void initGremlinScriptRunner(List<ModelDatastore> datastores) {
 		checkArgument(datastores.size() >= 1,
 				"Cannot init the script runner: expected at least 1 datastore, found {0}", datastores.size());
-		GremlinQuery query = (GremlinQuery) GremlinQueryBuilder.newBuilder().fromFile(initGremlinFile)
-				.bind(ModelDatastore.BINDING_NAME, datastores.get(0))
-				.bind(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance()).build();
-		GremlinScriptRunner.getInstance().runGremlinScript(new GremlinStringWrapper(query.getGremlinScript()),
-				query.getBindings(), Collections.<String, Object> emptyMap());
+		GremlinQuery query = (GremlinQuery) GremlinQueryBuilder.newBuilder().fromFile(initGremlinFile).build();
+		Map<String, Object> bindings = new HashMap<>();
+		bindings.put(ModelDatastore.BINDING_NAME, datastores.get(0));
+		bindings.put(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance());
+		GremlinScriptRunner.getInstance().runGremlinScript(new GremlinStringWrapper(query.getInput()),
+				bindings, Collections.<String, Object> emptyMap());
 	}
 
 	/**

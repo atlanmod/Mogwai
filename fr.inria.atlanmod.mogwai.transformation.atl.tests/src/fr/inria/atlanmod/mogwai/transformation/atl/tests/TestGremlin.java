@@ -38,7 +38,7 @@ public class TestGremlin {
 
 		MogwaiQuery gremlinInit = GremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/init.gremlin"))
-				.bind(ModelDatastore.BINDING_NAME, mapping)
+//				.bind(ModelDatastore.BINDING_NAME, mapping)
 				.build();
 
 		mogResource.query(gremlinInit);
@@ -46,9 +46,10 @@ public class TestGremlin {
 
 		MogwaiQuery gremlinQuery = GremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/test.gremlin"))
-				.bind(ModelDatastore.BINDING_NAME, mapping)
+//				.bind(ModelDatastore.BINDING_NAME, mapping)
 				.build();
-
+		
+		// Put bindings here if we need them
 		QueryResult result = mogResource.query(gremlinQuery);
 		System.out.println(result.getResults());
 	}

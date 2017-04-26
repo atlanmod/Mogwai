@@ -52,11 +52,12 @@ public class LargeTransformationSample {
 		// Create Tables from Classes
 		MogwaiQuery gremlinQuery2 = GremlinQueryBuilder.newBuilder()
 				.fromFile(new File("materials/ClassDiagram2Relational/ClassDiagram2Relational.gremlin"))
-				.bind("graphHelper", helper)
+//				.bind("graphHelper", helper)
 				.build();
 		
 		// Print the created Tables since they are returned by the script
 		// Note: returning the updated/created objects is not mandatory
+		// PUT BINDINGS IN THE OPTIONS HERE IF WE NEED THEM
 		showResult(mogResource.query(gremlinQuery2), mogResource);
 
 		

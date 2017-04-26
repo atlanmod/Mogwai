@@ -77,7 +77,7 @@ public class GremlinQueryProcessor extends AbstractQueryProcessor<GremlinQuery> 
 	 */
 	@Override
 	protected GremlinScript createGremlinScript(GremlinQuery query, Map<String, Object> options) {
-		return new GremlinStringWrapper(query.getGremlinScript());
+		return new GremlinStringWrapper(query.getInput());
 	}
 
 }

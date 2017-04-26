@@ -5,19 +5,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 
+/**
+ * A simple {@link MogwaiQuery} implementation that wraps a Gremlin script to
+ * compute.
+ * 
+ * @author Gwendal DANIEL
+ *
+ */
 public class GremlinQuery extends MogwaiQuery {
 
+	/**
+	 * The literal representation of the Gremlin script.
+	 */
 	private String literalQuery;
-	private Map<String, Object> bindings;
-
-	public GremlinQuery(Object input, Map<String, Object> bindings) throws QueryException {
+	
+	public GremlinQuery(Object input) throws QueryException {
 		super(input);
-		this.bindings = bindings;
 		if (input instanceof String) {
 			fromString((String) input);
 		} else if (input instanceof URI) {
@@ -54,14 +61,6 @@ public class GremlinQuery extends MogwaiQuery {
 		} catch (IOException e) {
 			throw new QueryException(e.getMessage());
 		}
-	}
-
-	public String getGremlinScript() {
-		return literalQuery;
-	}
-
-	public Map<String, Object> getBindings() {
-		return bindings;
 	}
 
 	@Override
