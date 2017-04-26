@@ -1,6 +1,6 @@
 package fr.inria.atlanmod.mogwai.query;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 
 public class QueryException extends MogwaiCoreException {
 

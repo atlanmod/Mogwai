@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import com.tinkerpop.blueprints.Vertex;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.processor.AbstractQueryProcessor;
 import fr.inria.atlanmod.mogwai.query.QueryResult;

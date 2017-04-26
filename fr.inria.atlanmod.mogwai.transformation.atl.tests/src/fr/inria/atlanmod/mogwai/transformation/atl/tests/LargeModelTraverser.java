@@ -8,7 +8,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 
 import ClassDiagram.Attribute;
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 

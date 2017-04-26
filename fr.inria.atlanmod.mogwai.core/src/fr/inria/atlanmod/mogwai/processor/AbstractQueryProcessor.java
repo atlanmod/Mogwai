@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.common.util.MogwaiQueryUtil;
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.gremlin.impl.GremlinScriptImpl;

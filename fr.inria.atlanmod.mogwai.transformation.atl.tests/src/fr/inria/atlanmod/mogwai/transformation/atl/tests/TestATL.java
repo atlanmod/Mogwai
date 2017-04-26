@@ -7,7 +7,7 @@ import java.util.Collections;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.neo4j.kernel.impl.util.FileUtils;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;

@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import ClassDiagram.ClassDiagramPackage;
 import ClassDiagram.Named;
 import ClassDiagram.NamedElement;
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;

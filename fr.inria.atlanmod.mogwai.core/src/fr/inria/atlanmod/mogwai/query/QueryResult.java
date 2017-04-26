@@ -10,7 +10,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import com.google.common.collect.Iterables;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import static java.util.Objects.isNull;
 

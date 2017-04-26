@@ -3,7 +3,7 @@ package fr.inria.atlanmod.mogwai.neoemf.resource;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;

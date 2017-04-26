@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ocl.ecore;bundle-version="3.3.100";visibility:=reexp
  fr.inria.atlanmod.mogwai.transformation;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.common;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.transformation.atl.helper
-Export-Package: fr.inria.atlanmod.mogwai.core,
+Export-Package: fr.inria.atlanmod.mogwai.core.exception,
  fr.inria.atlanmod.mogwai.processor,
  fr.inria.atlanmod.mogwai.query,
  fr.inria.atlanmod.mogwai.query.builder,

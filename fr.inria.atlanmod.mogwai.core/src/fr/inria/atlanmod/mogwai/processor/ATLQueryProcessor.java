@@ -10,7 +10,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.atl.common.ATL.Module;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinter;
