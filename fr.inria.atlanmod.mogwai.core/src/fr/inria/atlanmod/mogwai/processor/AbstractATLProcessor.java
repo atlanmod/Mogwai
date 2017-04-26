@@ -18,6 +18,8 @@ import fr.inria.atlanmod.mogwai.transformation.Transformation;
  *
  * @param <Q>
  *            the kind of {@link MogwaiQuery} this processor supports
+ *            
+ * @see AbstractQueryProcessor
  * 
  * @author Gwendal DANIEL
  */

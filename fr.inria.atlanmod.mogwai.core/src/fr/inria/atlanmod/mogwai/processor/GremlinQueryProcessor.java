@@ -15,6 +15,8 @@ import fr.inria.atlanmod.mogwai.query.QueryResult;
 /**
  * A simple processor that executes a {@link GremlinQuery}.
  * 
+ * @see AbstractQueryProcessor
+ * 
  * @author Gwendal DANIEL
  *
  */

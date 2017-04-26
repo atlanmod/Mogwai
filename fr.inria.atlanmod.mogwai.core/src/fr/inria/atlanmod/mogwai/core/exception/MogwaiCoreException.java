@@ -19,7 +19,7 @@ public class MogwaiCoreException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructs a new {@link MogwaiCoreException} with the provided
+	 * Constructs a new {@link MogwaiCoreException} from the provided
 	 * {@code message} and {@code args}.
 	 * 
 	 * @param message

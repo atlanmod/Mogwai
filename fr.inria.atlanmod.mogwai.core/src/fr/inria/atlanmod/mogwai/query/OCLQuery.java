@@ -12,27 +12,67 @@ import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.ExpressionInOCL;
 import org.eclipse.ocl.ecore.OCLExpression;
 
+import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
 import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
 
+/**
+ * A {@link MogwaiQuery} implementation that wraps an OCL query to compute.
+ * <p>
+ * Instances of this class can be created using the fluent
+ * {@link OCLQueryBuilder} API.
+ * 
+ * @see MogwaiQuery
+ * @see OCLQueryBuilder
+ * 
+ * @author Gwendal DANIEL
+ *
+ */
 public class OCLQuery extends MogwaiQuery {
 
-	private Constraint constraint;
-	private EClassifier context;
-	private EcoreFactory eFactory = EcoreFactory.eINSTANCE;
+	/**
+	 * The OCL {@link EcoreFactory} instance used to create constraint mocks.
+	 * <p>
+	 * This factory is used in {@link #fromOCLExpression(OCLExpression)} to wrap
+	 * the provided expression within a {@link Constraint}.
+	 * 
+	 * @see #fromOCLExpression(OCLExpression)
+	 */
+	private static EcoreFactory eFactory = EcoreFactory.eINSTANCE;
 
 	/**
-	 * Create a new MogwaiOCLQuery instance
+	 * The OCL {@link Constraint} to compute.
+	 */
+	private Constraint constraint;
+
+	/**
+	 * The context of the constraint to compute.
+	 */
+	private EClassifier context;
+
+	/**
+	 * Constructs a new {@link OCLQuery} from the given {@code input}.
+	 * <p>
+	 * {@link OCLQuery} supports {@link String}, {@link URI}, {@link Constraint}
+	 * , and {@link OCLExpression} inputs. If another {@code input} type is
+	 * provided the constructor throws a {@link QueryException}.
+	 * <p>
+	 * Instances of {@link OCLQuery} can be created using the fluent
+	 * {@link OCLQueryBuilder} API.
 	 * 
 	 * @param input
-	 *            the OCL query to compute. It can be represented using an URI,
-	 *            a String, a {@link Constraint}, or an {@link OCLExpression}
+	 *            an {@link Object} containing the input query
 	 * @param context
-	 *            an optional parameter that specifies the context of the OCL
-	 *            query.
+	 *            the {@link EClassifier} representing the context of the OCL
+	 *            expression to compute
+	 * 
+	 * @throws QueryException
+	 *             if {@code input} doesn't contain an OCL expression or if it
+	 *             cannot be cast to a supported input type
+	 *
+	 * @see OCLQueryBuilder
 	 */
-	public OCLQuery(Object input, EClassifier context) {
+	public OCLQuery(Object input, EClassifier context) throws QueryException {
 		super(input);
-		// The context has not been set by a parent call
 		this.context = context;
 		if (input instanceof String) {
 			fromString((String) input);
@@ -43,44 +83,99 @@ public class OCLQuery extends MogwaiQuery {
 		} else if (input instanceof OCLExpression) {
 			fromOCLExpression((OCLExpression) input);
 		} else {
-			throw new QueryException("Unknown input type " + input);
+			throw new QueryException("Cannot construct a {0} from the provided input ({1})", OCLQuery.class.getName(),
+					input.getClass().getName());
 		}
 	}
 
 	/**
-	 * @return the context of the query
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getInput() {
+		return constraint.toString();
+	}
+
+	/**
+	 * Returns the {@link EClassifier} representing the context of the query to
+	 * compute.
+	 * 
+	 * @return the {@link EClassifier} representing the context of the query to
+	 *         compute
 	 */
 	public EClassifier getContext() {
 		return context;
 	}
 
 	/**
-	 * @return the constraint embedded in the query
+	 * Returns the {@link Constraint} representation of the query to compute.
+	 * 
+	 * @return the {@link Constraint} representation of the query to compute
 	 */
 	public Constraint getConstraint() {
 		return constraint;
 	}
 
+	/**
+	 * Sets the internal constraint representation from the provided
+	 * {@code string}.
+	 * 
+	 * @param string
+	 *            the {@link String} representation of the OCL expression
+	 * 
+	 * @see OCLQuery#OCLQuery(Object, EClassifier)
+	 */
 	protected void fromString(String string) {
 		checkNotNull(context, "Cannot build a String based MogwaiOCLQuery without explicit context");
 		fromOCLExpression(MogwaiUtil.parseInlineOCL(string, context));
 	}
 
+	/**
+	 * Sets the internal constraint representation by parsing the content of
+	 * {@code uri}.
+	 * 
+	 * @param uri
+	 *            the {@link URI} containing the OCL expression
+	 * 
+	 * @see OCLQuery#OCLQuery(Object, EClassifier)
+	 */
 	protected void fromURI(URI uri) {
 		fromConstraint(MogwaiUtil.parseOCL(uri));
 	}
 
-	private void fromConstraint(Constraint constraint) {
+	/**
+	 * Sets the internal constraint representation from the provided
+	 * {@code constraint}.
+	 * 
+	 * @param constraint
+	 *            the {@link Constraint} to compute
+	 * 
+	 * @throws QueryException
+	 *             if the provided {@code constraint} defines a different
+	 *             context as the one used to construct the {@link OCLQuery}
+	 *
+	 * @see OCLQuery#OCLQuery(Object, EClassifier)
+	 */
+	private void fromConstraint(Constraint constraint) throws QueryException {
 		this.constraint = (Constraint) constraint;
 		EClassifier constraintContext = constraint.getSpecification().getContextVariable().getType();
 		if (context != null && !Objects.equals(context, constraintContext)) {
-			throw new QueryException("Conflicting context types: " + context.getName() + " vs. "
-					+ constraintContext.getName());
+			throw new QueryException("Conflicting context types, found {0}, expected {1}", constraintContext.getName(),
+					context.getName());
 		} else {
 			this.context = constraintContext;
 		}
 	}
 
+	/**
+	 * Sets the internal constraint representation from the provided
+	 * {@code oclExpression}.
+	 * 
+	 * @param oclExpression
+	 *            the {@link OCLExpression} to compute
+	 *
+	 * @see OCLQuery#OCLQuery(Object, EClassifier)
+	 */
 	private void fromOCLExpression(OCLExpression oclExpression) {
 		checkNotNull(context, "Cannot build an OCLExpression based MogwaiOCLQuery without an explicit context");
 		constraint = eFactory.createConstraint();
@@ -88,10 +183,5 @@ public class OCLQuery extends MogwaiQuery {
 		constraint.setSpecification(mockExp);
 		constraint.setName(UUID.randomUUID().toString());
 		mockExp.setBodyExpression((OCLExpression) oclExpression);
-	}
-
-	@Override
-	public String getInput() {
-		return constraint.toString();
 	}
 }
