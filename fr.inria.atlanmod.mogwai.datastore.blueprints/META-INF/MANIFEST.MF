@@ -4,7 +4,8 @@ Bundle-Name: Mogwai Blueprints Datastore Implementations
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.datastore.blueprints
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: fr.inria.atlanmod.mogwai.datastore;bundle-version="1.0.0";visibility:=reexport,
- fr.inria.atlanmod.mogwai.common
+ fr.inria.atlanmod.mogwai.common,
+ org.eclipse.emf.ecore
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: fr.inria.atlanmod.mogwai.datastore.blueprints
 Bundle-Vendor: AtlanMod - Inria

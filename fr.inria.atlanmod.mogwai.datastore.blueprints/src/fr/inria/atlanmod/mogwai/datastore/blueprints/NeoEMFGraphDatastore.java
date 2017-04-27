@@ -8,7 +8,8 @@ import static java.util.Objects.nonNull;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+
+import org.eclipse.emf.ecore.EPackage;
 
 import com.google.common.collect.Iterables;
 import com.tinkerpop.blueprints.Direction;
@@ -24,8 +25,11 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
 
 /**
- * An implementation of {@link EMFtoGraphMapping} representing how NeoEMF maps
- * EMF models into Blueprints databases.
+ * An implementation of {@link ModelDatastore} representing how NeoEMF maps EMF
+ * models into Blueprints databases.
+ * <p>
+ * This mapping also implements {@link PipesDatastore}, making it available in
+ * Gremlin traversals generated from Mogwai transformations.
  * <p>
  * This mapping is based on the one implicitly defined in
  * {@link BlueprintsPersistenceBackend} and {@link DirectWriteBlueprintsStore}.
@@ -35,14 +39,25 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * <p>
  * The current version of NeoEMF (1.0.1) doesn't contain class hierarchy within
  * the database. This lack of metaclass-level information avoid the definition
- * of {@link #allOfKind(String)} and {@link #isKindOf(Vertex, String)} that
- * throw {@link UnsupportedOperationException}. This will be fixed in a future
- * version of NeoEMF.
+ * of {@link #allOfKind(String)} and {@link #isKindOf(Vertex, String)}. In
+ * addition, the underlying database doesn't store attribute default value
+ * information, and thus {@link #getAtt(Vertex, String)} returns {@code null}
+ * for attributes that are set to their default value.
+ * <p>
+ * {@link NeoEMFGraphDatastore} handles these operations with two different
+ * strategies:
+ * <ul>
+ * <li>Delegate to {@link #allOfType(String)} and
+ * {@link #isTypeOf(Vertex, String)} an log a warning message. This is the
+ * default solution when no {@link EPackage} parameter is set.
+ * {@link #getAtt(Vertex, String)} returns {@code null} and client applications
+ * have to retrieve the corresponding default value.</li>
+ * <li>2) Use the provided {@code ePackage} argument of the constructor to
+ * navigate in the metamodel and retrieve missing information.</li>
+ * </ul>
  * 
- * @see BlueprintsPersistenceBackend
- * @see DirectWriteBlueprintsStore
- * @see AbstractMapping
- * @see EMFtoGraphMapping
+ * @see ModelDatastore
+ * @see PipesDatastore
  * 
  * @author Gwendal DANIEL
  *
@@ -50,64 +65,156 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
 public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge, Object>,
 		PipesDatastore<Graph, Vertex, Edge, Object> {
 
+	/**
+	 * The index key used to retrieve metaclass {@link Vertex} elements.
+	 */
 	private static final String KEY_NAME = "name";
 
-	private static final String KEY_INSTANCE_OF = "kyanosInstanceOf";
-
+	/**
+	 * The name of the index entry holding metaclass {@link Vertex} elements.
+	 */
 	private static final String KEY_METACLASSES = "metaclasses";
 
+	/**
+	 * The label used for type conformance {@link Edge}s.
+	 */
+	private static final String KEY_INSTANCE_OF = "kyanosInstanceOf";
+
+	/**
+	 * The property key used to set metaclass name in metaclass {@link Vertex}
+	 * elements.
+	 */
 	private static final String KEY_ECLASS_NAME = "name";
 
+	/**
+	 * The property key used to set the {@code EPackage nsURI} in metaclass
+	 * {@link Vertex} elements.
+	 */
 	private static final String KEY_EPACKAGE_NSURI = "nsURI";
 
+	/**
+	 * The property key used to define the index of an {@link Edge} in an
+	 * ordered collection.
+	 */
 	private static final String POSITION_KEY = "position";
 
+	/**
+	 * The value used as a separator between single and multi-valued attributes.
+	 */
 	private static final String SEPARATOR = ":";
 
+	/**
+	 * The property key used to access the size of an {@link Edge} collection.
+	 */
 	private static final String SIZE_LITERAL = "size";
 
+	/**
+	 * The label used to define {@code container} {@link Edge}s.
+	 */
 	private static final String CONTAINER_LABEL = "eContainer";
 
+	/**
+	 * The label used to define {@code contents} {@link Edge}s.
+	 * <p>
+	 * These {@link Edge}s are used to represent the containment relationship
+	 * between a resource and its top-level elements.
+	 */
 	private static final String CONTENTS_LABEL = "eContents";
 
+	/**
+	 * The property key used to access the opposite containing feature of a
+	 * {@code container} {@link Edge}.
+	 */
 	private static final String CONTAINING_FEATURE_KEY = "containingFeature";
 
+	/**
+	 * The {@link Graph} instance containing the model to manipulate.
+	 */
 	private IdGraph<KeyIndexableGraph> graph;
 
+	/**
+	 * The {@link Index} holding the metaclass {@link Vertex} elements.
+	 */
 	private Index<Vertex> metaclassIndex;
 
 	/**
+	 * The {@link EPackage} containing metamodel information that aren't stored
+	 * in the graph.
+	 * <p>
+	 * This {@link EPackage} is used to compute {@link #allOfKind(String)},
+	 * {@link #isKindOf(Vertex, String)}, and retrieve the default values of
+	 * accessed attributes ({@link #getAtt(Vertex, String)}).
+	 */
+	private EPackage ePackage;
+
+	/**
 	 * Constructs a new {@link NeoEMFGraphDatastore} wrapping the provided
-	 * {@code Graph}.
+	 * {@code graph}.
+	 * <p>
+	 * <b>Note:</b> if there no {@link EPackage} is set the mapping of
+	 * {@link #allOfKind(String)}, {@link #isKindOf(Vertex, String)}, and
+	 * {@link #getAtt(Vertex, String)} will not be complete and may produce
+	 * inconsistent output. Use {@link #NeoEMFGraphDatastore(Graph, EPackage)}
+	 * or {@link #setDataSource(Graph, EPackage)} to set the {@link EPackage} to
+	 * use to retrieve metamodel information that are not stored in the
+	 * database.
 	 * 
 	 * @param graph
 	 *            the underlying {@link Graph} used to store the NeoEMF model
+	 * 
+	 * @see NeoEMFGraphDatastore#NeoEMFGraphDatastore(Graph, EPackage)
+	 * @see NeoEMFGraphDatastore#setDataSource(Graph, EPackage)
 	 */
-	@SuppressWarnings("unchecked")
 	public NeoEMFGraphDatastore(Graph graph) {
-		checkNotNull(graph, "No graph provided");
-		checkArgument(graph instanceof IdGraph, "NeoEMFMapping required a KeyIndexableGraph");
-		this.graph = (IdGraph<KeyIndexableGraph>) graph;
-		this.metaclassIndex = this.graph.getIndex(KEY_METACLASSES, Vertex.class);
+		this(graph, null);
+	}
+
+	/**
+	 * Constructs a new {@link NeoEMFGraphDatastore} wrapping the provided
+	 * {@code graph} and using {@code ePackage} to compute metamodel information that
+	 * aren't stored in the underlying database.
+	 * 
+	 * @param graph
+	 *            the underlying {@link Graph} used to store the NeoEMF model
+	 * @param ePackage
+	 *            the {@link EPackage} containing metamodel information that
+	 *            aren't stored in the graph
+	 */
+	public NeoEMFGraphDatastore(Graph graph, EPackage ePackage) {
+		this.setDataSource(graph, ePackage);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This method also checks the provided graph defines a metaclass index, and
+	 * This method also checks that the provided graph defines a metaclass index, and
 	 * make it available for other methods.
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the provided {@code graph} is not an instance of
 	 *             {@link IdGraph}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setDataSource(final Graph graph) throws IllegalArgumentException {
+		this.setDataSource(graph, null);
+	}
+
+	/**
+	 * Set the {@code graph} to apply this mapping on and the {@code ePackage} used to retrieve metamodel informations.
+	 * <p>
+	 * <b>Note:</b> the previous {@link Graph} will not be accessible anymore.
+	 * <p>
+	 * This method also checks that the provided graph defines a metaclass index, and make it available for other methods.
+	 * @param graph the {@link Graph} to apply this mapping on
+	 * @param ePackage the {@link EPackage} containing metamodel information that aren't stored in the graph
+	 */
+	@SuppressWarnings("unchecked")
+	public void setDataSource(final Graph graph, final EPackage ePackage) throws IllegalArgumentException {
 		checkNotNull(graph, "No graph provided");
 		checkArgument(graph instanceof IdGraph, "NeoEMFMapping required a KeyIndexableGraph");
 		this.graph = (IdGraph<KeyIndexableGraph>) graph;
 		this.metaclassIndex = this.graph.getIndex(KEY_METACLASSES, Vertex.class);
+		this.ePackage = ePackage;
 	}
 
 	/**
@@ -141,9 +248,17 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	 */
 	@Override
 	public Iterable<Vertex> allOfKind(String typeName) {
-		MogwaiLogger.warn("{0} doesn't support allOfKind mapping, computing allOfType instead", this.getClass()
-				.getName());
-		return allOfType(typeName);
+		Iterable<Vertex> result;
+		if(isNull(ePackage)) {
+			MogwaiLogger.warn("{0} doesn't support allOfKind mapping, computing allOfType instead", this.getClass()
+					.getName());
+			result = allOfType(typeName);
+		} else {
+			// TODO
+			MogwaiLogger.error("AllOfKind support with an EPackage is not defined for now");
+			throw new IllegalStateException("AllOfKind support with an EPackage is not defined for now");
+		}
+		return result;
 	}
 
 	/**
@@ -291,25 +406,32 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	@Override
 	public Iterable<Object> getAtt(Vertex from, String attName) {
 		Object property = from.getProperty(attName);
+		Iterable<Object> result;
 		if (property instanceof Iterable) {
-			return (Iterable<Object>) property;
+			result = (Iterable<Object>) property;
 		} else {
-//			System.out.println(attName + ": " + property);
+			// System.out.println(attName + ": " + property);
 			if (isNull(property)) {
-				if (attName.equals("visibility")) {
-					property = "none";
+				if(isNull(ePackage)) {
+//					if (attName.equals("visibility")) {
+//						property = "none";
+//					}
+//					if (attName.equals("inheritance")) {
+//						property = "none";
+//					}
+//					if (attName.equals("proxy")) {
+//						property = "false";
+//					}
 				}
-				if (attName.equals("inheritance")) {
-					property = "none";
-				}
-				if (attName.equals("proxy")) {
-					property = "false";
+				else {
+					// TODO
+					MogwaiLogger.error("getAtt support with an EPackage is not defined for now");
+					throw new IllegalStateException("getAtt support with an EPackage is not defined for now");
 				}
 			}
-			List<Object> l = Arrays.asList(property);
-//			System.out.println(l.toString());
-			return l;
+			result = Arrays.asList(property);
 		}
+		return result;
 	}
 
 	/**
@@ -355,7 +477,15 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	 */
 	@Override
 	public boolean isKindOf(Vertex from, String type) {
-		return isTypeOf(from, type);
+		boolean result;
+		if(isNull(ePackage)) {
+			result = isTypeOf(from, type);
+		}
+		else {
+			MogwaiLogger.error("isKindOf support with an EPackage is not defined for now");
+			throw new IllegalStateException("isKindOf support with an EPackage is not defined for now");
+		}
+		return result;
 	}
 
 	/**
