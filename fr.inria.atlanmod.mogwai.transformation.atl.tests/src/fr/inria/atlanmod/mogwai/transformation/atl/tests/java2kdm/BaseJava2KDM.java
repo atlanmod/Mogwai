@@ -41,9 +41,14 @@ public class BaseJava2KDM {
 	public static final String SET4 = "set4";
 	public static final String SET5 = "set5";
 	
+	public static int MEMORY_CHECK_INTERVAL = 10000;
+	
 	public static String THE_SET = SET4;
 	
 	public static void main(String[] args) throws IOException {
+		
+		
+		
 		Java2KDMRunner runner = new Java2KDMRunner();
 		runner.enableATLDebug();
 		PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
@@ -96,6 +101,8 @@ public class BaseJava2KDM {
 		runner.disableATLDebug();
 		long beginMem = getMem();
 		MogwaiLogger.info("Memory used: {0}MB", beginMem);
+		MemoryChecker checker = new MemoryChecker();
+		checker.start();
 		long begin = System.currentTimeMillis();
 		Resource out = runner.transform(input);
 //		out.setURI(URI.createURI("materials/kdm/set1.xmi"));
@@ -110,12 +117,14 @@ public class BaseJava2KDM {
 		neoOutput.save(options);
 		long end = System.currentTimeMillis();
 		long endMem = getMem();
+		checker.unwatch();
 		MogwaiLogger.info("Input size: {0}", size(input));
 		MogwaiLogger.info("Output size: {0}", size(neoOutput));
 		MogwaiLogger.info("Execution time: {0}ms", (end-begin));
 		MogwaiLogger.info("Save() time: {0}ms", (end-beginSave));
 		MogwaiLogger.info("Memory used: {0}MB", endMem);
 		MogwaiLogger.info("Memory Consumption: {0}MB", endMem - beginMem);
+		MogwaiLogger.info("[Checker] Max Memory Consumption: {0}MB", checker.highest - beginMem);
 //		MogwaiLogger.info("Memory Consumption (middle): {0}MB", midMem - beginMem);
 	}
 
@@ -147,6 +156,35 @@ public class BaseJava2KDM {
 			System.gc();
 		}
 		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / MB;
+	}
+	
+	public static class MemoryChecker extends Thread {
+		
+		private boolean running = true;
+		
+		public long highest = 0;
+		
+		@Override
+		public void run() {
+			MogwaiLogger.info("Memory Checker Started");
+			while(running) {
+				try {
+					sleep(MEMORY_CHECK_INTERVAL);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				long mem = getMem();
+				if(mem > highest) {
+					highest = mem;
+				}
+				MogwaiLogger.info("[Checker] Memory used: {0}", mem);
+			}
+		}
+		
+		public void unwatch() {
+			this.running = false;
+		}
 	}
 
 }

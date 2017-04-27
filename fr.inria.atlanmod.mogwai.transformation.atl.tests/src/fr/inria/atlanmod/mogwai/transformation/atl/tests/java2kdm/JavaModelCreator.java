@@ -29,7 +29,7 @@ public class JavaModelCreator {
 	public static final String SET4 = "materials/java/set4.xmi";
 	public static final String SET5 = "materials/java/set5.xmi";
 	
-	public static String THE_SET = SET4;
+	public static String THE_SET = SET5;
 	
 	public static void main(String[] args) throws IOException {
 		createMogwaiResource(URI.createURI(THE_SET));
