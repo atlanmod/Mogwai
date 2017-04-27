@@ -29,14 +29,14 @@ public class ATLQuery extends MogwaiQuery {
 	/**
 	 * The source {@link EPackage} of the internal ATL transformation.
 	 * <p>
-	 * TODO: handle multiple source {@link EPackage}.
+	 * TODO: handle multiple source {@link EPackage}s.
 	 */
 	private EPackage sourcePackage;
 
 	/**
 	 * The target {@link EPackage} of the internal ATL transformation.
 	 * <p>
-	 * TODO: handle multiple target {@link EPackage}.
+	 * TODO: handle multiple target {@link EPackage}s.
 	 */
 	private EPackage targetPackage;
 
