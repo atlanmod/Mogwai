@@ -19,38 +19,83 @@ import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
+/**
+ * The factory that creates {@link MogwaiResource} instances.
+ * 
+ * @author Gwendal DANIEL
+ *
+ */
 public class MogwaiResourceFactory extends PersistentResourceFactory {
 
+	/**
+	 * Constructs a new {@link MogwaiResourceFactory}.
+	 * <p>
+	 * This method is not public because only one factory should be in memory at
+	 * any time. Use {@link MogwaiResourceFactory#getInstance()} instead.
+	 */
 	protected MogwaiResourceFactory() {
-		
+
 	}
-	
+
+	/**
+	 * Returns the singleton instance of this class.
+	 * 
+	 * @return the singleton instance of this class
+	 */
 	public static MogwaiResourceFactory getInstance() {
 		return Holder.INSTANCE;
 	}
-	
-    @Override
-    public Resource createResource(URI uri) {
-        if(uri.scheme().equals(MogwaiURI.MOGWAI_SCHEME) || uri.scheme().equals(BlueprintsURI.SCHEME)) {
-            return new DefaultMogwaiResource(uri);
-        }
-        else {
-            return super.createResource(uri);
-        }
-    }
 
-	public MogwaiResource decoratePersistentResource(PersistentResource persistentResource)
-			throws MogwaiCoreException {
-		if(DefaultMogwaiResource.isMogwaiCompatible(persistentResource)) {
-			return new MogwaiResourceDecorator(persistentResource);
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This method delegates to {@link PersistentResourceFactory} if the
+	 * provided {@code uri} doesn't use either {@link MogwaiURI#MOGWAI_SCHEME}
+	 * or {@link BlueprintsURI#SCHEME} as its {@code scheme}.
+	 */
+	@Override
+	public Resource createResource(URI uri) {
+		if (uri.scheme().equals(MogwaiURI.MOGWAI_SCHEME) || uri.scheme().equals(BlueprintsURI.SCHEME)) {
+			return new DefaultMogwaiResource(uri);
 		} else {
-			throw new MogwaiCoreException("Resource " + persistentResource.toString() + " is not compatible with Mogwaï");
+			return super.createResource(uri);
 		}
 	}
-	
+
+	/**
+	 * Creates a new {@link MogwaiResource} wrapping the provided
+	 * {@code persistentResource}.
+	 * <p>
+	 * Use this method when {@code persistentResource} is already opened and
+	 * loaded to avoid embedded database multiple connection errors and benefit
+	 * from the setup caches from the underlying database.
+	 * 
+	 * @param persistentResource
+	 *            the {@link PersistentResource} to wrap
+	 * @return a {@link MogwaiResource} wrapping the provided
+	 *         {@code persistentResource}
+	 * @throws MogwaiCoreException
+	 *             if the provided {@code persistentResource} is not compatible
+	 *             with Mogwai
+	 */
+	public MogwaiResource decoratePersistentResource(PersistentResource persistentResource) throws MogwaiCoreException {
+		if (DefaultMogwaiResource.isMogwaiCompatible(persistentResource)) {
+			return new MogwaiResourceDecorator(persistentResource);
+		} else {
+			throw new MogwaiCoreException("Resource " + persistentResource.toString()
+					+ " is not compatible with Mogwaï");
+		}
+	}
+
+	/**
+	 * A lazy holder maintaining a singleton instance of {@link MogwaiResourceFactory}.
+	 */
 	private static class Holder {
 		
+		/**
+		 * The singleton instance of {@link MogwaiResourceFactory}.
+		 */
 		private static final MogwaiResourceFactory INSTANCE = new MogwaiResourceFactory();
 	}
-    
+
 }

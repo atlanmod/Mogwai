@@ -23,20 +23,39 @@ import fr.inria.atlanmod.mogwai.query.QueryException;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.DefaultPersistentResource;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
+/**
+ * The default {@link MogwaiResource} implementation that extends the
+ * {@link PersistentResource} API with query capabilities.
+ * <p>
+ * This resource can be used to load an existing Blueprints database created by
+ * NeoEMF.
+ * 
+ * @author Gwendal DANIEL
+ *
+ */
 public class DefaultMogwaiResource extends DefaultPersistentResource implements MogwaiResource {
 
 	/**
-	 * Returns true if an EMF resource can be used by Mogwaï
+	 * Returns whether an EMF resource can be used by Mogwaï.
 	 * 
 	 * @param resource
 	 *            the resource to check
-	 * @return true if the resource can be used by Mogwaï, false otherwise
+	 * @return {@code true} if the resource can be used by Mogwaï, {@code false}
+	 *         otherwise
 	 */
 	public static boolean isMogwaiCompatible(Resource resource) {
 		return (resource instanceof MogwaiResource) || resource.getURI().scheme().equals(BlueprintsURI.SCHEME);
 	}
 
+	/**
+	 * Constructs a new {@link DefaultMogwaiResource} with the provided
+	 * {@code uri}.
+	 * 
+	 * @param uri
+	 *            the {@link URI} of the resource to create
+	 */
 	public DefaultMogwaiResource(URI uri) {
 		super(uri);
 		assert this.backend instanceof BlueprintsPersistenceBackend;

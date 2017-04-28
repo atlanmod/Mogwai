@@ -362,7 +362,7 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 	}
 
 	/**
-	 * Adapts the raw Gremlin engine.
+	 * Adapts the raw Gremlin engine result.
 	 * 
 	 * @param result
 	 *            the {@link Object} representing the output of the Gremlin
