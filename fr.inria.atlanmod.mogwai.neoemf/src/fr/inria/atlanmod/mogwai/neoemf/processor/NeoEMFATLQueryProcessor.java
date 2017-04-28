@@ -18,7 +18,7 @@ import fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints.InPlaceBlue
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
 /**
- * An NeoEMF-specific {@link ATLQueryProcessor} that computes {@link ATLQuery}
+ * A NeoEMF-specific {@link ATLQueryProcessor} that computes {@link ATLQuery}
  * on top of a NeoEMF resource.
  * <p>
  * This processor automatically sets default query execution options that are
