@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mogwai H2 Datastore Implementations
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.datastore.h2
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: AtlanMod - Inria
+Require-Bundle: fr.inria.atlanmod.mogwai.datastore;bundle-version="1.0.0"
