@@ -33,7 +33,7 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * <li>Attributes are represented as {@link Node}s properties.</li>
  * </ul>
  * <p>
- * <b>Note:</b> {@link DefaultNeo4j3Datastore} handles the same way types and
+ * <b>Note:</b> {@link DefaultEmbeddedNeo4j3Datastore} handles the same way types and
  * kinds, meaning that {@link #allOfKind(String)} is equivalent to
  * {@link #allOfType(String)}, and {@link #isKindOf(String)} is equivalent to
  * {@link #isTypeOf(String)}.
@@ -44,7 +44,7 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * @author Gwendal DANIEL
  *
  */
-public class DefaultNeo4j3Datastore implements ModelDatastore<GraphDatabaseService, Node, Relationship, Object>,
+public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatabaseService, Node, Relationship, Object>,
 		PipesDatastore<GraphDatabaseService, Node, Relationship, Object> {
 
 	/**
@@ -59,7 +59,7 @@ public class DefaultNeo4j3Datastore implements ModelDatastore<GraphDatabaseServi
 	private Transaction transaction;
 
 	/**
-	 * Constructs a new {@link DefaultNeo4j3Datastore} wrapping the provided
+	 * Constructs a new {@link DefaultEmbeddedNeo4j3Datastore} wrapping the provided
 	 * {@code graph}.
 	 * <p>
 	 * A new transaction is started to handle database operations. Note that
@@ -72,7 +72,7 @@ public class DefaultNeo4j3Datastore implements ModelDatastore<GraphDatabaseServi
 	 *            the underlying {@link GraphDatabaseService} used access the
 	 *            model to manipulate
 	 */
-	public DefaultNeo4j3Datastore(GraphDatabaseService graph) {
+	public DefaultEmbeddedNeo4j3Datastore(GraphDatabaseService graph) {
 		this.setDataSource(graph);
 	}
 
