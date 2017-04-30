@@ -169,11 +169,11 @@ public interface ModelDatastore<D, E, R, A> {
 	 * label {@code refName}.
 	 * 
 	 * @param from
-	 *            the incoming element of the reference
+	 *            the incoming element of the reference to remove
 	 * @param refName
-	 *            the label of the reference
+	 *            the label of the reference to remove
 	 * @param to
-	 *            the outgoing element of the reference
+	 *            the outgoing element of the reference to remove
 	 * @param isContainment
 	 *            {@code true} if the reference is a containment, {@code false}
 	 *            otherwise
@@ -189,8 +189,8 @@ public interface ModelDatastore<D, E, R, A> {
 	 *            the element to get the attribute from
 	 * @param attName
 	 *            the name of the attribute to retrieve
-	 * @return an instance of {@code A} representing the attribute(s)
-	 *         {@code attName} of {@code from}
+	 * @return an {@link Iterable} containing instances of {@code A}
+	 *         representing the attribute(s) {@code attName} of {@code from}
 	 */
 	Iterable<A> getAtt(E from, String attName);
 
@@ -223,7 +223,8 @@ public interface ModelDatastore<D, E, R, A> {
 	 * <p>
 	 * <b>Note:</b> this method only checks if {@code from} is a strict instance
 	 * of the {@code type}. To check if {@code from} is an instance of
-	 * {@code type} or any of its subclasses see {@link #isKindOf(Object, String)}.
+	 * {@code type} or any of its subclasses see
+	 * {@link #isKindOf(Object, String)}.
 	 * 
 	 * @param from
 	 *            the element to check the type of
