@@ -24,7 +24,7 @@ final t = gremlinHelper;
 
 
 def log(String msg) {
-	enableDebug = true;
+	enableDebug = false;
 	if(enableDebug) {
 		println(msg);
 	}
@@ -258,7 +258,7 @@ Iterable.metaClass.undefined =
 		Iterator i = delegate.iterator();
 		boolean result = true;
 		if(i.hasNext()) {
-			result = i.next() != null;
+			result = (i.next() == null);
 		}
 		result;
 }
