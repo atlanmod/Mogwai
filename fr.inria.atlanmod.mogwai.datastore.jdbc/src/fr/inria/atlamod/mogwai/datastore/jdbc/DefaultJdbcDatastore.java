@@ -1,5 +1,7 @@
 package fr.inria.atlamod.mogwai.datastore.jdbc;
 
+import static java.util.Objects.nonNull;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -55,9 +57,11 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 	 */
 	@Override
 	public void setDataSource(Connection dataSource) {
-		try {	
-			this.connection.commit();
-			this.connection.close();
+		try {
+			if(nonNull(this.connection)) {
+				this.connection.commit();
+				this.connection.close();
+			}
 			this.connection = dataSource;
 			this.schema = Schema.newSchema();
 			DatabaseMetaData metaData = connection.getMetaData();
