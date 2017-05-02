@@ -26,7 +26,7 @@ final t = gremlinHelper;
 def log(String msg) {
 	enableDebug = false;
 	if(enableDebug) {
-		println(msg);
+		println("[Gremlin runner]" + msg);
 	}
 }
 
