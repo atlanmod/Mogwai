@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.common.util.MogwaiQueryUtil;
 import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
@@ -323,14 +324,16 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 			 */
 			bindings.put(DATASTORE_BINDING, datastores.get(0).getDataSource());
 		} else {
-			// Multiple datastores
-			throw new UnsupportedOperationException("Multiple datastores are not supported for now");
+			MogwaiLogger.warn("Multiple datastore support is experimental");
+			bindings.put(DATASTORE_BINDING, datastores.get(0).getDataSource());
 		}
 		if (datastores.size() == 1) {
-			bindings.put(MODEL_MAPPING_BINDING, datastores.get(0));
+			bindings.put(ModelDatastore.BINDING_NAME_INPUT, datastores.get(0));
+			bindings.put(ModelDatastore.BINDING_NAME_OUTPUT, datastores.get(0));
 		} else {
-			// Multiple mappings
-			throw new UnsupportedOperationException("Multiple mappings are not supported for now");
+			MogwaiLogger.warn("Multiple datastore support is experimental");
+			bindings.put(ModelDatastore.BINDING_NAME_INPUT, datastores.get(0));
+			bindings.put(ModelDatastore.BINDING_NAME_OUTPUT, datastores.get(1));
 		}
 		return bindings;
 	}
