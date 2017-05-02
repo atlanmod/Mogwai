@@ -71,6 +71,8 @@ public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatab
 	 * @param graph
 	 *            the underlying {@link GraphDatabaseService} used access the
 	 *            model to manipulate
+	 *            
+	 * @see #setDataSource(GraphDatabaseService)
 	 */
 	public DefaultEmbeddedNeo4j3Datastore(GraphDatabaseService graph) {
 		this.setDataSource(graph);
@@ -85,6 +87,8 @@ public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatab
 	 * will perform all the requested operations within a single transaction.
 	 * <p>
 	 * TODO handle autocommit feature in a dedicated subclass.
+	 * 
+	 * @see DefaultEmbeddedNeo4j3Datastore#DefaultEmbeddedNeo4j3Datastore(GraphDatabaseService)
 	 */
 	@Override
 	public void setDataSource(GraphDatabaseService dataSource) {
