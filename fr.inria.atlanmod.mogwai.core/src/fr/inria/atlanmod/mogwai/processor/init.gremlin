@@ -22,7 +22,7 @@ final t = gremlinHelper;
 
 
 def log(String msg) {
-	enableDebug = false;
+	enableDebug = true;
 	if(enableDebug) {
 		println(msg);
 	}
@@ -33,7 +33,7 @@ def log(String msg) {
  */
 
 // g.allOfType("myType");
-Graph.metaClass.allOfType = 
+Object.metaClass.allOfType = 
 { 
 	String typeName -> 
 		log("allOfType(" + typeName + ")"); 
@@ -41,7 +41,7 @@ Graph.metaClass.allOfType =
 }
 
 // g.allOfKind("myType");
-Graph.metaClass.allOfKind = 
+Object.metaClass.allOfKind = 
 { 
 	String typeName -> 
 		log("allOfKind(" + typeName + ")"); 
@@ -53,7 +53,7 @@ Graph.metaClass.allOfKind =
  */
 
 // v.getAtt("myAtt");
-Vertex.metaClass.getAtt = 
+Object.metaClass.getAtt = 
 { 
 	String attName -> 
 		log("getAtt(" + attName + ")"); 
@@ -61,7 +61,7 @@ Vertex.metaClass.getAtt =
 }
 
 // v.getParent();
-Vertex.metaClass.getParent = 
+Object.metaClass.getParent = 
 {
 	->
 		log("getParent()");
@@ -69,7 +69,7 @@ Vertex.metaClass.getParent =
 }
 
 // v.getRef("myRef");
-Vertex.metaClass.getRef = 
+Object.metaClass.getRef = 
 { 
 	String refName, String oppositeName, boolean isContainer -> 
 		log("getRef(" + refName + "," + oppositeName + "," + isContainer + ")"); 
@@ -77,7 +77,7 @@ Vertex.metaClass.getRef =
 }
 
 // v.setAtt("myAtt", value);
-Vertex.metaClass.setAtt = 
+Object.metaClass.setAtt = 
 { 
 	String attName, Object attValue -> 
 		log("setAtt(" + attName + ", " + attValue + ")"); 
@@ -85,7 +85,7 @@ Vertex.metaClass.setAtt =
 }
 
 // v1.setRef("myRef", v2, isContainment)
-Vertex.metaClass.setRef =
+Object.metaClass.setRef =
 {
 	String refName, Vertex otherEnd, boolean isContainment ->
 		log("setRef(" + refName + "," + otherEnd + "," + isContainement + ")");
@@ -93,7 +93,7 @@ Vertex.metaClass.setRef =
 }
 
 // v1.removeRef("myRef", v2, isContainment)
-Vertex.metaClass.removeRef = 
+Object.metaClass.removeRef = 
 {
 	String refName, Vertex otherEnd, boolean isContainment ->
 		log("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")");
@@ -101,7 +101,7 @@ Vertex.metaClass.removeRef =
 }
 
 // v.getType();
-Vertex.metaClass.getType = 
+Object.metaClass.getType = 
 {
 	-> 
 		log("getType()");
@@ -109,7 +109,7 @@ Vertex.metaClass.getType =
 }
 
 // v.isTypeOf("myType");
-Vertex.metaClass.isTypeOf = 
+Object.metaClass.isTypeOf = 
 { 
 	String type -> 
 		log("isTypeOf(" + type + ")"); 
@@ -117,7 +117,7 @@ Vertex.metaClass.isTypeOf =
 }
 
 // v.isKindOf("myType");
-Vertex.metaClass.isKindOf =
+Object.metaClass.isKindOf =
 {
 	String type ->
 		log("isKindOf(" + type + ")");
