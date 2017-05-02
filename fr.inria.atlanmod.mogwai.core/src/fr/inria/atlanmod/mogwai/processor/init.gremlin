@@ -16,7 +16,9 @@
 
 // Put the mapping helper in a final variable to allow its access from closures
 // mappingHelper instanceof ModelDatastore
-final m = mappingHelper;
+final mIn  = mappingHelperIn;
+final mOut = mappingHelperOut;
+
 // gremlinHelper instanceof GremlinHelper
 final t = gremlinHelper;
 
@@ -37,7 +39,7 @@ Object.metaClass.allOfType =
 { 
 	String typeName -> 
 		log("allOfType(" + typeName + ")"); 
-		m.allOfTypePipeline(typeName); 
+		mIn.allOfTypePipeline(typeName); 
 }
 
 // g.allOfKind("myType");
@@ -45,7 +47,7 @@ Object.metaClass.allOfKind =
 { 
 	String typeName -> 
 		log("allOfKind(" + typeName + ")"); 
-		m.allOfKindPipeline(typeName);
+		mIn.allOfKindPipeline(typeName);
 }
 
 /*
@@ -57,7 +59,7 @@ Object.metaClass.getAtt =
 { 
 	String attName -> 
 		log("getAtt(" + attName + ")"); 
-		m.getAtt(delegate, attName); 
+		mIn.getAtt(delegate, attName); 
 }
 
 // v.getParent();
@@ -65,7 +67,7 @@ Object.metaClass.getParent =
 {
 	->
 		log("getParent()");
-		m.getParent(delegate);
+		mIn.getParent(delegate);
 }
 
 // v.getRef("myRef");
@@ -73,7 +75,7 @@ Object.metaClass.getRef =
 { 
 	String refName, String oppositeName, boolean isContainer -> 
 		log("getRef(" + refName + "," + oppositeName + "," + isContainer + ")"); 
-		m.getRef(delegate, refName, oppositeName, isContainer); 
+		mIn.getRef(delegate, refName, oppositeName, isContainer); 
 }
 
 // v.setAtt("myAtt", value);
@@ -81,7 +83,7 @@ Object.metaClass.setAtt =
 { 
 	String attName, Object attValue -> 
 		log("setAtt(" + attName + ", " + attValue + ")"); 
-		m.setAtt(delegate, attName, attValue); 
+		mOut.setAtt(delegate, attName, attValue); 
 }
 
 // v1.setRef("myRef", v2, isContainment)
@@ -89,7 +91,7 @@ Object.metaClass.setRef =
 {
 	String refName, Vertex otherEnd, boolean isContainment ->
 		log("setRef(" + refName + "," + otherEnd + "," + isContainement + ")");
-		m.setRef(delegate, refName, otherEnd, isContainment);
+		mIn.setRef(delegate, refName, otherEnd, isContainment);
 }
 
 // v1.removeRef("myRef", v2, isContainment)
@@ -97,7 +99,7 @@ Object.metaClass.removeRef =
 {
 	String refName, Vertex otherEnd, boolean isContainment ->
 		log("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")");
-		m.removeRef(delegate, refName, otherEnd, isContainment);
+		mIn.removeRef(delegate, refName, otherEnd, isContainment);
 }
 
 // v.getType();
@@ -105,7 +107,7 @@ Object.metaClass.getType =
 {
 	-> 
 		log("getType()");
-		m.getType(delegate);
+		mIn.getType(delegate);
 }
 
 // v.isTypeOf("myType");
@@ -113,7 +115,7 @@ Object.metaClass.isTypeOf =
 { 
 	String type -> 
 		log("isTypeOf(" + type + ")"); 
-		m.isTypeOf(delegate, type); 
+		mIn.isTypeOf(delegate, type); 
 }
 
 // v.isKindOf("myType");
@@ -121,7 +123,7 @@ Object.metaClass.isKindOf =
 {
 	String type ->
 		log("isKindOf(" + type + ")");
-		m.isKindOf(delegate, type);
+		mIn.isKindOf(delegate, type);
 }
 
 /*
@@ -133,7 +135,7 @@ Gremlin.defineStep("getAtt", [Pipe],
 	{
 		String attName ->
 			log("getAtt(" + attName + ")[Pipe]");
-			m.getAtt(attName);
+			mIn.getAtt(attName);
 	}	
 )
 
@@ -142,7 +144,7 @@ Gremlin.defineStep("getParent", [Pipe],
 	{
 		->
 			log("getParent()[Pipe]");
-			m.getParent();
+			mIn.getParent();
 	}	
 )
 
@@ -151,7 +153,7 @@ Gremlin.defineStep("getRef", [Pipe],
 	{
 		String refName, String oppositeName, boolean isContainer ->
 			log("getRef(" + refName + "," + oppositeName + "," + isContainer + ")[Pipe]");
-			m.getRef(refName, oppositeName, isContainer);
+			mIn.getRef(refName, oppositeName, isContainer);
 	}	
 )
 
@@ -160,7 +162,7 @@ Gremlin.defineStep("setAtt", [Pipe],
 	{
 		String attName, Object attValue ->
 			log("setAtt(" + attName + "," + attValue + ")[Pipe]");
-			m.setAtt(attName, attValue);
+			mOut.setAtt(attName, attValue);
 	}	
 )
 
@@ -169,7 +171,7 @@ Gremlin.defineStep("setRef", [Pipe],
 	{
 		String refName, Vertex otherEnd, boolean isContainment ->
 			log("setRef(" + refName + "," + otherEnd + "," + isContainment + ")[Pipe]");
-			m.setRef(refName, otherEnd, isContainment);
+			mIn.setRef(refName, otherEnd, isContainment);
 	}	
 )
 
@@ -178,7 +180,7 @@ Gremlin.defineStep("removeRef", [Pipe],
 	{
 		String refName, Vertex otherEnd, boolean isContainment ->
 			log("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")[Pipe]");
-			m.removeRef(refName, otherEnd, isContainment);
+			mIn.removeRef(refName, otherEnd, isContainment);
 	}	
 )
 // Pipe.getType();
@@ -186,7 +188,7 @@ Gremlin.defineStep("getType", [Pipe],
 	{
 		->
 			log("getType()[Pipe]");
-			m.getType();
+			mIn.getType();
 	}	
 )
 
@@ -195,7 +197,7 @@ Gremlin.defineStep("isTypeOf", [Pipe],
 	{
 		String typeName ->
 			log("isTypeOf(" + typeName + ")[Pipe]");
-			m.isTypeOf(typeName);
+			mIn.isTypeOf(typeName);
 	}	
 )
 
@@ -204,7 +206,7 @@ Gremlin.defineStep("isKindOf", [Pipe],
 	{
 		String typeName ->
 			log("isKindOf(" + typeName + ")[Pipe]");
-			m.isKindOf(typeName);
+			mIn.isKindOf(typeName);
 	}	
 )
 

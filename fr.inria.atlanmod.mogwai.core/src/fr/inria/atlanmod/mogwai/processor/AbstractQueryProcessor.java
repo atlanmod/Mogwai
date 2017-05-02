@@ -38,7 +38,7 @@ import fr.inria.atlanmod.mogwai.util.GremlinHelper;
  * 
  * @param <Q>
  *            the kind of {@link MogwaiQuery} this processor supports
- *            
+ * 
  * @see MogwaiQuery
  * 
  * @author Gwendal DANIEL
@@ -248,10 +248,19 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 				"Cannot init the script runner: expected at least 1 datastore, found {0}", datastores.size());
 		GremlinQuery query = (GremlinQuery) GremlinQueryBuilder.newBuilder().fromFile(initGremlinFile).build();
 		Map<String, Object> bindings = new HashMap<>();
-		bindings.put(ModelDatastore.BINDING_NAME, datastores.get(0));
+		bindings.put(ModelDatastore.BINDING_NAME_INPUT, datastores.get(0));
+		if (datastores.size() == 1) {
+			/*
+			 * If there is only one ModelDatastore the script uses it as its
+			 * input and output mapping
+			 */
+			bindings.put(ModelDatastore.BINDING_NAME_OUTPUT, datastores.get(0));
+		} else {
+			bindings.put(ModelDatastore.BINDING_NAME_OUTPUT, datastores.get(1));
+		}
 		bindings.put(GremlinHelper.BINDING_NAME, GremlinHelper.getInstance());
-		GremlinScriptRunner.getInstance().runGremlinScript(new GremlinStringWrapper(query.getInput()),
-				bindings, Collections.<String, Object> emptyMap());
+		GremlinScriptRunner.getInstance().runGremlinScript(new GremlinStringWrapper(query.getInput()), bindings,
+				Collections.<String, Object> emptyMap());
 	}
 
 	/**

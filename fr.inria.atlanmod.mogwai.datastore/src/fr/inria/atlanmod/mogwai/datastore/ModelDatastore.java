@@ -46,10 +46,16 @@ public interface ModelDatastore<D, E, R, A> {
 	 */
 
 	/**
-	 * The String literal used to bind a {@link ModelDatastore} implementation
-	 * in the generated script.
+	 * The String literal used to bind the input {@link ModelDatastore}
+	 * implementation in the generated script.
 	 */
-	public static final String BINDING_NAME = "mappingHelper";
+	public static final String BINDING_NAME_INPUT = "mappingHelperIn";
+
+	/**
+	 * The String literal used to bind the out {@link ModelDatastore}
+	 * implementation in the generated script.
+	 */
+	public static final String BINDING_NAME_OUTPUT = "mappingHelperOut";
 
 	/**
 	 * Sets the {@code dataSource} to apply this mapping on.
