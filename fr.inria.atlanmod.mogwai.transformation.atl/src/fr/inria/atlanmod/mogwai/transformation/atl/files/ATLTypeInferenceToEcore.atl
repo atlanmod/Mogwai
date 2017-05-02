@@ -69,9 +69,11 @@ helper context ATL!OperationCallExp def: platformSpecificInferredType : OclAny =
 		else if sourceType.isCollection then
 			if self.operationName = 'union' then
 				sourceType
+			else if self.operationName = 'first' then
+				sourceType.elementType
 			else
 				OclUndefined
-			endif
+			endif endif
 		else
 			OclUndefined
 		endif endif endif
