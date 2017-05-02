@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: AtlanMod - Inria
 Require-Bundle: fr.inria.atlanmod.mogwai.datastore;bundle-version="1.0.0"
+Export-Package: fr.inria.atlanmod.mogwai.datastore.neo4j3
