@@ -6,8 +6,8 @@ import java.sql.Statement;
 
 import org.h2.jdbcx.JdbcDataSource;
 
-import fr.inria.atlamod.mogwai.datastore.jdbc.DefaultJdbcDatastore;
-import fr.inria.atlamod.mogwai.datastore.jdbc.JdbcElement;
+import fr.inria.atlanmod.mogwai.datastore.jdbc.DefaultJdbcDatastore;
+import fr.inria.atlanmod.mogwai.datastore.jdbc.JdbcElement;
 
 public class TestConnection {
 

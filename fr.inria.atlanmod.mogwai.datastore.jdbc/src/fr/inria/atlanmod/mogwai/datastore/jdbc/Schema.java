@@ -1,4 +1,4 @@
-package fr.inria.atlamod.mogwai.datastore.jdbc;
+package fr.inria.atlanmod.mogwai.datastore.jdbc;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

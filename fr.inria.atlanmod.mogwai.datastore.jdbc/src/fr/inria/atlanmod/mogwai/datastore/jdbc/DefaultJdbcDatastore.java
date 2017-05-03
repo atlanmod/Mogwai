@@ -1,6 +1,7 @@
-package fr.inria.atlamod.mogwai.datastore.jdbc;
+package fr.inria.atlanmod.mogwai.datastore.jdbc;
 
 import static java.util.Objects.nonNull;
+import static java.util.Objects.isNull;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -9,7 +10,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
@@ -32,6 +35,10 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 	 * @see Schema
 	 */
 	private Schema schema;
+	
+	private String elementToCreate;
+	
+	private Map<String, String> valuesToSet;
 
 	public DefaultJdbcDatastore(Connection connection) {
 		setDataSource(connection);
@@ -62,6 +69,8 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 				this.connection.commit();
 				this.connection.close();
 			}
+			this.elementToCreate = "";
+			this.valuesToSet = new HashMap<>();
 			this.connection = dataSource;
 			this.schema = Schema.newSchema();
 			DatabaseMetaData metaData = connection.getMetaData();
@@ -115,27 +124,14 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 
 	@Override
 	public JdbcElement newInstance(String typeName, String typePackageNsURI, String resourceName) {
+		createLastElement();
+		this.elementToCreate = typeName;
 		Iterable<String> attributes = schema.getAttributeNamesFor(typeName);
-		StringBuilder attBuilder = new StringBuilder();
-		String delim = "";
 		for(String att : attributes) {
-			attBuilder.append(delim).append("NULL");
-			delim = ",";
+			valuesToSet.put(att, null);
 		}
-		try {
-			Statement statement = connection.createStatement();
-			statement.execute(MessageFormat.format(INSERT_ELEMENT_SQL, typeName, attBuilder.toString()));
-			ResultSet generatedKeys = statement.getGeneratedKeys();
-			if(generatedKeys.next()) {
-				return new JdbcElement(generatedKeys.getInt(1), typeName);
-			}
-			else {
-				throw new RuntimeException("No key generated");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+		// Place holder
+		return new JdbcElement(-10, typeName);
 	}
 
 	@Override
@@ -165,14 +161,14 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 
 	@Override
 	public JdbcElement setAtt(JdbcElement from, String attName, Object attValue) {
-		try {
-			Statement statement = connection.createStatement();
-			statement.execute(MessageFormat.format(UPDATE_ELEMENT_SQL, from.getType(), attName, "'" + attValue + "'", from.getId()));
+//		try {
+			valuesToSet.put(attName.toUpperCase(), (String)attValue);
+//			Statement statement = connection.createStatement();
+//			statement.execute(MessageFormat.format(UPDATE_ELEMENT_SQL, from.getType(), attName, "'" + ((String)attValue).replace("'", "''") + "'", Integer.toString(from.getId())));
 			return from;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -200,6 +196,37 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 			result.add(new JdbcElement(resultSet.getInt(1), typeName));
 		}
 		return result;
+	}
+	
+	private void createLastElement() {
+		if(isNull(elementToCreate) || elementToCreate.isEmpty()) {
+			return;
+		}
+		StringBuilder attBuilder = new StringBuilder();
+		String delim = "";
+		for(String att : valuesToSet.keySet()) {
+			attBuilder.append(delim);
+			if(isNull(valuesToSet.get(att))) {
+				attBuilder.append("NULL");
+			}
+			else {
+				attBuilder.append("'").append(valuesToSet.get(att).replace("'", "''")).append("'");
+			}
+			delim = ",";
+		}
+		try {
+			Statement statement = connection.createStatement();
+			statement.execute(MessageFormat.format(INSERT_ELEMENT_SQL, elementToCreate, attBuilder.toString()));
+			ResultSet generatedKeys = statement.getGeneratedKeys();
+			if(generatedKeys.next()) {
+//				return new JdbcElement(generatedKeys.getInt(1), typeName);
+			}
+			else {
+				throw new RuntimeException("No key generated");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
