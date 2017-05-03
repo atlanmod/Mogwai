@@ -10,6 +10,7 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.NotFoundException;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
@@ -310,7 +311,12 @@ public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatab
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<Object> getAtt(Node from, String attName) {
-		Object property = from.getProperty(attName);
+		Object property = null;
+		try {
+			property = from.getProperty(attName);
+		} catch (NotFoundException e) {
+			//System.out.println("Property " + attName + " not found");
+		}
 		Iterable<Object> result = null;
 		if (property instanceof Iterable) {
 			result = (Iterable<Object>) property;
