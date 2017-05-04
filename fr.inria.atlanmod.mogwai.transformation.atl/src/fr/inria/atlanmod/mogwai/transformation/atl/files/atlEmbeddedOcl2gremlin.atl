@@ -246,7 +246,12 @@ rule oclIsUndefined2steps {
 	from
 		s : ATL!OperationCallExp (s.getOpName() = 'oclIsUndefined')
 	to
-		t : Gremlin!CustomMethodCall(
+		-- We need this identity step to allow Pipeline-based computation, which
+		-- is implemented in Java instead of Groovy
+		t : Gremlin!IdentityStep(
+			nextElement <- c	
+		),
+		c : Gremlin!CustomMethodCall(
 			name <- 'undefined',
 			nextElement <- s.getComposite()
 		)
