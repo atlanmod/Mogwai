@@ -70,6 +70,11 @@ rule attributeNavigationOrAttributeCallExp2steps {
 	from
 		nav : ATL!NavigationOrAttributeCallExp (nav.isAttributeNavigation())
 	to
+		-- wrap the result into a pipeline to be sure we can call next on it
+		-- TODO optimize
+		idStep : Gremlin!IdentityStep(
+			nextElement <- prop	
+		),
 		prop : Gremlin!CustomStep(
 			name <- 'getAtt',
 			params <- Sequence{attNameLiteral},
@@ -84,11 +89,7 @@ rule attributeNavigationOrAttributeCallExpLastInMathOperation2steps extends attr
 	from
 		nav : ATL!NavigationOrAttributeCallExp (nav.isAttributeNavigation() and (nav.isLastInMathOperation() or nav.isLastInBinding()))
 	to
-		-- wrap the result into a pipeline to be sure we can call next on it
-		-- TODO optimize
-		idStep : Gremlin!IdentityStep(
-			nextElement <- prop	
-		),
+		idStep : Gremlin!IdentityStep(),
 		prop : Gremlin!CustomStep(
 			nextElement <- nextCall	
 		),
@@ -99,10 +100,13 @@ rule referenceNavigationOrAttributeCallExp2steps {
 	from
 		nav : ATL!NavigationOrAttributeCallExp (nav.isReferenceNavigation())
 	to
+		idStep : Gremlin!IdentityStep(
+			nextElement <- getRef
+		),
 		getRef : Gremlin!CustomStep (
 			name <- 'getRef',
 			params <- Sequence{refLabelLiteral, oppositeLabelLiteral, isContainmentLiteral},
-			nextElement <- idStep
+			nextElement <- nav.getComposite()
 		),
 		refLabelLiteral : Gremlin!StringLiteral (
 			value <- nav.name	
@@ -112,9 +116,6 @@ rule referenceNavigationOrAttributeCallExp2steps {
 		),
 		isContainmentLiteral : Gremlin!BooleanLiteral (
 			value <- nav.feature.isContainer()
-		),
-		idStep : Gremlin!IdentityStep(
-			nextElement <- nav.getComposite()	
 		)
 }
 
@@ -234,7 +235,12 @@ rule toString2steps {
 	from
 		s : ATL!OperationCallExp (s.getOpName() = 'toString')
 	to
-		t : Gremlin!CustomMethodCall(
+		-- We need this identity step to allow Pipeline-based computation, which
+		-- is implemented in Java insead of Groovy
+		t : Gremlin!IdentityStep(
+			nextElement <- c	
+		),
+		c : Gremlin!CustomMethodCall(
 			-- Don't use toString here, it is overriden in Pipe and 
 			-- cannot be called in a generic way
 			name <- 'getString',
