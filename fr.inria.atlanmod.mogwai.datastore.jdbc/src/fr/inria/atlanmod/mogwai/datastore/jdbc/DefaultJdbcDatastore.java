@@ -48,8 +48,6 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 
 	private static final String INSERT_ELEMENT_SQL = "insert into {0} values ({1});";
 	
-	private static final String UPDATE_ELEMENT_SQL = "update {0} set {1} = {2} where ID = {3};";
-
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -161,14 +159,8 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 
 	@Override
 	public JdbcElement setAtt(JdbcElement from, String attName, Object attValue) {
-//		try {
-			valuesToSet.put(attName.toUpperCase(), (String)attValue);
-//			Statement statement = connection.createStatement();
-//			statement.execute(MessageFormat.format(UPDATE_ELEMENT_SQL, from.getType(), attName, "'" + ((String)attValue).replace("'", "''") + "'", Integer.toString(from.getId())));
-			return from;
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
+		valuesToSet.put(attName.toUpperCase(), (String)attValue);
+		return from;
 	}
 
 	@Override
@@ -217,13 +209,6 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 		try {
 			Statement statement = connection.createStatement();
 			statement.execute(MessageFormat.format(INSERT_ELEMENT_SQL, elementToCreate, attBuilder.toString()));
-			ResultSet generatedKeys = statement.getGeneratedKeys();
-			if(generatedKeys.next()) {
-//				return new JdbcElement(generatedKeys.getInt(1), typeName);
-			}
-			else {
-				throw new RuntimeException("No key generated");
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
