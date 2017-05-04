@@ -2,6 +2,7 @@ package fr.inria.atlanmod.mogwai.datastore.neo4j3;
 
 import static java.util.Objects.isNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -34,8 +35,8 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * <li>Attributes are represented as {@link Node}s properties.</li>
  * </ul>
  * <p>
- * <b>Note:</b> {@link DefaultEmbeddedNeo4j3Datastore} handles the same way types and
- * kinds, meaning that {@link #allOfKind(String)} is equivalent to
+ * <b>Note:</b> {@link DefaultEmbeddedNeo4j3Datastore} handles the same way
+ * types and kinds, meaning that {@link #allOfKind(String)} is equivalent to
  * {@link #allOfType(String)}, and {@link #isKindOf(String)} is equivalent to
  * {@link #isTypeOf(String)}.
  * 
@@ -45,7 +46,8 @@ import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
  * @author Gwendal DANIEL
  *
  */
-public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatabaseService, Node, Relationship, Object>,
+public class DefaultEmbeddedNeo4j3Datastore implements
+		ModelDatastore<GraphDatabaseService, Node, Relationship, Object>,
 		PipesDatastore<GraphDatabaseService, Node, Relationship, Object> {
 
 	/**
@@ -60,8 +62,8 @@ public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatab
 	private Transaction transaction;
 
 	/**
-	 * Constructs a new {@link DefaultEmbeddedNeo4j3Datastore} wrapping the provided
-	 * {@code graph}.
+	 * Constructs a new {@link DefaultEmbeddedNeo4j3Datastore} wrapping the
+	 * provided {@code graph}.
 	 * <p>
 	 * A new transaction is started to handle database operations. Note that
 	 * this implementation doesn't provide an autocommit feature, and will
@@ -72,7 +74,7 @@ public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatab
 	 * @param graph
 	 *            the underlying {@link GraphDatabaseService} used access the
 	 *            model to manipulate
-	 *            
+	 * 
 	 * @see #setDataSource(GraphDatabaseService)
 	 */
 	public DefaultEmbeddedNeo4j3Datastore(GraphDatabaseService graph) {
@@ -315,13 +317,19 @@ public class DefaultEmbeddedNeo4j3Datastore implements ModelDatastore<GraphDatab
 		try {
 			property = from.getProperty(attName);
 		} catch (NotFoundException e) {
-			//System.out.println("Property " + attName + " not found");
+			// System.out.println("Property " + attName + " not found");
 		}
 		Iterable<Object> result = null;
 		if (property instanceof Iterable) {
 			result = (Iterable<Object>) property;
 		} else {
-			result = Arrays.asList(property);
+			/*
+			 * Quick fix to allow Identity step definition _() on ArrayList to
+			 * avoid Groovy based computation of collection operations.
+			 * (Arrays.asList() returns Arrays.ArrayList, which is private and
+			 * doesn't provide an accessible Groovy metaClass.
+			 */
+			result = new ArrayList<>(Arrays.asList(property));
 		}
 		return result;
 	}
