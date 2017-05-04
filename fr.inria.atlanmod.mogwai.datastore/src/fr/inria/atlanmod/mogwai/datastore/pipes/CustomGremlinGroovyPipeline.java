@@ -21,8 +21,25 @@ public class CustomGremlinGroovyPipeline<S, E> extends GremlinGroovyPipeline<S, 
 		this.datastore = datastore;
 	}
 	
+	public CustomGremlinGroovyPipeline<S, E> _() {
+		return this;
+	}
+	
 	public CustomGremlinGroovyPipeline<S, E> getAtt(String attName) {
 		return (CustomGremlinGroovyPipeline<S, E>) this.add(datastore.getAtt(attName));
+	}
+	
+	public CustomGremlinGroovyPipeline<S, E> getRef(String refName, String oppositeName, boolean isContainer) {
+		return (CustomGremlinGroovyPipeline<S, E>) this.add(datastore.getRef(refName, oppositeName, isContainer));
+	}
+	
+	public String getString() {
+		Iterator<E> content = iterator();
+		String value = content.next().toString();
+		if(content.hasNext()) {
+			throw new IllegalStateException("Calling toString on an Iterable that contain more than one element");
+		}
+		return value;
 	}
 	
 	public boolean undefined() {
