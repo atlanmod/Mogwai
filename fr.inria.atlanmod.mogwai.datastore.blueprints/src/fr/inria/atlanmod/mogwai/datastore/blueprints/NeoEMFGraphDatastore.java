@@ -6,9 +6,15 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
 import com.google.common.collect.Iterables;
@@ -171,8 +177,8 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 
 	/**
 	 * Constructs a new {@link NeoEMFGraphDatastore} wrapping the provided
-	 * {@code graph} and using {@code ePackage} to compute metamodel information that
-	 * aren't stored in the underlying database.
+	 * {@code graph} and using {@code ePackage} to compute metamodel information
+	 * that aren't stored in the underlying database.
 	 * 
 	 * @param graph
 	 *            the underlying {@link Graph} used to store the NeoEMF model
@@ -187,8 +193,8 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This method also checks that the provided graph defines a metaclass index, and
-	 * make it available for other methods.
+	 * This method also checks that the provided graph defines a metaclass
+	 * index, and make it available for other methods.
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the provided {@code graph} is not an instance of
@@ -200,13 +206,19 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	}
 
 	/**
-	 * Set the {@code graph} to apply this mapping on and the {@code ePackage} used to retrieve metamodel informations.
+	 * Set the {@code graph} to apply this mapping on and the {@code ePackage}
+	 * used to retrieve metamodel informations.
 	 * <p>
 	 * <b>Note:</b> the previous {@link Graph} will not be accessible anymore.
 	 * <p>
-	 * This method also checks that the provided graph defines a metaclass index, and make it available for other methods.
-	 * @param graph the {@link Graph} to apply this mapping on
-	 * @param ePackage the {@link EPackage} containing metamodel information that aren't stored in the graph
+	 * This method also checks that the provided graph defines a metaclass
+	 * index, and make it available for other methods.
+	 * 
+	 * @param graph
+	 *            the {@link Graph} to apply this mapping on
+	 * @param ePackage
+	 *            the {@link EPackage} containing metamodel information that
+	 *            aren't stored in the graph
 	 */
 	@SuppressWarnings("unchecked")
 	public void setDataSource(final Graph graph, final EPackage ePackage) throws IllegalArgumentException {
@@ -249,14 +261,36 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	@Override
 	public Iterable<Vertex> allOfKind(String typeName) {
 		Iterable<Vertex> result;
-		if(isNull(ePackage)) {
+		if (isNull(ePackage)) {
 			MogwaiLogger.warn("{0} doesn't support allOfKind mapping, computing allOfType instead", this.getClass()
 					.getName());
 			result = allOfType(typeName);
 		} else {
-			// TODO
-			MogwaiLogger.error("AllOfKind support with an EPackage is not defined for now");
-			throw new IllegalStateException("AllOfKind support with an EPackage is not defined for now");
+			EClassifier classifier = ePackage.getEClassifier(typeName);
+			if (classifier instanceof EClass) {
+				EClass eClass = (EClass)classifier;
+				Set<EClass> eClassesToFind = new HashSet<>();
+				eClass.getEPackage().getEClassifiers()
+					.stream()
+					.filter(EClass.class::isInstance)
+					.map(EClass.class::cast)
+					.filter(c -> eClass.isSuperTypeOf(c) && ! c.isAbstract())
+					.forEach(eClassesToFind::add);
+				List<Iterable<Vertex>> allInstances = new ArrayList<>();
+				for(EClass ec : eClassesToFind) {
+					Vertex metaVertex = getMetaclassVertex(ec.getName(), null);
+					if(nonNull(metaVertex)) {
+						allInstances.add(metaVertex.getVertices(Direction.IN, KEY_INSTANCE_OF));
+					}
+				}
+				result = Iterables.concat(allInstances);
+			} else {
+				MogwaiLogger.error("EPackage {0} doesn't contain an EClass for {1} (found {2})", ePackage.getName(),
+						typeName, classifier);
+				throw new IllegalStateException(MessageFormat.format(
+						"EPackage {0} doesn't contain an EClass for {1} (found {2})", ePackage.getName(), typeName,
+						classifier));
+			}
 		}
 		return result;
 	}
@@ -412,18 +446,17 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		} else {
 			// System.out.println(attName + ": " + property);
 			if (isNull(property)) {
-				if(isNull(ePackage)) {
-//					if (attName.equals("visibility")) {
-//						property = "none";
-//					}
-//					if (attName.equals("inheritance")) {
-//						property = "none";
-//					}
-//					if (attName.equals("proxy")) {
-//						property = "false";
-//					}
-				}
-				else {
+				if (isNull(ePackage)) {
+					// if (attName.equals("visibility")) {
+					// property = "none";
+					// }
+					// if (attName.equals("inheritance")) {
+					// property = "none";
+					// }
+					// if (attName.equals("proxy")) {
+					// property = "false";
+					// }
+				} else {
 					// TODO
 					MogwaiLogger.error("getAtt support with an EPackage is not defined for now");
 					throw new IllegalStateException("getAtt support with an EPackage is not defined for now");
@@ -478,10 +511,9 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	@Override
 	public boolean isKindOf(Vertex from, String type) {
 		boolean result;
-		if(isNull(ePackage)) {
+		if (isNull(ePackage)) {
 			result = isTypeOf(from, type);
-		}
-		else {
+		} else {
 			MogwaiLogger.error("isKindOf support with an EPackage is not defined for now");
 			throw new IllegalStateException("isKindOf support with an EPackage is not defined for now");
 		}
