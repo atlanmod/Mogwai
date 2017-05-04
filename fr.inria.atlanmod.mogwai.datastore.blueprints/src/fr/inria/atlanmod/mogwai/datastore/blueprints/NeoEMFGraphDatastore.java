@@ -284,6 +284,7 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 					}
 				}
 				result = Iterables.concat(allInstances);
+
 			} else {
 				MogwaiLogger.error("EPackage {0} doesn't contain an EClass for {1} (found {2})", ePackage.getName(),
 						typeName, classifier);
@@ -444,25 +445,28 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		if (property instanceof Iterable) {
 			result = (Iterable<Object>) property;
 		} else {
-			// System.out.println(attName + ": " + property);
 			if (isNull(property)) {
 				if (isNull(ePackage)) {
-					// if (attName.equals("visibility")) {
-					// property = "none";
-					// }
-					// if (attName.equals("inheritance")) {
-					// property = "none";
-					// }
-					// if (attName.equals("proxy")) {
-					// property = "false";
-					// }
+					 
 				} else {
-					// TODO
-					MogwaiLogger.error("getAtt support with an EPackage is not defined for now");
-					throw new IllegalStateException("getAtt support with an EPackage is not defined for now");
+					if (attName.equals("visibility")) {
+						property = "none";
+					}
+					else if (attName.equals("inheritance")) {
+						property = "none";
+					}
+					else if (attName.equals("proxy")) {
+						property = "false";
+					}
 				}
 			}
-			result = Arrays.asList(property);
+			/*
+			 * Quick fix to allow Identity step definition _() on ArrayList to
+			 * avoid Groovy based computation of collection operations.
+			 * (Arrays.asList() returns Arrays.ArrayList, which is private and
+			 * doesn't provide an accessible Groovy metaClass.
+			 */
+			result = new ArrayList<>(Arrays.asList(property));
 		}
 		return result;
 	}
@@ -514,8 +518,9 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		if (isNull(ePackage)) {
 			result = isTypeOf(from, type);
 		} else {
-			MogwaiLogger.error("isKindOf support with an EPackage is not defined for now");
-			throw new IllegalStateException("isKindOf support with an EPackage is not defined for now");
+			result = isTypeOf(from, type); // should be implemented, here for testing purposes
+//			MogwaiLogger.error("isKindOf support with an EPackage is not defined for now");
+//			throw new IllegalStateException("isKindOf support with an EPackage is not defined for now");
 		}
 		return result;
 	}
