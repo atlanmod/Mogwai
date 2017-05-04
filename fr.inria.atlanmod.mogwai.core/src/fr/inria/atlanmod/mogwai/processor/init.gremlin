@@ -10,9 +10,12 @@
  * @author Gwendal DANIEL
  */
 
-// TODO: this initialization script doesn't take into account the case where different mappings
-// are used for input and output models. To handle this it would be necessary to duplicate all 
-// the created methods to allow in/out calls.
+import org.codehaus.groovy.runtime.InvokerHelper 
+import fr.inria.atlanmod.mogwai.datastore.jdbc.JdbcElement;
+import org.neo4j.graphdb.Node;
+import fr.inria.atlanmod.mogwai.processor.ModelElementMetaClass;
+import fr.inria.atlanmod.mogwai.processor.ObjectMetaClass;
+import java.util.ArrayList;
 
 // Put the mapping helper in a final variable to allow its access from closures
 // mappingHelper instanceof ModelDatastore
@@ -22,9 +25,21 @@ final mOut = mappingHelperOut;
 // gremlinHelper instanceof GremlinHelper
 final t = gremlinHelper;
 
+MetaClass inMetaClass = new ModelElementMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, mIn);
+inMetaClass.initialize();
+InvokerHelper.metaRegistry.setMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, inMetaClass);
+
+MetaClass outMetaClass = new ModelElementMetaClass(JdbcElement.class, mOut);
+outMetaClass.initialize();
+InvokerHelper.metaRegistry.setMetaClass(JdbcElement.class, outMetaClass);
+
+// Quick fix, should be iterable, but the current implementation doesn't support interfaces
+MetaClass objectMetaClass = new ObjectMetaClass(ArrayList.class);
+objectMetaClass.initialize();
+InvokerHelper.metaRegistry.setMetaClass(ArrayList.class, objectMetaClass);
 
 def log(String msg) {
-	enableDebug = false;
+	enableDebug = true;
 	if(enableDebug) {
 		println("[Gremlin runner]" + msg);
 	}
@@ -55,89 +70,90 @@ Object.metaClass.allOfKind =
  */
 
 // v.getAtt("myAtt");
-Object.metaClass.getAtt = 
-{ 
-	String attName -> 
-		log("getAtt(" + attName + ")"); 
-		mIn.getAtt(delegate, attName); 
-}
+//Node.metaClass.getAtt = 
+//{ 
+//	String attName -> 
+//		log("getAtt(" + attName + ")"); 
+//		mIn.getAtt(delegate, attName); 
+//}
 
 // v.getParent();
-Object.metaClass.getParent = 
-{
-	->
-		log("getParent()");
-		mIn.getParent(delegate);
-}
+//Node.metaClass.getParent = 
+//{
+//	->
+//		log("getParent()");
+//		mIn.getParent(delegate);
+//}
 
 // v.getRef("myRef");
-Object.metaClass.getRef = 
-{ 
-	String refName, String oppositeName, boolean isContainer -> 
-		log("getRef(" + refName + "," + oppositeName + "," + isContainer + ")"); 
-		mIn.getRef(delegate, refName, oppositeName, isContainer); 
-}
+//Node.metaClass.getRef = 
+//{ 
+//	String refName, String oppositeName, boolean isContainer -> 
+//		log("getRef(" + refName + "," + oppositeName + "," + isContainer + ")"); 
+//		mIn.getRef(delegate, refName, oppositeName, isContainer); 
+//}
 
 // v.setAtt("myAtt", value);
-Object.metaClass.setAtt = 
-{ 
-	String attName, Object attValue -> 
-		log("setAtt(" + attName + ", " + attValue + ")"); 
-		mOut.setAtt(delegate, attName, attValue); 
-}
+//JdbcElement.metaClass.setAtt = 
+//{ 
+//	String attName, Object attValue -> 
+//		println("setAtt");
+//		log("setAtt(" + attName + ", " + attValue + ")"); 
+//		mOut.setAtt(delegate, attName, attValue); 
+//}
 
 // v1.setRef("myRef", v2, isContainment)
-Object.metaClass.setRef =
-{
-	String refName, Vertex otherEnd, boolean isContainment ->
-		log("setRef(" + refName + "," + otherEnd + "," + isContainement + ")");
-		mIn.setRef(delegate, refName, otherEnd, isContainment);
-}
+//Node.metaClass.setRef =
+//{
+//	String refName, Vertex otherEnd, boolean isContainment ->
+//		log("setRef(" + refName + "," + otherEnd + "," + isContainement + ")");
+//		mIn.setRef(delegate, refName, otherEnd, isContainment);
+//}
 
 // v1.removeRef("myRef", v2, isContainment)
-Object.metaClass.removeRef = 
-{
-	String refName, Vertex otherEnd, boolean isContainment ->
-		log("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")");
-		mIn.removeRef(delegate, refName, otherEnd, isContainment);
-}
+//Node.metaClass.removeRef = 
+//{
+//	String refName, Vertex otherEnd, boolean isContainment ->
+//		log("removeRef(" + refName + "," + otherEnd + "," + isContainment + ")");
+//		mIn.removeRef(delegate, refName, otherEnd, isContainment);
+//}
 
 // v.getType();
-Object.metaClass.getType = 
-{
-	-> 
-		log("getType()");
-		mIn.getType(delegate);
-}
+//Node.metaClass.getType = 
+//{
+//	-> 
+//		log("getType()");
+//		mIn.getType(delegate);
+//}
 
 // v.isTypeOf("myType");
-Object.metaClass.isTypeOf = 
-{ 
-	String type -> 
-		log("isTypeOf(" + type + ")"); 
-		mIn.isTypeOf(delegate, type); 
-}
+//Node.metaClass.isTypeOf = 
+//{ 
+//	String type -> 
+//		log("isTypeOf(" + type + ")"); 
+//		mIn.isTypeOf(delegate, type); 
+//}
 
 // v.isKindOf("myType");
-Object.metaClass.isKindOf =
-{
-	String type ->
-		log("isKindOf(" + type + ")");
-		mIn.isKindOf(delegate, type);
-}
+//Node.metaClass.isKindOf =
+//{
+//	String type ->
+//		log("isKindOf(" + type + ")");
+//		mIn.isKindOf(delegate, type);
+//}
 
 /*
  * Additional Gremlin steps
  */
 
 // Pipe.getAtt("myAtt");
-Gremlin.defineStep("getAtt", [Pipe], 
-	{
-		String attName ->
-			log("getAtt(" + attName + ")[Pipe]");
-			mIn.getAtt(attName);
-	}	
-)
+//Gremlin.defineStep("getAtt", [Pipe], 
+//	{
+//		String attName ->
+//			log("getAtt(" + attName + ")[Pipe]");
+//			mIn.getAtt(attName);
+//	}	
+//)
 
 // Pipe.getParent()
 Gremlin.defineStep("getParent", [Pipe],
@@ -251,10 +267,22 @@ Iterable.metaClass.getString =
 		value;
 }
 
+/*
+ * This implementation might be more efficient than the one we are currently using.
+ * Some experiments have to be done to confirm this (see #)
+ */
+//Iterable.metaClass.isEmpty = 
+//{
+//	->
+////		log("isEmpty");
+//		!delegate.hasNext();
+//}
+
 Iterable.metaClass.undefined = 
 {
 	->
 		log("undefined");
+		log(delegate.getClass().getName())
 		Iterator i = delegate.iterator();
 		boolean result = true;
 		if(i.hasNext()) {
