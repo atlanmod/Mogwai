@@ -1,5 +1,7 @@
 package fr.inria.atlanmod.mogwai.datastore.blueprints;
 
+import org.eclipse.emf.ecore.EPackage;
+
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -43,9 +45,32 @@ public class AutocommitNeoEMFGraphDatastore extends NeoEMFGraphDatastore {
 	 * 
 	 * @param graph
 	 *            the underlying {@link Graph} used to store the NeoEMF model
+	 * 
+	 * @see AutocommitNeoEMFGraphDatastore#AutocommitNeoEMFGraphDatastore(Graph,
+	 *      int, EPackage)
 	 */
 	public AutocommitNeoEMFGraphDatastore(Graph graph) {
-		this(graph, DEFAULT_OPS_BETWEEN_COMMITS);
+		this(graph, DEFAULT_OPS_BETWEEN_COMMITS, null);
+	}
+
+	/**
+	 * Constructs a new {@link AutocommitNeoEMFGraphDatastore} wrapping the
+	 * provided {@code graph} and using {@code ePackage} to compute metamodel
+	 * information that aren't stored in the underlying database. The default
+	 * number of operation between commits is used to trigger transaction
+	 * commits.
+	 * 
+	 * @param graph
+	 *            the underlying {@link Graph} used to store the NeoEMF model
+	 * @param ePackage
+	 *            the {@link EPackage} containing metamodel information that
+	 *            aren't stored in the graph
+	 * 
+	 * @see AutocommitNeoEMFGraphDatastore#AutocommitNeoEMFGraphDatastore(Graph,
+	 *      int, EPackage)
+	 */
+	public AutocommitNeoEMFGraphDatastore(Graph graph, EPackage ePackage) {
+		this(graph, DEFAULT_OPS_BETWEEN_COMMITS, ePackage);
 	}
 
 	/**
@@ -57,9 +82,30 @@ public class AutocommitNeoEMFGraphDatastore extends NeoEMFGraphDatastore {
 	 *            the underlying {@link Graph} used to store the NeoEMF model
 	 * @param opsBetweenCommits
 	 *            the number of operations to perform between each commit
+	 * 
+	 * @see AutocommitNeoEMFGraphDatastore#AutocommitNeoEMFGraphDatastore(Graph,
+	 *      int, EPackage)
 	 */
 	public AutocommitNeoEMFGraphDatastore(Graph graph, int opsBetweenCommits) {
-		super(graph);
+		this(graph, opsBetweenCommits, null);
+	}
+
+	/**
+	 * Constructs a new {@link AutocommitNeoEMFGraphDatastore} wrapping the
+	 * provided {@code graph} and using {@code ePackage} to compute metamodel
+	 * information that aren't stored in the underlying database. Changes are
+	 * committed after {@code opsBetweenCommits} operations.
+	 * 
+	 * @param graph
+	 *            the underlying {@link Graph} used to store the NeoEMF model
+	 * @param opsBetweenCommits
+	 *            the number of operation to perform between each commit
+	 * @param ePackage
+	 *            the {@link EPackage} containing metamodel information that
+	 *            aren't stored in the graph
+	 */
+	public AutocommitNeoEMFGraphDatastore(Graph graph, int opsBetweenCommits, EPackage ePackage) {
+		super(graph, ePackage);
 		this.opsBetweenCommits = opsBetweenCommits;
 		this.opCount = 0;
 	}
