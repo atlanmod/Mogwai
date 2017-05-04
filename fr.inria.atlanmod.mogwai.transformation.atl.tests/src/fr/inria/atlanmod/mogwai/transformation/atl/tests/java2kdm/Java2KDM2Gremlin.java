@@ -38,7 +38,7 @@ public class Java2KDM2Gremlin {
 	public static final String SET4 = "set4";
 	public static final String SET5 = "set5";
 	
-	public static String THE_SET = SET4;
+	public static String THE_SET = SET1;
 	
 	public static void main(String[] args) throws IOException {
 
