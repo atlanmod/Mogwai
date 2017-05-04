@@ -269,7 +269,7 @@ Iterable.metaClass.getString =
 
 /*
  * This implementation might be more efficient than the one we are currently using.
- * Some experiments have to be done to confirm this (see #)
+ * Some experiments have to be done to confirm this (see #31)
  */
 //Iterable.metaClass.isEmpty = 
 //{
