@@ -25,13 +25,17 @@ final mOut = mappingHelperOut;
 // gremlinHelper instanceof GremlinHelper
 final t = gremlinHelper;
 
-MetaClass inMetaClass = new ModelElementMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, mIn);
+MetaClass inMetaClass = new ModelElementMetaClass(com.tinkerpop.blueprints.util.wrappers.id.IdVertex.class, mIn);
 inMetaClass.initialize();
-InvokerHelper.metaRegistry.setMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, inMetaClass);
+InvokerHelper.metaRegistry.setMetaClass(com.tinkerpop.blueprints.util.wrappers.id.IdVertex.class, inMetaClass);
 
-MetaClass outMetaClass = new ModelElementMetaClass(JdbcElement.class, mOut);
-outMetaClass.initialize();
-InvokerHelper.metaRegistry.setMetaClass(JdbcElement.class, outMetaClass);
+//MetaClass inMetaClass = new ModelElementMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, mIn);
+//inMetaClass.initialize();
+//InvokerHelper.metaRegistry.setMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, inMetaClass);
+//
+//MetaClass outMetaClass = new ModelElementMetaClass(JdbcElement.class, mOut);
+//outMetaClass.initialize();
+//InvokerHelper.metaRegistry.setMetaClass(JdbcElement.class, outMetaClass);
 
 // Quick fix, should be iterable, but the current implementation doesn't support interfaces
 MetaClass objectMetaClass = new ObjectMetaClass(ArrayList.class);
