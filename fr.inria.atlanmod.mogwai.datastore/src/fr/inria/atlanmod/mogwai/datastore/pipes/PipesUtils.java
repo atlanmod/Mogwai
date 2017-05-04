@@ -36,8 +36,14 @@ public class PipesUtils {
 	 * @return the created {@link Pipeline} initialized with the provided
 	 *         {@code elements}.
 	 */
-	static <E> Pipeline<E, ?> pipelineOf(Iterable<E> elements) {
-		Pipeline<E, ?> pipeline = new GremlinGroovyPipeline<>(new GremlinStartPipe(elements));
+	public static <E> Pipeline<E, ?> pipelineOf(Iterable<E> elements) {
+		Pipeline<E, ?> pipeline = new CustomGremlinGroovyPipeline<>(new GremlinStartPipe(elements));
+		pipeline.setStarts(elements);
+		return pipeline;
+	}
+	
+	public static <E> Pipeline<E, ?> pipelineOf(Iterable<E> elements, PipesDatastore datastore) {
+		Pipeline<E, ?> pipeline = new CustomGremlinGroovyPipeline<>(new GremlinStartPipe(elements), datastore);
 		pipeline.setStarts(elements);
 		return pipeline;
 	}
@@ -51,7 +57,7 @@ public class PipesUtils {
 	 *            elements
 	 * @return the created {@link Pipe}
 	 */
-	static <E1, E2> Pipe<E1, E2> pipeFor(Function<E1, E2> function) {
+	public static <E1, E2> Pipe<E1, E2> pipeFor(Function<E1, E2> function) {
 		return new AbstractPipe<E1, E2>() {
 
 			@Override
@@ -74,7 +80,7 @@ public class PipesUtils {
 	 *            elements
 	 * @return the created {@link Pipe}
 	 */
-	static <E1, E2> Pipe<E1, E2> flattenPipeFor(Function<E1, Iterable<E2>> function) {
+	public static <E1, E2> Pipe<E1, E2> flattenPipeFor(Function<E1, Iterable<E2>> function) {
 		return new AbstractPipe<E1, E2>() {
 
 			private Iterator<E2> nextRefs = PipeHelper.emptyIterator();
