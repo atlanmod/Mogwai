@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated panamaNeo4j -->
+      <package
+            uri="http://www.example.com/panamaNeo4j"
+            class="fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.PanamaNeo4jPackage"
+            genModel="model/panamaNeo4j.genmodel"/>
+   </extension>
+
+</plugin>
