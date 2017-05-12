@@ -41,9 +41,9 @@ public class BaseAbstractTypeDeclaration2KDMEntity {
 	public static final String SET4 = "set4";
 	public static final String SET5 = "set5";
 	
-	public static int MEMORY_CHECK_INTERVAL = 10000;
+	public static int MEMORY_CHECK_INTERVAL = 5000;
 	
-	public static String THE_SET = SET1;
+	public static String THE_SET = SET4;
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -90,8 +90,14 @@ public class BaseAbstractTypeDeclaration2KDMEntity {
 				 *  Having a high autocommit chunk makes the VM crash if we have a big
 				 *  output model.
 				 */
-				.autocommit(100)
+//				.autocommit(100)
 //				.autocommit()
+//				.relationshipsMappedBuffer("62M")
+//				.nodesMappedBuffer("14M")
+//				.propertiesMappedBuffer("50M")
+//				.stringsMappedBuffer("43M")
+//				.arraysMappedBuffer("49M")
+				.weakCache()
 				.asMap();
 		input.load(options);
 		
@@ -111,7 +117,7 @@ public class BaseAbstractTypeDeclaration2KDMEntity {
 		((PersistentResource)input).close();
 		MogwaiLogger.info("Moving output");
 		long beginSave = System.currentTimeMillis();
-//		long midMem = getMem();
+		long midMem = getMem();
 		neoOutput.getContents().addAll(out.getContents());
 		MogwaiLogger.info("Saving output");
 		neoOutput.save(options);
@@ -125,7 +131,7 @@ public class BaseAbstractTypeDeclaration2KDMEntity {
 		MogwaiLogger.info("Memory used: {0}MB", endMem);
 		MogwaiLogger.info("Memory Consumption: {0}MB", endMem - beginMem);
 //		MogwaiLogger.info("[Checker] Max Memory Consumption: {0}MB", checker.highest - beginMem);
-//		MogwaiLogger.info("Memory Consumption (middle): {0}MB", midMem - beginMem);
+		MogwaiLogger.info("Memory Consumption (middle): {0}MB", midMem - beginMem);
 	}
 
 	private static void register(EPackage ePackage) {

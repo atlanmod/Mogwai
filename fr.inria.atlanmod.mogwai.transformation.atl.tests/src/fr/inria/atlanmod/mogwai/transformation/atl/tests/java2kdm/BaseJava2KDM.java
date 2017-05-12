@@ -41,7 +41,7 @@ public class BaseJava2KDM {
 	public static final String SET4 = "set4";
 	public static final String SET5 = "set5";
 	
-	public static int MEMORY_CHECK_INTERVAL = 10000;
+	public static int MEMORY_CHECK_INTERVAL = 5000;
 	
 	public static String THE_SET = SET4;
 	
@@ -90,8 +90,9 @@ public class BaseJava2KDM {
 				 *  Having a high autocommit chunk makes the VM crash if we have a big
 				 *  output model.
 				 */
-				.autocommit(100)
+				.autocommit(1000)
 //				.autocommit()
+//				.weakCache()
 				.asMap();
 		input.load(options);
 		
@@ -101,14 +102,12 @@ public class BaseJava2KDM {
 		runner.disableATLDebug();
 		long beginMem = getMem();
 		MogwaiLogger.info("Memory used: {0}MB", beginMem);
-		MemoryChecker checker = new MemoryChecker();
-		checker.start();
+//		MemoryChecker checker = new MemoryChecker();
+//		checker.start();
 		long begin = System.currentTimeMillis();
 		Resource out = runner.transform(input);
-//		out.setURI(URI.createURI("materials/kdm/set1.xmi"));
-//		out.save(Collections.emptyMap());
 		MogwaiLogger.info("Closing input");
-		((PersistentResource)input).close();
+//		((PersistentResource)input).close();
 		MogwaiLogger.info("Moving output");
 		long beginSave = System.currentTimeMillis();
 //		long midMem = getMem();
@@ -117,14 +116,14 @@ public class BaseJava2KDM {
 		neoOutput.save(options);
 		long end = System.currentTimeMillis();
 		long endMem = getMem();
-		checker.unwatch();
+//		checker.unwatch();
 		MogwaiLogger.info("Input size: {0}", size(input));
 		MogwaiLogger.info("Output size: {0}", size(neoOutput));
 		MogwaiLogger.info("Execution time: {0}ms", (end-begin));
 		MogwaiLogger.info("Save() time: {0}ms", (end-beginSave));
 		MogwaiLogger.info("Memory used: {0}MB", endMem);
 		MogwaiLogger.info("Memory Consumption: {0}MB", endMem - beginMem);
-		MogwaiLogger.info("[Checker] Max Memory Consumption: {0}MB", checker.highest - beginMem);
+//		MogwaiLogger.info("[Checker] Max Memory Consumption: {0}MB", checker.highest - beginMem);
 //		MogwaiLogger.info("Memory Consumption (middle): {0}MB", midMem - beginMem);
 	}
 

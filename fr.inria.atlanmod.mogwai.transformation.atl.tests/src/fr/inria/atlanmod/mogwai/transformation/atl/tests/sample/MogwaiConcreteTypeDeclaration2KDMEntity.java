@@ -25,6 +25,7 @@ import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResourceFactory;
 import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.builder.ATLQueryBuilder;
+import fr.inria.atlanmod.mogwai.transformation.atl.tests.sample.MogwaiAbstractTypeDeclaration2KDMEntity.MemoryChecker;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
@@ -41,6 +42,8 @@ public class MogwaiConcreteTypeDeclaration2KDMEntity {
 	public static final String SET3 = "set3";
 	public static final String SET4 = "set4";
 	public static final String SET5 = "set5";
+	
+	public static int MEMORY_CHECK_INTERVAL = 500;
 	
 	public static String THE_SET = SET5;
 	
@@ -94,6 +97,8 @@ public class MogwaiConcreteTypeDeclaration2KDMEntity {
 				.getBackend().getGraph(), 100000, JavaPackage.eINSTANCE));
 
 		long beginMem = getMem();
+		MemoryChecker checker = new MemoryChecker();
+		checker.start();
 		MogwaiLogger.info("Start Memory: {0}MB", beginMem);
 		mogwaiResource.transform(query, options);
 		
@@ -102,9 +107,12 @@ public class MogwaiConcreteTypeDeclaration2KDMEntity {
 		mogwaiResource.save(neoOpts);
 		long end = System.currentTimeMillis();
 		long endMem = getMem();
+		checker.unwatch();
 		MogwaiLogger.info("Saving done in {0}ms", (end-begin));
 		MogwaiLogger.info("End Memory: {0}MB", endMem);
 		MogwaiLogger.info("Memory Consumption: {0}MB", (endMem - beginMem));
+		MogwaiLogger.info("[Checker] Max Memory Consumption: {0}MB", checker.highest - beginMem);
+
 		
 		Index<Vertex> index = mogwaiResource.getBackend().getGraph().getIndex("metaclasses", Vertex.class);
 		Iterable<Vertex> metaClassVertex = index.get("name", "Datatype");
@@ -143,6 +151,35 @@ public class MogwaiConcreteTypeDeclaration2KDMEntity {
 			System.gc();
 		}
 		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / MB;
+	}
+	
+	public static class MemoryChecker extends Thread {
+		
+		private boolean running = true;
+		
+		public long highest = 0;
+		
+		@Override
+		public void run() {
+			MogwaiLogger.info("Memory Checker Started");
+			while(running) {
+				try {
+					sleep(MEMORY_CHECK_INTERVAL);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				long mem = getMem();
+				if(mem > highest) {
+					highest = mem;
+				}
+				MogwaiLogger.info("[Checker] Memory used: {0}", mem);
+			}
+		}
+		
+		public void unwatch() {
+			this.running = false;
+		}
 	}
 
 }
