@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation.ocl.tests
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: fr.inria.atlanmod.mogwai.gremlin;bundle-version="1.0.0",
+ org.junit,
+ org.eclipse.ocl.ecore,
+ fr.inria.atlanmod.mogwai.core;bundle-version="1.0.0",
+ org.eclipse.emf.compare,
+ org.eclipse.gmt.modisco.java;bundle-version="1.0.0",
+ fr.inria.atlanmod.mogwai.common;bundle-version="1.0.0"
+Bundle-Vendor: AtlanMod - Inria
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
