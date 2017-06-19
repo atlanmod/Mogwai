@@ -32,7 +32,7 @@
 			<exclude org="org.codehaus.groovy" name="groovy"/>
 		</dependency>
 		<dependency org="com.tinkerpop.gremlin" name="gremlin-java" rev="2.6.0" conf="default->master,compile"/>
-		<dependency org="com.google.guava" name="guava" rev="20.0" conf="default->master,compile"/>
+		<dependency org="com.google.guava" name="guava" rev="19.0" conf="default->master,compile"/>
 		<dependency org="org.neo4j" name="neo4j" rev="3.1.0" />
 	</dependencies>
 </ivy-module>
