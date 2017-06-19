@@ -29,14 +29,14 @@ public class TestATL {
 		outResource.save(BlueprintsNeo4jOptionsBuilder.newBuilder().directWrite().autocommit(1000).asMap());
 		long end = System.currentTimeMillis();
 		NeoLogger.info("Created large instance in {0}ms", (end-begin));
-		
-		try {
-			Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+//		
+//		try {
+//			Thread.sleep(20000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
 		ATLRunner runner = new ATLRunner();
 		begin = System.currentTimeMillis();
 		Resource output = runner.transform(mogResource, outResource);

@@ -124,8 +124,8 @@ public class ATLRunner {
 			transformationLauncher = new EMFVMLauncher();
 			transformationLauncher.initialize(new HashMap<String, Object>());
 			
-			transformationLauncher.addInModel(inputModel, "IN", "ClassMM");
-			transformationLauncher.addOutModel(outModel, "OUT", "RelationalMM");
+			transformationLauncher.addInModel(inputModel, "IN", "Class");
+			transformationLauncher.addOutModel(outModel, "OUT", "Relational");
 			
 			transformationLauncher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap<String, Object>(), modules.toArray());
 			Resource out = null;
