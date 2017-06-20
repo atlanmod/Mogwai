@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class FileUtils {
+public class FileUtil {
 
 	/**
 	 * Deletes a {@link File}.

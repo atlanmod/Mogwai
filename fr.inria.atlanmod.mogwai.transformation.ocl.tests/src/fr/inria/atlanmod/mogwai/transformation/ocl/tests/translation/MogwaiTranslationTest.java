@@ -1,6 +1,5 @@
 package fr.inria.atlanmod.mogwai.transformation.ocl.tests.translation;
 
-import static java.util.Objects.isNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -33,7 +32,8 @@ import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.transformation.files.OCL2Gremlin;
-import fr.inria.atlanmod.mogwai.transformation.ocl.tests.util.FileUtils;
+import fr.inria.atlanmod.mogwai.transformation.ocl.tests.util.FileUtil;
+import fr.inria.atlanmod.mogwai.transformation.ocl.tests.util.TestUtil;
 import fr.inria.atlanmod.mogwai.util.OCLImporter;
 
 @RunWith(Parameterized.class)
@@ -60,7 +60,9 @@ public class MogwaiTranslationTest {
 	private Resource expectedGremlinResource;
 
 	public MogwaiTranslationTest(String constraintName) {
+		MogwaiLogger.info("------------------------------------");
 		MogwaiLogger.info("Testing {0}", constraintName);
+		MogwaiLogger.info("------------------------------------");
 		String constraintPath = RESOURCE_PREFIX + "/ocl/" + constraintName + ".ocl";
 		String expectedGremlinResourcePath = RESOURCE_PREFIX + "/gremlin/" + constraintName + ".gremlin";
 		String generatedGremlinResourcePath = RESOURCE_PREFIX + "/.tmp/" + constraintName + ".gremlin";
@@ -85,7 +87,7 @@ public class MogwaiTranslationTest {
 			MogwaiLogger.error("Cannot load expected result at {0}. using empty resource instead",
 					expectedGremlinResourcePath);
 			MogwaiLogger.error(e.getMessage());
-			expectedGremlinResource = createEmptyResource();
+			expectedGremlinResource = TestUtil.createEmptyGremlinResource(rSet);
 		}
 		generatedGremlinResource = rSet.createResource(URI.createURI(generatedGremlinResourcePath));
 		MogwaiLogger.info("Tmp resource holding generated script created ({0})", generatedGremlinResourcePath);
@@ -95,7 +97,7 @@ public class MogwaiTranslationTest {
 	public static void setUpBeforeClass() {
 		String tmpPath = RESOURCE_PREFIX + "/.tmp";
 		MogwaiLogger.info("Deleting {0}", tmpPath);
-		FileUtils.delete(new File(tmpPath));
+		FileUtil.delete(new File(tmpPath));
 	}
 
 	@Test
@@ -115,6 +117,8 @@ public class MogwaiTranslationTest {
 		Comparison comparison = EMFCompare.builder().build().compare(scope);
 		MogwaiLogger.info("Comparing generated resource and expected one ({0}/{1})", generatedGremlinResource.getURI(),
 				expectedGremlinResource.getURI());
+		MogwaiLogger.info("Left: generated Gremlin query");
+		MogwaiLogger.info("Right: expected Gremlin query");
 
 		List<Diff> differences = comparison.getDifferences();
 		if (differences.size() > 0) {
@@ -129,52 +133,5 @@ public class MogwaiTranslationTest {
 		}
 		MogwaiLogger.info("Generated Gremlin script and expected one are similar");
 	}
-
-	private Resource createEmptyResource() {
-		return rSet.createResource(URI.createURI("empty_resource.gremlin"));
-	}
-
-	// @Before
-	// public void setUp() throws IOException {
-	// String className = this.getClass().getSimpleName();
-	// String oclFileName = className.substring(0, className.length() - 4);
-	// oclFileName = Character.toLowerCase(oclFileName.charAt(0)) +
-	// oclFileName.substring(1);
-	// System.out.println("Processing " + oclFileName);
-	// Constraint c = null;
-	// try {
-	// c = OCLImporter.parseOCL(URI.createURI("ocl/translation/" + oclFileName +
-	// ".ocl"), JavaPackage.eINSTANCE);
-	// } catch (Exception e1) {
-	// e1.printStackTrace();
-	// }
-	// System.out.println("Input OCL: " + c.toString());
-	//
-	// ResourceSet rSet = new ResourceSetImpl();
-	// rSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",
-	// new XMIResourceFactoryImpl());
-	// Resource oclResource =
-	// rSet.createResource(URI.createURI("xmi/translation/ocl/" + oclFileName +
-	// ".xmi"));
-	// oclResource.getContents().add(c);
-	// oclResource.save(Collections.emptyMap());
-	//
-	//
-	//
-	// Resource gremlinResource =
-	// rSet.createResource(URI.createURI("xmi/translation/gremlin/" +
-	// oclFileName
-	// + "_gremlin.xmi"));
-	//
-	//
-	// System.out.println("Translated Expression: " + gScript.toString());
-	//
-	// Resource expectedResource =
-	// rSet.createResource(URI.createURI("expected/translation/" + oclFileName
-	// + "_gremlin.xmi"));
-	// expectedResource.load(Collections.emptyMap());
-	//
-	//
-	// }
 
 }
