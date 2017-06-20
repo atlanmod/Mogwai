@@ -4,6 +4,15 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * A utility class that provides file management methods.
+ * <p>
+ * This class reimplements some of the Apache FileUtils methods in order to
+ * avoid an unnecessary dependency.
+ * 
+ * @author Gwendal DANIEL
+ *
+ */
 public class FileUtil {
 
 	/**
