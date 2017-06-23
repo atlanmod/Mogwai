@@ -2,7 +2,7 @@
 <feature
       id="fr.inria.atlanmod.mogwai.console.feature"
       label="Mogwai Console Component"
-      version="0.0.1.qualifier"
+      version="1.0.0.qualifier"
       provider-name="AtlanMod">
 
    <description url="http://www.example.com/description">
