@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="fr.inria.atlanmod.mogwai.neoemf.feature"
-      label="Feature"
+      label="Mogwai NeoEMF Integration Component"
       version="1.0.0.qualifier"
       provider-name="AtlanMod - Inria">
 
