@@ -68,13 +68,12 @@ import org.eclipse.ui.console.actions.ClearOutputAction;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
+import fr.inria.atlanmod.mogwai.neoemf.resource.DefaultMogwaiResource;
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResourceFactory;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
-import fr.inria.atlanmod.mogwai.util.MogwaiUtil;
+import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public class MogwaiConsolePage extends Page {
@@ -186,7 +185,7 @@ private Composite page;
 				append(expression, outputDefault, false);
 
 				org.eclipse.ocl.ecore.OCLExpression parsed = (org.eclipse.ocl.ecore.OCLExpression) helper.createQuery(expression);
-				if(resource == null || !MogwaiUtil.isMogwaiCompatible(resource)) {
+				if(resource == null || !DefaultMogwaiResource.isMogwaiCompatible(resource)) {
 					append("The model is not compatible with Mogwai, using standard OCL interpreter", outputDefault, true);
 	                append("Results: ", outputDefault, true);
 	                print(ocl.evaluate(context, parsed), outputResults, false);
@@ -196,8 +195,8 @@ private Composite page;
 					// Decorate the resource to enable Mogwai query API
 					MogwaiResource mr = MogwaiResourceFactory.getInstance().decoratePersistentResource((PersistentResource)resource);
 					// See if the eClass access is ok
-					MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder().fromOCLExpression(parsed).context(context.eClass()).build();
-					MogwaiQueryResult qR = mr.query(query, context);
+					MogwaiQuery query = OCLQueryBuilder.newBuilder().fromOCLExpression(parsed).context(context.eClass()).build();
+					NeoEMFQueryResult qR = mr.query(query, context);
 					append("Computing query: ", outputDefault, true);
 					append(qR.getExecutedQuery(), outputGremlin, false);
 					append("Results: ", outputDefault, true);
@@ -328,7 +327,7 @@ private Composite page;
 		scrollText();
 	}
 	
-	private void printMogwaiResult(MogwaiQueryResult queryResult, Color color, boolean bold) throws MogwaiException {
+	private void printMogwaiResult(NeoEMFQueryResult queryResult, Color color, boolean bold) {
 		Collection<?> toPrint;
 		if(queryResult.isReifiable()) {
 			if(queryResult.isSingleResult()) {
