@@ -12,6 +12,6 @@ Export-Package: org.eclipse.gmt.modisco.java,
  org.eclipse.gmt.modisco.java.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- fr.inria.atlanmod.neoemf.core;visibility:=reexport,
+ fr.inria.atlanmod.neoemf.core;bundle-version="[1.0.2,1.0.3]";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport
 Bundle-ActivationPolicy: lazy

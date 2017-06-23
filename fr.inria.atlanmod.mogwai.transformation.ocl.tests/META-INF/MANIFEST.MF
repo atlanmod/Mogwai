@@ -10,9 +10,9 @@ Require-Bundle: fr.inria.atlanmod.mogwai.gremlin;bundle-version="1.0.0",
  org.eclipse.emf.compare,
  org.eclipse.gmt.modisco.java;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.common;bundle-version="1.0.0",
- fr.inria.atlanmod.neoemf.data.blueprints.core;bundle-version="1.0.2",
- fr.inria.atlanmod.neoemf.data.blueprints.neo4j;bundle-version="1.0.2",
- fr.inria.atlanmod.neoemf.data.blueprints.neo4j.wrapper;bundle-version="1.0.2",
- fr.inria.atlanmod.mogwai.neoemf
+ fr.inria.atlanmod.neoemf.data.blueprints.core;bundle-version="[1.0.2,1.0.3]",
+ fr.inria.atlanmod.neoemf.data.blueprints.neo4j;bundle-version="[1.0.2,1.0.3]",
+ fr.inria.atlanmod.neoemf.data.blueprints.neo4j.wrapper;bundle-version="[1.0.2,1.0.3]",
+ fr.inria.atlanmod.mogwai.neoemf;bundle-version="1.0.0"
 Bundle-Vendor: AtlanMod - Inria
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
