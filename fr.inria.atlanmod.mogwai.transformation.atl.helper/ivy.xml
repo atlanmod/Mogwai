@@ -28,6 +28,6 @@
 		<conf name="default" description="Default configuration"/>
 	</configurations>
 	<dependencies>
-		<dependency org="com.google.guava" name="guava" rev="19.0" conf="default->master,compile"/>
+		<dependency org="com.google.guava" name="guava" rev="15.0" conf="default->master,compile"/>
 	</dependencies>
 </ivy-module>

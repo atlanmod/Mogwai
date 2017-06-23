@@ -29,7 +29,7 @@
 	</configurations>
 	<dependencies>
 		<dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="2.4.0" conf="default->master,compile"/>
-		<dependency org="com.google.guava" name="guava" rev="19.0" conf="default->master,compile"/>
+		<dependency org="com.google.guava" name="guava" rev="15.0" conf="default->master,compile"/>
 		<dependency org="org.apache.logging.log4j" name="log4j-api" rev="2.7" conf="default->master,compile"/>
 		<dependency org="org.apache.logging.log4j" name="log4j-core" rev="2.7" conf="default->master,compile"/>
 	</dependencies>
