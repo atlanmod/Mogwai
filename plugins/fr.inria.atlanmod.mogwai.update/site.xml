@@ -3,18 +3,23 @@
    <description name="Mogwaï Update Site">
       Contains the different components provided with the Mogwaï framework.
    </description>
-   <feature url="features/fr.inria.atlanmod.mogwai.core.feature_0.0.1.201612151930.jar" id="fr.inria.atlanmod.mogwai.core.feature" version="0.0.1.201612151930">
-      <category name="Mogwai Core"/>
+   <feature url="features/fr.inria.atlanmod.mogwai.core.feature_1.0.0.qualifier.jar" id="fr.inria.atlanmod.mogwai.core.feature" version="1.0.0.qualifier">
+      <category name="Mogwai"/>
    </feature>
-   <feature url="features/fr.inria.atlanmod.mogwai.console.feature_0.0.1.201612151930.jar" id="fr.inria.atlanmod.mogwai.console.feature" version="0.0.1.201612151930"/>
-   <category-def name="Mogwai Core" label="Mogwai Core">
+   <feature url="features/fr.inria.atlanmod.mogwai.console.feature_1.0.0.qualifier.jar" id="fr.inria.atlanmod.mogwai.console.feature" version="1.0.0.qualifier">
+      <category name="Optional"/>
+   </feature>
+   <feature url="features/fr.inria.atlanmod.mogwai.neoemf.feature_1.0.0.qualifier.jar" id="fr.inria.atlanmod.mogwai.neoemf.feature" version="1.0.0.qualifier">
+      <category name="Optional"/>
+   </feature>
+   <category-def name="Mogwai" label="Mogwai">
       <description>
-         Mogwai core features
+         Mogwaï Core features.
       </description>
    </category-def>
-   <category-def name="Mogwai UI" label="Mogwai UI">
+   <category-def name="Optional" label="Optional">
       <description>
-         Additional component for UI integration
+         Optional features that provide specific integrations or utilities.
       </description>
    </category-def>
 </site>
