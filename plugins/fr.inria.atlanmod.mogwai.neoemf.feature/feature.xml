@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="fr.inria.atlanmod.mogwai.neoemf.feature"
+      label="Feature"
+      version="1.0.0.qualifier"
+      provider-name="AtlanMod - Inria">
+
+   <description url="http://www.example.com/description">
+      Contains the NeoEMF connector and helper implementations that allows to compute Mogwai queries on NeoEMF resources.
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import feature="fr.inria.atlanmod.mogwai.core.feature" version="1.0.0.qualifier"/>
+   </requires>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.datastore.blueprints"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.neoemf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

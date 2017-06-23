@@ -2,11 +2,13 @@
 <feature
       id="fr.inria.atlanmod.mogwai.core.feature"
       label="Mogwai Core Component"
-      version="0.0.1.qualifier"
-      provider-name="AtlanMod">
+      version="1.0.0.qualifier"
+      provider-name="AtlanMod - Inria">
 
    <description url="http://www.example.com/description">
-      Contains the core component of the Mogwaï query framework: the transformation engine responsible of the OCL to Gremlin transformation, the Gremlin metamodel, and utility classes to query a NeoEMF resource and reify results.
+      Contains the core components of the Mogwaï query framework: the Gremlin metamodel used to create low-level database queries, the engines responsible of the OCL/ATL to Gremlin translations, and abstract utility classes that can be specialized to query custom data sources and customize the transformation algorithm.
+
+Note that this feature does not include NeoEMF query facilities, that should be installed separatly.
    </description>
 
    <copyright url="http://www.example.com/copyright">
@@ -19,12 +21,26 @@
 
    <requires>
       <import plugin="fr.inria.atlanmod.neoemf.core"/>
-      <import plugin="fr.inria.atlanmod.neoemf.graph.blueprints"/>
-      <import plugin="fr.inria.atlanmod.neoemf.graph.blueprints.neo4j"/>
+      <import plugin="fr.inria.atlanmod.neoemf.data.blueprints.core"/>
+      <import plugin="fr.inria.atlanmod.neoemf.data.blueprints.neo4j"/>
    </requires>
 
    <plugin
+         id="fr.inria.atlanmod.mogwai.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="fr.inria.atlanmod.mogwai.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.datastore"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -39,6 +55,27 @@
 
    <plugin
          id="fr.inria.atlanmod.mogwai.transformation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.transformation.atl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.transformation.atl.helper"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.inria.atlanmod.mogwai.transformation.ocl"
          download-size="0"
          install-size="0"
          version="0.0.0"

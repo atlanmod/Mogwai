@@ -6,11 +6,7 @@
       provider-name="AtlanMod">
 
    <description url="http://www.example.com/description">
-      Contains an OCL console that delegates to Mogwaï if the queried
-model is stored in NeoEMF/Graph. This component is optional and only add a new console to Eclipse workbench.
-The console is a lightweight extension of MDT OCL console, and delegates computation to the
-standard OCL interpreter if the model is not stored in a Mogwaï-compatible
-database.
+      Contains an OCL console that uses Mogwai to compute OCL queries on NeoEMF resources. Standard EMF resources are supported by delegating OCL evaluation to the MDT OCL interpreter.
    </description>
 
    <copyright url="http://www.example.com/copyright">
@@ -22,7 +18,8 @@ database.
    </license>
 
    <requires>
-      <import feature="fr.inria.atlanmod.mogwai.core.feature" version="0.0.1.qualifier"/>
+      <import feature="fr.inria.atlanmod.mogwai.core.feature" version="1.0.0.qualifier"/>
+      <import feature="fr.inria.atlanmod.mogwai.neoemf.feature" version="1.0.0.qualifier"/>
    </requires>
 
    <plugin
