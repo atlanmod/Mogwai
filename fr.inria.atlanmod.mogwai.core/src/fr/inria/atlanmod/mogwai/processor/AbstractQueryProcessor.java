@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -89,7 +88,7 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 	 * additional Gremlin operations and syntactic sugar used in the generated
 	 * code.
 	 */
-	private File initGremlinFile;
+	private URL initGremlinURL;
 
 	/**
 	 * Constructs a new {@link AbstractQueryProcessor} and loads the
@@ -99,16 +98,10 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 	 *             if the initialization file cannot be found
 	 */
 	public AbstractQueryProcessor() {
-		URL url;
 		try {
-			url = MogwaiQueryUtil.getFileURL(AbstractQueryProcessor.class, INIT_SCRIPT_FILE_NAME);
+			initGremlinURL = MogwaiQueryUtil.getFileURL(AbstractQueryProcessor.class, INIT_SCRIPT_FILE_NAME);
 		} catch (IOException e) {
 			throw new MogwaiCoreException("Cannot initialize MogwaiProcessor: {0} not found", INIT_SCRIPT_FILE_NAME);
-		}
-		try {
-			initGremlinFile = new File(url.toURI());
-		} catch (URISyntaxException e) {
-			initGremlinFile = new File(url.getPath());
 		}
 	}
 
@@ -247,7 +240,7 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 	protected void initGremlinScriptRunner(List<ModelDatastore> datastores) {
 		checkArgument(datastores.size() >= 1,
 				"Cannot init the script runner: expected at least 1 datastore, found {0}", datastores.size());
-		GremlinQuery query = (GremlinQuery) GremlinQueryBuilder.newBuilder().fromFile(initGremlinFile).build();
+		GremlinQuery query = (GremlinQuery) GremlinQueryBuilder.newBuilder().fromURL(initGremlinURL).build();
 		Map<String, Object> bindings = new HashMap<>();
 		bindings.put(ModelDatastore.BINDING_NAME_INPUT, datastores.get(0));
 		if (datastores.size() == 1) {

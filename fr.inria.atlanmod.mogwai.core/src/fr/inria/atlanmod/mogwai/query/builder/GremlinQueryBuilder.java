@@ -1,5 +1,7 @@
 package fr.inria.atlanmod.mogwai.query.builder;
 
+import java.net.URL;
+
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.processor.GremlinQueryProcessor;
 import fr.inria.atlanmod.mogwai.query.GremlinQuery;
@@ -9,7 +11,7 @@ import fr.inria.atlanmod.mogwai.query.GremlinQuery;
  * create {@link GremlinQuery} instances.
  * <p>
  * This builder accepts all the input type of {@link AbstractMogwaiQueryBuilder}
- * (File, String, and URI).
+ * (File, String, URI, and URL).
  * <p>
  * The created {@link GremlinQuery} can be processed by a
  * {@link GremlinQueryProcessor} on top of any {@link ModelDatastore}
@@ -42,6 +44,19 @@ public class GremlinQueryBuilder extends AbstractMogwaiQueryBuilder<GremlinQuery
 	 */
 	public static GremlinQueryBuilder newBuilder() {
 		return new GremlinQueryBuilder();
+	}
+	
+	/**
+	 * Sets {@code url} as the input of the created {@link GremlinQuery}.
+	 * 
+	 * @param url
+	 *            the {@link URL} describing the input location of the
+	 *            {@link GremlinQuery} to create
+	 * @return the instance of the builder
+	 */
+	public GremlinQueryBuilder fromURL(URL url) {
+		this.input = url;
+		return me();
 	}
 
 	/**

@@ -2,9 +2,10 @@ package fr.inria.atlanmod.mogwai.query;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
@@ -34,9 +35,9 @@ public class GremlinQuery extends MogwaiQuery {
 	/**
 	 * Constructs a new {@link GremlinQuery} from the given {@code input}.
 	 * <p>
-	 * {@link GremlinQuery} supports {@link String}, {@link URI}, {@link File}
-	 * inputs. If another {@code input} type is provided the constructor throws
-	 * a {@link QueryException}.
+	 * {@link GremlinQuery} supports {@link String}, {@link URI}, {@link File},
+	 * and {@link URL} inputs. If another {@code input} type is provided the
+	 * constructor throws a {@link QueryException}.
 	 * <p>
 	 * Instances of {@link GremlinQuery} can be created using the fluent
 	 * {@link GremlinQueryBuilder} API.
@@ -57,6 +58,8 @@ public class GremlinQuery extends MogwaiQuery {
 			fromURI((URI) input);
 		} else if (input instanceof File) {
 			fromFile((File) input);
+		} else if (input instanceof URL) {
+			fromURL((URL) input);
 		} else {
 			throw new QueryException("Cannot construct a {0} from the provided input ({1})",
 					GremlinQuery.class.getName(), input.getClass().getName());
@@ -108,6 +111,24 @@ public class GremlinQuery extends MogwaiQuery {
 	}
 
 	/**
+	 * Set the internal query representation from the provided {@code url}.
+	 * 
+	 * @param url
+	 *            the {@link URL} describing to the Gremlin script location
+	 * @see GremlinQuery#GremlinQuery(Object)
+	 */
+	protected void fromURL(URL url) {
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			this.literalQuery = reader.lines().collect(Collectors.joining("\n"));
+			reader.close();
+		} catch (IOException e) {
+			throw new QueryException(e.getMessage());
+		}
+	}
+
+	/**
 	 * Parses the Gremlin script contained in the file at the provided
 	 * {@code fileLocation}.
 	 * 
@@ -118,11 +139,7 @@ public class GremlinQuery extends MogwaiQuery {
 		BufferedReader reader;
 		try {
 			reader = new BufferedReader(new FileReader(fileLocation));
-		} catch (FileNotFoundException e) {
-			throw new QueryException(e.getMessage());
-		}
-		this.literalQuery = reader.lines().collect(Collectors.joining("\n"));
-		try {
+			this.literalQuery = reader.lines().collect(Collectors.joining("\n"));
 			reader.close();
 		} catch (IOException e) {
 			throw new QueryException(e.getMessage());
