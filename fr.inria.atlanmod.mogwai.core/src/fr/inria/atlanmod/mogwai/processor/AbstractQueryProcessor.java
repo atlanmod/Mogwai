@@ -277,11 +277,15 @@ public abstract class AbstractQueryProcessor<Q extends MogwaiQuery> {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected Map<String, Object> createBindings(List<ModelDatastore> datastores, Map<String, Object> options) {
-		Map<String, Object> bindings;
+		Map<String, Object> bindings = createDefaultBindings(datastores);
 		if (options.containsKey(BINDINGS_KEY)) {
-			bindings = (Map<String, Object>) options.get(BINDINGS_KEY);
-		} else {
-			bindings = createDefaultBindings(datastores);
+			/*
+			 * Override default bindings with the provided ones
+			 */
+			Map<String, Object> optionBindings = (Map<String, Object>) options.get(BINDINGS_KEY);
+			for(String key : optionBindings.keySet()) {
+				bindings.put(key, optionBindings.get(key));
+			}
 		}
 		return bindings;
 	}
