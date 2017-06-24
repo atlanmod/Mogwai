@@ -20,6 +20,17 @@
    <requires>
       <import feature="fr.inria.atlanmod.mogwai.core.feature" version="1.0.0.qualifier"/>
       <import feature="fr.inria.atlanmod.mogwai.neoemf.feature" version="1.0.0.qualifier"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ocl.examples.interpreter"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.ocl.ecore"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="fr.inria.atlanmod.mogwai.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.neoemf" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

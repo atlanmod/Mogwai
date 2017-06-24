@@ -19,6 +19,15 @@
 
    <requires>
       <import feature="fr.inria.atlanmod.mogwai.core.feature" version="1.0.0.qualifier"/>
+      <import plugin="fr.inria.atlanmod.mogwai.datastore" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.common" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="fr.inria.atlanmod.neoemf.core" version="1.0.2"/>
+      <import plugin="fr.inria.atlanmod.mogwai.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.neoemf.data.blueprints.core" version="1.0.2"/>
+      <import plugin="fr.inria.atlanmod.mogwai.datastore.blueprints" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.transformation.atl.helper" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

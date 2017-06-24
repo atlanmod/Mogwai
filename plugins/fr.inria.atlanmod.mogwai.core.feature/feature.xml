@@ -20,9 +20,27 @@ Note that this feature does not include NeoEMF query facilities, that should be 
    </license>
 
    <requires>
+      <import plugin="org.eclipse.core.runtime" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ocl.ecore" version="3.3.100" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.transformation.ocl" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.common"/>
+      <import plugin="org.eclipse.m2m.atl.emftvm.compiler"/>
+      <import plugin="fr.inria.atlanmod.mogwai.transformation.atl" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.engine"/>
+      <import plugin="org.eclipse.m2m.atl.dsls"/>
+      <import plugin="org.eclipse.m2m.atl.emftvm"/>
+      <import plugin="fr.inria.atlanmod.mogwai.datastore" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.transformation" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.common" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.mogwai.transformation.atl.helper" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.neoemf.data.blueprints.neo4j.wrapper"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.m2m.atl.core"/>
+      <import plugin="org.eclipse.m2m.atl.engine.emfvm"/>
+      <import plugin="fr.inria.atlanmod.mogwai.gremlin" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="fr.inria.atlanmod.neoemf.core"/>
-      <import plugin="fr.inria.atlanmod.neoemf.data.blueprints.core"/>
-      <import plugin="fr.inria.atlanmod.neoemf.data.blueprints.neo4j"/>
+      <import plugin="org.eclipse.m2m.atl"/>
    </requires>
 
    <plugin
@@ -76,6 +94,13 @@ Note that this feature does not include NeoEMF query facilities, that should be 
 
    <plugin
          id="fr.inria.atlanmod.mogwai.transformation.ocl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ClassDiagram"
          download-size="0"
          install-size="0"
          version="0.0.0"
