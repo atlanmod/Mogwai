@@ -50,7 +50,7 @@ public interface IdentityStep extends Step {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nif(needed) {\n\tres.append(\"_()\");\n\tif(getNextElement() != null) {\n\t\tres.append(\".\").append(getNextElement().toString());\n\t}\n}\nelse {\n\tif(getNextElement() != null) {\n\t\tres.append(getNextElement().toString());\n\t}\n}\nreturn res.toString();'"
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='StringBuffer res = new StringBuffer();\nif(needed || getNextElement() == null) {\n\tres.append(\"_()\");\n\tif(getNextElement() != null) {\n\t\tres.append(\".\").append(getNextElement().toString());\n\t}\n}\nelse {\n\tres.append(getNextElement().toString());\n}\nreturn res.toString();'"
 	 * @generated
 	 */
 	String toString();

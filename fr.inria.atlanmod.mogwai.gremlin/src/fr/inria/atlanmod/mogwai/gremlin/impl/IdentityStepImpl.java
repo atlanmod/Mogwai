@@ -96,16 +96,14 @@ public class IdentityStepImpl extends StepImpl implements IdentityStep {
 	 */
 	public String toString() {
 		StringBuffer res = new StringBuffer();
-		if(needed) {
+		if(needed || getNextElement() == null) {
 			res.append("_()");
 			if(getNextElement() != null) {
 				res.append(".").append(getNextElement().toString());
 			}
 		}
 		else {
-			if(getNextElement() != null) {
-				res.append(getNextElement().toString());
-			}
+			res.append(getNextElement().toString());
 		}
 		return res.toString();
 	}
