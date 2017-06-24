@@ -215,15 +215,13 @@ public class DefaultGremlinPrinter extends GremlinSwitch<String> implements Grem
 	@Override
 	public String caseIdentityStep(IdentityStep o) {
 		StringBuffer res = new StringBuffer();
-		if (o.isNeeded()) {
+		if (o.isNeeded() || o.getNextElement() == null) {
 			res.append("_()");
 			if (o.getNextElement() != null) {
 				res.append(".").append(doSwitch(o.getNextElement()));
 			}
 		} else {
-			if (o.getNextElement() != null) {
-				res.append(doSwitch(o.getNextElement()));
-			}
+			res.append(doSwitch(o.getNextElement()));
 		}
 		return res.toString();
 	}
