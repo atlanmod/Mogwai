@@ -11,8 +11,6 @@
  */
 
 import org.codehaus.groovy.runtime.InvokerHelper 
-import fr.inria.atlanmod.mogwai.datastore.jdbc.JdbcElement;
-import org.neo4j.graphdb.Node;
 import fr.inria.atlanmod.mogwai.processor.ModelElementMetaClass;
 import fr.inria.atlanmod.mogwai.processor.ObjectMetaClass;
 import java.util.ArrayList;
