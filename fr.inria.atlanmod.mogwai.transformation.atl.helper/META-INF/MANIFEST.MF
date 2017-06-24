@@ -7,3 +7,5 @@ Bundle-Vendor: AtlanMod - Inria
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: fr.inria.atlanmod.mogwai.transformation.atl.helper
 Require-Bundle: fr.inria.atlanmod.mogwai.datastore;bundle-version="1.0.0"
+Bundle-ClassPath: lib/guava-15.0.jar,
+ .

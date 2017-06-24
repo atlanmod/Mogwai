@@ -8,3 +8,8 @@ Export-Package: fr.inria.atlanmod.mogwai.common.logging,
  fr.inria.atlanmod.mogwai.common.util
 Bundle-Vendor: AtlanMod - Inria
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0"
+Bundle-ClassPath: .,
+ lib/caffeine-2.4.0.jar,
+ lib/guava-15.0.jar,
+ lib/log4j-api-2.7.jar,
+ lib/log4j-core-2.7.jar

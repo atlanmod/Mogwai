@@ -14,3 +14,6 @@ Export-Package: fr.inria.atlanmod.mogwai.neoemf.processor,
  fr.inria.atlanmod.mogwai.neoemf.resource,
  fr.inria.atlanmod.mogwai.neoemf.util
 Bundle-Vendor: AtlanMod - Inria
+Bundle-ClassPath: .,
+ lib/commons-io-2.5.jar,
+ lib/guava-15.0.jar

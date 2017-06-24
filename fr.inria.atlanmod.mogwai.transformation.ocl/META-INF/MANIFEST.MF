@@ -3,8 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Mogwaï OCL Transformation Implementation
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.transformation.ocl
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.m2m.atl.core,
- org.eclipse.m2m.atl.engine.emfvm,
+Require-Bundle: org.eclipse.m2m.atl.core;visibility:=reexport,
+ org.eclipse.m2m.atl.engine.emfvm;visibility:=reexport,
  org.eclipse.ocl.ecore;bundle-version="3.3.100",
  fr.inria.atlanmod.mogwai.gremlin;bundle-version="1.0.0";visibility:=reexport,
  fr.inria.atlanmod.mogwai.transformation;bundle-version="1.0.0";visibility:=reexport
