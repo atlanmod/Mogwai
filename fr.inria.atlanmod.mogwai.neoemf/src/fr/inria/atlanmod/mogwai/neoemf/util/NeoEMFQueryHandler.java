@@ -2,6 +2,7 @@ package fr.inria.atlanmod.mogwai.neoemf.util;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFOCLQueryProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFQueryProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
+import fr.inria.atlanmod.mogwai.processor.AbstractQueryProcessor;
 import fr.inria.atlanmod.mogwai.query.ATLQuery;
 import fr.inria.atlanmod.mogwai.query.GremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -132,6 +134,7 @@ public class NeoEMFQueryHandler {
 	 * @see NeoEMFGremlinQueryProcessor
 	 * @see NeoEMFOCLQueryProcessor
 	 */
+	@SuppressWarnings("unchecked")
 	public NeoEMFQueryResult query(MogwaiQuery query, Object arguments, BlueprintsPersistenceBackend datastore,
 			Map<String, Object> options) throws QueryException {
 		Map<String, Object> theOptions = options;
@@ -139,6 +142,17 @@ public class NeoEMFQueryHandler {
 			theOptions = new HashMap<>();
 		}
 		ModelDatastore<?, ?, ?, ?> modelDatastore = getModelDatastore(theOptions, datastore);
+		if(nonNull(arguments)) {
+			/*
+			 * Add the provided argument in the query bindings
+			 */
+			Map<String, Object> bindings = (Map<String, Object>) theOptions.get(AbstractQueryProcessor.BINDINGS_KEY);
+			if(isNull(bindings)) {
+				bindings = new HashMap<>();
+			}
+			bindings.put("self", arguments);
+			theOptions.put(AbstractQueryProcessor.BINDINGS_KEY, bindings);
+		}
 		if (oclProcessor.get().accept(query)) {
 			oclProcessor.get().setBackend(datastore);
 			return (NeoEMFQueryResult) query.process(oclProcessor.get(), modelDatastore, theOptions);

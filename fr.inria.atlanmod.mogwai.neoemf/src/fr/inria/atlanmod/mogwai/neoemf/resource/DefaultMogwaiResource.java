@@ -20,6 +20,7 @@ import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.QueryException;
+import fr.inria.atlanmod.neoemf.core.PersistentEObject;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.DefaultPersistentResource;
@@ -84,7 +85,11 @@ public class DefaultMogwaiResource extends DefaultPersistentResource implements 
 	 */
 	@Override
 	public NeoEMFQueryResult query(MogwaiQuery query, Object arg, Map<String, Object> options) {
-		return NeoEMFQueryHandler.getInstance().query(query, arg, getBackend(), options);
+		Object theArgument = arg;
+		if(arg instanceof PersistentEObject) {
+			theArgument = this.getBackend().getVertex(((PersistentEObject) arg).id());
+		}
+		return NeoEMFQueryHandler.getInstance().query(query, theArgument, getBackend(), options);
 	}
 
 	/**
