@@ -33,13 +33,11 @@ Note that this feature does not include NeoEMF query facilities, that should be 
       <import plugin="fr.inria.atlanmod.mogwai.transformation" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="fr.inria.atlanmod.mogwai.common" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="fr.inria.atlanmod.mogwai.transformation.atl.helper" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="fr.inria.atlanmod.neoemf.data.blueprints.neo4j.wrapper"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.m2m.atl.core"/>
       <import plugin="org.eclipse.m2m.atl.engine.emfvm"/>
       <import plugin="fr.inria.atlanmod.mogwai.gremlin" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="fr.inria.atlanmod.neoemf.core"/>
       <import plugin="org.eclipse.m2m.atl"/>
    </requires>
 

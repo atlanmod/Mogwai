@@ -56,4 +56,3 @@ Bundle-ClassPath: .,
  lib/pipes-2.6.0.jar,
  lib/stax-api-1.0.1.jar
 Bundle-Vendor: AtlanMod - Inria
-Import-Package: org.neo4j.graphdb
