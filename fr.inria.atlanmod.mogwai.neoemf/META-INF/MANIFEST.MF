@@ -3,9 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: NeoEMF Mogwai Integration
 Bundle-SymbolicName: fr.inria.atlanmod.mogwai.neoemf
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: fr.inria.atlanmod.neoemf.core;bundle-version="[1.0.2,1.0.3]";visibility:=reexport,
+Require-Bundle: fr.inria.atlanmod.neoemf.core;visibility:=reexport,
  fr.inria.atlanmod.mogwai.core;bundle-version="1.0.0",
- fr.inria.atlanmod.neoemf.data.blueprints.core;bundle-version="[1.0.2,1.0.3]",
+ fr.inria.atlanmod.neoemf.data.blueprints.core,
  fr.inria.atlanmod.mogwai.datastore.blueprints;bundle-version="1.0.0",
  fr.inria.atlanmod.mogwai.transformation.atl.helper.blueprints;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
