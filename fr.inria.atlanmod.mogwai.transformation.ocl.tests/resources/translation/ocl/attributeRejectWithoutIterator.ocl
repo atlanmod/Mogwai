@@ -3,9 +3,9 @@ import ecore : 'http://www.eclipse.org/emf/2002/Ecore#/'
 
 package java
 
-context MethodDeclaration
+context Package
 	
-def: attributeRejectWithoutIterator : Set(MethodDeclaration) =
-	MethodDeclaration.allInstances()->
-		reject(name = 'format')
+def: attributeRejectWithoutIterator : Set(Package) =
+	Package.allInstances()->
+		reject(name = 'fr')
 endpackage

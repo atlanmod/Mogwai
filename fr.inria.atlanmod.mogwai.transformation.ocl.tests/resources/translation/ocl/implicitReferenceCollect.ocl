@@ -5,6 +5,6 @@ package java
 
 context Package
 	
-def: implicitReferenceCollect : Bag(AbstractTypeDeclaration)=
-	Package.allInstances().ownedElements
+def: implicitReferenceCollect : Bag(Package)=
+	Package.allInstances().ownedPackages
 endpackage

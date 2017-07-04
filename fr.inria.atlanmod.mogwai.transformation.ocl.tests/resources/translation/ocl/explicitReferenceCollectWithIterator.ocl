@@ -5,6 +5,6 @@ package java
 
 context Package
 	
-def: explicitReferenceCollectWithIterator : Bag(AbstractTypeDeclaration)=
-	Package.allInstances()->collect(each | each.ownedElements)
+def: explicitReferenceCollectWithIterator : Bag(Package)=
+	Package.allInstances()->collect(each | each.ownedPackages)
 endpackage

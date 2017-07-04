@@ -26,7 +26,7 @@
               <value xsi:type="gremlin:ClosureIt"/>
             </instructions>
             <instructions xsi:type="gremlin:VariableAccess" name="temp1">
-              <nextElement xsi:type="gremlin:OutEStep" relationshipName="ownedElements">
+              <nextElement xsi:type="gremlin:OutEStep" relationshipName="ownedPackages">
                 <nextElement xsi:type="gremlin:InVStep"/>
               </nextElement>
             </instructions>
