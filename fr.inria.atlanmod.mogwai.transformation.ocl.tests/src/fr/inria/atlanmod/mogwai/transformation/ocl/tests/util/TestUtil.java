@@ -1,5 +1,8 @@
 package fr.inria.atlanmod.mogwai.transformation.ocl.tests.util;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -59,6 +62,32 @@ public class TestUtil {
 	 */
 	public static Resource createEmptyGremlinResource(ResourceSet rSet) {
 		return rSet.createResource(URI.createURI("empty_resource.gremlin"));
+	}
+
+	/**
+	 * A custom implementation of {@link Objects#equals(Object, Object)} that
+	 * provides additional equivalence classes.
+	 * <p>
+	 * As an example, this method returns {@code true} when comparing a
+	 * {@link Double} and a {@link BigDecimal} which have the same double value.
+	 * <p>
+	 * This method aims to bridge the gap between OCL return types and Gremlin
+	 * return types, that may be considered as equivalent for general use cases.
+	 * 
+	 * @param o1
+	 * @param o2
+	 * @return
+	 */
+	public static boolean equals(Object o1, Object o2) {
+		boolean result = Objects.equals(o1, o2);
+		if (!result) {
+			if (o1 instanceof Double) {
+				if (o2 instanceof BigDecimal) {
+					result = ((BigDecimal) o2).doubleValue() == (Double) o1;
+				}
+			}
+		}
+		return result;
 	}
 
 }

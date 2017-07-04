@@ -25,16 +25,18 @@ public class FileUtil {
 	 *            the {@link File} to delete
 	 */
 	public static void delete(File file) {
-		if (file.isDirectory()) {
-			Collection<File> content = Arrays.asList(file.listFiles());
-			for (File f : content) {
-				/*
-				 * Deletes recursively sub-directory contents
-				 */
-				delete(f);
+		if(file.exists()) {
+			if (file.isDirectory()) {
+				Collection<File> content = Arrays.asList(file.listFiles());
+				for (File f : content) {
+					/*
+					 * Deletes recursively sub-directory contents
+					 */
+					delete(f);
+				}
+			} else {
+				file.delete();
 			}
-		} else {
-			file.delete();
 		}
 	}
 }
