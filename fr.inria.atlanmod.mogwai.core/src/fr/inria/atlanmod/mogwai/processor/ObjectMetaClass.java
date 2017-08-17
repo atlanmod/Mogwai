@@ -17,10 +17,11 @@ import com.tinkerpop.pipes.util.Pipeline;
  * step {@code _()}.
  * <p>
  * Calling the identity step on an object instance that uses this metaclass
- * creates a {@link CustomGremlinGroovyPipeline} instance containing the object
- * and allowing to manipulate it object in a Gremlin traversal with extended
- * modeling primitives. Note that {@link Iterable} instances are supported and
- * their content is added as the start elements of the created pipeline.
+ * creates a {@link CustomGremlinGroovyPipeline} instance starting with the
+ * current object and allowing to manipulate it in a Gremlin traversal with
+ * extended modeling primitives. Note that {@link Iterable} instances are
+ * supported and their content is added as the start elements of the created
+ * pipeline.
  * <p>
  * <b>Note:</b> using this metaclass for an instance of {@link Pipe} and
  * {@link Pipeline} will simply delegates the identity call to the parent

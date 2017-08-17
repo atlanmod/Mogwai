@@ -40,7 +40,7 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 public class CustomGremlinGroovyPipeline<S, E> extends GremlinGroovyPipeline<S, E> {
 
 	/**
-	 * The underlying {@link PipesDatastore} used to access the data-store
+	 * The underlying {@link PipesDatastore} used to access the data-store.
 	 */
 	private PipesDatastore datastore;
 
