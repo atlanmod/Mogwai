@@ -42,6 +42,9 @@ public class ObjectMetaClass extends DelegatingMetaClass {
 	 * instances and provides a dedicated implementation of the Gremlin identity
 	 * step {@code _()} which returns a {@link CustomGremlinGroovyPipeline}.
 	 * 
+	 * TODO: check if the constructor parameter is needed or if it can be safely
+	 * removed (see https://github.com/atlanmod/Mogwai/issues/40)
+	 * 
 	 * @param clazz
 	 *            the {@link Class} to wrap with the created metaclass
 	 */
