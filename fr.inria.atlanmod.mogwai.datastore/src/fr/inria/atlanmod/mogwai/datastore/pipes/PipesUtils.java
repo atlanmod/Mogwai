@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 import com.google.common.collect.Iterables;
-import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline;
 import com.tinkerpop.gremlin.java.GremlinStartPipe;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
