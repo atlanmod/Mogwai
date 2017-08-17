@@ -144,7 +144,7 @@ public class CustomGremlinGroovyPipeline<S, E> extends GremlinGroovyPipeline<S, 
 	 * using the {@link PipesDatastore} associated to the current
 	 * {@link CustomGremlinGroovyPipeline}.
 	 * <p>
-	 * <b>Note</b>: the method can also check if the reference is a
+	 * <b>Note:</b> the method can also check if the reference is a
 	 * {@code containment} reference, and if it's opposite is labeled
 	 * {@code oppositeName} before navigating it. These specific checks are
 	 * documented in the concrete {@link ModelDatastore} implementations used to
@@ -179,7 +179,7 @@ public class CustomGremlinGroovyPipeline<S, E> extends GremlinGroovyPipeline<S, 
 	 * This method calls the {@code toString()} method of the pipeline's content
 	 * and returns it as a {@link String}.
 	 * <p>
-	 * <b>Note</b>: this method does not return the current instance of the
+	 * <b>Note:</b> this method does not return the current instance of the
 	 * {@link CustomGremlinGroovyPipeline}, and therefore it cannot be chained
 	 * with other pipes. You can create a {@link TransformPipe} and append it in
 	 * the pipeline to perform this kind of transformation.
@@ -208,7 +208,7 @@ public class CustomGremlinGroovyPipeline<S, E> extends GremlinGroovyPipeline<S, 
 	 * the pipeline's value against {@code null}. If the pipeline does not
 	 * contain any element then its content is considered {@code undefined}.
 	 * <p>
-	 * <b>Note</b>: this method does not return the current instance of the
+	 * <b>Note:</b> this method does not return the current instance of the
 	 * {@link CustomGremlinGroovyPipeline}, and therefore it cannot be chained
 	 * with other pipes. You can create a {@link TransformPipe} and append it in
 	 * the pipeline to perform this kind of operation.
