@@ -18,9 +18,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @see ModelDatastore
  *
  * @param <ES>
- *            the type representing source elements
+ *            the type representing source model elements
  * @param <ET>
- *            the type representing target elements
+ *            the type representing target model elements
  * 
  * @author Gwendal DANIEL
  */

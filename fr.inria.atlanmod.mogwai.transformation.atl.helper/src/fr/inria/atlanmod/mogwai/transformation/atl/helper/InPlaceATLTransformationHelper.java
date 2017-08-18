@@ -8,7 +8,7 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
  * performs in-place transformations.
  * 
  * @param <E>
- *            the type representing source and target elements
+ *            the type representing source and target model elements
  * 
  * @author Gwendal DANIEL
  */
