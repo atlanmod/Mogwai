@@ -26,7 +26,7 @@ import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
 import fr.inria.atlanmod.mogwai.query.ATLQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.builder.ATLQueryBuilder;
-import fr.inria.atlanmod.mogwai.transformation.atl.helper.DelegateATLTransformationHelper;
+import fr.inria.atlanmod.mogwai.transformation.atl.helper.panama.DummyATLTransformationHelper;
 
 public class PanamaMogwai {
 
@@ -53,7 +53,7 @@ public class PanamaMogwai {
 		
 		Map<String, Object> options = new HashMap<>();
 		options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
-		options.put(ATLQueryProcessor.TRANSFORMATION_HELPER_KEY, new DelegateATLTransformationHelper<Node, JdbcElement>(graphMapping, jdbcMapping));
+		options.put(ATLQueryProcessor.TRANSFORMATION_HELPER_KEY, new DummyATLTransformationHelper<Node, JdbcElement>(graphMapping, jdbcMapping));
 		options.put(AbstractATLProcessor.ATL_DEBUG_KEY, true);
 		
 		ATLQueryProcessor processor = new ATLQueryProcessor();
