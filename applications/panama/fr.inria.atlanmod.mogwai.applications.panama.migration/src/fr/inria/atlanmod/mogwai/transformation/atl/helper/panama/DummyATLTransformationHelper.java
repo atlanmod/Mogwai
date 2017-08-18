@@ -16,6 +16,8 @@ import fr.inria.atlanmod.mogwai.transformation.atl.helper.AbstractATLTransformat
  * <b>Note:</b> this transformation helper should not be used in production, and
  * has only been tested on the Mogwai Panama papers example.
  * 
+ * @see AbstractATLTransformationHelper
+ * 
  * @author Gwendal DANIEL
  *
  * @param <ES>
