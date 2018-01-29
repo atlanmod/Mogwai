@@ -70,8 +70,6 @@ import org.eclipse.ui.console.actions.ClearOutputAction;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-import com.sun.glass.ui.Window.Level;
-
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.DefaultMogwaiResource;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
