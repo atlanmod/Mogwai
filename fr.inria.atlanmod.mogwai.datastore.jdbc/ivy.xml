@@ -30,8 +30,11 @@
 	<dependencies>
 		<dependency org="com.tinkerpop.gremlin" name="gremlin-groovy" rev="2.6.0" conf="default->master,compile"> 
 			<exclude org="org.codehaus.groovy" name="groovy"/>
+			<exclude org="com.fasterxml.jackson.core" name="*"/>
 		</dependency>
-		<dependency org="com.tinkerpop.gremlin" name="gremlin-java" rev="2.6.0" conf="default->master,compile"/>
+		<dependency org="com.tinkerpop.gremlin" name="gremlin-java" rev="2.6.0" conf="default->master,compile">
+			<exclude org="com.fasterxml.jackson.core" name="*"/>
+		</dependency>
 		<dependency org="com.google.guava" name="guava" rev="15.0" conf="default->master,compile"/>
 		<dependency org="com.h2database" name="h2" rev="1.4.195"/>
 	</dependencies>

@@ -30,9 +30,12 @@
 	<dependencies>
 		<dependency org="com.tinkerpop.gremlin" name="gremlin-groovy" rev="2.6.0" conf="default->master,compile"> 
 			<exclude org="org.codehaus.groovy" name="groovy"/>
+			<exclude org="com.fasterxml.jackson.core" name="*"/>
 		</dependency>
-		<dependency org="com.tinkerpop.gremlin" name="gremlin-java" rev="2.6.0" conf="default->master,compile"/>
+		<dependency org="com.tinkerpop.gremlin" name="gremlin-java" rev="2.6.0" conf="default->master,compile">
+			<exclude org="com.fasterxml.jackson.core" name="*"/>
+		</dependency>
 		<dependency org="com.google.guava" name="guava" rev="15.0" conf="default->master,compile"/>
-		<dependency org="org.neo4j" name="neo4j" rev="3.1.0" />
+		<dependency org="org.neo4j" name="neo4j" rev="3.3.0" />
 	</dependencies>
 </ivy-module>

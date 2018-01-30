@@ -40,7 +40,7 @@ import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
 import org.eclipse.m2m.atl.engine.emfvm.ASM;
 import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
 
-import ClassDiagram.ClassDiagramPackage;
+//import ClassDiagram.ClassDiagramPackage;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 import fr.inria.atlanmod.mogwai.transformation.ATLTransformation;
 
@@ -79,8 +79,6 @@ public class ATL2Gremlin extends ATLTransformation {
 			registry.put(ATLPackage.eINSTANCE.getNsURI(), ATLPackage.eINSTANCE);
 			registry.put(OCLPackage.eINSTANCE.getNsURI(), OCLPackage.eINSTANCE);
 			registry.put(GremlinPackage.eINSTANCE.getNsURI(), GremlinPackage.eINSTANCE);
-			// Dev
-			registry.put(ClassDiagramPackage.eINSTANCE.getNsURI(), ClassDiagramPackage.eINSTANCE);
 			
 			injector.inject(atlMetamodel, ATLPackage.eINSTANCE.getNsURI());
 			injector.inject(sourceMetamodel, EcorePackage.eINSTANCE.getNsURI());
