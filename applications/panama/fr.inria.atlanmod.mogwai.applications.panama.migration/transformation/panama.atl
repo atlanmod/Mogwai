@@ -5,11 +5,11 @@ create OUT : panamaRel from IN : panama;
 rule officer2row {
 	
 	from 
-		o : panama!Officer (not(o.name.oclIsUndefined()) and not(o.SHAREHOLDER_OF->isEmpty()) and not(o.SHAREHOLDER_OF->first().name.oclIsUndefined()))
+		o : panama!Officer (not(o.name.oclIsUndefined()) and not(o.OFFICER_OF->isEmpty()) and not(o.OFFICER_OF->first().name.oclIsUndefined()))
 	to
 		e : panamaRel!PanamaOfficers (
 			name <- o.name,
-			company <- o.SHAREHOLDER_OF->first().name
+			company <- o.OFFICER_OF->first().name
 		)
 	
 }

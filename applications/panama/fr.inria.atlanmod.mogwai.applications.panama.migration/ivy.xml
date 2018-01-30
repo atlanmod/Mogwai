@@ -28,7 +28,7 @@
 		<conf name="default" description="Default configuration"/>
 	</configurations>
 	<dependencies>
-		<dependency org="org.neo4j" name="neo4j" rev="3.1.0" />
+		<dependency org="org.neo4j" name="neo4j" rev="3.3.0" />
 		<dependency org="com.h2database" name="h2" rev="1.4.195"/>
 	</dependencies>
 </ivy-module>

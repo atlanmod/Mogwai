@@ -38,13 +38,13 @@ public class PanamaMogwai {
 		
 		GraphDatabaseService graphdb = new GraphDatabaseFactory().newEmbeddedDatabase(new File("db/panama.graphdb"));
 		JdbcDataSource ds = new JdbcDataSource();
-		ds.setUrl("jdbc:h2:/tmp/testH2");
+		ds.setUrl("jdbc:h2:~/testH2");
 		ds.setUser("test");
 		ds.setPassword("test");
 		Connection c = ds.getConnection();
 		c.createStatement()
 		.execute(
-				"create table if not exists PanamaOfficers (id integer not null auto_increment, name varchar(200), company varchar(200), primary key (id));");
+				"create table if not exists PanamaOfficers (id integer not null auto_increment, name varchar(500), company varchar(200), primary key (id));");
 
 		long begin = System.currentTimeMillis();
 
@@ -78,7 +78,7 @@ public class PanamaMogwai {
 		
 		graphdb.shutdown();
 		
-		Thread.sleep(500000);
+//		Thread.sleep(500000);
 		
 	}
 	

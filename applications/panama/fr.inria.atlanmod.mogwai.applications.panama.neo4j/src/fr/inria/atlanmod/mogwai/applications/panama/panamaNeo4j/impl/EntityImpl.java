@@ -18,10 +18,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.impl.EntityImpl#getName <em>Name</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

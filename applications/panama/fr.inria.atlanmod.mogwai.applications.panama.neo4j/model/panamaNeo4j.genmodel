@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/panamaNeo4j/src" modelPluginID="panamaNeo4j" modelName="PanamaNeo4j"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.inria.atlanmod.mogwai.applications.panama.neo4j/src"
+    modelPluginID="fr.inria.atlanmod.mogwai.applications.panama.neo4j" modelName="PanamaNeo4j"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="7.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>panamaNeo4j.ecore</foreignModel>
   <genPackages prefix="PanamaNeo4j" basePackage="fr.inria.atlanmod.mogwai.applications.panama"
       disposableProviderFactory="true" ecorePackage="panamaNeo4j.ecore#/">
     <genClasses ecoreClass="panamaNeo4j.ecore#//Officer">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute panamaNeo4j.ecore#//Officer/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference panamaNeo4j.ecore#//Officer/SHAREHOLDER_OF"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference panamaNeo4j.ecore#//Officer/OFFICER_OF"/>
     </genClasses>
     <genClasses ecoreClass="panamaNeo4j.ecore#//Entity">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute panamaNeo4j.ecore#//Entity/name"/>

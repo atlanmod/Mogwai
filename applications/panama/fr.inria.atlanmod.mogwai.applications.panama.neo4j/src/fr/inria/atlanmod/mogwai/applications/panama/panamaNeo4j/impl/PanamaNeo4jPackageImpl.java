@@ -119,7 +119,7 @@ public class PanamaNeo4jPackageImpl extends EPackageImpl implements PanamaNeo4jP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getOfficer_SHAREHOLDER_OF() {
+	public EReference getOfficer_OFFICER_OF() {
 		return (EReference)officerEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -171,7 +171,7 @@ public class PanamaNeo4jPackageImpl extends EPackageImpl implements PanamaNeo4jP
 		// Create classes and their features
 		officerEClass = createEClass(OFFICER);
 		createEAttribute(officerEClass, OFFICER__NAME);
-		createEReference(officerEClass, OFFICER__SHAREHOLDER_OF);
+		createEReference(officerEClass, OFFICER__OFFICER_OF);
 
 		entityEClass = createEClass(ENTITY);
 		createEAttribute(entityEClass, ENTITY__NAME);
@@ -209,7 +209,7 @@ public class PanamaNeo4jPackageImpl extends EPackageImpl implements PanamaNeo4jP
 		// Initialize classes, features, and operations; add parameters
 		initEClass(officerEClass, Officer.class, "Officer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getOfficer_Name(), ecorePackage.getEString(), "name", null, 0, 1, Officer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getOfficer_SHAREHOLDER_OF(), this.getEntity(), null, "SHAREHOLDER_OF", null, 0, -1, Officer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOfficer_OFFICER_OF(), this.getEntity(), null, "OFFICER_OF", null, 0, -1, Officer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(entityEClass, Entity.class, "Entity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEntity_Name(), ecorePackage.getEString(), "name", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

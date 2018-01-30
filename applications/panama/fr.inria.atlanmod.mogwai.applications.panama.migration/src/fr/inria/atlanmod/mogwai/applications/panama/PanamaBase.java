@@ -27,14 +27,14 @@ public class PanamaBase {
 		registerShutdownHook(graphdb);
 		
 		JdbcDataSource ds = new JdbcDataSource();
-		ds.setUrl("jdbc:h2:/tmp/testH2");
-		ds.setUser("test");
-		ds.setPassword("test");
+		ds.setUrl("jdbc:h2:~/test");
+		ds.setUser("sa");
+//		ds.setPassword("test");
 		Connection c = ds.getConnection();
 		
 		c.createStatement()
 		.execute(
-				"create table if not exists PanamaOfficers (id integer not null auto_increment, name varchar(200), company varchar(200), primary key (id));");
+				"create table if not exists PanamaOfficers (id integer not null auto_increment, name varchar(500), company varchar(200), primary key (id));");
 		
 		c.commit();
 		
@@ -45,7 +45,7 @@ public class PanamaBase {
 			try (ResourceIterator<Node> officers = graphdb.findNodes(Label.label("Officer"))) {
 				while (officers.hasNext()) {
 					Node off = officers.next();
-					Iterable<Relationship> rels = off.getRelationships(Direction.OUTGOING, RelationshipType.withName("SHAREHOLDER_OF"));
+					Iterable<Relationship> rels = off.getRelationships(Direction.OUTGOING, RelationshipType.withName("OFFICER_OF"));
 					for (Relationship r : rels) {
 						Node head = r.getEndNode();
 							if(off.hasProperty("name") && head.hasProperty("name")) {

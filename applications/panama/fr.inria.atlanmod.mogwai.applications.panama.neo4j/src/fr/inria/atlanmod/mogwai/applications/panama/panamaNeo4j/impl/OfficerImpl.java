@@ -28,11 +28,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.impl.OfficerImpl#getName <em>Name</em>}</li>
- *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.impl.OfficerImpl#getSHAREHOLDER_OF <em>SHAREHOLDER OF</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.impl.OfficerImpl#getOFFICER_OF <em>OFFICER OF</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -58,14 +58,14 @@ public class OfficerImpl extends MinimalEObjectImpl.Container implements Officer
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getSHAREHOLDER_OF() <em>SHAREHOLDER OF</em>}' containment reference list.
+	 * The cached value of the '{@link #getOFFICER_OF() <em>OFFICER OF</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSHAREHOLDER_OF()
+	 * @see #getOFFICER_OF()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Entity> shareholdeR_OF;
+	protected EList<Entity> officeR_OF;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -112,11 +112,11 @@ public class OfficerImpl extends MinimalEObjectImpl.Container implements Officer
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Entity> getSHAREHOLDER_OF() {
-		if (shareholdeR_OF == null) {
-			shareholdeR_OF = new EObjectContainmentEList<Entity>(Entity.class, this, PanamaNeo4jPackage.OFFICER__SHAREHOLDER_OF);
+	public EList<Entity> getOFFICER_OF() {
+		if (officeR_OF == null) {
+			officeR_OF = new EObjectContainmentEList<Entity>(Entity.class, this, PanamaNeo4jPackage.OFFICER__OFFICER_OF);
 		}
-		return shareholdeR_OF;
+		return officeR_OF;
 	}
 
 	/**
@@ -127,8 +127,8 @@ public class OfficerImpl extends MinimalEObjectImpl.Container implements Officer
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PanamaNeo4jPackage.OFFICER__SHAREHOLDER_OF:
-				return ((InternalEList<?>)getSHAREHOLDER_OF()).basicRemove(otherEnd, msgs);
+			case PanamaNeo4jPackage.OFFICER__OFFICER_OF:
+				return ((InternalEList<?>)getOFFICER_OF()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -143,8 +143,8 @@ public class OfficerImpl extends MinimalEObjectImpl.Container implements Officer
 		switch (featureID) {
 			case PanamaNeo4jPackage.OFFICER__NAME:
 				return getName();
-			case PanamaNeo4jPackage.OFFICER__SHAREHOLDER_OF:
-				return getSHAREHOLDER_OF();
+			case PanamaNeo4jPackage.OFFICER__OFFICER_OF:
+				return getOFFICER_OF();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -161,9 +161,9 @@ public class OfficerImpl extends MinimalEObjectImpl.Container implements Officer
 			case PanamaNeo4jPackage.OFFICER__NAME:
 				setName((String)newValue);
 				return;
-			case PanamaNeo4jPackage.OFFICER__SHAREHOLDER_OF:
-				getSHAREHOLDER_OF().clear();
-				getSHAREHOLDER_OF().addAll((Collection<? extends Entity>)newValue);
+			case PanamaNeo4jPackage.OFFICER__OFFICER_OF:
+				getOFFICER_OF().clear();
+				getOFFICER_OF().addAll((Collection<? extends Entity>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -180,8 +180,8 @@ public class OfficerImpl extends MinimalEObjectImpl.Container implements Officer
 			case PanamaNeo4jPackage.OFFICER__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case PanamaNeo4jPackage.OFFICER__SHAREHOLDER_OF:
-				getSHAREHOLDER_OF().clear();
+			case PanamaNeo4jPackage.OFFICER__OFFICER_OF:
+				getOFFICER_OF().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -197,8 +197,8 @@ public class OfficerImpl extends MinimalEObjectImpl.Container implements Officer
 		switch (featureID) {
 			case PanamaNeo4jPackage.OFFICER__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case PanamaNeo4jPackage.OFFICER__SHAREHOLDER_OF:
-				return shareholdeR_OF != null && !shareholdeR_OF.isEmpty();
+			case PanamaNeo4jPackage.OFFICER__OFFICER_OF:
+				return officeR_OF != null && !officeR_OF.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

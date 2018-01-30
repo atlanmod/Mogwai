@@ -76,13 +76,13 @@ public interface PanamaNeo4jPackage extends EPackage {
 	int OFFICER__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>SHAREHOLDER OF</b></em>' containment reference list.
+	 * The feature id for the '<em><b>OFFICER OF</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int OFFICER__SHAREHOLDER_OF = 1;
+	int OFFICER__OFFICER_OF = 1;
 
 	/**
 	 * The number of structural features of the '<em>Officer</em>' class.
@@ -162,15 +162,15 @@ public interface PanamaNeo4jPackage extends EPackage {
 	EAttribute getOfficer_Name();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Officer#getSHAREHOLDER_OF <em>SHAREHOLDER OF</em>}'.
+	 * Returns the meta object for the containment reference list '{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Officer#getOFFICER_OF <em>OFFICER OF</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>SHAREHOLDER OF</em>'.
-	 * @see fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Officer#getSHAREHOLDER_OF()
+	 * @return the meta object for the containment reference list '<em>OFFICER OF</em>'.
+	 * @see fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Officer#getOFFICER_OF()
 	 * @see #getOfficer()
 	 * @generated
 	 */
-	EReference getOfficer_SHAREHOLDER_OF();
+	EReference getOfficer_OFFICER_OF();
 
 	/**
 	 * Returns the meta object for class '{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Entity <em>Entity</em>}'.
@@ -235,12 +235,12 @@ public interface PanamaNeo4jPackage extends EPackage {
 		EAttribute OFFICER__NAME = eINSTANCE.getOfficer_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>SHAREHOLDER OF</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>OFFICER OF</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference OFFICER__SHAREHOLDER_OF = eINSTANCE.getOfficer_SHAREHOLDER_OF();
+		EReference OFFICER__OFFICER_OF = eINSTANCE.getOfficer_OFFICER_OF();
 
 		/**
 		 * The meta object literal for the '{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.impl.EntityImpl <em>Entity</em>}' class.

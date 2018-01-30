@@ -3,7 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="panamaNeo4j" nsURI="http://www.example.com/panamaNeo4j" nsPrefix="panamaNeo4j">
   <eClassifiers xsi:type="ecore:EClass" name="Officer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="SHAREHOLDER_OF" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="OFFICER_OF" upperBound="-1"
         eType="#//Entity" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Entity">

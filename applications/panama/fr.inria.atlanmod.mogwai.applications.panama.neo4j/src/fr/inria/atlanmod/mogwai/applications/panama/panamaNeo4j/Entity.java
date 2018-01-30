@@ -11,10 +11,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Entity#getName <em>Name</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.PanamaNeo4jPackage#getEntity()
  * @model

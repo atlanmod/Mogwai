@@ -13,11 +13,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Officer#getName <em>Name</em>}</li>
- *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Officer#getSHAREHOLDER_OF <em>SHAREHOLDER OF</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Officer#getOFFICER_OF <em>OFFICER OF</em>}</li>
  * </ul>
- * </p>
  *
  * @see fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.PanamaNeo4jPackage#getOfficer()
  * @model
@@ -51,19 +51,19 @@ public interface Officer extends EObject {
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>SHAREHOLDER OF</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>OFFICER OF</b></em>' containment reference list.
 	 * The list contents are of type {@link fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.Entity}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>SHAREHOLDER OF</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>OFFICER OF</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>SHAREHOLDER OF</em>' containment reference list.
-	 * @see fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.PanamaNeo4jPackage#getOfficer_SHAREHOLDER_OF()
+	 * @return the value of the '<em>OFFICER OF</em>' containment reference list.
+	 * @see fr.inria.atlanmod.mogwai.applications.panama.panamaNeo4j.PanamaNeo4jPackage#getOfficer_OFFICER_OF()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Entity> getSHAREHOLDER_OF();
+	EList<Entity> getOFFICER_OF();
 
 } // Officer
