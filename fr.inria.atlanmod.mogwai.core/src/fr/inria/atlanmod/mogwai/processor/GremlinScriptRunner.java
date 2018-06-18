@@ -14,10 +14,12 @@ import javax.script.ScriptException;
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
 
 import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
 import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinter;
 import fr.inria.atlanmod.mogwai.gremlin.printers.GremlinPrinterFactory;
+import groovy.lang.MissingPropertyException;
 
 /**
  * Utility class that computes a Gremlin script and returns the raw results.
@@ -39,8 +41,7 @@ public class GremlinScriptRunner {
 	private final ScriptEngine engine;
 
 	/**
-	 * The script engine's {@link Bindings} used to set the value of free
-	 * variables.
+	 * The script engine's {@link Bindings} used to set the value of free variables.
 	 */
 	private final Bindings bindings;
 
@@ -50,11 +51,11 @@ public class GremlinScriptRunner {
 	public static final String PRINT_SCRIPT_OPTION = "print.script";
 
 	/**
-	 * The option key to specify which {@link GremlinPrinter} to use to print
-	 * the script.
+	 * The option key to specify which {@link GremlinPrinter} to use to print the
+	 * script.
 	 * <p>
-	 * <b>Note:</b> this option is not parsed if {@link #PRINT_SCRIPT_OPTION} is
-	 * set to {@code false}.
+	 * <b>Note:</b> this option is not parsed if {@link #PRINT_SCRIPT_OPTION} is set
+	 * to {@code false}.
 	 */
 	public static final String PRINTER_OPTION = "printer";
 
@@ -87,9 +88,9 @@ public class GremlinScriptRunner {
 	 * 
 	 * Run the provided script using the internal Gremlin script engine.
 	 * <p>
-	 * <b>Note:</b> the {@link ModelDatastore}s involved in the script
-	 * computation are not provided as parameters, they are set in the bindings
-	 * and linked to their corresponding variables in the script.
+	 * <b>Note:</b> the {@link ModelDatastore}s involved in the script computation
+	 * are not provided as parameters, they are set in the bindings and linked to
+	 * their corresponding variables in the script.
 	 * 
 	 * @param script
 	 *            the {@link GremlinScript} to execute
@@ -123,7 +124,13 @@ public class GremlinScriptRunner {
 				MogwaiLogger.info("Query computed in {0}ms", (endEval - endCompil));
 			}
 		} catch (ScriptException e) {
-			e.printStackTrace();
+			if (e.getCause() instanceof MissingPropertyException) {
+				if (e.getMessage().contains("self")) {
+					MogwaiLogger.error(
+							"The self value is not defined for the processed query, make sure you added a context element when building the query");
+				}
+			}
+			throw new RuntimeException(e);
 		}
 		this.bindings.clear();
 		return result;
@@ -158,8 +165,8 @@ public class GremlinScriptRunner {
 	 * Retrieves the {@link #PRINT_SCRIPT_OPTION} value from the {@code options}
 	 * {@link Map}.
 	 * <p>
-	 * This method returns {@code false} if the {@code options} doesn't contain
-	 * a {@link #PRINT_SCRIPT_OPTION} value.
+	 * This method returns {@code false} if the {@code options} doesn't contain a
+	 * {@link #PRINT_SCRIPT_OPTION} value.
 	 * 
 	 * @param options
 	 *            the map containing the options to customize script printing
@@ -200,8 +207,7 @@ public class GremlinScriptRunner {
 	}
 
 	/**
-	 * A lazy holder maintaiing a singleton instance of
-	 * {@link GremlinScriptRunner}.
+	 * A lazy holder maintaiing a singleton instance of {@link GremlinScriptRunner}.
 	 */
 	private static class Holder {
 

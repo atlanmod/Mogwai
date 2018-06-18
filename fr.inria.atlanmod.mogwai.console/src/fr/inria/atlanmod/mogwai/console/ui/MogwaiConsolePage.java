@@ -332,10 +332,22 @@ public class MogwaiConsolePage extends Page {
 					// See if the eClass access is ok
 					MogwaiQuery query = OCLQueryBuilder.newBuilder().fromOCLExpression(parsed)
 							.context(context.eClass()).build();
-					NeoEMFQueryResult qR = mr.query(query, context);
+					NeoEMFQueryResult qR = null;
+					try {
+						qR = mr.query(query, context);
+					} catch(Exception e1) {
+						error(e1.getMessage());
+						append(e1.getMessage(), outputDefault, true);
+						append(e1.getCause().toString(), outputDefault, true);
+					}
 					append("Computing query: ", outputDefault, true);
 					append(qR.getExecutedQuery(), outputGremlin, false);
 					append("Results: ", outputDefault, true);
+					append("test", outputDefault, true);
+					append(qR.toString(), outputDefault, true);
+					for(Object o : qR.getResults()) {
+						append(o.getClass().getName(), outputDefault, true);
+					}
 					printMogwaiResult(qR, outputResults, false);
 				}
 				// store the successfully parsed expression

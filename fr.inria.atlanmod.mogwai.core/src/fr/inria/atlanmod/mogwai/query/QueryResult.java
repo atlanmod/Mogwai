@@ -85,12 +85,22 @@ public class QueryResult implements Iterable<Object> {
 			 * computed before.
 			 */
 			Iterables.addAll(result, (GremlinPipeline<?, Object>) engineResult);
-		} else if (engineResult instanceof Collection<?>) {
+		} else if (engineResult instanceof Iterable<?>) {
+			// Quick fix
+			Iterable<Object> cc = (Iterable)engineResult;
+			boolean innerPipeline = false;
+			for(Object oo : cc) {
+				if(oo instanceof GremlinPipeline<?, ?>) {
+					Iterables.addAll(result, (GremlinPipeline<?, Object>)engineResult);
+					innerPipeline = true;
+				}
+			}
 			/*
 			 * The query aimed to return a Collection, copy it to avoid any
 			 * side-effect from the execution engine.
 			 */
-			Iterables.addAll(result, (Collection<Object>) engineResult);
+			if(!innerPipeline)
+				Iterables.addAll(result, (Collection<Object>) engineResult);
 		} else {
 			/*
 			 * The query aimed to return a single value, store this information

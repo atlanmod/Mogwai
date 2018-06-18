@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.pipes.util.Pipeline;
 
 import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;

@@ -104,4 +104,18 @@ Note that this feature does not include NeoEMF query facilities, that should be 
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="fr.inria.atlanmod.mogwai.datastore.jdbc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gmt.modisco.java"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

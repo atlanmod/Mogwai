@@ -223,7 +223,7 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	@SuppressWarnings("unchecked")
 	public void setDataSource(final Graph graph, final EPackage ePackage) throws IllegalArgumentException {
 		checkNotNull(graph, "No graph provided");
-		checkArgument(graph instanceof IdGraph, "NeoEMFMapping required a KeyIndexableGraph");
+		checkArgument(graph instanceof IdGraph<?>, "NeoEMFMapping required a KeyIndexableGraph, found " + graph.getClass().getName());
 		this.graph = (IdGraph<KeyIndexableGraph>) graph;
 		this.metaclassIndex = this.graph.getIndex(KEY_METACLASSES, Vertex.class);
 		this.ePackage = ePackage;

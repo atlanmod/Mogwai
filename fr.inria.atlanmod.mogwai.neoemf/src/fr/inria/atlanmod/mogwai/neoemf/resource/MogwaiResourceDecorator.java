@@ -3,10 +3,12 @@ package fr.inria.atlanmod.mogwai.neoemf.resource;
 import static java.util.Objects.isNull;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.datastore.pipes.PipesUtils;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
@@ -85,7 +87,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 		if(arg instanceof PersistentEObject) {
 			theArgument = this.getBackend().getVertex(((PersistentEObject) arg).id());
 		}
-		return NeoEMFQueryHandler.getInstance().query(query, theArgument, getBackend(), options);
+		return NeoEMFQueryHandler.getInstance().query(query, PipesUtils.pipelineOf(Arrays.asList(theArgument)), getBackend(), options);
 	}
 
 	/**

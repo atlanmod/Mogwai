@@ -39,3 +39,5 @@ Bundle-ClassPath: .,
  lib/jline-0.9.94.jar,
  lib/pipes-2.6.0.jar,
  lib/stax-api-1.0.1.jar
+Import-Package: com.tinkerpop.blueprints;version="1.0.2",
+ com.tinkerpop.blueprints.util.wrappers.id;version="1.0.2"

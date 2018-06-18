@@ -23,13 +23,13 @@ final mOut = mappingHelperOut;
 // gremlinHelper instanceof GremlinHelper
 final t = gremlinHelper;
 
-//MetaClass inMetaClass = new ModelElementMetaClass(com.tinkerpop.blueprints.util.wrappers.id.IdVertex.class, mIn);
-//inMetaClass.initialize();
-//InvokerHelper.metaRegistry.setMetaClass(com.tinkerpop.blueprints.util.wrappers.id.IdVertex.class, inMetaClass);
-
-MetaClass inMetaClass = new ModelElementMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, mIn);
+MetaClass inMetaClass = new ModelElementMetaClass(com.tinkerpop.blueprints.util.wrappers.id.IdVertex.class, mIn);
 inMetaClass.initialize();
-InvokerHelper.metaRegistry.setMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, inMetaClass);
+InvokerHelper.metaRegistry.setMetaClass(com.tinkerpop.blueprints.util.wrappers.id.IdVertex.class, inMetaClass);
+
+//MetaClass inMetaClass = new ModelElementMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, mIn);
+//inMetaClass.initialize();
+//InvokerHelper.metaRegistry.setMetaClass(org.neo4j.kernel.impl.core.NodeProxy.class, inMetaClass);
 
 MetaClass outMetaClass = new ModelElementMetaClass(fr.inria.atlanmod.mogwai.datastore.jdbc.JdbcElement.class, mOut);
 outMetaClass.initialize();
@@ -46,6 +46,8 @@ def log(String msg) {
 		println("[Gremlin runner]" + msg);
 	}
 }
+
+log("Initializing Mogwaï Gremlin Engine");
 
 /*
  * Additional Graph methods
@@ -149,13 +151,13 @@ Object.metaClass.allOfKind =
  */
 
 // Pipe.getAtt("myAtt");
-//Gremlin.defineStep("getAtt", [Pipe], 
-//	{
-//		String attName ->
-//			log("getAtt(" + attName + ")[Pipe]");
-//			mIn.getAtt(attName);
-//	}	
-//)
+Gremlin.defineStep("getAtt", [Pipe], 
+	{
+		String attName ->
+			log("getAtt(" + attName + ")[Pipe]");
+			mIn.getAtt(attName);
+	}	
+)
 
 // Pipe.getParent()
 Gremlin.defineStep("getParent", [Pipe],
@@ -180,7 +182,7 @@ Gremlin.defineStep("setAtt", [Pipe],
 	{
 		String attName, Object attValue ->
 			log("setAtt(" + attName + "," + attValue + ")[Pipe]");
-			mOut.setAtt(attName, attValue);
+			mIn.setAtt(attName, attValue);
 	}	
 )
 
