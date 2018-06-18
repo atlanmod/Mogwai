@@ -11,7 +11,7 @@ Mogwaï is fully integrated in NeoEMF, and provides its own [PersistentResource]
 We are currently working on a full refactoring on the framework to support multiple query languages and model mappings. The master branch is not maintained and only critical bugs are corrected. See [atl2gremlin branch](https://github.com/atlanmod/Mogwai/tree/atl2gremlin) for more information on this refactoring.
 
 ## Installation
-  You can download the last version of the update site [here](). NeoEMF ([v1.0.2](https://atlanmod.github.io/NeoEMF/releases/latest/plugin/) or newer), ATL (v3.5.0 or newer), EMFTVM ([v4.0.0](marketplace.eclipse.org/node/609049) or newer), OCL.ecore (v3.3.100), and OCL Examples and Editors SDK (v6.3.0 or newer) have to be installed in your Eclipse environment to run Mogwaï.
+  You can download the last version of the update site [here](). NeoEMF ([v1.0.2](https://atlanmod.github.io/NeoEMF/releases/latest/plugin/) or newer), ATL (v3.8.0 or newer), EMFTVM ([v4.0.0](http://marketplace.eclipse.org/node/609049) or newer), OCL.ecore (v3.3.100), and OCL Examples and Editors SDK (v6.3.0 or newer) have to be installed in your Eclipse environment to run Mogwaï.
 
   Alternatively, you can get a copy of Mogwaï into your Eclipse workspace by following these instructions:
   * Clone the repository
