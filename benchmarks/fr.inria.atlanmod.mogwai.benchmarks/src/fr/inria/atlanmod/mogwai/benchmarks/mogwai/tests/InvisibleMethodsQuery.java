@@ -15,10 +15,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
+import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class InvisibleMethodsQuery extends MogwaiQueryTest {
@@ -39,12 +39,12 @@ public class InvisibleMethodsQuery extends MogwaiQueryTest {
 
     @Test
     public void run() {
-		MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder().fromURI(URI.createURI("ocl/RCIS/InvisibleMethods.ocl"))
+		MogwaiQuery query = OCLQueryBuilder.newBuilder().fromURI(URI.createURI("ocl/RCIS/InvisibleMethods.ocl"))
 				.build();
 		NeoLogger.info("Input Query: {0}", query.getInput());
         startTimer();
         MogwaiResource mogwaiResource = (MogwaiResource)resource;
-        MogwaiQueryResult result = mogwaiResource.query(query);
+        NeoEMFQueryResult result = mogwaiResource.query(query);
         endTimer();
         NeoLogger.info("Result size: {0}", result.resultSize());
     }

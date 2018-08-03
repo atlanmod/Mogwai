@@ -14,6 +14,7 @@ import org.codehaus.groovy.runtime.InvokerHelper
 import fr.inria.atlanmod.mogwai.processor.ModelElementMetaClass;
 import fr.inria.atlanmod.mogwai.processor.ObjectMetaClass;
 import java.util.ArrayList;
+import com.tinkerpop.blueprints.util.wrappers.id.IdVertexIterable
 
 // Put the mapping helper in a final variable to allow its access from closures
 // mappingHelper instanceof ModelDatastore
@@ -291,6 +292,11 @@ Iterable.metaClass.undefined =
 		boolean result = true;
 		if(i.hasNext()) {
 			result = (i.next() == null);
+		}
+		if(result == true) {
+			log("is undefined");
+		} else {
+			log("is not undefined");
 		}
 		result;
 }

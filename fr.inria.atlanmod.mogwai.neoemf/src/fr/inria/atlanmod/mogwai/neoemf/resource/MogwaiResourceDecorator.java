@@ -8,6 +8,7 @@ import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
+import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.datastore.pipes.PipesUtils;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;
@@ -87,7 +88,7 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 		if(arg instanceof PersistentEObject) {
 			theArgument = this.getBackend().getVertex(((PersistentEObject) arg).id());
 		}
-		return NeoEMFQueryHandler.getInstance().query(query, PipesUtils.pipelineOf(Arrays.asList(theArgument)), getBackend(), options);
+		return NeoEMFQueryHandler.getInstance().query(query, PipesUtils.pipelineOf(Arrays.asList(theArgument), new NeoEMFGraphDatastore(this.getBackend().getGraph())), getBackend(), options);
 	}
 
 	/**

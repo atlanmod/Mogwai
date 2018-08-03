@@ -97,6 +97,18 @@ helper def : getCollectionOperationIndex(op : OCL!OperationCallExp) : Integer =
 	endif
 	;
 
+helper def : transformationHelperBinding : String = 'tHelper';
+
+rule constraint2script {
+	from
+		cc : OCL!Constraint
+	to
+		gg : Gremlin!GremlinScript(
+			name <- cc.name,
+			instructions <- cc.specification.bodyExpression.getFirstInstruction()
+		)
+}
+
 	
 -- Creates the Gremlin container (GremlinScript) from
 -- the OCL container (Constraint)
@@ -104,54 +116,54 @@ helper def : getCollectionOperationIndex(op : OCL!OperationCallExp) : Integer =
 -- and indices access).
 -- The first instruction (i.e the last one in the OCL model) is then retrieved and added to the
 -- instruction list.
-rule constraint2script {
-	from
-		cc : OCL!Constraint
-	to
-		gg : Gremlin!GremlinScript (
-			name <- cc.name,
-			instructions <- cc.specification.bodyExpression.getKindOfEClasses()
-			->collect(e | thisModule.eClass2meta(e)).union(
-				cc.specification.bodyExpression.getKindOfEClasses()
-					->collect(e | thisModule.eClass2metaNodes(e))
-			).union(
-			cc.specification.bodyExpression.getUsedTypes()
-				->collect(e | thisModule.typeExp2meta(e))).union(
-					cc.specification.bodyExpression.getUsedTypes()
-				->collect(e | thisModule.typeExp2metaNodes(e))).union(
-					let collectionOperations : Sequence(OCL!OperationCallExp) = OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName())) in
-					if collectionOperations.isEmpty() then
-						OrderedSet{}
-					else
-						collectionOperations->collect(e | thisModule.collectionOperation2metaLeft(e)).union(
-							collectionOperations->collect(e | thisModule.collectionOperation2metaRight(e))	
-						)
-						.append(
-							if(collectionOperations->exists(e | e.getOpName() = 'union')) then
-							thisModule.unionMetaMethod(collectionOperations.first())
-							else
-								OclUndefined
-							endif
-						).append(
-							if(collectionOperations->exists(e | e.getOpName() = 'intersection')) then
-							thisModule.intersectionMetaMethod(collectionOperations.first())
-							else
-								OclUndefined
-							endif
-						)
-					endif).
-				append(
-					cc.specification.bodyExpression.getFirstInstruction()
-				).
-				union(
-					cc.specification.bodyExpression.getFirstInstructionInCollectionOperations()
-				).
-				union(
-					OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName()))
-						->collect(e | thisModule.collectionOperation2instruction(e))	
-				)
-		)
-}
+--rule constraint2script {
+--	from
+--		cc : OCL!Constraint
+--	to
+--		gg : Gremlin!GremlinScript (
+--			name <- cc.name,
+--			instructions <- cc.specification.bodyExpression.getKindOfEClasses()
+--			->collect(e | thisModule.eClass2meta(e)).union(
+--				cc.specification.bodyExpression.getKindOfEClasses()
+--					->collect(e | thisModule.eClass2metaNodes(e))
+--			).union(
+--			cc.specification.bodyExpression.getUsedTypes()
+--				->collect(e | thisModule.typeExp2meta(e))).union(
+--					cc.specification.bodyExpression.getUsedTypes()
+--				->collect(e | thisModule.typeExp2metaNodes(e))).union(
+--					let collectionOperations : Sequence(OCL!OperationCallExp) = OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName())) in
+--					if collectionOperations.isEmpty() then
+--						OrderedSet{}
+--					else
+--						collectionOperations->collect(e | thisModule.collectionOperation2metaLeft(e)).union(
+--							collectionOperations->collect(e | thisModule.collectionOperation2metaRight(e))	
+--						)
+--						.append(
+--							if(collectionOperations->exists(e | e.getOpName() = 'union')) then
+--							thisModule.unionMetaMethod(collectionOperations.first())
+--							else
+--								OclUndefined
+--							endif
+--						).append(
+--							if(collectionOperations->exists(e | e.getOpName() = 'intersection')) then
+--							thisModule.intersectionMetaMethod(collectionOperations.first())
+--							else
+--								OclUndefined
+--							endif
+--						)
+--					endif).
+--				append(
+--					cc.specification.bodyExpression.getFirstInstruction()
+--				).
+--				union(
+--					cc.specification.bodyExpression.getFirstInstructionInCollectionOperations()
+--				).
+--				union(
+--					OCL!OperationCallExp.allInstances()->select(each | Set{'union','intersection'}.includes(each.getOpName()))
+--						->collect(e | thisModule.collectionOperation2instruction(e))	
+--				)
+--		)
+--}
 
 -- Creates variables associated to allInstances calls to avoid multiple index
 -- accesses in the same step.
@@ -256,24 +268,54 @@ lazy rule eClass2metaNodes {
 -- Transforms 'allInstances' expressions into kyanosInstanceOf edge step
 -- and vertex step.
 --lazy rule allInstances2steps {
+--rule allInstances2steps {
+--	from
+--		allInstances : OCL!OperationCallExp (allInstances.getOpName() = 'allInstances')
+--	to
+--		ine : Gremlin!InEStep (
+--			relationshipName <- 'kyanosInstanceOf',
+--			nextElement <- outv
+--		),
+--		outv : Gremlin!OutVStep (
+--			nextElement <- allInstances.getComposite()
+--		)
+--}
+
 rule allInstances2steps {
 	from
 		allInstances : OCL!OperationCallExp (allInstances.getOpName() = 'allInstances')
 	to
-		ine : Gremlin!InEStep (
-			relationshipName <- 'kyanosInstanceOf',
-			nextElement <- outv
-		),
-		outv : Gremlin!OutVStep (
+		allOfTypeStep : Gremlin!CustomStep(
+			name <- 'allOfKind',
+			params <- typeLiteral,
 			nextElement <- allInstances.getComposite()
+		),
+		typeLiteral : Gremlin!StringLiteral(
+			value <- allInstances.source.referredType.name	
+		)
+}
+
+rule typeExp2graph {
+	from
+		typeExp : OCL!TypeExp(
+			if typeExp.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+				typeExp.refImmediateComposite().getOpName() = 'allInstances'
+			else
+				false
+			endif
+		)
+	to
+		varAccess : Gremlin!VariableAccess(
+			name <- 'g',
+			nextElement <- typeExp.getComposite()
 		)
 }
 
 rule typeExp2steps {
 	from
-		typeExp : OCL!TypeExp (
+		typeExp : OCL!TypeExp(
 			if typeExp.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
-				not(typeExp.refImmediateComposite().getOpName() = 'oclAsType')
+				not(typeExp.refImmediateComposite().getOpName() = 'allInstances')
 			else
 				true
 			endif
@@ -284,6 +326,22 @@ rule typeExp2steps {
 			nextElement <- typeExp.getComposite()
 		)
 }
+
+--rule typeExp2steps {
+--	from
+--		typeExp : OCL!TypeExp (
+--			if typeExp.refImmediateComposite().oclIsTypeOf(OCL!OperationCallExp) then
+--				not(typeExp.refImmediateComposite().getOpName() = 'oclAsType')
+--			else
+--				true
+--			endif
+--		)
+--	to
+--		vap : Gremlin!VariableAccess(
+--			name <- 'meta'+	typeExp.referredType.name+'Node',
+--			nextElement <- typeExp.getComposite()
+--		)
+--}
 
 lazy rule eClass2steps {
 	from
@@ -298,15 +356,30 @@ lazy rule eClass2steps {
 
 
 
+--rule oclIsUndefined2steps {
+--	from
+--		select : OCL!OperationCallExp (select.getOpName() = 'oclIsUndefined')
+--	to
+--		toList : Gremlin!ToListCall(
+--			nextElement <- isEmpty	
+--		),
+--		isEmpty : Gremlin!IsEmptyCall(
+--			
+--		)
+--}
+
 rule oclIsUndefined2steps {
 	from
 		select : OCL!OperationCallExp (select.getOpName() = 'oclIsUndefined')
 	to
-		toList : Gremlin!ToListCall(
-			nextElement <- isEmpty	
+		-- We need this identity step to allow Pipeline-based computation, which
+		-- is implemented in Java instead of Groovy
+		t : Gremlin!IdentityStep(
+			nextElement <- c	
 		),
-		isEmpty : Gremlin!IsEmptyCall(
-			
+		c : Gremlin!CustomMethodCall(
+			name <- 'undefined',
+			nextElement <- select.getComposite()
 		)
 }
 
@@ -321,43 +394,59 @@ lazy rule varIterator2def {
 		fi : Gremlin!ClosureIt()
 }
 
+rule oclIsTypeOf2steps {
+	from
+		oclIsTypeOf : OCL!OperationCallExp(
+			oclIsTypeOf.getOpName() = 'oclIsTypeOf'	
+		)
+	to
+		toStep : Gremlin!CustomStep (
+			name <- 'isTypeOf',
+			params <- typeLiteral,
+			nextElement <- oclIsTypeOf.getComposite()
+		),
+		typeLiteral : Gremlin!StringLiteral (
+			value <- oclIsTypeOf.argument.first().referredType.name	
+		)
+}
+
 -- Create a TransformStep from an oclIsTypeOf() OperationCallExp
 -- Step closure is also created with the node comparison corresponding to
 -- type conformance
 -- Using a closure to compare ease the transformation by avoiding preprocessing
 -- to generate equality comparisons
-rule oclIsTypeOf2steps {
-	from
-		oclIsTypeOf : OCL!OperationCallExp (
-			oclIsTypeOf.getOpName() = 'oclIsTypeOf'	
-		)
-	to
-		tran : Gremlin!TransformStep(
-			closure <- cl,
-			nextElement <- clNext
-		),
-		clNext : Gremlin!NextCall(
-			nextElement <- oclIsTypeOf.getComposite()			
-		),
-		cl : Gremlin!Closure(
-			instructions <- eq	
-		),
-		eq : Gremlin!EqualityExpression(
-			left <- it,
-			right <- oclIsTypeOf.argument.first()
-		),
-		it : Gremlin!ClosureIt(
-			nextElement <- outE	
-		),
-		outE : Gremlin!OutEStep(
-			relationshipName <- 'kyanosInstanceOf',
-			nextElement <- inV
-		),
-		inV : Gremlin!InVStep(
-			nextElement <- next	
-		),
-		next : Gremlin!NextCall()
-}
+--rule oclIsTypeOf2steps {
+--	from
+--		oclIsTypeOf : OCL!OperationCallExp (
+--			oclIsTypeOf.getOpName() = 'oclIsTypeOf'	
+--		)
+--	to
+--		tran : Gremlin!TransformStep(
+--			closure <- cl,
+--			nextElement <- clNext
+--		),
+--		clNext : Gremlin!NextCall(
+--			nextElement <- oclIsTypeOf.getComposite()			
+--		),
+--		cl : Gremlin!Closure(
+--			instructions <- eq	
+--		),
+--		eq : Gremlin!EqualityExpression(
+--			left <- it,
+--			right <- oclIsTypeOf.argument.first()
+--		),
+--		it : Gremlin!ClosureIt(
+--			nextElement <- outE	
+--		),
+--		outE : Gremlin!OutEStep(
+--			relationshipName <- 'kyanosInstanceOf',
+--			nextElement <- inV
+--		),
+--		inV : Gremlin!InVStep(
+--			nextElement <- next	
+--		),
+--		next : Gremlin!NextCall()
+--}
 
 	
 rule oclIsKindOf2steps {
@@ -434,14 +523,40 @@ rule propertyRefCallExp2steps {
 			not(prop.isLastInComparison())
 		)
 	to
-		outE : Gremlin!OutEStep(
-			relationshipName <- prop.referredProperty.name,
-			nextElement <- inV
+		idStep : Gremlin!IdentityStep(
+			nextElement <- getRef
 		),
-		inV : Gremlin!InVStep(
+		getRef : Gremlin!CustomStep (
+			name <- 'getRef',
+			params <- Sequence{refLabelLiteral, oppositeLabelLiteral, isContainmentLiteral},
 			nextElement <- prop.getComposite()
+		),
+		refLabelLiteral : Gremlin!StringLiteral (
+			value <- prop.referredProperty.name	
+		),
+		oppositeLabelLiteral : Gremlin!StringLiteral (
+			value <- ''
+		),
+		isContainmentLiteral : Gremlin!BooleanLiteral (
+			value <- false
 		)
 }
+
+--rule propertyRefCallExp2steps {
+--	from
+--		prop : OCL!PropertyCallExp(
+--			prop.referredProperty.oclIsKindOf(OCL!EReference) and
+--			not(prop.isLastInComparison())
+--		)
+--	to
+--		outE : Gremlin!OutEStep(
+--			relationshipName <- prop.referredProperty.name,
+--			nextElement <- inV
+--		),
+--		inV : Gremlin!InVStep(
+--			nextElement <- prop.getComposite()
+--		)
+--}
 
 rule propertyRefLastInComparison2steps {
 	from
@@ -450,17 +565,46 @@ rule propertyRefLastInComparison2steps {
 			(prop.isLastInComparison())
 		)
 	to
-		outE : Gremlin!OutEStep(
-			relationshipName <- prop.referredProperty.name,
-			nextElement <- inV
+		idStep : Gremlin!IdentityStep(
+			nextElement <- getRef	
 		),
-		inV : Gremlin!InVStep(
-			nextElement <- nCall
+		getRef : Gremlin!CustomStep (
+			name <- 'getRef',
+			params <- Sequence{refLabelLiteral, oppositeLabelLiteral, isContainmentLiteral},
+			nextElement <- nextCall
 		),
-		nCall : Gremlin!NextCall(
+		refLabelLiteral : Gremlin!StringLiteral (
+			value <- prop.referredProperty.name	
+		),
+		oppositeLabelLiteral : Gremlin!StringLiteral (
+			value <- ''
+		),
+		isContainmentLiteral : Gremlin!BooleanLiteral (
+			value <- false
+		),
+		nextCall : Gremlin!NextCall(
 			nextElement <- prop.getComposite()	
 		)
 }
+
+--rule propertyRefLastInComparison2steps {
+--	from
+--		prop : OCL!PropertyCallExp(
+--			prop.referredProperty.oclIsKindOf(OCL!EReference) and
+--			(prop.isLastInComparison())
+--		)
+--	to
+--		outE : Gremlin!OutEStep(
+--			relationshipName <- prop.referredProperty.name,
+--			nextElement <- inV
+--		),
+--		inV : Gremlin!InVStep(
+--			nextElement <- nCall
+--		),
+--		nCall : Gremlin!NextCall(
+--			nextElement <- prop.getComposite()	
+--		)
+--}
 
 rule propertyAttCallExp2steps {
 	from
@@ -469,11 +613,31 @@ rule propertyAttCallExp2steps {
 			not(prop.isLastInComparison())
 		)
 	to
-		pp : Gremlin!PropertyStep(
-			name <- prop.referredProperty.name,
+		idStep : Gremlin!IdentityStep(
+			nextElement <- getAtt	
+		),
+		getAtt : Gremlin!CustomStep (
+			name <- 'getAtt',
+			params <- Sequence{attNameLiteral},
 			nextElement <- prop.getComposite()
+		),
+		attNameLiteral : Gremlin!StringLiteral (
+			value <- prop.referredProperty.name
 		)
 }
+
+--rule propertyAttCallExp2steps {
+--	from
+--		prop : OCL!PropertyCallExp(
+--			prop.referredProperty.oclIsKindOf(OCL!EAttribute) and
+--			not(prop.isLastInComparison())
+--		)
+--	to
+--		pp : Gremlin!PropertyStep(
+--			name <- prop.referredProperty.name,
+--			nextElement <- prop.getComposite()
+--		)
+--}
 
 rule propertyAttCallExpLastInComparison2steps {
 	from

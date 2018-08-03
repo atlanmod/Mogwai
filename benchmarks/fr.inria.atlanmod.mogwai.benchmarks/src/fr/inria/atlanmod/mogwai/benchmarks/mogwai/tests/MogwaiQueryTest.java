@@ -13,7 +13,7 @@ package fr.inria.atlanmod.mogwai.benchmarks.mogwai.tests;
 import org.junit.Before;
 
 import fr.inria.atlanmod.mogwai.benchmarks.AbstractQueryTest;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResourceFactory;
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResourceFactory;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 public class MogwaiQueryTest extends AbstractQueryTest{

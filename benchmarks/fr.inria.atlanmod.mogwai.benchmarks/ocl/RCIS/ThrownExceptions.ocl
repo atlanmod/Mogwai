@@ -6,9 +6,7 @@ package java
 context Package
 	
 def: getThrownExceptions : ecore::EEList =
-	Package.allInstances()->
-		collect(ownedElements)->
-			select(each | each.oclIsTypeOf(ClassDeclaration))->
+	ClassDeclaration.allInstances()->
 				collect(bodyDeclarations)->
 					select(each | each.oclIsTypeOf(MethodDeclaration))->
 						collect(each | each.oclAsType(MethodDeclaration).thrownExceptions)

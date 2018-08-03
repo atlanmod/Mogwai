@@ -1,17 +1,21 @@
 package fr.inria.atlanmod.mogwai.benchmarks.mogwai.tests;
 
-import org.eclipse.emf.common.util.EList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.inria.atlanmod.mogwai.core.MogwaiException;
+import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
+import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
+import fr.inria.atlanmod.mogwai.processor.GremlinScriptRunner;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
-import fr.inria.atlanmod.mogwai.query.MogwaiQueryResult;
-import fr.inria.atlanmod.mogwai.query.builder.MogwaiOCLQueryBuilder;
-import fr.inria.atlanmod.mogwai.resources.MogwaiResource;
+import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
 import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 
 public class TextElementInJavadocQuery extends MogwaiQueryTest {
@@ -32,19 +36,21 @@ public class TextElementInJavadocQuery extends MogwaiQueryTest {
 
 	@Test
 	public void run() {
-		MogwaiQuery query = MogwaiOCLQueryBuilder.newBuilder()
+		MogwaiQuery query = OCLQueryBuilder.newBuilder()
 				.fromURI(URI.createURI("ocl/RCIS/TextElementInJavadoc.ocl")).build();
 		NeoLogger.info("Input Query: {0}" + query.getInput());
 		startTimer();
         MogwaiResource mogwaiResource = (MogwaiResource)resource;
-        MogwaiQueryResult result = mogwaiResource.query(query,mogwaiResource.getContents().get(0));
+        Map<String, Object> options = new HashMap<>();
+        options.put(GremlinScriptRunner.PRINT_SCRIPT_OPTION, true);
+        NeoEMFQueryResult result = mogwaiResource.query(query,mogwaiResource.getContents().get(0), options);
         try {
         	NeoLogger.info("Reifying results");
         	long begin = System.currentTimeMillis();
-			EList<EObject> res = result.reifyResults((MogwaiResource)resource);
+			List<EObject> res = result.reifyResults((MogwaiResource)resource);
 			long end = System.currentTimeMillis();
 			NeoLogger.info("Reification time: {0}ms", (end-begin));
-		} catch (MogwaiException e) {
+		} catch (MogwaiCoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
