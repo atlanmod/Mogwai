@@ -253,5 +253,7 @@ public interface ModelDatastore<D, E, R, A> {
 	 *         any of its subclasses, {@code false} otherwise
 	 */
 	boolean isKindOf(E from, String type);
+	
+	void close();
 
 }

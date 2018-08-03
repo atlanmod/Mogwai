@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -42,6 +43,8 @@ import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinPackage;
 import fr.inria.atlanmod.mogwai.transformation.ATLTransformation;
 
+import static java.util.Objects.nonNull;
+
 @SuppressWarnings("restriction")
 public class OCL2Gremlin extends ATLTransformation {
 
@@ -55,6 +58,8 @@ public class OCL2Gremlin extends ATLTransformation {
 	private ResourceSet resSet;
 	private List<ASM> modules;
 	private ASM ASMCommon;
+	
+	private Map<Constraint, EObject> cachedResults = new HashMap<>();
 	
 	public OCL2Gremlin() {
 		try {
@@ -115,7 +120,10 @@ public class OCL2Gremlin extends ATLTransformation {
 	
 	public EObject transform(EPackage packageInOcl, Constraint exp) {
 		try {
-			
+			EObject cachedResult = cachedResults.get(exp);
+			if(nonNull(cachedResult)) {
+				return cachedResult;
+			}
 			registry.put(packageInOcl.getNsURI(), packageInOcl);
 			
 			Resource oclResource = resSet.createResource(URI.createURI("oclInput"));
@@ -149,6 +157,7 @@ public class OCL2Gremlin extends ATLTransformation {
 			EMFModelFactory emfModelFactory = (EMFModelFactory)modelFactory;
 			emfModelFactory.unload((EMFModel)gModel);
 			emfModelFactory.unload((EMFModel)inputModel);
+			cachedResults.put(exp, gremlinResource.getContents().get(0));
 			return gremlinResource.getContents().get(0);
 		}catch(ATLCoreException e) {
 			e.printStackTrace();

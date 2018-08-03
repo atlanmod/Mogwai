@@ -120,6 +120,7 @@ rule module2script {
 				->union(mm.getHelpers())
 				->union(mm.getLazyRules())
 				->union(mm.getMatchedRules())
+				->append(thisModule.module2closeCall(mm))
 		)
 }
 
@@ -136,6 +137,21 @@ lazy rule module2graphFinalVar {
 		),
 		varAccess : Gremlin!VariableAccess (
 			name <- thisModule.transformationHelperBinding	
+		)
+}
+
+lazy rule module2closeCall {
+	from
+		mm : ATL!Module
+	to
+		gHelperAccess: Gremlin!VariableAccess (
+			name <- 'gHelper',
+			nextElement <- closeCall
+		),
+		closeCall : Gremlin!CustomMethodCall (
+			name <- 'close'
+			-- TODO multiple out types
+			--params <- Sequence{inVar, targetPatternLiteral, typeLiteral, mmNsURILiteral, resourceNameLiteral}
 		)
 }
 

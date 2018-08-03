@@ -9,8 +9,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
@@ -25,6 +27,7 @@ import com.tinkerpop.blueprints.Index;
 import com.tinkerpop.blueprints.KeyIndexableGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.util.wrappers.id.IdGraph;
+import com.tinkerpop.pipes.util.structures.Pair;
 
 import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
@@ -311,7 +314,7 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		checkNotNull(graph, "Graph hasn't been initialized, call setGraph before starting graph manipulation");
 		checkNotNull(typePackageNsURI, "NeoEMFMapping requires EPackage nsURI to create a new element");
 		long beginGetR = System.currentTimeMillis();
-		Vertex resourceRoot = getOrCreateResourceRoot(resourceName);
+//		Vertex resourceRoot = getOrCreateResourceRoot(resourceName);
 		long endGetR = System.currentTimeMillis();
 		newInstanceGetResourceRoot += (endGetR - beginGetR);
 		// Vertex vertex = graph.addVertex(StringId.generate().toString());
@@ -331,12 +334,15 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		 */
 		vertex.addEdge(KEY_INSTANCE_OF, eClassVertex);
 		long begin2 = System.currentTimeMillis();
-		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false);
+//		setRef(resourceRoot, CONTENTS_LABEL, null, vertex, false);
 		long end = System.currentTimeMillis();
 		newInstanceTime += (end - begin);
 		newInstanceSetRef += (end - begin2);
+		createdVertices.put(vertex.getId(), new Pair<Vertex, String>(vertex, resourceName));
 		return vertex;
 	}
+	
+	public Map<Object, Pair<Vertex,String>> createdVertices = new HashMap<>();
 
 	public static long newInstanceTime = 0;
 	public static long newInstanceSetRef = 0;
@@ -413,13 +419,13 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		Iterable<Edge> refEdges = from.getEdges(Direction.OUT, refName);
 		Vertex oldVertex = null;
 		for (Edge refEdge : refEdges) {
+			if (oldVertex != null) {
+				// We have found the edge, update the position of the next
+				// ones
+				int position = refEdge.getProperty(POSITION_KEY);
+				refEdge.setProperty(POSITION_KEY, position - 1);
+			}
 			if (refEdge.getVertex(Direction.IN).equals(to)) {
-				if (oldVertex != null) {
-					// We have found the edge, update the position of the next
-					// ones
-					int position = refEdge.getProperty(POSITION_KEY);
-					refEdge.setProperty(POSITION_KEY, position - 1);
-				}
 				oldVertex = refEdge.getVertex(Direction.IN);
 				if (isContainment) {
 					Edge containerEdge = Iterables.getFirst(oldVertex.getEdges(Direction.OUT, CONTAINER_LABEL), null);
@@ -671,6 +677,7 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 	 *            the {@link Vertex} representing the contained element
 	 */
 	private void updateContainment(Vertex from, String refName, Vertex to) {
+		updateContainmentCount++;
 		long begin = System.currentTimeMillis();
 		// Find the old containment reference name and remove it
 		long begin1 = System.currentTimeMillis();
@@ -682,10 +689,13 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 
 		// Remove eContents edges if the element is a top-level element
 		long begin2 = System.currentTimeMillis();
-		for (Edge edge : to.getEdges(Direction.IN, CONTENTS_LABEL)) {
-			edge.remove();
-			break;
+		if(createdVertices.containsKey(to.getId())) {
+			createdVertices.remove(to.getId());
 		}
+//		for (Vertex rootVertex : to.getVertices(Direction.IN, CONTENTS_LABEL)) {
+//			removeRef(rootVertex, CONTENTS_LABEL, to, false);
+//			break;
+//		}
 		long end2 = System.currentTimeMillis();
 		Edge edge = to.addEdge(CONTAINER_LABEL, from);
 		edge.setProperty(CONTAINING_FEATURE_KEY, refName);
@@ -694,6 +704,17 @@ public class NeoEMFGraphDatastore implements ModelDatastore<Graph, Vertex, Edge,
 		updateContainment1 += (end1 - begin1);
 		updateContainment2 += (end2 - begin2);
 	}
+	
+	@Override
+	public void close() {
+		for(Pair<Vertex, String> v : createdVertices.values()) {
+			Vertex resourceRoot = getOrCreateResourceRoot(v.getB());
+			setRef(resourceRoot, CONTENTS_LABEL, null, v.getA(), false);
+		}
+		createdVertices = null;
+	}
+	
+	public static int updateContainmentCount = 0;
 
 	public static long updateContainmentTime = 0;
 	public static long updateContainment1 = 0;

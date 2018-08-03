@@ -9,6 +9,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
+import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.core.exception.MogwaiCoreException;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.gremlin.GremlinScript;
@@ -92,7 +93,10 @@ public class OCLQueryProcessor extends AbstractATLProcessor<OCLQuery> {
 	@Override
 	protected GremlinScript createGremlinScript(OCLQuery query, Map<String, Object> options) {
 		EPackage ePackage = query.getContext().getEPackage();
+		long beforeTransformation = System.currentTimeMillis();
 		EObject transformedQuery = getTransformation().transform(ePackage, query.getConstraint());
+		long afterTransformation = System.currentTimeMillis();
+		MogwaiLogger.info("Input query transformed ({0}ms)", (afterTransformation-beforeTransformation));
 		if (transformedQuery instanceof GremlinScript) {
 			return ((GremlinScript) transformedQuery);
 		} else {

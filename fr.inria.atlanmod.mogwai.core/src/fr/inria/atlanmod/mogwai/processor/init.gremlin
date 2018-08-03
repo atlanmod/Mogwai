@@ -41,7 +41,7 @@ objectMetaClass.initialize();
 InvokerHelper.metaRegistry.setMetaClass(ArrayList.class, objectMetaClass);
 
 def log(String msg) {
-	enableDebug = true;
+	enableDebug = false;
 	if(enableDebug) {
 		println("[Gremlin runner]" + msg);
 	}

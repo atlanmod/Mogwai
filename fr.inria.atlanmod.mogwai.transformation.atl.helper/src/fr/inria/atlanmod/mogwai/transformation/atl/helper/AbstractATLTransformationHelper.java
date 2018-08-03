@@ -351,4 +351,6 @@ public abstract class AbstractATLTransformationHelper<ES, ET> {
 			throw new ClassCastException(object + " cannot be cast to Float");
 		}
 	}
+	
+	public abstract void close();
 }

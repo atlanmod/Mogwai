@@ -153,4 +153,10 @@ public class DummyATLTransformationHelper<ES, ET> extends AbstractATLTransformat
 	public ET resolve(ES sourceProxy) {
 		return null;
 	}
+	
+	@Override
+	public void close() {
+		sourceDatastore.close();
+		targetDatastore.close();
+	}
 }

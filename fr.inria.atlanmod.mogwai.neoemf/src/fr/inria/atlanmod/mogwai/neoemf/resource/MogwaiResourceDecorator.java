@@ -95,7 +95,9 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	 */
 	@Override
 	public NeoEMFQueryResult transform(MogwaiQuery transformation, Map<String, Object> options) throws QueryException {
-		return NeoEMFQueryHandler.getInstance().transform(transformation, getBackend(), options);
+		NeoEMFQueryResult result = NeoEMFQueryHandler.getInstance().transform(transformation, getBackend(), options);
+		this.getBackend().getGraph().commit();
+		return result;
 	}
 
 	/**

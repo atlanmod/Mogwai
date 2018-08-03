@@ -16,6 +16,8 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 
+import com.google.common.collect.Iterables;
+
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
 
@@ -429,4 +431,7 @@ public class DefaultEmbeddedNeo4j3Datastore implements
 		return isTypeOf(from, type);
 	}
 
+	@Override
+	public void close() {
+	}
 }

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.pipes.PipesDatastore;
 
@@ -62,6 +63,7 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 	 */
 	@Override
 	public void setDataSource(Connection dataSource) {
+		MogwaiLogger.info("Initializing {0}", this.getClass().getSimpleName());
 		try {
 			if(nonNull(this.connection)) {
 				this.connection.commit();
@@ -76,14 +78,13 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 			ResultSet tables = metaData.getTables(null, "PUBLIC", null, null);
 			while(tables.next()) {
 				String tableName = tables.getString(3);
-				System.out.println("found table " + tableName);
+				MogwaiLogger.info("Found Table {0}", tableName);
 				schema.setTable(tableName);
 				ResultSet columns = metaData.getColumns(null, null, tableName, null);
 				while(columns.next()) {
 					String columnName = columns.getString(4);
 					String columnType = columns.getString(6);
-					System.out.println("found column " + columns.getString(4));
-					System.out.println("column type " + columnType);
+					MogwaiLogger.info("Found Column {0} (type: {1})", columns.getString(4), columnType);
 					schema.setAttribute(tableName, columnName, columnType);
 				}
 			}
@@ -212,6 +213,11 @@ public class DefaultJdbcDatastore implements ModelDatastore<Connection, JdbcElem
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void close() {
+		createLastElement();
 	}
 
 }

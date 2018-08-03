@@ -109,7 +109,11 @@ public class InPlaceBlueprintsTransformationHelper extends InPlaceATLTransformat
 			String resourceName) {
 		long begin = System.currentTimeMillis();
 		checkNotNull(metaclassType, "Cannot create an element from a null metaclass");
-		Vertex v = (Vertex) this.sourceDatastore.newInstance(metaclassType, nsURI, resourceName);
+		/*
+		 * This is a quick fix, in place transformations does not create additional resources.
+		 */
+		Vertex v = (Vertex) this.sourceDatastore.newInstance(metaclassType, nsURI, "ROOT");
+//		Vertex v = (Vertex) this.sourceDatastore.newInstance(metaclassType, nsURI, resourceName);
 		/*
 		 * Set the element as a target element to avoid not resolvable proxies
 		 * for target-specific model elements
@@ -241,6 +245,11 @@ public class InPlaceBlueprintsTransformationHelper extends InPlaceATLTransformat
 		long end = System.currentTimeMillis();
 		resolveTime += (end - begin);
 		return result;
+	}
+	
+	@Override
+	public void close() {
+		sourceDatastore.close();
 	}
 
 }

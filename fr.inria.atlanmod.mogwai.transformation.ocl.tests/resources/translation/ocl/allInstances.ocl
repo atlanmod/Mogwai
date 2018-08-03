@@ -1,4 +1,4 @@
-import java : 'http://www.eclipse.org/MoDisco/Java/0.2.incubation/java'
+import java : 'http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf'
 import ecore : 'http://www.eclipse.org/emf/2002/Ecore#/'
 
 package java

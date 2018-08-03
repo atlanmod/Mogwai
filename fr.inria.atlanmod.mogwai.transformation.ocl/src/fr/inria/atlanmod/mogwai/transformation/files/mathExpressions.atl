@@ -40,6 +40,18 @@ rule greater2steps {
 		)
 }
 
+rule implies2steps {
+	from
+		oclImplies : OCL!OperationCallExp (
+			oclImplies.getOpName() = 'implies'	
+		)
+	to
+		gremlinImplies : Gremlin!CustomMethodCall(
+			name <- 'implies',
+			params <- oclImplies.argument.first().getFirstInstruction()
+		)
+}
+
 -- Transforms '>=' OperationCallExp into equivalent Gremlin expression.
 -- First left and right instructions are computed from the roots of the operation body and argument.
 rule greaterOrEqual2steps {

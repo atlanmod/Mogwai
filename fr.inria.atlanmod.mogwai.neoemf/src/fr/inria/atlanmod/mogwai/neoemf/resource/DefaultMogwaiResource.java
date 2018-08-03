@@ -67,7 +67,9 @@ public class DefaultMogwaiResource extends DefaultPersistentResource implements 
 	 */
 	@Override
 	public NeoEMFQueryResult transform(MogwaiQuery transformation, Map<String, Object> options) {
-		return NeoEMFQueryHandler.getInstance().transform(transformation, getBackend(), options);
+		NeoEMFQueryResult result = NeoEMFQueryHandler.getInstance().transform(transformation, getBackend(), options);
+		this.getBackend().getGraph().commit();
+		return result;
 	}
 
 	/**
