@@ -15,6 +15,7 @@ import java.util.Map;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFValidationResult;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.QueryException;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
@@ -36,6 +37,8 @@ public interface MogwaiResource extends PersistentResource {
 	 * The options key used to specify the NeoEMF model datastore to use.
 	 */
 	public static final String NEOEMF_MODEL_DATASTORE = "neoemf.model.datastore";
+	
+	NeoEMFValidationResult validate(MogwaiQuery constraintQuery, Map<String, Object> options) throws QueryException;
 	
 	/**
 	 * Computes the provided {@code transformation} with the given

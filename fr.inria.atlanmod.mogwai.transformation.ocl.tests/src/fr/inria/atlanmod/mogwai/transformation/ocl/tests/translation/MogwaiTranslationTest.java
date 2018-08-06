@@ -14,7 +14,7 @@ import org.eclipse.emf.compare.EMFCompare;
 import org.eclipse.emf.compare.scope.DefaultComparisonScope;
 import org.eclipse.emf.compare.scope.IComparisonScope;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.gmt.modisco.java.JavaPackage;
+import org.eclipse.gmt.modisco.java.emf.JavaPackage;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

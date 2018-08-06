@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.gmt.modisco.java.JavaPackage;
+import org.eclipse.gmt.modisco.java.emf.JavaPackage;
 import org.junit.Test;
 
 import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;

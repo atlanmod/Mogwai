@@ -43,8 +43,8 @@ import fr.inria.atlanmod.neoemf.util.logging.NeoLogger;
 public class AbstractQueryTest {
     
 	private static String[][] parameters = new String[][]{
-		{"resources/jdt-core.graph"},
-//		{"resources/modisco.graph"}
+//		{"resources/jdt-core.graph"},
+		{"resources/modisco.graph"}
 		};
 	
     @Parameters
@@ -83,13 +83,13 @@ public class AbstractQueryTest {
     			System.out.println("Unzipping XMI models");
 				ModelCreator.unzip("resources/resources.zip", "resources/xmi");
 				System.out.println("Creating modisco.graph");
-//				ModelCreator.createNeoEMFModel(
-//						new File("resources/xmi/resources/org.eclipse.gmt.modisco.java.kyanos.xmi"), 
-//						new File("resources/modisco.graph"));
-				System.out.println("Creating jdt-core.graph");
 				ModelCreator.createNeoEMFModel(
-						new File("resources/xmi/resources/org.eclipse.jdt.core.xmi"), 
-						new File("resources/jdt-core.graph"));
+						new File("resources/xmi/resources/org.eclipse.gmt.modisco.java.kyanos.xmi"), 
+						new File("resources/modisco.graph"));
+//				System.out.println("Creating jdt-core.graph");
+//				ModelCreator.createNeoEMFModel(
+//						new File("resources/xmi/resources/org.eclipse.jdt.core.xmi"), 
+//						new File("resources/jdt-core.graph"));
 				System.out.println("Cleaning temp files");
 				File xmiFolder = new File("resources/xmi/resources");
 				File[] xmiContents = xmiFolder.listFiles();

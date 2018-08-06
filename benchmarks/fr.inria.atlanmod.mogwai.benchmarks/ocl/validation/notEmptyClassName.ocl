@@ -1,0 +1,9 @@
+import java : 'http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf'
+
+package java
+
+context ClassDeclaration
+
+inv validClassDeclarationName :
+	not(self.name.oclIsUndefined()) and self.name <> ''
+endpackage

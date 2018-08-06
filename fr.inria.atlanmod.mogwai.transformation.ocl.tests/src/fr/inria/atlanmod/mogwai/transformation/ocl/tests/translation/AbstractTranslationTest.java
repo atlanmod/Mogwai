@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.gmt.modisco.java.JavaPackage;
+import org.eclipse.gmt.modisco.java.emf.JavaPackage;
 import org.eclipse.ocl.ecore.Constraint;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

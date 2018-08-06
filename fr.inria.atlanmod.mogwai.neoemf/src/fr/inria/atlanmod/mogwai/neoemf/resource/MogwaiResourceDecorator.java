@@ -11,6 +11,7 @@ import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.datastore.pipes.PipesUtils;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFValidationResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.QueryException;
@@ -109,6 +110,11 @@ public class MogwaiResourceDecorator extends PersistentResourceDecorator impleme
 	public <D> NeoEMFQueryResult transform(MogwaiQuery transformation, D datastore, ModelDatastore mapping,
 			Map<String, Object> options) throws QueryException {
 		throw new QueryException("Multi-backend transformations are not supported for the moment");
+	}
+	
+	@Override
+	public NeoEMFValidationResult validate(MogwaiQuery constraintQuery, Map<String, Object> options) throws QueryException {
+		return NeoEMFQueryHandler.getInstance().validate(constraintQuery, getBackend(), options);
 	}
 
 	/**

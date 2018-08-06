@@ -1,0 +1,12 @@
+import java : 'http://www.eclipse.org/MoDisco/Java/0.2.incubation/java-neoemf'
+
+package java
+
+context CompilationUnit
+
+inv  test :
+	self.commentList->forAll(comment |
+		comment.oclIsTypeOf(Javadoc) implies
+			comment.oclAsType(Javadoc).tags->collect(fragments)->forAll(frag | 
+				frag.oclIsTypeOf(TextElement) implies frag.oclAsType(TextElement).text <> ''))
+endpackage

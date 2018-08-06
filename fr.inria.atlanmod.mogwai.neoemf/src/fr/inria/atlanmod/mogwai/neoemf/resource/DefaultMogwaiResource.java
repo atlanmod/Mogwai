@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFValidationResult;
 import fr.inria.atlanmod.mogwai.neoemf.util.NeoEMFQueryHandler;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.QueryException;
@@ -60,6 +61,11 @@ public class DefaultMogwaiResource extends DefaultPersistentResource implements 
 	public DefaultMogwaiResource(URI uri) {
 		super(uri);
 		assert this.backend instanceof BlueprintsPersistenceBackend;
+	}
+	
+	@Override
+	public NeoEMFValidationResult validate(MogwaiQuery constraintQuery, Map<String, Object> options) {
+		return NeoEMFQueryHandler.getInstance().validate(constraintQuery, getBackend(), options);
 	}
 
 	/**

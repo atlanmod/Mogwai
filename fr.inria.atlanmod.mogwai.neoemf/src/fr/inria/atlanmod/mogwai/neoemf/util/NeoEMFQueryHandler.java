@@ -5,10 +5,24 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.ocl.ecore.Constraint;
+import org.eclipse.ocl.ecore.EcoreFactory;
+import org.eclipse.ocl.ecore.IteratorExp;
+import org.eclipse.ocl.ecore.OperationCallExp;
+import org.eclipse.ocl.ecore.TypeExp;
+import org.eclipse.ocl.ecore.Variable;
+import org.eclipse.ocl.ecore.VariableExp;
+import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
+import org.eclipse.ocl.expressions.OCLExpression;
 
+import fr.inria.atlanmod.mogwai.common.logging.MogwaiLogger;
 import fr.inria.atlanmod.mogwai.datastore.ModelDatastore;
 import fr.inria.atlanmod.mogwai.datastore.blueprints.NeoEMFGraphDatastore;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFATLQueryProcessor;
@@ -16,6 +30,7 @@ import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFGremlinQueryProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFOCLQueryProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.processor.NeoEMFQueryProcessor;
 import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFQueryResult;
+import fr.inria.atlanmod.mogwai.neoemf.query.NeoEMFValidationResult;
 import fr.inria.atlanmod.mogwai.neoemf.resource.MogwaiResource;
 import fr.inria.atlanmod.mogwai.processor.AbstractQueryProcessor;
 import fr.inria.atlanmod.mogwai.query.ATLQuery;
@@ -23,6 +38,7 @@ import fr.inria.atlanmod.mogwai.query.GremlinQuery;
 import fr.inria.atlanmod.mogwai.query.MogwaiQuery;
 import fr.inria.atlanmod.mogwai.query.OCLQuery;
 import fr.inria.atlanmod.mogwai.query.QueryException;
+import fr.inria.atlanmod.mogwai.query.builder.OCLQueryBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackend;
 
 /**
@@ -195,6 +211,79 @@ public class NeoEMFQueryHandler {
 			return (NeoEMFQueryResult) transformation.process(atlProcessor.get(), modelDatastore, theOptions);
 		}
 		throw new QueryException("Cannot find a processor for " + transformation);
+	}
+	
+	public NeoEMFValidationResult validate(MogwaiQuery constraintQuery, BlueprintsPersistenceBackend datastore, Map<String, Object> options) throws QueryException {
+		if(constraintQuery instanceof OCLQuery) {
+			OCLQuery oclQuery = (OCLQuery) constraintQuery;
+			Constraint translatedConstraint = translateValidationConstraint(oclQuery.getConstraint());
+			MogwaiQuery translatedQuery = OCLQueryBuilder.newBuilder().fromConstraint(translatedConstraint).build();
+			NeoEMFQueryResult result = this.query(translatedQuery, null, datastore, options);
+			return new NeoEMFValidationResult(result);
+		} else {
+			throw new QueryException("Cannot validate a model with the provided query " + constraintQuery.getClass().getSimpleName());
+		}
+	}
+	
+	private Constraint translateValidationConstraint(Constraint c) {
+		MogwaiLogger.info("Translating input constraint into global query");
+		EClass constraintedEClass = (EClass) c.getConstrainedElements().get(0);
+        
+        OCLStandardLibraryImpl stdPackage = OCLStandardLibraryImpl.INSTANCE;
+        EPackage oclEPackage = stdPackage.stdlibPackage;
+        
+        TypeExp typeExp = EcoreFactory.eINSTANCE.createTypeExp();
+        typeExp.setReferredType(constraintedEClass);
+        
+        EClass oclTypeClass = (EClass)oclEPackage.getEClassifier("OclType_Class");
+        EOperation allInstancesOperation = null;
+        for(EOperation eOperation : oclTypeClass.getEOperations()) {
+        	if(eOperation.getName().equals("allInstances")) {
+        		allInstancesOperation = eOperation;
+        	}
+        }
+        
+        EClass booleanClass = (EClass)oclEPackage.getEClassifier("Boolean_Class");
+        EOperation notOperation = null;
+        for(EOperation eOperation : booleanClass.getEOperations()) {
+        	if(eOperation.getName().equals("not")) {
+        		notOperation = eOperation;
+        	}
+        }
+        
+        OperationCallExp allInstancesOperationCallExp = EcoreFactory.eINSTANCE.createOperationCallExp();
+        allInstancesOperationCallExp.setReferredOperation(allInstancesOperation);
+        allInstancesOperationCallExp.setSource(typeExp);
+        
+        IteratorExp selectExp = EcoreFactory.eINSTANCE.createIteratorExp();
+        selectExp.setName("select");
+        selectExp.setSource(allInstancesOperationCallExp);
+        
+        Variable selectVariable = EcoreFactory.eINSTANCE.createVariable();
+        selectVariable.setName("mogwaiVar");
+        selectExp.getIterator().add(selectVariable);
+        
+        OperationCallExp notOperationCallExp = EcoreFactory.eINSTANCE.createOperationCallExp();
+        notOperationCallExp.setReferredOperation(notOperation);
+        selectExp.setBody(notOperationCallExp);
+        
+        Iterator<EObject> it = c.getSpecification().eAllContents();
+        while(it.hasNext()) {
+        	EObject eObject = it.next();
+        	if(eObject instanceof VariableExp) {
+        		VariableExp vExp = (VariableExp)eObject;
+        		if(vExp.getName().equals("self")) {
+        			vExp.setName("mogwaiVar");
+        			vExp.setReferredVariable(selectVariable);
+        		}
+        	}
+        }
+        
+        OCLExpression mainBody = c.getSpecification().getBodyExpression();
+        notOperationCallExp.setSource(mainBody);
+        
+        c.getSpecification().setBodyExpression(selectExp);
+        return c;
 	}
 
 	/**
