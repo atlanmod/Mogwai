@@ -7,8 +7,11 @@ Generated Gremlin traversals are computed on the database side, bypassing limita
 
 Mogwaï is fully integrated in NeoEMF, and provides its own [PersistentResource](https://github.com/atlanmod/NeoEMF/blob/master/core/src/main/java/fr/inria/atlanmod/neoemf/resources/PersistentResource.java) extension which augment the default one with a [basic query API](https://github.com/atlanmod/Mogwai/blob/master/core/src/main/java/fr/inria/atlanmod/mogwai/resources/MogwaiResource.java). This API can be used to provide OCL queries (both inline or file-based) to Mogwaï, that will translate them into the appropriate Gremlin expression(s) and return results reified into navigable EObjects if needed.
 
-## Important
-We are currently working on a full refactoring on the framework to support multiple query languages and model mappings. The master branch is not maintained and only critical bugs are corrected. See [atl2gremlin branch](https://github.com/atlanmod/Mogwai/tree/atl2gremlin) for more information on this refactoring.
+## News: Validation Benchmark
+
+We have developed a new model validation engine to improve the evaluation of constraints over large models, and reduce the time required to retrieve the instances to validate. You can validate an entire model by using the `MogwaiResource#validate` method, that will optimize the input OCL constraint and translate it into an efficient Gremlin script.
+
+You can run the validation benchmarks from the [benchmarks project](https://github.com/atlanmod/Mogwai/tree/master/benchmarks/fr.inria.atlanmod.mogwai.benchmarks/src/fr/inria/atlanmod/mogwai/benchmark/validation). Note that you first need to run the `ModelMutator` application, that will create a mutated version of the benchmark models containing elements violating the benchmarked constraints. You can then run the different queries in the package. There are 3 variants of each query: QueryName_OCL (standard OCL computation), QueryName_StandardMogwai (standard `allInstances` and Mogwai translation of the constraint) and QueryName_OptimizedMogwai (constraint pre-processing and optimized translation).
 
 ## Installation
   You can download the last version of the update site [here](). NeoEMF ([v1.0.2](https://atlanmod.github.io/NeoEMF/releases/latest/plugin/) or newer), ATL (v3.8.0 or newer), EMFTVM ([v4.0.0](http://marketplace.eclipse.org/node/609049) or newer), OCL.ecore (v3.3.100), and OCL Examples and Editors SDK (v6.3.0 or newer) have to be installed in your Eclipse environment to run Mogwaï.
