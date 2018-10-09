@@ -403,10 +403,13 @@ rule oclIsTypeOf2steps {
 		toStep : Gremlin!CustomStep (
 			name <- 'isTypeOf',
 			params <- typeLiteral,
-			nextElement <- oclIsTypeOf.getComposite()
+			nextElement <- id
+			-- oclIsTypeOf.getComposite()
 		),
 		typeLiteral : Gremlin!StringLiteral (
 			value <- oclIsTypeOf.argument.first().referredType.name	
+		),
+		id : Gremlin!NextCall(
 		)
 }
 
