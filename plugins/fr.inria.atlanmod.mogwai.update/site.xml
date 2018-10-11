@@ -3,20 +3,20 @@
    <description name="Mogwaï Update Site">
       Contains the different components provided with the Mogwaï framework.
    </description>
-   <feature url="features/fr.inria.atlanmod.mogwai.core.feature_1.0.0.201810091454.jar" id="fr.inria.atlanmod.mogwai.core.feature" version="1.0.0.201810091454">
+   <feature url="features/fr.inria.atlanmod.mogwai.core.feature_1.0.0.201810111256.jar" id="fr.inria.atlanmod.mogwai.core.feature" version="1.0.0.201810111256">
       <category name="Mogwai"/>
    </feature>
-   <feature url="features/fr.inria.atlanmod.mogwai.neoemf.feature_1.0.0.201810091454.jar" id="fr.inria.atlanmod.mogwai.neoemf.feature" version="1.0.0.201810091454">
-      <category name="Optional"/>
+   <feature url="features/fr.inria.atlanmod.mogwai.neoemf.feature_1.0.0.201810111256.jar" id="fr.inria.atlanmod.mogwai.neoemf.feature" version="1.0.0.201810111256">
+      <category name="NeoEMF"/>
    </feature>
-   <category-def name="Mogwai" label="Mogwai">
+   <category-def name="Mogwai" label="Mogwaï Core">
       <description>
-         Mogwaï Core features.
+         Core components of the Mogwaï query engine.
       </description>
    </category-def>
-   <category-def name="Optional" label="Optional">
+   <category-def name="NeoEMF" label="NeoEMF connector">
       <description>
-         Optional features that provide specific integrations or utilities.
+         NeoEMF connector for the Mogwaï query engine.
       </description>
    </category-def>
 </site>
